@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fanerge.github.io/"/>
-  <updated>2017-07-10T14:32:25.388Z</updated>
+  <updated>2017-07-11T14:13:12.322Z</updated>
   <id>https://fanerge.github.io/</id>
   
   <author>
@@ -14,6 +14,62 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>vue admin</title>
+    <link href="https://fanerge.github.io/2017/07/11/vue-admin/"/>
+    <id>https://fanerge.github.io/2017/07/11/vue-admin/</id>
+    <published>2017-07-11T12:54:43.000Z</published>
+    <updated>2017-07-11T14:13:12.322Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="最近个人接触了一些后台管理系统的搭建，参考了很多资料，打算把自己的后台管理系统开发经验写成博客，可能会帮助到一些想做后台管理系统的朋友，更主要的记录整个开发思路，以及vue的一整套解决方案。"><a href="#最近个人接触了一些后台管理系统的搭建，参考了很多资料，打算把自己的后台管理系统开发经验写成博客，可能会帮助到一些想做后台管理系统的朋友，更主要的记录整个开发思路，以及vue的一整套解决方案。" class="headerlink" title="最近个人接触了一些后台管理系统的搭建，参考了很多资料，打算把自己的后台管理系统开发经验写成博客，可能会帮助到一些想做后台管理系统的朋友，更主要的记录整个开发思路，以及vue的一整套解决方案。"></a>最近个人接触了一些后台管理系统的搭建，参考了很多资料，打算把自己的后台管理系统开发经验写成博客，可能会帮助到一些想做后台管理系统的朋友，更主要的记录整个开发思路，以及vue的一整套解决方案。</h3><blockquote>
+<p>如有不正确的地方，请大家联系我，谢谢。</p>
+</blockquote>
+<h2 id="后台管理系统主要功能-vue-cli搭建项目"><a href="#后台管理系统主要功能-vue-cli搭建项目" class="headerlink" title="后台管理系统主要功能(vue-cli搭建项目)"></a>后台管理系统主要功能(vue-cli搭建项目)</h2><ol>
+<li>element-ui 饿了么出品的vue2.0 pc端 UI框架</li>
+<li>axios vue官方推荐的请求库 支持Promise</li>
+<li>html5的本地存储LocalStorage（用于记住密码等） 与 SessionStorage （用于存储个人信息和token等）</li>
+<li>浏览器样式兼容库 normalize.css 格式化css</li>
+<li>类似于YouTube的页面跳转精度条-nprogress 轻量的全局进度条控制</li>
+<li>官方提供的状态管理库 vuex</li>
+<li>官方提供路由 vue-router</li>
+<li>集成icon-font图标(symbol方式)<br>（后续会继续添加）</li>
+</ol>
+<h3 id="先在项目中引入-element-ui"><a href="#先在项目中引入-element-ui" class="headerlink" title="先在项目中引入 element-ui"></a>先在项目中引入 <a href="http://element.eleme.io/#/zh-CN" target="_blank" rel="external">element-ui</a></h3><ol>
+<li>安装 element-ui  npm i element-ui -S</li>
+<li>引入相关资源<br> import ElementUI from ‘element-ui’<br> import ‘element-ui/lib/theme-default/index.css’<br> Vue.use(ElementUI)<br> 这样你就可以愉快的在你的项目中使用element的组件了。</li>
+<li>例如使用 Message 消息提示<br> 就可以在任何vue组件中 this.$message(‘这是一条消息提示’); // this指向vue实例</li>
+</ol>
+<h3 id="在项目中引入axios请求库axios"><a href="#在项目中引入axios请求库axios" class="headerlink" title="在项目中引入axios请求库axios"></a>在项目中引入axios请求库<a href="https://www.axios.com/" target="_blank" rel="external">axios</a></h3><ol>
+<li>安装 axios npm i axios -S   </li>
+<li>在使用axios的时候我们经常要进行一些封装和全局配置等<br> 我一般开发时会在src目录下新建一个api的文件夹，里面存放对axios的封装（axios.js）和项目所有请求（http.js）</li>
+<li><p>这里重点讲一下axios.js这个文件夹，也就是对axios的封装以及拦截操作<br> 这里是全局配置</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">var service = axios.create(&#123;</div><div class="line">  baseURL:&quot;https://some-domain.com/api/&quot;,</div><div class="line">  timeout:1000,</div><div class="line">  headers: &#123;&apos;X-Custom-Header&apos;:&apos;foobar&apos;&#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p> 这里是request拦截操作</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">// request拦截器</div><div class="line">service.interceptors.request.use(config =&gt; &#123;</div><div class="line">  if (store.getters.token) &#123; // 判断全局状态中是否有token，也就是说判断你不是合法用户</div><div class="line">	config.headers[&apos;token&apos;] = store.getters.token; // 让每个请求携带自定义token，开心不用没个请求都带上token字段了</div><div class="line">  &#125;</div><div class="line">  return config;</div><div class="line">&#125;, error =&gt; &#123;</div><div class="line">  Promise.reject(error);</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p> 这里是response拦截操作</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">// respone拦截器</div><div class="line">service.interceptors.response.use(</div><div class="line">  response =&gt; &#123;</div><div class="line">	// code为非20000是抛错 可结合自己业务进行修改</div><div class="line">	const res = response.data;</div><div class="line">	if (res.code !== 20000) &#123;</div><div class="line">	  // 在该页面使用element组件，别忘了需要引入哦！！</div><div class="line">	  Message(&#123;</div><div class="line">		message: res.data,</div><div class="line">		type: &apos;error&apos;,</div><div class="line">		duration: 5 * 1000</div><div class="line">	  &#125;);</div><div class="line"></div><div class="line">	  // 50008:非法的token; 50012:其他客户端登录了;  50014:Token 过期了;</div><div class="line">	  if (res.code === 50008 || res.code === 50012 || res.code === 50014) &#123;</div><div class="line">		// 这里需要你进行相应的操作处理</div><div class="line">	  &#125;</div><div class="line">	  return Promise.reject(error);</div><div class="line">	&#125; else &#123;</div><div class="line">	  return response.data;</div><div class="line">	&#125;</div><div class="line">  &#125;,</div><div class="line">  error =&gt; &#123;</div><div class="line">	Message(&#123;</div><div class="line">	  message: error.message,</div><div class="line">	  type: &apos;error&apos;,</div><div class="line">	  duration: 5 * 1000</div><div class="line">	&#125;);</div><div class="line">	return Promise.reject(error);</div><div class="line">  &#125;</div><div class="line">)</div><div class="line">// 最后被忘了，要export 这个实例</div><div class="line">export default service;</div></pre></td></tr></table></figure>
+</li>
+<li><p>阻止http.js请求文件<br> 里面的内容大致是这样的</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">import service from &apos;./axios&apos;</div><div class="line">const ApiUrl = &#123;</div><div class="line">	login: &apos;login/&apos;, // 存放api路径</div><div class="line">	...</div><div class="line">&#125;</div><div class="line">export default &#123;</div><div class="line">	login () &#123;</div><div class="line">		// 这里后期我会发在vuex中的actions里面</div><div class="line">		service.post(ApiUrl.login, &#123;</div><div class="line">		  username: &apos;fanerge&apos;,</div><div class="line">		  password: &apos;XXXXXX&apos;</div><div class="line">		&#125;)</div><div class="line">		.then((res) =&gt; &#123;</div><div class="line">			let resp = res.data</div><div class="line">			console.log(resp)</div><div class="line">		&#125;)</div><div class="line">		.catch((err) =&gt; &#123;</div><div class="line">			console.error(err)</div><div class="line">		&#125;)</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;最近个人接触了一些后台管理系统的搭建，参考了很多资料，打算把自己的后台管理系统开发经验写成博客，可能会帮助到一些想做后台管理系统的朋友，更主要的记录整个开发思路，以及vue的一整套解决方案。&quot;&gt;&lt;a href=&quot;#最近个人接触了一些后台管理系统的搭建，参考了很多资
+    
+    </summary>
+    
+      <category term="vue" scheme="https://fanerge.github.io/categories/vue/"/>
+    
+    
+      <category term="vue" scheme="https://fanerge.github.io/tags/vue/"/>
+    
+      <category term="element-ui" scheme="https://fanerge.github.io/tags/element-ui/"/>
+    
+  </entry>
   
   <entry>
     <title>my new post</title>
