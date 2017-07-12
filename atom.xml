@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fanerge.github.io/"/>
-  <updated>2017-07-11T14:13:12.322Z</updated>
+  <updated>2017-07-12T14:17:02.212Z</updated>
   <id>https://fanerge.github.io/</id>
   
   <author>
@@ -16,16 +16,53 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>vue vuex</title>
+    <link href="https://fanerge.github.io/2017/07/12/vue-vuex/"/>
+    <id>https://fanerge.github.io/2017/07/12/vue-vuex/</id>
+    <published>2017-07-12T13:57:30.000Z</published>
+    <updated>2017-07-12T14:17:02.212Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="今天来总结下，在项目中使用vuex，项目采用easy-mock模拟数据"><a href="#今天来总结下，在项目中使用vuex，项目采用easy-mock模拟数据" class="headerlink" title="今天来总结下，在项目中使用vuex，项目采用easy-mock模拟数据"></a>今天来总结下，在项目中使用vuex，项目采用<a href="https://easy-mock.com" target="_blank" rel="external">easy-mock</a>模拟数据</h2><p><em>如有不正确的地方，请大家联系我，谢谢。</em></p>
+<h3 id="首先在项目中添加vuex"><a href="#首先在项目中添加vuex" class="headerlink" title="首先在项目中添加vuex"></a>首先在项目中添加vuex</h3><ol>
+<li><p>在store文件夹下面建立index.js,内容如下</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">  import Vue from &apos;vue&apos;</div><div class="line">  import Vuex from &apos;vuex&apos;</div><div class="line">  import &#123; login &#125; from &apos;@/api/http&apos; // 用于登录的</div><div class="line">  Vue.use(Vuex)</div><div class="line">const store = new Vuex.Store(&#123;</div><div class="line">  state: &#123; // 保存全局state --- this.$store.state[key]-- 放在computed</div><div class="line">	userInfo: null,</div><div class="line">	token: &apos;&apos;</div><div class="line">  &#125;,</div><div class="line">  getters: &#123; // 对state进行不修改操作，相当于数据库的查操作 --- this.$store.getter[key]-- 放在computed</div><div class="line"></div><div class="line">  &#125;,</div><div class="line">  mutations: &#123; // 同步操作state --- this.$store.commit(&apos;func&apos;,payload)-- 放在methods</div><div class="line">	login (state, payload) &#123;</div><div class="line">	  state.userInfo = payload</div><div class="line">	&#125;,</div><div class="line">	setToken (state, payload) &#123;</div><div class="line">	  state.token = payload</div><div class="line">	&#125;</div><div class="line">  &#125;,</div><div class="line">  actions: &#123; // 异步操作state --- this.$store.dispatch(&apos;func&apos;,payload)-- 放在methods</div><div class="line">	login (&#123; commit &#125;, userInfo) &#123;</div><div class="line">	  return new Promise((resolve, reject) =&gt; &#123;</div><div class="line">		login(userInfo.username, userInfo.password)</div><div class="line">		.then((res) =&gt; &#123;</div><div class="line">		  commit(&apos;login&apos;, res.userInfo) // 全局state中保存用户信息</div><div class="line">		  commit(&apos;setToken&apos;, res.token) // 全局state中保存token</div><div class="line">		  resolve(res) // 这里很关键，必须要传递res参数，登录之后的其他操作</div><div class="line">		&#125;)</div><div class="line">		.catch((err) =&gt; &#123;</div><div class="line">		  reject(err)</div><div class="line">		&#125;)</div><div class="line">	  &#125;)</div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">&#125;)</div><div class="line"></div><div class="line">export default store</div></pre></td></tr></table></figure>
+</li>
+<li><p>在main.js中添加</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">import store from &apos;./store&apos;</div><div class="line">new Vue(&#123;</div><div class="line">  el: &apos;#app&apos;,</div><div class="line">  router,</div><div class="line">  store,</div><div class="line">  template: &apos;&lt;App/&gt;&apos;,</div><div class="line">  components: &#123;App&#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+</li>
+<li><p>在api文件夹中http.js文件中</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">import http from &apos;./axios&apos;</div><div class="line">export function login (username, password) &#123;</div><div class="line">  return http.post(&apos;user/login&apos;, &#123;</div><div class="line">	username,</div><div class="line">	password</div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>在登录组件中login.vue    </p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">methods: &#123;</div><div class="line">     login (data) &#123;</div><div class="line">       this.$store.dispatch(&apos;login&apos;, data)</div><div class="line">       .then((res) =&gt; &#123;</div><div class="line">         console.dir(res)</div><div class="line">       &#125;)</div><div class="line">       .catch((err) =&gt; &#123;</div><div class="line">         console.error(err)</div><div class="line">       &#125;)</div><div class="line">     &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;今天来总结下，在项目中使用vuex，项目采用easy-mock模拟数据&quot;&gt;&lt;a href=&quot;#今天来总结下，在项目中使用vuex，项目采用easy-mock模拟数据&quot; class=&quot;headerlink&quot; title=&quot;今天来总结下，在项目中使用vuex，项目采用
+    
+    </summary>
+    
+      <category term="vue" scheme="https://fanerge.github.io/categories/vue/"/>
+    
+    
+      <category term="vue" scheme="https://fanerge.github.io/tags/vue/"/>
+    
+      <category term="element-ui" scheme="https://fanerge.github.io/tags/element-ui/"/>
+    
+  </entry>
+  
+  <entry>
     <title>vue admin</title>
     <link href="https://fanerge.github.io/2017/07/11/vue-admin/"/>
     <id>https://fanerge.github.io/2017/07/11/vue-admin/</id>
     <published>2017-07-11T12:54:43.000Z</published>
-    <updated>2017-07-11T14:13:12.322Z</updated>
+    <updated>2017-07-12T14:20:39.666Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="最近个人接触了一些后台管理系统的搭建，参考了很多资料，打算把自己的后台管理系统开发经验写成博客，可能会帮助到一些想做后台管理系统的朋友，更主要的记录整个开发思路，以及vue的一整套解决方案。"><a href="#最近个人接触了一些后台管理系统的搭建，参考了很多资料，打算把自己的后台管理系统开发经验写成博客，可能会帮助到一些想做后台管理系统的朋友，更主要的记录整个开发思路，以及vue的一整套解决方案。" class="headerlink" title="最近个人接触了一些后台管理系统的搭建，参考了很多资料，打算把自己的后台管理系统开发经验写成博客，可能会帮助到一些想做后台管理系统的朋友，更主要的记录整个开发思路，以及vue的一整套解决方案。"></a>最近个人接触了一些后台管理系统的搭建，参考了很多资料，打算把自己的后台管理系统开发经验写成博客，可能会帮助到一些想做后台管理系统的朋友，更主要的记录整个开发思路，以及vue的一整套解决方案。</h3><blockquote>
-<p>如有不正确的地方，请大家联系我，谢谢。</p>
-</blockquote>
-<h2 id="后台管理系统主要功能-vue-cli搭建项目"><a href="#后台管理系统主要功能-vue-cli搭建项目" class="headerlink" title="后台管理系统主要功能(vue-cli搭建项目)"></a>后台管理系统主要功能(vue-cli搭建项目)</h2><ol>
+    <content type="html"><![CDATA[<h2 id="最近个人接触了一些后台管理系统的搭建，参考了很多资料，打算把自己的后台管理系统开发经验写成博客，可能会帮助到一些想做后台管理系统的朋友，更主要的记录整个开发思路，以及vue的一整套解决方案。"><a href="#最近个人接触了一些后台管理系统的搭建，参考了很多资料，打算把自己的后台管理系统开发经验写成博客，可能会帮助到一些想做后台管理系统的朋友，更主要的记录整个开发思路，以及vue的一整套解决方案。" class="headerlink" title="最近个人接触了一些后台管理系统的搭建，参考了很多资料，打算把自己的后台管理系统开发经验写成博客，可能会帮助到一些想做后台管理系统的朋友，更主要的记录整个开发思路，以及vue的一整套解决方案。"></a>最近个人接触了一些后台管理系统的搭建，参考了很多资料，打算把自己的后台管理系统开发经验写成博客，可能会帮助到一些想做后台管理系统的朋友，更主要的记录整个开发思路，以及vue的一整套解决方案。</h2><p><em>如有不正确的地方，请大家联系我，谢谢。</em></p>
+<h3 id="后台管理系统主要功能-vue-cli搭建项目"><a href="#后台管理系统主要功能-vue-cli搭建项目" class="headerlink" title="后台管理系统主要功能(vue-cli搭建项目)"></a>后台管理系统主要功能(vue-cli搭建项目)</h3><ol>
 <li>element-ui 饿了么出品的vue2.0 pc端 UI框架</li>
 <li>axios vue官方推荐的请求库 支持Promise</li>
 <li>html5的本地存储LocalStorage（用于记住密码等） 与 SessionStorage （用于存储个人信息和token等）</li>
@@ -54,11 +91,14 @@
  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">import service from &apos;./axios&apos;</div><div class="line">const ApiUrl = &#123;</div><div class="line">	login: &apos;login/&apos;, // 存放api路径</div><div class="line">	...</div><div class="line">&#125;</div><div class="line">export default &#123;</div><div class="line">	login () &#123;</div><div class="line">		// 这里后期我会发在vuex中的actions里面</div><div class="line">		service.post(ApiUrl.login, &#123;</div><div class="line">		  username: &apos;fanerge&apos;,</div><div class="line">		  password: &apos;XXXXXX&apos;</div><div class="line">		&#125;)</div><div class="line">		.then((res) =&gt; &#123;</div><div class="line">			let resp = res.data</div><div class="line">			console.log(resp)</div><div class="line">		&#125;)</div><div class="line">		.catch((err) =&gt; &#123;</div><div class="line">			console.error(err)</div><div class="line">		&#125;)</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 </li>
 </ol>
+<blockquote>
+<p>参考<a href="https://juejin.im/post/595b4d776fb9a06bbe7dba56" target="_blank" rel="external">vueAdmin-template</a>    </p>
+</blockquote>
 ]]></content>
     
     <summary type="html">
     
-      &lt;h3 id=&quot;最近个人接触了一些后台管理系统的搭建，参考了很多资料，打算把自己的后台管理系统开发经验写成博客，可能会帮助到一些想做后台管理系统的朋友，更主要的记录整个开发思路，以及vue的一整套解决方案。&quot;&gt;&lt;a href=&quot;#最近个人接触了一些后台管理系统的搭建，参考了很多资
+      &lt;h2 id=&quot;最近个人接触了一些后台管理系统的搭建，参考了很多资料，打算把自己的后台管理系统开发经验写成博客，可能会帮助到一些想做后台管理系统的朋友，更主要的记录整个开发思路，以及vue的一整套解决方案。&quot;&gt;&lt;a href=&quot;#最近个人接触了一些后台管理系统的搭建，参考了很多资
     
     </summary>
     
