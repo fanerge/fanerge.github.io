@@ -424,6 +424,20 @@
 </li>
 <li>纯函数的特点<br> 可缓存性（Cacheable）<br> 可移植性／自文档化（Portable / Self-Documenting）<br> 可测试性（Testable）<br> 合理性（Reasonable）<br> 合理性（Reasonable）</li>
 </ol>
+<h3 id="柯里化（curry）"><a href="#柯里化（curry）" class="headerlink" title="柯里化（curry）"></a>柯里化（curry）</h3><ol>
+<li><p>定义：只传递给函数一部分参数来调用它，让它返回一个函数去处理剩下的参数。</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var add = function (x) &#123;</div><div class="line">	return function (y) &#123;</div><div class="line">		return x + y;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">var addTen = add(10)</div><div class="line">console.log(addTen(1)) // 11</div></pre></td></tr></table></figure>
+</li>
+<li><p>示例</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">var curry = require(&apos;lodash&apos;).curry; // lodash.js是一个工具函数库</div><div class="line">var match = curry(function (what, str) &#123;</div><div class="line">	return str.match(what)</div><div class="line">&#125;)</div><div class="line">// 使用</div><div class="line">match(/\s+/g, &apos;hello world&apos;) // [&apos; &apos;]</div><div class="line">match(/\s+/g)(&apos;hello world&apos;) // [&apos; &apos;]</div><div class="line">var hasSpaces = match(/\s+/g) // function (x) &#123; return x.match(/\s+/g) &#125;</div><div class="line">hasSpaces(&apos;hello world&apos;) // [&apos; &apos;]</div><div class="line"></div><div class="line">// 再来一个列子</div><div class="line">var curry = require(&apos;lodash&apos;).curry; // lodash.js是一个工具函数库</div><div class="line">var replace = curry(function(what, replacement, str) &#123;</div><div class="line">  return str.replace(what, replacement);</div><div class="line">&#125;)</div><div class="line">var noVowels = replace(/[aeiou]/ig) (传入第一个参数)// function (replacement, x) &#123; return x.replace(/[aeiou]/ig, replacement) &#125;</div><div class="line">var censored = noVowels(&apos;*&apos;) (传入第二个参数)// function (x) &#123; return x.replace(/[aeiou]/ig, &apos;*&apos;) &#125;</div><div class="line">var end = censored(&apos;Chocolate Rain&apos;) (传入第三个参数)// &apos;Ch*c*l*t* R**n&apos;</div></pre></td></tr></table></figure>
+<p> 通过传递一到两个参数调用函数，就能得到一个记住了这些参数的新函数。<br> 只传给函数一部分参数通常也叫做局部调用（partial application）</p>
+<p> <strong>高阶函数：参数或返回值为函数的函数（higher order function）</strong></p>
+<p> 当我们谈论纯函数的时候，我们说它们接受一个输入返回一个输出。<br> curry 函数所做的正是这样：每传递一个参数调用函数，就返回一个新函数处理剩余的参数。这就是一个输入对应一个输出啊。<br> <em>记与2017-07-19 23:14</em></p>
+<blockquote>
+<p>参考<a href="https://llh911001.gitbooks.io/mostly-adequate-guide-chinese/content/ch4.html#总结" target="_blank" rel="external">JS函数式编程指南</a></p>
+</blockquote>
+</li>
+</ol>
 
           
         
