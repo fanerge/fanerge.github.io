@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fanerge.github.io/"/>
-  <updated>2017-07-19T15:21:11.670Z</updated>
+  <updated>2017-07-20T13:35:31.679Z</updated>
   <id>https://fanerge.github.io/</id>
   
   <author>
@@ -16,9 +16,49 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>js函数式编程-2</title>
+    <link href="https://fanerge.github.io/2017/07/20/js%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-2/"/>
+    <id>https://fanerge.github.io/2017/07/20/js函数式编程-2/</id>
+    <published>2017-07-20T11:11:05.000Z</published>
+    <updated>2017-07-20T13:35:31.679Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="代码组合（compose）"><a href="#代码组合（compose）" class="headerlink" title="代码组合（compose）"></a>代码组合（compose）</h2><p><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
+<h3 id="先上手一个组合函数的例子"><a href="#先上手一个组合函数的例子" class="headerlink" title="先上手一个组合函数的例子"></a>先上手一个组合函数的例子</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">var compose = function (f, g) &#123; // 执行顺序为从右到左</div><div class="line">	return function (x) &#123;</div><div class="line">		return f(g(x));</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">// f 和 g 都是函数，x 是在它们之间通过“管道”传输的值。</div><div class="line">var toUppercase = function (x) &#123; return x.toUpperCase() &#125;;</div><div class="line">var exclaim = function (x) &#123; return `$&#123;x&#125;!` &#125;;</div><div class="line">var shout = compose(exclaim, toUppercase);</div><div class="line">var test = shout(&apos;I am fanerge&apos;)</div><div class="line">console.log(test) // I AM FANERGE!</div></pre></td></tr></table></figure>
+</code></pre><h3 id="组合的特性"><a href="#组合的特性" class="headerlink" title="组合的特性"></a>组合的特性</h3><pre><code>1. 结合律（associativity）    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">var associative = compose(f, compose(g, h)) === compose(compose(f, g), h)</div><div class="line">// 必须满足相同的执行顺序及h-g-f（从右到左）</div><div class="line">var loudLastUpper = compose(exclaim, toUpperCase, head, reverse);</div><div class="line">// 或</div><div class="line">var last = compose(head, reverse);</div><div class="line">var loudLastUpper = compose(exclaim, toUpperCase, last);</div><div class="line">// 或</div><div class="line">var last = compose(head, reverse);</div><div class="line">var angry = compose(exclaim, toUpperCase);</div><div class="line">var loudLastUpper = compose(angry, last);</div></pre></td></tr></table></figure>
+
+**其实只要把握好（从右向左执行的顺序即可）**
+2. pointfree模式
+定义：永远不必说出你的数据，函数无须提及将要操作的数据是什么样的。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">//非 pointfree，因为提到了数据：word</div><div class="line">var snakeCase = function (word) &#123;</div><div class="line">	return word.toLowerCase().replace(/\s+/ig, &apos;_&apos;);</div><div class="line">&#125;</div><div class="line">// pointfree</div><div class="line">var snakeCase = compose(replace(/\s+/ig, &apos;_&apos;), toLowerCase)</div></pre></td></tr></table></figure>
+</code></pre><h3 id="debug"><a href="#debug" class="headerlink" title="debug"></a>debug</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">	// 正确做法：每个函数都接受一个实际的参数</div><div class="line">	var latin = compose(map(angry), reverse) // angry = compose(exclaim, toUpperCase)</div><div class="line">	latin([&quot;frog&quot;, &quot;eyes&quot;]) // [&apos;EYES!&apos;,&apos;FROG!&apos;]</div><div class="line"></div><div class="line">	// 不纯的 trace 函数来追踪代码的执行情况。</div><div class="line">	var trace = curry(function(tag, x)&#123;</div><div class="line">	  console.log(tag, x);</div><div class="line">	  return x;</div><div class="line">	&#125;);</div><div class="line">	// 使用</div><div class="line">	var dasherize = compose(join(&apos;-&apos;), toLower, trace(&quot;after split&quot;), split(&apos; &apos;), replace(/\s&#123;2,&#125;/ig, &apos; &apos;));</div><div class="line">	// after split [ &apos;The&apos;, &apos;world&apos;, &apos;is&apos;, &apos;a&apos;, &apos;vampire&apos; ]</div><div class="line"></div><div class="line">### 组合背后的理论 --- 范畴学（category theory）</div><div class="line">	作用：范畴学主要处理对象（object）、态射（morphism）和变化式（transformation）</div><div class="line">	**对象的搜集**</div><div class="line">	对象就是数据类型，例如 String、Boolean、Number 和 Object 等等。</div><div class="line">	通常我们把数据类型视作所有可能的值的一个集合（set）。</div><div class="line">	**态射的搜集**</div><div class="line">	态射是标准的、普通的纯函数。</div><div class="line">	**态射的组合**</div><div class="line">	var g = function(x)&#123; return x.length; &#125;;</div><div class="line">	var f = function(x)&#123; return x === 4; &#125;;</div><div class="line">	var isFourLetterWord = compose(f, g);</div><div class="line">	var test = isFourLetterWord(&apos;fanerge&apos;) // false</div><div class="line">	**identity 这个独特的态射**</div><div class="line">	identity 这个独特的态射</div></pre></td></tr></table></figure>
+
+// id 的实用函数
+var id = function (x) { return x };
+// 结论成立
+compose(id, f) === compose(f, id) === f;
+总结：组合像一系列管道那样把不同的函数联系在一起，数据就可以也必须在其中流动——毕竟纯函数就是输入对输出
+
+```
+</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;代码组合（compose）&quot;&gt;&lt;a href=&quot;#代码组合（compose）&quot; class=&quot;headerlink&quot; title=&quot;代码组合（compose）&quot;&gt;&lt;/a&gt;代码组合（compose）&lt;/h2&gt;&lt;p&gt;&lt;em&gt;如有不正确的地方，请大家提出来，我会更正，共
+    
+    </summary>
+    
+      <category term="函数式编程" scheme="https://fanerge.github.io/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
+    
+  </entry>
+  
+  <entry>
     <title>js函数式编程</title>
-    <link href="https://fanerge.github.io/2017/07/18/js%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
-    <id>https://fanerge.github.io/2017/07/18/js函数式编程/</id>
+    <link href="https://fanerge.github.io/2017/07/18/js%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-1/"/>
+    <id>https://fanerge.github.io/2017/07/18/js函数式编程-1/</id>
     <published>2017-07-18T13:52:23.000Z</published>
     <updated>2017-07-19T15:21:11.670Z</updated>
     
