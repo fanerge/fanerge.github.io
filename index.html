@@ -407,8 +407,84 @@
 
 
 定义几个Applicative函数
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">*cat* 合并数组</div><div class="line">function cat() &#123;</div><div class="line">	let head = _.first(arguments);</div><div class="line">	if (existy(head)) &#123;</div><div class="line">		return head.concat.apply(head, _.rest(arguments));</div><div class="line">	&#125; else &#123;</div><div class="line">		return [];</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">cat([1, 2, 3], [4, 5]) // [1, 2, 3, 4, 5]</div><div class="line"></div><div class="line">*construct* 将元素放置在数组前方</div><div class="line">function constructor(head, tail) &#123;</div><div class="line">	return cat([head], _.toArray(tail));</div><div class="line">&#125;</div><div class="line">construct(42, [1, 2, 3]) // [42, 1, 2, 3]</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">*cat* 合并数组</div><div class="line">function cat() &#123;</div><div class="line">	let head = _.first(arguments);</div><div class="line">	if (existy(head)) &#123;</div><div class="line">		return head.concat.apply(head, _.rest(arguments));</div><div class="line">	&#125; else &#123;</div><div class="line">		return [];</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">cat([1, 2, 3], [4, 5]) // [1, 2, 3, 4, 5]</div><div class="line"></div><div class="line">*construct* 将元素放置在数组前方</div><div class="line">function construct(head, tail) &#123;</div><div class="line">	return cat([head], _.toArray(tail));</div><div class="line">&#125;</div><div class="line">construct(42, [1, 2, 3]) // [42, 1, 2, 3]</div></pre></td></tr></table></figure>
 </code></pre><h3 id="数据思考"><a href="#数据思考" class="headerlink" title="数据思考"></a>数据思考</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div></pre></td><td class="code"><pre><div class="line">*keys* 以数组的形式返回对象的key</div><div class="line">var zombie = &#123;name: &apos;bub&apos;, film: &apos;day&apos;&#125;</div><div class="line">console.log(_.keys(zombie)) // [&apos;name&apos;, &apos;film&apos;]</div><div class="line">*values* 以数组的形式返回对象的value</div><div class="line">console.log(_.keys(zombie)) // [&apos;bub&apos;, &apos;day&apos;]</div><div class="line"></div><div class="line">*pluck* 接收一个对象数组和一个字符串，并返回在给定的键数组中对应对象的值</div><div class="line">var authorList = _.pluck([</div><div class="line">	&#123;title: &apos;chthon&apos;, author: &apos;anthony&apos;&#125;,</div><div class="line">	&#123;title: &apos;grendel&apos;, author: &apos;grendel&apos;&#125;,</div><div class="line">	&#123;title: &apos;after&apos;&#125;</div><div class="line">], &apos;author&apos;);</div><div class="line"></div><div class="line">*pairs* 接收一个对象，并把它变成这个嵌套数组</div><div class="line">var demo = _.pairs(&#123;title: &apos;chthon&apos;, author: &apos;anthony&apos;&#125;)</div><div class="line">console.log(demo) // [[&apos;title&apos;, &apos;chthon&apos;],[&apos;author&apos;, &apos;anthony&apos;]]</div><div class="line"></div><div class="line">*object* 将其重新组合成一个新的对象</div><div class="line">var zombie = &#123;name: &apos;bub&apos;, film: &apos;day&apos;&#125;</div><div class="line">var dd = _.object(_.map(_.pairs(zombie), function (pair) &#123;</div><div class="line">	return [pair[0].toUpperCase(), pair[1]]</div><div class="line">&#125;))</div><div class="line">console.log(dd)	// &#123;NAME: &quot;bub&quot;, FILM: &quot;day&quot;&#125;</div><div class="line"></div><div class="line">*invert* 翻转key和value</div><div class="line">var zombie = &#123;name: &apos;bub&apos;, film: &apos;day&apos;&#125;</div><div class="line">var dd = _.invert(zombie);</div><div class="line">console.log(dd) // &#123;bub: &quot;name&quot;, day: &quot;film&quot;&#125;</div><div class="line"></div><div class="line">*defaults* 用于扩充传入的对象，如为某个属性添加默认值</div><div class="line">var dd = _.pluck(_.map([</div><div class="line">		&#123;title: &apos;chthon&apos;, author: &apos;anthony&apos;&#125;,</div><div class="line">		&#123;title: &apos;grendel&apos;, author: &apos;gardner&apos;&#125;,</div><div class="line">		&#123;title: &apos;after&apos;&#125;,</div><div class="line">	], function (obj) &#123;</div><div class="line">		return _.defaults(obj, &#123;author: &apos;Unknown&apos;&#125;)</div><div class="line">	&#125;),</div><div class="line">&apos;author&apos;);</div><div class="line">console.log(dd)	// [&quot;anthony&quot;, &quot;gardner&quot;, &quot;Unknown&quot;]</div><div class="line"></div><div class="line">*pick* 根据参数筛选对象</div><div class="line">*omit* 根据参数筛选对象</div><div class="line">var person = &#123;</div><div class="line">	name: &apos;romy&apos;,</div><div class="line">	token: &apos;j3900&apos;,</div><div class="line">	password: &apos;3333&apos;</div><div class="line">&#125;;</div><div class="line">var info = _.pick(person, &apos;token&apos;, &apos;password&apos;)</div><div class="line">var other = _.omit(person, &apos;token&apos;, &apos;password&apos;)</div><div class="line">console.log(info) // &#123;token: &quot;j3900&quot;, password: &quot;3333&quot;&#125;</div><div class="line">console.log(other) // &#123;name: &apos;romy&apos;&#125;</div><div class="line"></div><div class="line">*findWhere* 接收一个对象数组，返回第一个与参数给出的条件匹配的对象</div><div class="line">var library = [</div><div class="line">	&#123;title: &apos;sicp&apos;, isbn: &apos;0234&apos;, ed: 1&#125;,</div><div class="line">	&#123;title: &apos;sicp&apos;, isbn: &apos;0235&apos;, ed: 2&#125;,</div><div class="line">	&#123;title: &apos;joy&apos;, isbn: &apos;0236&apos;, ed: 1&#125;,</div><div class="line">];</div><div class="line">var dd = _.findWhere(library, &#123;title: &apos;sicp&apos;, ed: 2&#125;)</div><div class="line">console.log(dd) // &#123;title: &quot;sicp&quot;, isbn: &quot;0235&quot;, ed: 2&#125; 	</div><div class="line"></div><div class="line">*where* 接收一个对象数组，返回所有条件匹配的对象</div><div class="line">var library = [</div><div class="line">	&#123;title: &apos;sicp&apos;, isbn: &apos;0234&apos;, ed: 1&#125;,</div><div class="line">	&#123;title: &apos;sicp&apos;, isbn: &apos;0235&apos;, ed: 2&#125;,</div><div class="line">	&#123;title: &apos;joy&apos;, isbn: &apos;0236&apos;, ed: 1&#125;,</div><div class="line">];</div><div class="line">var dd = _.where(library, &#123;title: &apos;sicp&apos;&#125;)</div><div class="line">console.log(dd) // &#123;&#123;title: &apos;sicp&apos;, isbn: &apos;0234&apos;, ed: 1&#125;, &#123;title: &apos;sicp&apos;, isbn: &apos;0235&apos;, ed: 2&#125;&#125;</div></pre></td></tr></table></figure>
+
+
+表状（Tabel-Like）数据    
+```
+function project(table, keys){
+    return _.map(table, function (obj){
+        return _.pick.apply(null, construct(obj, keys));
+    });
+}
+var editionResults = project(library, [&apos;title&apos;, &apos;isbn&apos;])
+// [
+    {title: &apos;sicp&apos;, isbn: &apos;0234&apos;},
+    {title: &apos;sicp&apos;, isbn: &apos;0235&apos;},
+    {title: &apos;joy&apos;, isbn: &apos;0236&apos;},
+]
+
+*rename* 为对象属性设置别名
+function rename(obj, newNames){
+    return _.reduce(newNames, function(o, nu, old){
+        if (_.has(obj, okd)) {
+            o[nu] = obj[old];
+            return o;
+        } else {
+            return o;
+        }
+    },
+    _.omit.apply(null, construct(obj, _.keys(newNames))));
+}
+var dd = {a: 1, b: 2}
+console.log(rename(dd, {&apos;a&apos;: &apos;A&apos;})) // {b: 2, A: 1}
+
+*as* 类似于SQL语句 SELECT ed as edition FROM library
+function as(table, newNames){
+    return _.map(table, function(obj){
+        return rename(obj, newNames);
+    });
+}
+var library = [
+        {title: &apos;sicp&apos;, isbn: &apos;0234&apos;, ed: 1},
+        {title: &apos;sicp&apos;, isbn: &apos;0235&apos;, ed: 2},
+        {title: &apos;joy&apos;, isbn: &apos;0236&apos;, ed: 1},
+    ];
+var dd = as(library, {ed: &apos;edition&apos;})
+console.log(dd)
+// [
+        {title: &apos;sicp&apos;, isbn: &apos;0234&apos;, edition: 1},
+        {title: &apos;sicp&apos;, isbn: &apos;0235&apos;, edition: 2},
+        {title: &apos;joy&apos;, isbn: &apos;0236&apos;, edition: 1},
+    ]
+
+*where* 类似于SQL的where语句
+//接收一个函数，作为对表中的每个对象的谓词。每当谓词返回false是，该对象不会出现在新表中
+function restrict(table, pred){
+    return _.reduce(table, function(newTable, obj){
+        if (truthy(pred(obj))) {
+            return newTable;
+        } else {
+            return _.without(newTable, obj)
+        }
+    }, table)
+}
+
+var dd = restrict(library, function (book){
+    return book.ed &gt; 1;
+})
+console.log(dd) // [{title: &apos;sicp&apos;, isbn: &apos;0235&apos;, ed: 2}]
+```    
+</code></pre><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><pre><code>1. 一等函数    
+    可以存储在变量中
+    可以存储在数组中的插槽中
+    可以存储在对象的字段中
+    ...
+2. applicative编程
+    _.map
+    _.reduce
+    _.filter
 </code></pre>
           
         
