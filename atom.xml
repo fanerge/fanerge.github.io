@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fanerge.github.io/"/>
-  <updated>2017-07-30T02:39:54.510Z</updated>
+  <updated>2017-07-30T06:11:37.824Z</updated>
   <id>https://fanerge.github.io/</id>
   
   <author>
@@ -14,6 +14,42 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>js函数式编程-变量的作用域和闭包</title>
+    <link href="https://fanerge.github.io/2017/07/30/js%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-2/"/>
+    <id>https://fanerge.github.io/2017/07/30/js函数式编程-读书笔记-2/</id>
+    <published>2017-07-30T02:42:20.000Z</published>
+    <updated>2017-07-30T06:11:37.824Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸<strong>函数式编程</strong>。<br><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
+<h3 id="变量的作用域和闭包"><a href="#变量的作用域和闭包" class="headerlink" title="变量的作用域和闭包"></a>变量的作用域和闭包</h3><h4 id="全局作用域"><a href="#全局作用域" class="headerlink" title="全局作用域"></a>全局作用域</h4><pre><code>动态作用域 -- this（函数调用时确定的）
+静态作用域（词法作用域）-- 函数声明时确定的
+</code></pre><h4 id="词法作用域"><a href="#词法作用域" class="headerlink" title="词法作用域"></a>词法作用域</h4><pre><code>定义：所谓的词法作用域其实是指作用域在词法解析阶段既确定了,不会改变。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var aVariable = &apos;outer&apos;;</div><div class="line">function afunc()&#123;</div><div class="line">	let aVariable = &apos;middle&apos;;</div><div class="line">	return _.map([1, 2, 3], function (e)&#123;</div><div class="line">		let aVariable = &apos;in&apos;; // 使用最内层的aVariable</div><div class="line">		return [aVariable,e].join(&apos; &apos;);</div><div class="line">	&#125;);</div><div class="line">&#125;</div><div class="line">console.log(afunc()) // [&quot;in 1&quot;, &quot;in 2&quot;, &quot;in 3&quot;]</div></pre></td></tr></table></figure>
+</code></pre><h4 id="动态作用域"><a href="#动态作用域" class="headerlink" title="动态作用域"></a>动态作用域</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">var globals = &#123;&#125;;</div><div class="line">function makeBindFun(resolver)&#123;</div><div class="line">	return function(k, v)&#123;</div><div class="line">		let stack = globals[k] || [];</div><div class="line">		globals[k] = resolver(stack, v);</div><div class="line">		return globals;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">var stackBinder = makeBindFun(function(stack, v)&#123;</div><div class="line">	stack.push(v);</div><div class="line">	return stack;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">var stackUnBinder = makeBindFun(function(stack, v)&#123;</div><div class="line">	stack.pop(v);</div><div class="line">	return stack;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">var dd = stackBinder(&apos;sd&apos;, &apos;dd&apos;)</div><div class="line">console.log(dd) //&#123;sd: [&apos;dd&apos;]&#125;</div></pre></td></tr></table></figure>
+
+
+javascript的动态作用域（对this引用的讨论）
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">*bind* 锁定this使其不被更改</div><div class="line">function globalThis() &#123;</div><div class="line">	return this;</div><div class="line">&#125;</div><div class="line">var nopeThis = _.bind(globalThis, &apos;nope&apos;);</div><div class="line">nopeThis.call(&apos;wat&apos;) // &apos;nope&apos;;</div><div class="line"></div><div class="line">*bindAll* 锁定this引用到对应的命名函数</div><div class="line">var target = &#123;</div><div class="line">	name: &apos;the right value&apos;,</div><div class="line">	aux: function () &#123;</div><div class="line">		return this.name;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">var dd = _.bindAll(target, &apos;aux&apos;)</div><div class="line">console.log(target.aux.call(&apos;wat&apos;)) // the right value</div></pre></td></tr></table></figure>
+</code></pre><h4 id="函数作用域"><a href="#函数作用域" class="headerlink" title="函数作用域"></a>函数作用域</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">*clone* 克隆一个对象</div><div class="line">function f()&#123;</div><div class="line">	this[&apos;a&apos;] = 200;</div><div class="line">	return this[&apos;a&apos;] + this[&apos;b&apos;];</div><div class="line">&#125;</div><div class="line">var globals = &#123;&apos;b&apos;: 2&#125;;</div><div class="line">var dd = f.call(_.clone(globals))</div><div class="line">console.log(dd) // 202</div></pre></td></tr></table></figure>
+</code></pre><h4 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h4>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸&lt;strong&gt;函数式编程&lt;/strong&gt;。&lt;br&gt;&lt;em&gt;如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。&lt;/em&gt;&lt;/p&gt;
+&lt;h3 id=&quot;变量的作用域和闭包&quot;&gt;&lt;a href=&quot;#变量的作用域和闭包&quot; 
+    
+    </summary>
+    
+      <category term="函数式编程" scheme="https://fanerge.github.io/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
+    
+      <category term="读书笔记" scheme="https://fanerge.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
   
   <entry>
     <title>js函数式编程-一等函数与Applicative编程</title>
