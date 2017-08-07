@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fanerge.github.io/"/>
-  <updated>2017-07-30T06:11:37.824Z</updated>
+  <updated>2017-08-07T15:26:27.684Z</updated>
   <id>https://fanerge.github.io/</id>
   
   <author>
@@ -16,11 +16,59 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>js函数式编程-高阶函数</title>
+    <link href="https://fanerge.github.io/2017/08/03/js%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-3/"/>
+    <id>https://fanerge.github.io/2017/08/03/js函数式编程-读书笔记-3/</id>
+    <published>2017-08-03T12:01:15.000Z</published>
+    <updated>2017-08-07T15:26:27.684Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸<strong>函数式编程</strong>。<br><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
+<h3 id="高阶函数"><a href="#高阶函数" class="headerlink" title="高阶函数"></a>高阶函数</h3><h4 id="以其他函数为参数的函数"><a href="#以其他函数为参数的函数" class="headerlink" title="以其他函数为参数的函数"></a>以其他函数为参数的函数</h4><pre><code>如：_.map、_.reduce、_.filter等函数
+关于传递函数的思考：max、finder、best
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">*max 集合中选择最大值的项*</div><div class="line">var dd = _.max([1, 2, 3, 4, 5])</div><div class="line">console.log(dd) // 5</div><div class="line">var people = [&#123;name: &apos;fed&apos;, age: 45&#125;, &#123;name: &apos;fan&apos;, age: 25&#125;];</div><div class="line">var dd = _.max(people, function (item) &#123;</div><div class="line">	return item.age;</div><div class="line">&#125;);</div><div class="line">console.log(dd) // &#123;name: &quot;fed&quot;, age: 45&#125;</div><div class="line"></div><div class="line">*finder *</div><div class="line">function finder(valueFun, bestFun, coll) &#123;</div><div class="line">	return _.reduce(coll, function (best, current) &#123;</div><div class="line">		var bestValue = valueFun(best);</div><div class="line">		var currentValue = valueFun(current);</div><div class="line">		return (bestValue === bestFun(bestValue, currentValue)) ? best : current; </div><div class="line">	&#125;);</div><div class="line">&#125;</div><div class="line">var dd = finder(_.identity, Math.max, [1, 2, 3, 4, 5]);</div><div class="line">console.log(dd) // 5</div><div class="line"></div><div class="line">*best *</div><div class="line">function best(fun, coll)&#123;</div><div class="line">	return _.reduce(coll, function (x, y) &#123;</div><div class="line">		return fun(x, y) ? x : y;	</div><div class="line">	&#125;);	</div><div class="line">&#125;</div><div class="line">var dd = best(function (x, y) &#123;</div><div class="line">	return x &gt; y;</div><div class="line">&#125;, [1, 2, 3, 4]);</div><div class="line">console.log(dd)// 4</div></pre></td></tr></table></figure>
+
+关于传递函数的更多思考：重复、反复和条件迭代
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">function repeat(times, VALUE) &#123;</div><div class="line">	return _.map(_.range(times), function () &#123; return VALUE; &#125;)</div><div class="line">&#125;</div><div class="line">var dd = repeat(4, &apos;Major&apos;);</div><div class="line">console.log(dd) // [&apos;Major&apos;,&apos;Major&apos;,&apos;Major&apos;,&apos;Major&apos;]</div><div class="line"></div><div class="line">// 使用函数，而不是值</div><div class="line">function repeatedly(times, fun) &#123;</div><div class="line">	return _.map(_.range(times), fun);</div><div class="line">&#125;</div><div class="line">var dd = repeatedly(4, function () &#123;</div><div class="line">	return Math.floor((Math.random()*10) + 1)</div><div class="line">&#125;);</div><div class="line">console.log(dd)</div><div class="line"></div><div class="line">// 再次强调，&quot;使用函数，而不是值&quot;</div><div class="line">function iterateUntil(fun, check, init) &#123;</div><div class="line">	let ret = [];</div><div class="line">	let result = fun(init);</div><div class="line"></div><div class="line">	while (check(result))&#123;</div><div class="line">		ret.push(result);</div><div class="line">		result = fun(result);</div><div class="line">	&#125;</div><div class="line">	return ret;</div><div class="line">&#125;</div><div class="line"></div><div class="line">let dd = iterateUntil(function (n)&#123; return n+n&#125;, function (n) &#123; return n &lt;= 1024&#125;, 1)</div><div class="line">console.log(dd) // [2, 4, 8, 16, ...]</div></pre></td></tr></table></figure>
+</code></pre><h4 id="返回其他函数的函数"><a href="#返回其他函数的函数" class="headerlink" title="返回其他函数的函数"></a>返回其他函数的函数</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">function always(VALUE)&#123;</div><div class="line">	return function ()&#123;</div><div class="line">		return VALUE;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">var f = always(function () &#123;&#125;)</div><div class="line">var g = always(function () &#123;&#125;)</div><div class="line">console.log(f() === g()) // false</div><div class="line"></div><div class="line">function invoker(NAME, METHOD)&#123;</div><div class="line">	return function(target)&#123;</div><div class="line">		if (!existy(target)) fail(&quot;Must provide a target&quot;);</div><div class="line">		let targetMethod = target[NAME];</div><div class="line">		let args = _.rest(arguments);</div><div class="line">		return doWhen((existy(targetMethod) &amp;&amp; METHOD === targetMethod), function () &#123;</div><div class="line">			return targetMethod.apply(target, args);</div><div class="line">		&#125;)</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">let rev = invoker(&apos;reverse&apos;, Array.prototype.reverse);</div><div class="line">console.log(_.map([[1, 2, 3]], rev))</div><div class="line"></div><div class="line">// 捕获增量值</div><div class="line">function makeUniqueStringFunction(start) &#123;</div><div class="line">	let COUNTER = start;</div><div class="line">	return function(prefix) &#123;</div><div class="line">		return [prefix, COUNTER++].join(&apos;&apos;);</div><div class="line">	&#125;;</div><div class="line">&#125;</div><div class="line">let dd = makeUniqueStringFunction(0);</div><div class="line">let d1 = dd(&apos;fanerge&apos;)</div><div class="line">let d2 = dd(&apos;fanerge&apos;)</div><div class="line">console.log(d1, d2); // fanerge0 fanerge1</div></pre></td></tr></table></figure>
+</code></pre><h4 id="整合：对象校验器"><a href="#整合：对象校验器" class="headerlink" title="整合：对象校验器"></a>整合：对象校验器</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">function aMap(obj) &#123;</div><div class="line">	return _.isObject(obj);</div><div class="line">&#125;</div><div class="line">function hasKeys() &#123;</div><div class="line">	let KEYS = _.toArray(arguments);</div><div class="line">	let fun = function(obj)&#123;</div><div class="line">		return _.every(KEYS, function (k)&#123;</div><div class="line">			return _.has(obj, k);</div><div class="line">		&#125;)</div><div class="line">	&#125;;</div><div class="line">	fun.message = cat([&apos;Must have values for keys:&apos;], KEYS).join(&quot; &quot;);</div><div class="line">	return fun;</div><div class="line">&#125;</div><div class="line">let checkCommand = checker(validator(&quot;Must be a map&quot;, aMap), hasKeys(&apos;msg&apos;, &apos;type&apos;));</div><div class="line">console.log(checkCommand(&#123;msg: &apos;blah&apos;, type: &apos;display&apos;&#125;)); //[]</div></pre></td></tr></table></figure>
+</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸&lt;strong&gt;函数式编程&lt;/strong&gt;。&lt;br&gt;&lt;em&gt;如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。&lt;/em&gt;&lt;/p&gt;
+&lt;h3 id=&quot;高阶函数&quot;&gt;&lt;a href=&quot;#高阶函数&quot; class=&quot;hea
+    
+    </summary>
+    
+      <category term="函数式编程" scheme="https://fanerge.github.io/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
+    
+      <category term="读书笔记" scheme="https://fanerge.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>js函数式编程</title>
+    <link href="https://fanerge.github.io/2017/08/03/js%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
+    <id>https://fanerge.github.io/2017/08/03/js函数式编程/</id>
+    <published>2017-08-03T12:00:21.000Z</published>
+    <updated>2017-08-03T12:00:21.958Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
     <title>js函数式编程-变量的作用域和闭包</title>
     <link href="https://fanerge.github.io/2017/07/30/js%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-2/"/>
     <id>https://fanerge.github.io/2017/07/30/js函数式编程-读书笔记-2/</id>
     <published>2017-07-30T02:42:20.000Z</published>
-    <updated>2017-07-30T06:11:37.824Z</updated>
+    <updated>2017-08-02T13:15:11.489Z</updated>
     
     <content type="html"><![CDATA[<p>最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸<strong>函数式编程</strong>。<br><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
 <h3 id="变量的作用域和闭包"><a href="#变量的作用域和闭包" class="headerlink" title="变量的作用域和闭包"></a>变量的作用域和闭包</h3><h4 id="全局作用域"><a href="#全局作用域" class="headerlink" title="全局作用域"></a>全局作用域</h4><pre><code>动态作用域 -- this（函数调用时确定的）
@@ -33,7 +81,28 @@
 javascript的动态作用域（对this引用的讨论）
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">*bind* 锁定this使其不被更改</div><div class="line">function globalThis() &#123;</div><div class="line">	return this;</div><div class="line">&#125;</div><div class="line">var nopeThis = _.bind(globalThis, &apos;nope&apos;);</div><div class="line">nopeThis.call(&apos;wat&apos;) // &apos;nope&apos;;</div><div class="line"></div><div class="line">*bindAll* 锁定this引用到对应的命名函数</div><div class="line">var target = &#123;</div><div class="line">	name: &apos;the right value&apos;,</div><div class="line">	aux: function () &#123;</div><div class="line">		return this.name;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">var dd = _.bindAll(target, &apos;aux&apos;)</div><div class="line">console.log(target.aux.call(&apos;wat&apos;)) // the right value</div></pre></td></tr></table></figure>
 </code></pre><h4 id="函数作用域"><a href="#函数作用域" class="headerlink" title="函数作用域"></a>函数作用域</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">*clone* 克隆一个对象</div><div class="line">function f()&#123;</div><div class="line">	this[&apos;a&apos;] = 200;</div><div class="line">	return this[&apos;a&apos;] + this[&apos;b&apos;];</div><div class="line">&#125;</div><div class="line">var globals = &#123;&apos;b&apos;: 2&#125;;</div><div class="line">var dd = f.call(_.clone(globals))</div><div class="line">console.log(dd) // 202</div></pre></td></tr></table></figure>
-</code></pre><h4 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h4>]]></content>
+</code></pre><h4 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h4><pre><code>模拟闭包
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">function whatWasTheLocal() &#123;</div><div class="line">	let CAPTURED = &quot;Oh hai&quot;;</div><div class="line">	return function () &#123;</div><div class="line">		return &quot;The local was:&quot; + CAPTURED;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">var dd = whatWasTheLocal();</div><div class="line">console.log(dd()) // The local was:Oh hai</div><div class="line"></div><div class="line">function createWeirdScaleFunction(FACTOR) &#123;</div><div class="line">	return function (v) &#123;</div><div class="line">		this[&apos;FACTOR&apos;] = FACTOR;</div><div class="line">		let captures = this;</div><div class="line">		return _.map(v, _.bind(function (n) &#123;</div><div class="line">			return (n * this[&apos;FACTOR&apos;]);	</div><div class="line">		&#125;, captures));</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">let scale10 = createWeirdScaleFunction(10);</div><div class="line">let dd = scale10.call(&#123;&#125;, [3, 4, 5])</div><div class="line">console.log(dd)</div></pre></td></tr></table></figure>
+
+遮蔽
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var shadowed = 220;</div><div class="line">function argShadow(shadowed) &#123;</div><div class="line">	return [&apos;value is&apos;, shadowed].join();</div><div class="line">&#125;</div><div class="line"></div><div class="line">var dd = argShadow()</div><div class="line">console.log(dd)</div></pre></td></tr></table></figure>
+
+使用闭包
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">let pingpong = (function () &#123;</div><div class="line">	let PRIVATE = 0;</div><div class="line">	return &#123;</div><div class="line">		inc: function (n) &#123;</div><div class="line">			return PRIVATE += n;</div><div class="line">		&#125;,</div><div class="line">		dec: function (n) &#123;</div><div class="line">			return PRIVATE -= n;</div><div class="line">		&#125;</div><div class="line">	&#125;;</div><div class="line">&#125;)();</div><div class="line"></div><div class="line">let dd = pingpong.inc(10);</div><div class="line">console.log(dd) // 10</div></pre></td></tr></table></figure>
+
+闭包的抽象
+```
+function plucker (FIELD) {
+    return function (obj) {
+        return (obj &amp;&amp; obj[FIELD])
+    }
+}
+let best = {title: &apos;infinite jest&apos;, author: &apos;dfw&apos;}
+let getTitle = plucker(&apos;title&apos;)
+let dd = getTitle(best);
+console.log(dd) // infinite jest
+```    
+</code></pre>]]></content>
     
     <summary type="html">
     
