@@ -92,13 +92,13 @@
 <meta name="description" content="重新复习 – js面向对象编程知识，本文介绍-对象之间的”继承”的五种方法。 先来两个构造函数（父类和子类）现有一个&amp;quot;动物&amp;quot;对象的构造函数 123function Animal () &amp;#123;	this.species = &amp;quot;动物&amp;quot;;&amp;#125;  再来一只&amp;quot;猫&amp;quot;对象的构造函数 1234function Cat (name, colo">
 <meta name="keywords" content="js,面向对象编程">
 <meta property="og:type" content="article">
-<meta property="og:title" content="js面向对象编程-继承">
+<meta property="og:title" content="js面向对象编程-构造函数的">
 <meta property="og:url" content="https://fanerge.github.io/2017/08/13/js面向对象编程-1/index.html">
 <meta property="og:site_name" content="余真帆的个人博客">
 <meta property="og:description" content="重新复习 – js面向对象编程知识，本文介绍-对象之间的”继承”的五种方法。 先来两个构造函数（父类和子类）现有一个&amp;quot;动物&amp;quot;对象的构造函数 123function Animal () &amp;#123;	this.species = &amp;quot;动物&amp;quot;;&amp;#125;  再来一只&amp;quot;猫&amp;quot;对象的构造函数 1234function Cat (name, colo">
-<meta property="og:updated_time" content="2017-08-13T07:52:25.629Z">
+<meta property="og:updated_time" content="2017-08-13T08:09:43.533Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="js面向对象编程-继承">
+<meta name="twitter:title" content="js面向对象编程-构造函数的">
 <meta name="twitter:description" content="重新复习 – js面向对象编程知识，本文介绍-对象之间的”继承”的五种方法。 先来两个构造函数（父类和子类）现有一个&amp;quot;动物&amp;quot;对象的构造函数 123function Animal () &amp;#123;	this.species = &amp;quot;动物&amp;quot;;&amp;#125;  再来一只&amp;quot;猫&amp;quot;对象的构造函数 1234function Cat (name, colo">
 
 
@@ -133,7 +133,7 @@
 
 
 
-  <title> js面向对象编程-继承 | 余真帆的个人博客 </title>
+  <title> js面向对象编程-构造函数的 | 余真帆的个人博客 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -303,7 +303,7 @@
             
             
               
-                js面向对象编程-继承
+                js面向对象编程-构造函数的
               
             
           </h2>
@@ -393,19 +393,19 @@
 
 再来一只&quot;猫&quot;对象的构造函数
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">function Cat (name, color) &#123;</div><div class="line">	this.name = name;</div><div class="line">	this.color = color;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h4 id="构造函数绑定"><a href="#构造函数绑定" class="headerlink" title="构造函数绑定"></a>构造函数绑定</h4><pre><code>使用call或apply方法，将父对象的构造函数绑定在子对象上。    
+</code></pre><h4 id="一、构造函数绑定"><a href="#一、构造函数绑定" class="headerlink" title="一、构造函数绑定"></a>一、构造函数绑定</h4><pre><code>使用call或apply方法，将父对象的构造函数绑定在子对象上。    
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">function Cat (name, color) &#123;</div><div class="line">	Animal.call(this, arguments); // 构造函数绑定-继承</div><div class="line">	this.name = name;</div><div class="line">	this.color = color;</div><div class="line">&#125;</div><div class="line"></div><div class="line">var cat1 = new Cat(&apos;小白&apos;, &apos;红色&apos;);</div><div class="line">console.log(cat1); // &#123;species: &quot;动物&quot;, name: &quot;小白&quot;, color: &quot;红色&quot;&#125;</div></pre></td></tr></table></figure>
-</code></pre><h4 id="prototype模式"><a href="#prototype模式" class="headerlink" title="prototype模式"></a>prototype模式</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">function Animal () &#123;</div><div class="line">	this.species = &quot;动物&quot;;</div><div class="line">&#125;</div><div class="line"></div><div class="line">function Cat (name, color) &#123;</div><div class="line">	this.name = name;</div><div class="line">	this.color = color;</div><div class="line">&#125;</div><div class="line">Cat.prototype = new Animal(); // prototype模式-继承</div><div class="line">Cat.prototype.constructor = Cat; // 重新将constructor指向Cat</div><div class="line"></div><div class="line">var cat1 = new Cat(&apos;小白&apos;, &apos;红色&apos;);</div><div class="line">console.log(cat1.species); // 动物</div></pre></td></tr></table></figure>
-</code></pre><h4 id="直接继承prototype"><a href="#直接继承prototype" class="headerlink" title="直接继承prototype"></a>直接继承prototype</h4><pre><code>第三种方法是对第二种方法的改进。由于Animal对象中，不变的属性都可以直接写入Animal.prototype。所以，我们也可以让Cat()跳过 Animal()，直接继承Animal.prototype。
+</code></pre><h4 id="二、prototype模式"><a href="#二、prototype模式" class="headerlink" title="二、prototype模式"></a>二、prototype模式</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">function Animal () &#123;</div><div class="line">	this.species = &quot;动物&quot;;</div><div class="line">&#125;</div><div class="line"></div><div class="line">function Cat (name, color) &#123;</div><div class="line">	this.name = name;</div><div class="line">	this.color = color;</div><div class="line">&#125;</div><div class="line">Cat.prototype = new Animal(); // prototype模式-继承</div><div class="line">Cat.prototype.constructor = Cat; // 重新将constructor指向Cat</div><div class="line"></div><div class="line">var cat1 = new Cat(&apos;小白&apos;, &apos;红色&apos;);</div><div class="line">console.log(cat1.species); // 动物</div></pre></td></tr></table></figure>
+</code></pre><h4 id="三、直接继承prototype"><a href="#三、直接继承prototype" class="headerlink" title="三、直接继承prototype"></a>三、直接继承prototype</h4><pre><code>第三种方法是对第二种方法的改进。由于Animal对象中，不变的属性都可以直接写入Animal.prototype。所以，我们也可以让Cat()跳过 Animal()，直接继承Animal.prototype。
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">function Animal () &#123; &#125;</div><div class="line">Animal.prototype.species = &apos;动物&apos;;</div><div class="line"></div><div class="line">function Cat (name, color) &#123;</div><div class="line">	this.name = name;</div><div class="line">	this.color = color;</div><div class="line">&#125;</div><div class="line">  </div><div class="line">Cat.prototype = Animal.prototype; // 直接继承prototype</div><div class="line">Cat.prototype.constructor = Cat;</div><div class="line"></div><div class="line">var cat1 = new Cat(&apos;小白&apos;, &apos;红色&apos;);</div><div class="line">console.log(cat1.species); // 动物</div></pre></td></tr></table></figure>
 
 与前一种方法相比，这样做的优点是效率比较高（不用执行和建立Animal的实例了），比较省内存。缺点是 Cat.prototype和Animal.prototype现在指向了同一个对象，那么任何对Cat.prototype的修改，都会反映到Animal.prototype。
 console.log(Animal.prototype.constructor); // Cat
-</code></pre><h4 id="利用空对象作为中介"><a href="#利用空对象作为中介" class="headerlink" title="利用空对象作为中介"></a>利用空对象作为中介</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">function Animal () &#123; &#125;</div><div class="line">Animal.prototype.species = &apos;动物&apos;;</div><div class="line"></div><div class="line">function Cat (name, color) &#123;</div><div class="line">	this.name = name;</div><div class="line">	this.color = color;</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 空对象作为中介</div><div class="line">let F = function () &#123;&#125;;</div><div class="line">F.prototype = Animal.prototype;</div><div class="line"></div><div class="line">Cat.prototype = new F(); </div><div class="line">Cat.prototype.constructor = Cat;</div><div class="line"></div><div class="line">var cat1 = new Cat(&apos;小白&apos;, &apos;红色&apos;);</div><div class="line">console.log(cat1.species); // 动物</div></pre></td></tr></table></figure>
+</code></pre><h4 id="四、利用空对象作为中介"><a href="#四、利用空对象作为中介" class="headerlink" title="四、利用空对象作为中介"></a>四、利用空对象作为中介</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">function Animal () &#123; &#125;</div><div class="line">Animal.prototype.species = &apos;动物&apos;;</div><div class="line"></div><div class="line">function Cat (name, color) &#123;</div><div class="line">	this.name = name;</div><div class="line">	this.color = color;</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 空对象作为中介</div><div class="line">let F = function () &#123;&#125;;</div><div class="line">F.prototype = Animal.prototype;</div><div class="line"></div><div class="line">Cat.prototype = new F(); </div><div class="line">Cat.prototype.constructor = Cat;</div><div class="line"></div><div class="line">var cat1 = new Cat(&apos;小白&apos;, &apos;红色&apos;);</div><div class="line">console.log(cat1.species); // 动物</div></pre></td></tr></table></figure>
 
 还可以单独封装成方法
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">let extend = function (child, parent) &#123;</div><div class="line">	let F = function () &#123;&#125;;</div><div class="line">	F.prototype = parent.prototype;</div><div class="line">	child.prototype = new F();</div><div class="line">	child.prototype.constructor = child;</div><div class="line">&#125;;</div><div class="line">extend(Cat, Animal);</div><div class="line">let cat1 = new Cat(&apos;小白&apos;, &apos;红色&apos;);</div><div class="line">console.log(cat1.species); // 动物</div></pre></td></tr></table></figure>
-</code></pre><h4 id="拷贝继承"><a href="#拷贝继承" class="headerlink" title="拷贝继承"></a>拷贝继承</h4><pre><code>简单说，如果把父对象的所有属性和方法，拷贝进子对象。    
+</code></pre><h4 id="五、拷贝继承"><a href="#五、拷贝继承" class="headerlink" title="五、拷贝继承"></a>五、拷贝继承</h4><pre><code>简单说，如果把父对象的所有属性和方法，拷贝进子对象。    
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">function Animal () &#123; &#125;</div><div class="line">Animal.prototype.species = &apos;动物&apos;;</div><div class="line"></div><div class="line">function Cat (name, color) &#123;</div><div class="line">	this.name = name;</div><div class="line">	this.color = color;</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 拷贝继承</div><div class="line">function extend2 (child, parent) &#123;</div><div class="line">	let p = parent.prototype;</div><div class="line">	let c = child.prototype;</div><div class="line">	for (let i in p) &#123;</div><div class="line">		c[i] = p[i];</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">extend2(Cat, Animal);</div><div class="line">let cat1 = new Cat(&apos;小白&apos;, &apos;红色&apos;);</div><div class="line">console.log(cat1.species) // 动物</div></pre></td></tr></table></figure>
 </code></pre><blockquote>
 <p>   参考：<br>    <a href="http://www.ruanyifeng.com/blog/2010/05/object-oriented_javascript_inheritance.html" target="_blank" rel="external">阮老师-Javascript面向对象编程（二）：构造函数的继承</a></p>
@@ -463,6 +463,10 @@ console.log(Animal.prototype.constructor); // Cat
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/13/js面向对象编程-2/" rel="prev" title="js面向对象编程-非构造函数的">
+                js面向对象编程-非构造函数的 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -541,7 +545,7 @@ console.log(Animal.prototype.constructor); // Cat
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-count">23</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -605,7 +609,7 @@ console.log(Animal.prototype.constructor); // Cat
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#先来两个构造函数（父类和子类）"><span class="nav-number">1.</span> <span class="nav-text">先来两个构造函数（父类和子类）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#构造函数绑定"><span class="nav-number">2.</span> <span class="nav-text">构造函数绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#prototype模式"><span class="nav-number">3.</span> <span class="nav-text">prototype模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#直接继承prototype"><span class="nav-number">4.</span> <span class="nav-text">直接继承prototype</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#利用空对象作为中介"><span class="nav-number">5.</span> <span class="nav-text">利用空对象作为中介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#拷贝继承"><span class="nav-number">6.</span> <span class="nav-text">拷贝继承</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#先来两个构造函数（父类和子类）"><span class="nav-number">1.</span> <span class="nav-text">先来两个构造函数（父类和子类）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一、构造函数绑定"><span class="nav-number">2.</span> <span class="nav-text">一、构造函数绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、prototype模式"><span class="nav-number">3.</span> <span class="nav-text">二、prototype模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、直接继承prototype"><span class="nav-number">4.</span> <span class="nav-text">三、直接继承prototype</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#四、利用空对象作为中介"><span class="nav-number">5.</span> <span class="nav-text">四、利用空对象作为中介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#五、拷贝继承"><span class="nav-number">6.</span> <span class="nav-text">五、拷贝继承</span></a></li></ol></div>
             
 
           </div>
@@ -744,7 +748,7 @@ console.log(Animal.prototype.constructor); // Cat
         var disqus_config = function () {
           this.page.url = 'https://fanerge.github.io/2017/08/13/js面向对象编程-1/';
           this.page.identifier = '2017/08/13/js面向对象编程-1/';
-          this.page.title = 'js面向对象编程-继承';
+          this.page.title = 'js面向对象编程-构造函数的';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://fanerge.disqus.com/embed.js';

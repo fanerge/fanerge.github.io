@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fanerge.github.io/"/>
-  <updated>2017-08-13T07:52:25.629Z</updated>
+  <updated>2017-08-13T09:19:42.595Z</updated>
   <id>https://fanerge.github.io/</id>
   
   <author>
@@ -16,11 +16,50 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>js面向对象编程-继承</title>
+    <title>js面向对象编程-非构造函数的</title>
+    <link href="https://fanerge.github.io/2017/08/13/js%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B-2/"/>
+    <id>https://fanerge.github.io/2017/08/13/js面向对象编程-2/</id>
+    <published>2017-08-13T08:08:41.000Z</published>
+    <updated>2017-08-13T09:19:42.595Z</updated>
+    
+    <content type="html"><![CDATA[<p>重新复习 – js面向对象编程知识，本文介绍-对象之间的非构造函数实现”继承”。</p>
+<h4 id="先来两个对象（父类和子类）"><a href="#先来两个对象（父类和子类）" class="headerlink" title="先来两个对象（父类和子类）"></a>先来两个对象（父类和子类）</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">let Chinese = &#123;</div><div class="line">	nation: &apos;中国&apos;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">let Doctor = &#123;</div><div class="line">	career: &apos;医生&apos;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+</code></pre><h4 id="一、object-方法"><a href="#一、object-方法" class="headerlink" title="一、object()方法"></a>一、object()方法</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">let Chinese = &#123;</div><div class="line">	nation: &apos;中国&apos;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">function object (o) &#123;</div><div class="line">	function F () &#123;&#125;;</div><div class="line">	F.prototype = o;</div><div class="line">	return new F();</div><div class="line">&#125;</div><div class="line"></div><div class="line">let Doctor = object(Chinese);</div><div class="line">Doctor.career = &apos;医生&apos;;</div><div class="line">console.log(Doctor.nation) // 中国</div></pre></td></tr></table></figure>
+
+这个object()函数，其实只做一件事，就是把子对象的prototype属性，指向父对象，从而使得子对象与父对象连在一起。
+</code></pre><h4 id="浅拷贝"><a href="#浅拷贝" class="headerlink" title="浅拷贝"></a>浅拷贝</h4><pre><code>把父对象的属性，全部拷贝给子对象，也能实现继承。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">let Chinese = &#123;</div><div class="line">	nation: &apos;中国&apos;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">function extendCopy (p) &#123;</div><div class="line">	let c = &#123;&#125;;</div><div class="line">	for (let i in p) &#123;</div><div class="line">		c[i] = p[i];</div><div class="line">	&#125;</div><div class="line">	return c;</div><div class="line">&#125;</div><div class="line">let Doctor = extendCopy(Chinese);</div><div class="line">Doctor.career = &apos;医生&apos;;</div><div class="line">console.log(Doctor.nation) // 中国</div></pre></td></tr></table></figure>
+
+存在问题：只拷贝基本类型，对于引用类型拷贝内存地址，存在父对象别篡改的可能。
+</code></pre><h4 id="深拷贝"><a href="#深拷贝" class="headerlink" title="深拷贝"></a>深拷贝</h4><pre><code>所谓&quot;深拷贝&quot;，就是能够实现真正意义上的数组和对象的拷贝。它的实现并不难，只要递归调用&quot;浅拷贝&quot;就行了。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">let Chinese = &#123;</div><div class="line">	nation: &apos;中国&apos;,</div><div class="line">	cities: [&apos;成都&apos;, &apos;北京&apos;]</div><div class="line">&#125;;</div><div class="line">function deepCopy(p, c) &#123;</div><div class="line">	var c = c || &#123;&#125;;</div><div class="line">	for (let i in p) &#123;</div><div class="line">		if (typeof p[i] === &apos;object&apos;) &#123;</div><div class="line">			c[i] = (p[i].constructor === Array) ? [] : &#123;&#125;;</div><div class="line">			deepCopy(p[i], c[i]);</div><div class="line">		&#125; else &#123;</div><div class="line">			c[i] = p[i];</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	return c;</div><div class="line">&#125; </div><div class="line">let Doctor = deepCopy(Chinese);</div><div class="line">Doctor.career = &apos;医生&apos;;</div><div class="line">console.log(Doctor.cities)  // [&quot;成都&quot;, &quot;北京&quot;]</div></pre></td></tr></table></figure>
+</code></pre><blockquote>
+<p>   参考：<br>    <a href="http://www.ruanyifeng.com/blog/2010/05/object-oriented_javascript_inheritance_continued.html" target="_blank" rel="external">阮老师-Javascript面向对象编程（三）：非构造函数的继承</a></p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;重新复习 – js面向对象编程知识，本文介绍-对象之间的非构造函数实现”继承”。&lt;/p&gt;
+&lt;h4 id=&quot;先来两个对象（父类和子类）&quot;&gt;&lt;a href=&quot;#先来两个对象（父类和子类）&quot; class=&quot;headerlink&quot; title=&quot;先来两个对象（父类和子类）&quot;&gt;&lt;/a
+    
+    </summary>
+    
+      <category term="面向对象编程" scheme="https://fanerge.github.io/categories/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
+    
+      <category term="面向对象编程" scheme="https://fanerge.github.io/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>js面向对象编程-构造函数的</title>
     <link href="https://fanerge.github.io/2017/08/13/js%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B-1/"/>
     <id>https://fanerge.github.io/2017/08/13/js面向对象编程-1/</id>
     <published>2017-08-13T06:52:40.000Z</published>
-    <updated>2017-08-13T07:52:25.629Z</updated>
+    <updated>2017-08-13T08:09:43.533Z</updated>
     
     <content type="html"><![CDATA[<p>重新复习 – js面向对象编程知识，本文介绍-对象之间的”继承”的五种方法。</p>
 <h4 id="先来两个构造函数（父类和子类）"><a href="#先来两个构造函数（父类和子类）" class="headerlink" title="先来两个构造函数（父类和子类）"></a>先来两个构造函数（父类和子类）</h4><pre><code>现有一个&quot;动物&quot;对象的构造函数
@@ -28,19 +67,19 @@
 
 再来一只&quot;猫&quot;对象的构造函数
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">function Cat (name, color) &#123;</div><div class="line">	this.name = name;</div><div class="line">	this.color = color;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h4 id="构造函数绑定"><a href="#构造函数绑定" class="headerlink" title="构造函数绑定"></a>构造函数绑定</h4><pre><code>使用call或apply方法，将父对象的构造函数绑定在子对象上。    
+</code></pre><h4 id="一、构造函数绑定"><a href="#一、构造函数绑定" class="headerlink" title="一、构造函数绑定"></a>一、构造函数绑定</h4><pre><code>使用call或apply方法，将父对象的构造函数绑定在子对象上。    
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">function Cat (name, color) &#123;</div><div class="line">	Animal.call(this, arguments); // 构造函数绑定-继承</div><div class="line">	this.name = name;</div><div class="line">	this.color = color;</div><div class="line">&#125;</div><div class="line"></div><div class="line">var cat1 = new Cat(&apos;小白&apos;, &apos;红色&apos;);</div><div class="line">console.log(cat1); // &#123;species: &quot;动物&quot;, name: &quot;小白&quot;, color: &quot;红色&quot;&#125;</div></pre></td></tr></table></figure>
-</code></pre><h4 id="prototype模式"><a href="#prototype模式" class="headerlink" title="prototype模式"></a>prototype模式</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">function Animal () &#123;</div><div class="line">	this.species = &quot;动物&quot;;</div><div class="line">&#125;</div><div class="line"></div><div class="line">function Cat (name, color) &#123;</div><div class="line">	this.name = name;</div><div class="line">	this.color = color;</div><div class="line">&#125;</div><div class="line">Cat.prototype = new Animal(); // prototype模式-继承</div><div class="line">Cat.prototype.constructor = Cat; // 重新将constructor指向Cat</div><div class="line"></div><div class="line">var cat1 = new Cat(&apos;小白&apos;, &apos;红色&apos;);</div><div class="line">console.log(cat1.species); // 动物</div></pre></td></tr></table></figure>
-</code></pre><h4 id="直接继承prototype"><a href="#直接继承prototype" class="headerlink" title="直接继承prototype"></a>直接继承prototype</h4><pre><code>第三种方法是对第二种方法的改进。由于Animal对象中，不变的属性都可以直接写入Animal.prototype。所以，我们也可以让Cat()跳过 Animal()，直接继承Animal.prototype。
+</code></pre><h4 id="二、prototype模式"><a href="#二、prototype模式" class="headerlink" title="二、prototype模式"></a>二、prototype模式</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">function Animal () &#123;</div><div class="line">	this.species = &quot;动物&quot;;</div><div class="line">&#125;</div><div class="line"></div><div class="line">function Cat (name, color) &#123;</div><div class="line">	this.name = name;</div><div class="line">	this.color = color;</div><div class="line">&#125;</div><div class="line">Cat.prototype = new Animal(); // prototype模式-继承</div><div class="line">Cat.prototype.constructor = Cat; // 重新将constructor指向Cat</div><div class="line"></div><div class="line">var cat1 = new Cat(&apos;小白&apos;, &apos;红色&apos;);</div><div class="line">console.log(cat1.species); // 动物</div></pre></td></tr></table></figure>
+</code></pre><h4 id="三、直接继承prototype"><a href="#三、直接继承prototype" class="headerlink" title="三、直接继承prototype"></a>三、直接继承prototype</h4><pre><code>第三种方法是对第二种方法的改进。由于Animal对象中，不变的属性都可以直接写入Animal.prototype。所以，我们也可以让Cat()跳过 Animal()，直接继承Animal.prototype。
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">function Animal () &#123; &#125;</div><div class="line">Animal.prototype.species = &apos;动物&apos;;</div><div class="line"></div><div class="line">function Cat (name, color) &#123;</div><div class="line">	this.name = name;</div><div class="line">	this.color = color;</div><div class="line">&#125;</div><div class="line">  </div><div class="line">Cat.prototype = Animal.prototype; // 直接继承prototype</div><div class="line">Cat.prototype.constructor = Cat;</div><div class="line"></div><div class="line">var cat1 = new Cat(&apos;小白&apos;, &apos;红色&apos;);</div><div class="line">console.log(cat1.species); // 动物</div></pre></td></tr></table></figure>
 
 与前一种方法相比，这样做的优点是效率比较高（不用执行和建立Animal的实例了），比较省内存。缺点是 Cat.prototype和Animal.prototype现在指向了同一个对象，那么任何对Cat.prototype的修改，都会反映到Animal.prototype。
 console.log(Animal.prototype.constructor); // Cat
-</code></pre><h4 id="利用空对象作为中介"><a href="#利用空对象作为中介" class="headerlink" title="利用空对象作为中介"></a>利用空对象作为中介</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">function Animal () &#123; &#125;</div><div class="line">Animal.prototype.species = &apos;动物&apos;;</div><div class="line"></div><div class="line">function Cat (name, color) &#123;</div><div class="line">	this.name = name;</div><div class="line">	this.color = color;</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 空对象作为中介</div><div class="line">let F = function () &#123;&#125;;</div><div class="line">F.prototype = Animal.prototype;</div><div class="line"></div><div class="line">Cat.prototype = new F(); </div><div class="line">Cat.prototype.constructor = Cat;</div><div class="line"></div><div class="line">var cat1 = new Cat(&apos;小白&apos;, &apos;红色&apos;);</div><div class="line">console.log(cat1.species); // 动物</div></pre></td></tr></table></figure>
+</code></pre><h4 id="四、利用空对象作为中介"><a href="#四、利用空对象作为中介" class="headerlink" title="四、利用空对象作为中介"></a>四、利用空对象作为中介</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">function Animal () &#123; &#125;</div><div class="line">Animal.prototype.species = &apos;动物&apos;;</div><div class="line"></div><div class="line">function Cat (name, color) &#123;</div><div class="line">	this.name = name;</div><div class="line">	this.color = color;</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 空对象作为中介</div><div class="line">let F = function () &#123;&#125;;</div><div class="line">F.prototype = Animal.prototype;</div><div class="line"></div><div class="line">Cat.prototype = new F(); </div><div class="line">Cat.prototype.constructor = Cat;</div><div class="line"></div><div class="line">var cat1 = new Cat(&apos;小白&apos;, &apos;红色&apos;);</div><div class="line">console.log(cat1.species); // 动物</div></pre></td></tr></table></figure>
 
 还可以单独封装成方法
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">let extend = function (child, parent) &#123;</div><div class="line">	let F = function () &#123;&#125;;</div><div class="line">	F.prototype = parent.prototype;</div><div class="line">	child.prototype = new F();</div><div class="line">	child.prototype.constructor = child;</div><div class="line">&#125;;</div><div class="line">extend(Cat, Animal);</div><div class="line">let cat1 = new Cat(&apos;小白&apos;, &apos;红色&apos;);</div><div class="line">console.log(cat1.species); // 动物</div></pre></td></tr></table></figure>
-</code></pre><h4 id="拷贝继承"><a href="#拷贝继承" class="headerlink" title="拷贝继承"></a>拷贝继承</h4><pre><code>简单说，如果把父对象的所有属性和方法，拷贝进子对象。    
+</code></pre><h4 id="五、拷贝继承"><a href="#五、拷贝继承" class="headerlink" title="五、拷贝继承"></a>五、拷贝继承</h4><pre><code>简单说，如果把父对象的所有属性和方法，拷贝进子对象。    
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">function Animal () &#123; &#125;</div><div class="line">Animal.prototype.species = &apos;动物&apos;;</div><div class="line"></div><div class="line">function Cat (name, color) &#123;</div><div class="line">	this.name = name;</div><div class="line">	this.color = color;</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 拷贝继承</div><div class="line">function extend2 (child, parent) &#123;</div><div class="line">	let p = parent.prototype;</div><div class="line">	let c = child.prototype;</div><div class="line">	for (let i in p) &#123;</div><div class="line">		c[i] = p[i];</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">extend2(Cat, Animal);</div><div class="line">let cat1 = new Cat(&apos;小白&apos;, &apos;红色&apos;);</div><div class="line">console.log(cat1.species) // 动物</div></pre></td></tr></table></figure>
 </code></pre><blockquote>
 <p>   参考：<br>    <a href="http://www.ruanyifeng.com/blog/2010/05/object-oriented_javascript_inheritance.html" target="_blank" rel="external">阮老师-Javascript面向对象编程（二）：构造函数的继承</a></p>
@@ -68,7 +107,7 @@ console.log(Animal.prototype.constructor); // Cat
     <link href="https://fanerge.github.io/2017/08/13/js%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/"/>
     <id>https://fanerge.github.io/2017/08/13/js面向对象编程/</id>
     <published>2017-08-13T02:44:00.000Z</published>
-    <updated>2017-08-13T06:51:32.568Z</updated>
+    <updated>2017-08-13T09:26:43.360Z</updated>
     
     <content type="html"><![CDATA[<p>重新复习 – js面向对象编程知识</p>
 <h3 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">function Cat (name, color) &#123;</div><div class="line">	this.name = name; // 使用动态作用域this</div><div class="line">	this.color = color;</div><div class="line">&#125;</div><div class="line">Cat.prototype.type = &apos;猫科动物&apos;;</div><div class="line">Cat.prototype.eat = function () &#123;</div><div class="line">	console.log(&apos;吃老鼠&apos;);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">let cat1 =new Cat(&apos;大毛&apos;, &apos;黄色&apos;);</div><div class="line">let cat2 =new Cat(&apos;小毛&apos;, &apos;黑色&apos;);</div></pre></td></tr></table></figure>
@@ -85,7 +124,10 @@ console.log(Animal.prototype.constructor); // Cat
 </code></pre><h4 id="总结对象属性的遍历"><a href="#总结对象属性的遍历" class="headerlink" title="总结对象属性的遍历"></a>总结对象属性的遍历</h4><pre><code>1.    in --- 遍历**可枚举的自身属性和继承属性**
 2.    Object.getOwnPropertyNames() --- 遍历所有的自身属性
 3.    Object.keys(obj) --- 遍历**可枚举的自身属性**，返回一个属性数组
-</code></pre>]]></content>
+</code></pre><blockquote>
+<p>   参考：<br>    <a href="http://www.ruanyifeng.com/blog/2010/05/object-oriented_javascript_encapsulation.html" target="_blank" rel="external">阮老师-Javascript面向对象编程（一）：封装</a></p>
+</blockquote>
+]]></content>
     
     <summary type="html">
     
@@ -1021,49 +1063,6 @@ compose(id, f) === compose(f, id) === f;
     
     
       <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>vue  end</title>
-    <link href="https://fanerge.github.io/2017/07/17/vue-end/"/>
-    <id>https://fanerge.github.io/2017/07/17/vue-end/</id>
-    <published>2017-07-17T14:16:17.270Z</published>
-    <updated>2017-07-18T13:58:43.931Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="今天完成后台界面中引入iconfont图标和添加全屏功能screenfull"><a href="#今天完成后台界面中引入iconfont图标和添加全屏功能screenfull" class="headerlink" title="今天完成后台界面中引入iconfont图标和添加全屏功能screenfull"></a>今天完成后台界面中引入<a href="http://www.iconfont.cn" target="_blank" rel="external">iconfont</a>图标和添加全屏功能<a href="">screenfull</a></h2><p><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
-<h3 id="引入iconfont图标，这是阿里的开源产品，个人感觉不错，其中symbol方式应该会成为未来的主流方式（不支持ie8）"><a href="#引入iconfont图标，这是阿里的开源产品，个人感觉不错，其中symbol方式应该会成为未来的主流方式（不支持ie8）" class="headerlink" title="引入iconfont图标，这是阿里的开源产品，个人感觉不错，其中symbol方式应该会成为未来的主流方式（不支持ie8）"></a>引入iconfont图标，这是阿里的开源产品，个人感觉不错，其中symbol方式应该会成为未来的主流方式（不支持ie8）</h3><ol>
-<li>进入iconfont后，创建项目，把自己喜欢的图标都放到项目中去，点击下载这里我们只需要iconfont.js文件</li>
-<li><p>在main.js中引入 </p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">import &apos;@/assets/icon-font/iconfont&apos; // 引入iconfont图库</div></pre></td></tr></table></figure>
-</li>
-<li><p>这里我把它单独封装一个组件，以便其他地方使用(直接贴上源码了，都能看懂)</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">&lt;template&gt;</div><div class="line">	&lt;svg class=&quot;icon&quot; :style=&quot;&#123;width: width + &apos;em&apos;, height: height + &apos;em&apos;, verticalAlign: verticalAlign + &apos;em&apos;&#125;&quot; aria-hidden=&quot;true&quot;&gt;</div><div class="line">	  &lt;use :xlink:href=&quot;iconName&quot;&gt;&lt;/use&gt;</div><div class="line">	&lt;/svg&gt;</div><div class="line">&lt;/template&gt;</div><div class="line"></div><div class="line">&lt;script&gt;</div><div class="line">  export default &#123;</div><div class="line">	name: &apos;iconfont&apos;,</div><div class="line">	props: &#123;</div><div class="line">		icon: &#123;</div><div class="line">			type: String,</div><div class="line">			required: true </div><div class="line">		&#125;,</div><div class="line">		width: &#123;</div><div class="line">			type: Number,</div><div class="line">			default: 1</div><div class="line">		&#125;,</div><div class="line">		height: &#123;</div><div class="line">			type: Number,</div><div class="line">			default: 1</div><div class="line">		&#125;,</div><div class="line">		verticalAlign: &#123;</div><div class="line">			type: Number,</div><div class="line">			default: -0.15</div><div class="line">		&#125;</div><div class="line">	&#125;,</div><div class="line">	data () &#123;</div><div class="line">	  return &#123;</div><div class="line">	  &#125;</div><div class="line">	&#125;,</div><div class="line">	computed: &#123;</div><div class="line">		iconName () &#123;</div><div class="line">			return `#$&#123;this.icon&#125;`</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">&lt;/script&gt;</div><div class="line"></div><div class="line">&lt;style scoped&gt;</div><div class="line">  .icon &#123;</div><div class="line">	   fill: currentColor;</div><div class="line">	   overflow: hidden;</div><div class="line">	&#125;</div><div class="line">&lt;/style&gt;</div></pre></td></tr></table></figure>
-</li>
-<li><p>使用的时候</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;iconfont icon=&quot;icon-daxiang&quot; :width=&quot;2&quot; :height=&quot;2&quot; :verticalAlign=&quot;-0.5&quot;&gt;&lt;/iconfont&gt;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="添加全屏功能"><a href="#添加全屏功能" class="headerlink" title="添加全屏功能"></a>添加全屏功能</h3><ol>
-<li>安装依赖 npm i screenfull -S</li>
-<li>我还是封装成组件，一遍其他项目使用(贴原代码) <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">&lt;template&gt;</div><div class="line">	&lt;iconfont @click.native=&quot;toggleFullScreen&quot; :icon=&quot;iconType&quot;&gt;&lt;/iconfont&gt;</div><div class="line">&lt;/template&gt;</div><div class="line"></div><div class="line">&lt;script&gt;</div><div class="line">import screenfull from &apos;screenfull&apos;</div><div class="line">import iconfont from &apos;@/components/iconfont&apos;</div><div class="line">  export default &#123;</div><div class="line">	name: &apos;screenfull&apos;,</div><div class="line">	data () &#123;</div><div class="line">	  return &#123;</div><div class="line">		isFullscreen: false,</div><div class="line">		iconType: &apos;icon-quanping&apos;</div><div class="line">	  &#125;</div><div class="line">	&#125;,</div><div class="line">	methods: &#123;</div><div class="line">		toggleFullScreen () &#123;</div><div class="line">			if (!screenfull.enabled) &#123;</div><div class="line">				this.$message(&#123;</div><div class="line">				  message: &apos;you browser can not work&apos;,</div><div class="line">				  type: &apos;warning&apos;</div><div class="line">				&#125;);</div><div class="line">				return false;</div><div class="line">			&#125;</div><div class="line">			this.iconType = this.isFullscreen ? &apos;icon-quanping&apos; : &apos;icon-tuichuquanping&apos;</div><div class="line">			screenfull.toggle()</div><div class="line">			this.isFullscreen = !this.isFullscreen</div><div class="line">		&#125;</div><div class="line">	&#125;,</div><div class="line">	components: &#123;</div><div class="line">		iconfont</div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">&lt;/script&gt;</div><div class="line"></div><div class="line">&lt;style scoped&gt;</div><div class="line">&lt;/style&gt;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>后台系统，先做的这里，以后在添加。打算接着撸一段事件的函数式编程</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;今天完成后台界面中引入iconfont图标和添加全屏功能screenfull&quot;&gt;&lt;a href=&quot;#今天完成后台界面中引入iconfont图标和添加全屏功能screenfull&quot; class=&quot;headerlink&quot; title=&quot;今天完成后台界面中引入iconf
-    
-    </summary>
-    
-      <category term="vue" scheme="https://fanerge.github.io/categories/vue/"/>
-    
-    
-      <category term="vue" scheme="https://fanerge.github.io/tags/vue/"/>
-    
-      <category term="element-ui" scheme="https://fanerge.github.io/tags/element-ui/"/>
     
   </entry>
   
