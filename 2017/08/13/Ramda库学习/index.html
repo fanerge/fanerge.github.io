@@ -1,0 +1,924 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="函数式编程,js,ramda," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="余真帆的个人博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="继续学习js函数式编程，这里贴出阮老师总结的Ramda的优点： 1.    Ramda 的数据一律放在最后一个参数，理念是&amp;quot;function first，data last&amp;quot;。 2.    所有方法都支持柯里化。 一、比较运算（gt、gte、lt、lte、eauals、eqBy）gt：判断第一个参数是否大于第二个参数。 1234let gt1 = R.gt(2)(1);// c">
+<meta name="keywords" content="函数式编程,js,ramda">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ramda库学习">
+<meta property="og:url" content="https://fanerge.github.io/2017/08/13/Ramda库学习/index.html">
+<meta property="og:site_name" content="余真帆的个人博客">
+<meta property="og:description" content="继续学习js函数式编程，这里贴出阮老师总结的Ramda的优点： 1.    Ramda 的数据一律放在最后一个参数，理念是&amp;quot;function first，data last&amp;quot;。 2.    所有方法都支持柯里化。 一、比较运算（gt、gte、lt、lte、eauals、eqBy）gt：判断第一个参数是否大于第二个参数。 1234let gt1 = R.gt(2)(1);// c">
+<meta property="og:updated_time" content="2017-08-13T15:16:08.986Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ramda库学习">
+<meta name="twitter:description" content="继续学习js函数式编程，这里贴出阮老师总结的Ramda的优点： 1.    Ramda 的数据一律放在最后一个参数，理念是&amp;quot;function first，data last&amp;quot;。 2.    所有方法都支持柯里化。 一、比较运算（gt、gte、lt、lte、eauals、eqBy）gt：判断第一个参数是否大于第二个参数。 1234let gt1 = R.gt(2)(1);// c">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://fanerge.github.io/2017/08/13/Ramda库学习/"/>
+
+
+
+
+
+  <title> Ramda库学习 | 余真帆的个人博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?947609e8bcc46de32a1dca9cc56cd8a1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">余真帆的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/08/13/Ramda库学习/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                Ramda库学习
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-13T19:28:31+08:00">
+                2017-08-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
+                    <span itemprop="name">函数式编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/13/Ramda库学习/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/08/13/Ramda库学习/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>继续学习js函数式编程，这里贴出阮老师总结的Ramda的优点：</p>
+<pre><code>1.    Ramda 的数据一律放在最后一个参数，理念是&quot;function first，data last&quot;。
+2.    所有方法都支持柯里化。
+</code></pre><h4 id="一、比较运算（gt、gte、lt、lte、eauals、eqBy）"><a href="#一、比较运算（gt、gte、lt、lte、eauals、eqBy）" class="headerlink" title="一、比较运算（gt、gte、lt、lte、eauals、eqBy）"></a>一、比较运算（gt、gte、lt、lte、eauals、eqBy）</h4><pre><code>gt：判断第一个参数是否大于第二个参数。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">let gt1 = R.gt(2)(1);</div><div class="line">// console.log(gt1); true</div><div class="line">let gt2 = R.gt(&apos;a&apos;)(&apos;c&apos;);</div><div class="line">// console.log(gt2); false</div></pre></td></tr></table></figure>
+
+gte：判断第一个参数是否大于等于第二个参数。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">let gte1 = R.gte(2)(2);</div><div class="line">// console.log(gte1); true</div><div class="line">let gte2 = R.gte(&apos;a&apos;)(&apos;c&apos;);</div><div class="line">// console.log(gte2); false</div></pre></td></tr></table></figure>
+
+lt：判断第一个参数是否小于第二个参数。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">let lt1 = R.lt(2)(1);</div><div class="line">// console.log(lt1); false</div><div class="line">let lt2 = R.lt(&apos;a&apos;)(&apos;z&apos;);</div><div class="line">// console.log(lt2); true</div></pre></td></tr></table></figure>
+
+lte：判断第一个参数是否小于等于第二个参数。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">let lte1 = R.lte(1)(2);</div><div class="line">// console.log(lte1); true</div><div class="line">let lte2 = R.lte(&apos;a&apos;)(&apos;v&apos;);</div><div class="line">// console.log(lte2); true</div></pre></td></tr></table></figure>
+
+eauals：比较两个值是否相等（支持对象的比较）。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">let equals1 = R.equals(1)(1);</div><div class="line">// console.log(equals1); true</div><div class="line">let equals2 = R.equals(1)(&apos;1&apos;);</div><div class="line">// console.log(equals2); false</div><div class="line">let equals3 = R.equals([1, 2])([1,2]);</div><div class="line">// console.log(equals3); // true</div><div class="line">let equals4 = R.equals(&#123;a:1&#125;)(&#123;a:2&#125;);</div><div class="line">// console.log(equals4); // false</div></pre></td></tr></table></figure>
+
+eqBy：比较两个值传入指定函数的运算结果是否相等。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">let eqBy1 = R.eqBy(Math.abs, 5, -5);</div><div class="line">console.log(eqBy1);</div></pre></td></tr></table></figure>
+</code></pre><h4 id="二、数学运算"><a href="#二、数学运算" class="headerlink" title="二、数学运算"></a>二、数学运算</h4><pre><code>add：返回两个值的和。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">let add1 = R.add(1)(10);</div><div class="line">// console.log(add1); // 11</div></pre></td></tr></table></figure>
+
+subtract：返回第一个参数减去第二个参数的差。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">let subtract1 = R.subtract(10)(2);</div><div class="line">//console.log(subtract1); // 8</div></pre></td></tr></table></figure>
+
+multiply：返回两个值的积。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">let multiply1 = R.multiply(5)(6);</div><div class="line">// console.log(multiply1); // 30</div></pre></td></tr></table></figure>
+
+divide：返回第一个参数除以第二个参数的商。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">let divide1 = R.divide(5)(10);</div><div class="line">// console.log(divide1); // 0.5</div></pre></td></tr></table></figure>
+</code></pre><h4 id="三、逻辑运算"><a href="#三、逻辑运算" class="headerlink" title="三、逻辑运算"></a>三、逻辑运算</h4><pre><code>either：接收两个参数，相当于 || 运算（或）。    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">let gt10 = x =&gt; x &gt; 10;</div><div class="line">let even = x =&gt; x % 2 === 0;</div><div class="line">let either1 = R.either(gt10)(even);</div><div class="line">let either2 = either1(18);</div><div class="line">let either3 = either1(3);</div><div class="line">// console.log(either2); // true</div><div class="line">// console.log(either3); // false</div><div class="line">```	</div><div class="line">both：接收两个参数，相当于 &amp;&amp; 运算（且）。</div></pre></td></tr></table></figure>
+
+var gt10 = x =&gt; x &gt; 10;
+var even = x =&gt; x % 2 === 0;
+let both1 = R.both(gt10)(even);
+let both2 = both1(18);
+let both3 = both1(4);
+// console.log(both2); // true
+// console.log(both3); // false
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">allPass：接受一个函数数组作为参数，只有它们都返回true，才返回true，否则返回false。</div></pre></td></tr></table></figure>
+
+var gt10 = x =&gt; x &gt; 10;
+var lt20 = x =&gt; x &lt; 20;
+var even = x =&gt; x % 2 === 0;
+let allPass1 = R.allPass([gt10, even, lt20]);
+let allPass2 = allPass1(16);
+let allPass3 = both1(13);
+console.log(allPass2); // true
+console.log(allPass3); // false    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">####	四、字符串</div><div class="line">	split：按照指定分隔符将字符串拆成一个数组。</div></pre></td></tr></table></figure>
+
+let split1 = R.split(&apos;.&apos;)(&apos;a.b.c.fanerge&apos;);
+// console.log(split1); // [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;fanerge&quot;]    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">test：判断一个字符串是否匹配给定的正则表达式。</div></pre></td></tr></table></figure>
+
+let test1 = R.test(/^f/)(&apos;fanerge&apos;);
+// console.log(test1); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">match：返回一个字符串的匹配结果。</div></pre></td></tr></table></figure>
+
+let match1 = R.match(/([a-z]a)/g)(&apos;bananas&apos;)
+// console.log(match1); // [&quot;ba&quot;, &quot;na&quot;, &quot;na&quot;]
+let match2 = R.match(/a/)(&apos;n&apos;);
+// console.log(match2); // []
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">####	五、函数</div><div class="line">#####	5.1函数的合成</div><div class="line">	compose：将多个函数合并成一个函数，从右到左执行</div></pre></td></tr></table></figure>
+
+let compose1 = R.compose(Math.abs, R.add(1), R.multiply(2))(4)
+console.log(compose1); // 9    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pipe：将多个函数合并成一个函数，从左到右执行。</div></pre></td></tr></table></figure>
+
+let pipe1 = R.pipe(Math.abs, R.add(1), R.multiply(2))(4);
+console.log(pipe1); // 10
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">converge：接受两个参数，第一个参数是函数，第二个参数是函数数组。传入的值先使用第二个参数包含的函数分别处理以后，再用第一个参数处理前一步生成的结果。</div></pre></td></tr></table></figure>
+
+var sumOfArr = arr =&gt; {
+    let sum = 0;
+    arr.forEach(i =&gt; sum += i);
+    return sum;
+};
+var lengthArr = arr =&gt; arr.length;
+var converge1 = R.converge(R.divide, [sumOfArr, lengthArr]);
+var converge2 = converge1([1, 2, 3, 4, 5]);
+// console.log(converge2); // 3
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">####	5.2 柯里化</div><div class="line">	curry：将多个参数的函数，转化成单参数的形式。</div></pre></td></tr></table></figure>
+
+var addFourNumbers = (a, b, c, d) =&gt; a + b + c + d;
+var curriedAddFourNumbers = R.curry(addFourNumbers);
+var f = curriedAddFourNumbers(1)(2)(3)(4);
+// console.log(f); // 10
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">partial：允许多参数的函数接受一个数组，指定最左边的部分参数。</div></pre></td></tr></table></figure>
+
+var multiply2 = (a, b) =&gt; a * b;
+var double = R.partial(multiply2, [3]);
+// console.log(double(2)); // 6
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">partialRight：与partial类似，但数组指定的参数为最右边的参数。</div></pre></td></tr></table></figure>
+
+var greet = (salutation, title, firstName, lastName) =&gt;
+  salutation + &apos;, &apos; + title + &apos; &apos; + firstName + &apos; &apos; + lastName + &apos;!&apos;;
+var greetMsJaneJones = R.partialRight(greet, [&apos;Ms.&apos;, &apos;Jane&apos;, &apos;Jones&apos;]);
+var dd = greetMsJaneJones(&apos;Hello&apos;); 
+console.log(dd); // &apos;Hello, Ms. Jane Jones!&apos;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">useWith：接受一个函数fn和一个函数数组fnList作为参数，返回fn的柯里化版本。该新函数的参数，先分别经过对应的fnList成员处理，再传入fn执行。</div></pre></td></tr></table></figure>
+
+var decreaseOne = x =&gt; x - 1;
+var increaseOne = x =&gt; x + 1;
+var useWith1 = R.useWith(Math.pow, [decreaseOne, increaseOne])(3)(4);
+console.log(useWith1) // 2^5 32
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">memoize：返回一个函数，会缓存每一次的运行结果。</div></pre></td></tr></table></figure>
+
+var productOfArr = arr =&gt; {
+  var product = 1;
+  arr.forEach(i =&gt; product *= i);
+  return product;
+};
+var count = 0;
+var factorial = R.memoize(n =&gt; {
+  count += 1;
+  return productOfArr(R.range(1, n + 1));
+});
+var memoize1 = factorial(5);
+console.log(memoize1, count); // 120, 1
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">complement：返回一个新函数，如果原函数返回true，该函数返回false；如果原函数返回false，该函数返回true。</div></pre></td></tr></table></figure>
+
+var gt10 = x =&gt; x &gt; 10;
+var lte10 = R.complement(gt10);
+var complement1 = lte10(11);
+// console.log(complement1); // false    
+```
+</code></pre>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/函数式编程/" rel="tag"># 函数式编程</a>
+          
+            <a href="/tags/js/" rel="tag"># js</a>
+          
+            <a href="/tags/ramda/" rel="tag"># ramda</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/13/js面向对象编程-2/" rel="next" title="js面向对象编程-非构造函数的继承">
+                <i class="fa fa-chevron-left"></i> js面向对象编程-非构造函数的继承
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="余真帆-fanerge" />
+          <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#一、比较运算（gt、gte、lt、lte、eauals、eqBy）"><span class="nav-number">1.</span> <span class="nav-text">一、比较运算（gt、gte、lt、lte、eauals、eqBy）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#二、数学运算"><span class="nav-number">2.</span> <span class="nav-text">二、数学运算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三、逻辑运算"><span class="nav-number">3.</span> <span class="nav-text">三、逻辑运算</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fanerge.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://fanerge.github.io/2017/08/13/Ramda库学习/';
+          this.page.identifier = '2017/08/13/Ramda库学习/';
+          this.page.title = 'Ramda库学习';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fanerge.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+</body>
+</html>

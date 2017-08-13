@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fanerge.github.io/"/>
-  <updated>2017-08-13T09:29:49.351Z</updated>
+  <updated>2017-08-13T15:16:08.986Z</updated>
   <id>https://fanerge.github.io/</id>
   
   <author>
@@ -14,6 +14,164 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Ramda库学习</title>
+    <link href="https://fanerge.github.io/2017/08/13/Ramda%E5%BA%93%E5%AD%A6%E4%B9%A0/"/>
+    <id>https://fanerge.github.io/2017/08/13/Ramda库学习/</id>
+    <published>2017-08-13T11:28:31.000Z</published>
+    <updated>2017-08-13T15:16:08.986Z</updated>
+    
+    <content type="html"><![CDATA[<p>继续学习js函数式编程，这里贴出阮老师总结的Ramda的优点：</p>
+<pre><code>1.    Ramda 的数据一律放在最后一个参数，理念是&quot;function first，data last&quot;。
+2.    所有方法都支持柯里化。
+</code></pre><h4 id="一、比较运算（gt、gte、lt、lte、eauals、eqBy）"><a href="#一、比较运算（gt、gte、lt、lte、eauals、eqBy）" class="headerlink" title="一、比较运算（gt、gte、lt、lte、eauals、eqBy）"></a>一、比较运算（gt、gte、lt、lte、eauals、eqBy）</h4><pre><code>gt：判断第一个参数是否大于第二个参数。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">let gt1 = R.gt(2)(1);</div><div class="line">// console.log(gt1); true</div><div class="line">let gt2 = R.gt(&apos;a&apos;)(&apos;c&apos;);</div><div class="line">// console.log(gt2); false</div></pre></td></tr></table></figure>
+
+gte：判断第一个参数是否大于等于第二个参数。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">let gte1 = R.gte(2)(2);</div><div class="line">// console.log(gte1); true</div><div class="line">let gte2 = R.gte(&apos;a&apos;)(&apos;c&apos;);</div><div class="line">// console.log(gte2); false</div></pre></td></tr></table></figure>
+
+lt：判断第一个参数是否小于第二个参数。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">let lt1 = R.lt(2)(1);</div><div class="line">// console.log(lt1); false</div><div class="line">let lt2 = R.lt(&apos;a&apos;)(&apos;z&apos;);</div><div class="line">// console.log(lt2); true</div></pre></td></tr></table></figure>
+
+lte：判断第一个参数是否小于等于第二个参数。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">let lte1 = R.lte(1)(2);</div><div class="line">// console.log(lte1); true</div><div class="line">let lte2 = R.lte(&apos;a&apos;)(&apos;v&apos;);</div><div class="line">// console.log(lte2); true</div></pre></td></tr></table></figure>
+
+eauals：比较两个值是否相等（支持对象的比较）。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">let equals1 = R.equals(1)(1);</div><div class="line">// console.log(equals1); true</div><div class="line">let equals2 = R.equals(1)(&apos;1&apos;);</div><div class="line">// console.log(equals2); false</div><div class="line">let equals3 = R.equals([1, 2])([1,2]);</div><div class="line">// console.log(equals3); // true</div><div class="line">let equals4 = R.equals(&#123;a:1&#125;)(&#123;a:2&#125;);</div><div class="line">// console.log(equals4); // false</div></pre></td></tr></table></figure>
+
+eqBy：比较两个值传入指定函数的运算结果是否相等。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">let eqBy1 = R.eqBy(Math.abs, 5, -5);</div><div class="line">console.log(eqBy1);</div></pre></td></tr></table></figure>
+</code></pre><h4 id="二、数学运算"><a href="#二、数学运算" class="headerlink" title="二、数学运算"></a>二、数学运算</h4><pre><code>add：返回两个值的和。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">let add1 = R.add(1)(10);</div><div class="line">// console.log(add1); // 11</div></pre></td></tr></table></figure>
+
+subtract：返回第一个参数减去第二个参数的差。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">let subtract1 = R.subtract(10)(2);</div><div class="line">//console.log(subtract1); // 8</div></pre></td></tr></table></figure>
+
+multiply：返回两个值的积。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">let multiply1 = R.multiply(5)(6);</div><div class="line">// console.log(multiply1); // 30</div></pre></td></tr></table></figure>
+
+divide：返回第一个参数除以第二个参数的商。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">let divide1 = R.divide(5)(10);</div><div class="line">// console.log(divide1); // 0.5</div></pre></td></tr></table></figure>
+</code></pre><h4 id="三、逻辑运算"><a href="#三、逻辑运算" class="headerlink" title="三、逻辑运算"></a>三、逻辑运算</h4><pre><code>either：接收两个参数，相当于 || 运算（或）。    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">let gt10 = x =&gt; x &gt; 10;</div><div class="line">let even = x =&gt; x % 2 === 0;</div><div class="line">let either1 = R.either(gt10)(even);</div><div class="line">let either2 = either1(18);</div><div class="line">let either3 = either1(3);</div><div class="line">// console.log(either2); // true</div><div class="line">// console.log(either3); // false</div><div class="line">```	</div><div class="line">both：接收两个参数，相当于 &amp;&amp; 运算（且）。</div></pre></td></tr></table></figure>
+
+var gt10 = x =&gt; x &gt; 10;
+var even = x =&gt; x % 2 === 0;
+let both1 = R.both(gt10)(even);
+let both2 = both1(18);
+let both3 = both1(4);
+// console.log(both2); // true
+// console.log(both3); // false
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">allPass：接受一个函数数组作为参数，只有它们都返回true，才返回true，否则返回false。</div></pre></td></tr></table></figure>
+
+var gt10 = x =&gt; x &gt; 10;
+var lt20 = x =&gt; x &lt; 20;
+var even = x =&gt; x % 2 === 0;
+let allPass1 = R.allPass([gt10, even, lt20]);
+let allPass2 = allPass1(16);
+let allPass3 = both1(13);
+console.log(allPass2); // true
+console.log(allPass3); // false    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">####	四、字符串</div><div class="line">	split：按照指定分隔符将字符串拆成一个数组。</div></pre></td></tr></table></figure>
+
+let split1 = R.split(&apos;.&apos;)(&apos;a.b.c.fanerge&apos;);
+// console.log(split1); // [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;fanerge&quot;]    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">test：判断一个字符串是否匹配给定的正则表达式。</div></pre></td></tr></table></figure>
+
+let test1 = R.test(/^f/)(&apos;fanerge&apos;);
+// console.log(test1); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">match：返回一个字符串的匹配结果。</div></pre></td></tr></table></figure>
+
+let match1 = R.match(/([a-z]a)/g)(&apos;bananas&apos;)
+// console.log(match1); // [&quot;ba&quot;, &quot;na&quot;, &quot;na&quot;]
+let match2 = R.match(/a/)(&apos;n&apos;);
+// console.log(match2); // []
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">####	五、函数</div><div class="line">#####	5.1函数的合成</div><div class="line">	compose：将多个函数合并成一个函数，从右到左执行</div></pre></td></tr></table></figure>
+
+let compose1 = R.compose(Math.abs, R.add(1), R.multiply(2))(4)
+console.log(compose1); // 9    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pipe：将多个函数合并成一个函数，从左到右执行。</div></pre></td></tr></table></figure>
+
+let pipe1 = R.pipe(Math.abs, R.add(1), R.multiply(2))(4);
+console.log(pipe1); // 10
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">converge：接受两个参数，第一个参数是函数，第二个参数是函数数组。传入的值先使用第二个参数包含的函数分别处理以后，再用第一个参数处理前一步生成的结果。</div></pre></td></tr></table></figure>
+
+var sumOfArr = arr =&gt; {
+    let sum = 0;
+    arr.forEach(i =&gt; sum += i);
+    return sum;
+};
+var lengthArr = arr =&gt; arr.length;
+var converge1 = R.converge(R.divide, [sumOfArr, lengthArr]);
+var converge2 = converge1([1, 2, 3, 4, 5]);
+// console.log(converge2); // 3
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">####	5.2 柯里化</div><div class="line">	curry：将多个参数的函数，转化成单参数的形式。</div></pre></td></tr></table></figure>
+
+var addFourNumbers = (a, b, c, d) =&gt; a + b + c + d;
+var curriedAddFourNumbers = R.curry(addFourNumbers);
+var f = curriedAddFourNumbers(1)(2)(3)(4);
+// console.log(f); // 10
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">partial：允许多参数的函数接受一个数组，指定最左边的部分参数。</div></pre></td></tr></table></figure>
+
+var multiply2 = (a, b) =&gt; a * b;
+var double = R.partial(multiply2, [3]);
+// console.log(double(2)); // 6
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">partialRight：与partial类似，但数组指定的参数为最右边的参数。</div></pre></td></tr></table></figure>
+
+var greet = (salutation, title, firstName, lastName) =&gt;
+  salutation + &apos;, &apos; + title + &apos; &apos; + firstName + &apos; &apos; + lastName + &apos;!&apos;;
+var greetMsJaneJones = R.partialRight(greet, [&apos;Ms.&apos;, &apos;Jane&apos;, &apos;Jones&apos;]);
+var dd = greetMsJaneJones(&apos;Hello&apos;); 
+console.log(dd); // &apos;Hello, Ms. Jane Jones!&apos;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">useWith：接受一个函数fn和一个函数数组fnList作为参数，返回fn的柯里化版本。该新函数的参数，先分别经过对应的fnList成员处理，再传入fn执行。</div></pre></td></tr></table></figure>
+
+var decreaseOne = x =&gt; x - 1;
+var increaseOne = x =&gt; x + 1;
+var useWith1 = R.useWith(Math.pow, [decreaseOne, increaseOne])(3)(4);
+console.log(useWith1) // 2^5 32
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">memoize：返回一个函数，会缓存每一次的运行结果。</div></pre></td></tr></table></figure>
+
+var productOfArr = arr =&gt; {
+  var product = 1;
+  arr.forEach(i =&gt; product *= i);
+  return product;
+};
+var count = 0;
+var factorial = R.memoize(n =&gt; {
+  count += 1;
+  return productOfArr(R.range(1, n + 1));
+});
+var memoize1 = factorial(5);
+console.log(memoize1, count); // 120, 1
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">complement：返回一个新函数，如果原函数返回true，该函数返回false；如果原函数返回false，该函数返回true。</div></pre></td></tr></table></figure>
+
+var gt10 = x =&gt; x &gt; 10;
+var lte10 = R.complement(gt10);
+var complement1 = lte10(11);
+// console.log(complement1); // false    
+```
+</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;继续学习js函数式编程，这里贴出阮老师总结的Ramda的优点：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;1.    Ramda 的数据一律放在最后一个参数，理念是&amp;quot;function first，data last&amp;quot;。
+2.    所有方法都支持柯里化。
+&lt;/cod
+    
+    </summary>
+    
+      <category term="函数式编程" scheme="https://fanerge.github.io/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
+    
+      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
+    
+      <category term="ramda" scheme="https://fanerge.github.io/tags/ramda/"/>
+    
+  </entry>
   
   <entry>
     <title>js面向对象编程-非构造函数的继承</title>
@@ -1008,54 +1166,6 @@ compose(id, f) === compose(f, id) === f;
     <summary type="html">
     
       &lt;h2 id=&quot;代码组合（compose）&quot;&gt;&lt;a href=&quot;#代码组合（compose）&quot; class=&quot;headerlink&quot; title=&quot;代码组合（compose）&quot;&gt;&lt;/a&gt;代码组合（compose）&lt;/h2&gt;&lt;p&gt;&lt;em&gt;如有不正确的地方，请大家提出来，我会更正，共
-    
-    </summary>
-    
-      <category term="函数式编程" scheme="https://fanerge.github.io/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
-    
-    
-      <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>js函数式编程</title>
-    <link href="https://fanerge.github.io/2017/07/18/js%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-1/"/>
-    <id>https://fanerge.github.io/2017/07/18/js函数式编程-1/</id>
-    <published>2017-07-18T13:52:23.000Z</published>
-    <updated>2017-07-19T15:21:11.670Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="刚下班回家，最近打算利用空余时间撸函数式编程"><a href="#刚下班回家，最近打算利用空余时间撸函数式编程" class="headerlink" title="刚下班回家，最近打算利用空余时间撸函数式编程"></a>刚下班回家，最近打算利用空余时间撸函数式编程</h2><p><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
-<h3 id="一等公民的函数"><a href="#一等公民的函数" class="headerlink" title="一等公民的函数"></a>一等公民的函数</h3><ol>
-<li>与其他数据类型一样，可以把函数存在数组里，当作参数传递，赋值给变量…等等。</li>
-</ol>
-<h3 id="纯函数的理解"><a href="#纯函数的理解" class="headerlink" title="纯函数的理解"></a>纯函数的理解</h3><ol>
-<li><p>定义：纯函数的定义是因为对相同的输入它保证能返回相同的输出。    </p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">var xs = [1,2,3,4,5];</div><div class="line">// 纯的</div><div class="line">xs.slice(0,3);</div><div class="line">//=&gt; [1,2,3]</div><div class="line">xs.slice(0,3);</div><div class="line">//=&gt; [1,2,3]</div><div class="line"></div><div class="line">// 不纯的</div><div class="line">xs.splice(0,3);</div><div class="line">//=&gt; [1,2,3]</div><div class="line">xs.splice(0,3);</div><div class="line">//=&gt; [4,5]</div></pre></td></tr></table></figure>
-</li>
-<li><p>纯函数中的副作用<br> 副作用的定义：只要是跟函数外部环境发生的交互就都是副作用（更改文件系统、往数据库插入记录）</p>
-</li>
-<li>纯函数的特点<br> 可缓存性（Cacheable）<br> 可移植性／自文档化（Portable / Self-Documenting）<br> 可测试性（Testable）<br> 合理性（Reasonable）<br> 合理性（Reasonable）</li>
-</ol>
-<h3 id="柯里化（curry）"><a href="#柯里化（curry）" class="headerlink" title="柯里化（curry）"></a>柯里化（curry）</h3><ol>
-<li><p>定义：只传递给函数一部分参数来调用它，让它返回一个函数去处理剩下的参数。</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var add = function (x) &#123;</div><div class="line">	return function (y) &#123;</div><div class="line">		return x + y;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">var addTen = add(10)</div><div class="line">console.log(addTen(1)) // 11</div></pre></td></tr></table></figure>
-</li>
-<li><p>示例</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">var curry = require(&apos;lodash&apos;).curry; // lodash.js是一个工具函数库</div><div class="line">var match = curry(function (what, str) &#123;</div><div class="line">	return str.match(what)</div><div class="line">&#125;)</div><div class="line">// 使用</div><div class="line">**match(/\s+/g, &apos;hello world&apos;) // [&apos; &apos;]**</div><div class="line">**match(/\s+/g)(&apos;hello world&apos;) // [&apos; &apos;]**</div><div class="line">var hasSpaces = match(/\s+/g) // function (x) &#123; return x.match(/\s+/g) &#125;</div><div class="line">hasSpaces(&apos;hello world&apos;) // [&apos; &apos;]</div><div class="line"></div><div class="line">// 再来一个列子</div><div class="line">var curry = require(&apos;lodash&apos;).curry; // lodash.js是一个工具函数库</div><div class="line">var replace = curry(function(what, replacement, str) &#123;</div><div class="line">  return str.replace(what, replacement);</div><div class="line">&#125;)</div><div class="line">var noVowels = replace(/[aeiou]/ig) (传入第一个参数)// function (replacement, x) &#123; return x.replace(/[aeiou]/ig, replacement) &#125;</div><div class="line">var censored = noVowels(&apos;*&apos;) (传入第二个参数)// function (x) &#123; return x.replace(/[aeiou]/ig, &apos;*&apos;) &#125;</div><div class="line">var end = censored(&apos;Chocolate Rain&apos;) (传入第三个参数)// &apos;Ch*c*l*t* R**n&apos;</div></pre></td></tr></table></figure>
-<p> 通过传递一到两个参数调用函数，就能得到一个记住了这些参数的新函数。<br> 只传给函数一部分参数通常也叫做局部调用（partial application）</p>
-<p> <strong>高阶函数：参数或返回值为函数的函数（higher order function）</strong></p>
-<p> 当我们谈论纯函数的时候，我们说它们接受一个输入返回一个输出。<br> curry 函数所做的正是这样：每传递一个参数调用函数，就返回一个新函数处理剩余的参数。这就是一个输入对应一个输出啊。<br> <em>记于2017-07-19 23:14</em></p>
-<blockquote>
-<p>参考<a href="https://llh911001.gitbooks.io/mostly-adequate-guide-chinese/content/ch4.html#总结" target="_blank" rel="external">JS函数式编程指南</a></p>
-</blockquote>
-</li>
-</ol>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;刚下班回家，最近打算利用空余时间撸函数式编程&quot;&gt;&lt;a href=&quot;#刚下班回家，最近打算利用空余时间撸函数式编程&quot; class=&quot;headerlink&quot; title=&quot;刚下班回家，最近打算利用空余时间撸函数式编程&quot;&gt;&lt;/a&gt;刚下班回家，最近打算利用空余时间撸函数式
     
     </summary>
     
