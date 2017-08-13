@@ -282,6 +282,781 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/07/27/js函数式编程-读书笔记-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/27/js函数式编程-读书笔记-1/" itemprop="url">
+                  js函数式编程-一等函数与Applicative编程
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-27T21:02:47+08:00">
+                2017-07-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
+                    <span itemprop="name">函数式编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/27/js函数式编程-读书笔记-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/07/27/js函数式编程-读书笔记-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸<strong>函数式编程</strong>。<br><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
+<h3 id="一等函数与Applicative编程"><a href="#一等函数与Applicative编程" class="headerlink" title="一等函数与Applicative编程"></a>一等函数与Applicative编程</h3><h4 id="函数式一等公民"><a href="#函数式一等公民" class="headerlink" title="函数式一等公民"></a>函数式一等公民</h4><pre><code>函数式编程语言应该是促进创造和使用函数的。
+函数式一等公民：函数可以作为数组的成员、对象的方法、存储为变量等等。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// 例如存储为数组的成员</div><div class="line">var fortytwos = [42, function () &#123; return 42 &#125;]</div></pre></td></tr></table></figure>
+
+高阶函数的定义：以函数作为参数或者返回函数。
+多种javascript编程方式
+    命令式编程 -- 通过详细描述行为的编程方式。
+    基于原型的面向对象编程 -- 基于原型对象及其实例的编程方式。
+    元编程 -- 对JavaScript执行模型数据进行编写和操作的编程方式。    
+</code></pre><h3 id="Applicative编程"><a href="#Applicative编程" class="headerlink" title="Applicative编程"></a>Applicative编程</h3><pre><code>定义：函数A作为参数提供给函数B。    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div></pre></td><td class="code"><pre><div class="line">var nums = [1, 2, 3, 4, 5];</div><div class="line"></div><div class="line">*map* 遍历集合并对其每一个值调用一个函数，返回结果的集合。</div><div class="line">function doubleAll(array) &#123;</div><div class="line">	return _.map(array, function (n) &#123;</div><div class="line">		return n*2;	</div><div class="line">	&#125;);</div><div class="line">&#125;</div><div class="line">console.log(doubleAll(nums)) // [2, 4, 6, 8, 10]</div><div class="line"></div><div class="line">*reduce* 利用函数将值的集合合并成一个值，该函数接收一个累积值和本次处理的值</div><div class="line">function average (array) &#123;</div><div class="line">	let sum = _.reduce(array, function (a, b)&#123;</div><div class="line">		return a + b;</div><div class="line">	&#125;)</div><div class="line">	return sum / array.length;</div><div class="line">&#125;</div><div class="line">console.log(average(nums)) // 3</div><div class="line"></div><div class="line">*filter* 对集合每一个值调用函数，若返回为true并添加到新集合中去，并返回新集合</div><div class="line">function onlyEven(array) &#123;</div><div class="line">	return _.filter(array, function (n)&#123;</div><div class="line">		return n%2 === 0	</div><div class="line">	&#125;)</div><div class="line">&#125;</div><div class="line">console.log(onlyEven(nums))</div><div class="line"></div><div class="line">集合中心编程</div><div class="line">var test = _.map(&#123;a: 1, b: 2&#125;, function (v, k) &#123;</div><div class="line">	return [k, v];</div><div class="line">&#125;)</div><div class="line">console.dir(test) // [[&apos;a&apos;, 1], [&apos;b&apos;, 2]]</div><div class="line"></div><div class="line">Applicative编程的其他实例</div><div class="line"></div><div class="line">*reduceRight*（从右到左）</div><div class="line">var nums = [100, 2, 25];</div><div class="line">function div(x, y) &#123;</div><div class="line">	return x/y;</div><div class="line">&#125;</div><div class="line">var test = _.reduceRight(nums, div);</div><div class="line">console.log(test) // 0.125</div><div class="line"></div><div class="line">*find* 它接收一个集合和一个谓词函数，并返回该谓词为true时的第一个元素。</div><div class="line">// 其中谓词函数为：_.isEqual、_.isEmpty、_.isElement...</div><div class="line">var dd = _.find([&apos;a&apos;, &apos;b&apos;, &apos;3&apos;, 4], _.isNumber);</div><div class="line">console.log(dd) // 4</div><div class="line"></div><div class="line">*reject* 本质为_.filter的逆命题</div><div class="line">var dd = _.reject([&apos;a&apos;, &apos;b&apos;, &apos;3&apos;, 4], _.isNumber);</div><div class="line">console.log(dd) // [&apos;a&apos;, &apos;b&apos;, &apos;3&apos;]</div><div class="line">// 另一种实现</div><div class="line">function complement(pred) &#123;</div><div class="line">	return function () &#123;</div><div class="line">		return !pred.apply(null, _.toArray(arguments));</div><div class="line">	&#125;;</div><div class="line">&#125;</div><div class="line">var d1 = _.filter([&apos;a&apos;, &apos;b&apos;, &apos;3&apos;, 4], complement(_.isNumber))</div><div class="line">console.log(d1) // [&apos;a&apos;, &apos;b&apos;, &apos;3&apos;]</div><div class="line"></div><div class="line">*all* 当对于集合中所有元素都满足谓词时返回true，否则返回false</div><div class="line">var dd = _.all([1, 2, 3, &apos;4&apos;], _.isNumber)</div><div class="line">console.log(dd) // false</div><div class="line"></div><div class="line">*any* 当对于集合中有满足谓词时返回true，否则返回false</div><div class="line">var dd = _.any([1, 2, 3, &apos;4&apos;], _.isNumber)</div><div class="line">console.log(dd) // true</div><div class="line"></div><div class="line">*sortBy* 接收一个集合和函数来对该集合排序</div><div class="line">var people = [&#123;name: &apos;Rick&apos;, age: 30&#125;,&#123;name: &apos;Jaka&apos;, age: 24&#125;];</div><div class="line">var list = _.sortBy(people, function (p) &#123;</div><div class="line">	return p.name</div><div class="line">&#125;)</div><div class="line">console.log(list) // [&#123;name: &apos;Jaka&apos;, age: 24&#125;, &#123;name: &apos;Rick&apos;, age: 30&#125;]</div><div class="line"></div><div class="line">*groupBy* 接收一个集合和一个条件函数，并返回一个对象，k为传入的条件，v为对应的元素</div><div class="line">var albums = [</div><div class="line">	&#123;title: &apos;sabba&apos;, genre: &apos;metal&apos;&#125;,</div><div class="line">	&#123;title: &apos;scientist&apos;, genre: &apos;dub&apos;&#125;,</div><div class="line">	&#123;title: &apos;undertow&apos;, genre: &apos;metal&apos;&#125;,</div><div class="line">]</div><div class="line">var list = _.groupBy(albums, function (a) &#123;</div><div class="line">	return a.genre;</div><div class="line">&#125;)</div><div class="line">console.dir(list)</div><div class="line"></div><div class="line">*countBy* 接收一个集合和一个条件函数，并返回一个对象，k为传入的条件，v为对应的元素的个数</div><div class="line">var albums = [</div><div class="line">	&#123;title: &apos;sabba&apos;, genre: &apos;metal&apos;&#125;,</div><div class="line">	&#123;title: &apos;scientist&apos;, genre: &apos;dub&apos;&#125;,</div><div class="line">	&#123;title: &apos;undertow&apos;, genre: &apos;metal&apos;&#125;,</div><div class="line">]</div><div class="line">var list = _.countBy(albums, function (a) &#123;</div><div class="line">	return a.genre;</div><div class="line">&#125;)</div><div class="line">console.dir(list) // &#123;metal: 2, dub: 1&#125;</div></pre></td></tr></table></figure>
+
+
+定义几个Applicative函数
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">*cat* 合并数组</div><div class="line">function cat() &#123;</div><div class="line">	let head = _.first(arguments);</div><div class="line">	if (existy(head)) &#123;</div><div class="line">		return head.concat.apply(head, _.rest(arguments));</div><div class="line">	&#125; else &#123;</div><div class="line">		return [];</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">cat([1, 2, 3], [4, 5]) // [1, 2, 3, 4, 5]</div><div class="line"></div><div class="line">*construct* 将元素放置在数组前方</div><div class="line">function construct(head, tail) &#123;</div><div class="line">	return cat([head], _.toArray(tail));</div><div class="line">&#125;</div><div class="line">construct(42, [1, 2, 3]) // [42, 1, 2, 3]</div></pre></td></tr></table></figure>
+</code></pre><h3 id="数据思考"><a href="#数据思考" class="headerlink" title="数据思考"></a>数据思考</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div></pre></td><td class="code"><pre><div class="line">*keys* 以数组的形式返回对象的key</div><div class="line">var zombie = &#123;name: &apos;bub&apos;, film: &apos;day&apos;&#125;</div><div class="line">console.log(_.keys(zombie)) // [&apos;name&apos;, &apos;film&apos;]</div><div class="line">*values* 以数组的形式返回对象的value</div><div class="line">console.log(_.keys(zombie)) // [&apos;bub&apos;, &apos;day&apos;]</div><div class="line"></div><div class="line">*pluck* 接收一个对象数组和一个字符串，并返回在给定的键数组中对应对象的值</div><div class="line">var authorList = _.pluck([</div><div class="line">	&#123;title: &apos;chthon&apos;, author: &apos;anthony&apos;&#125;,</div><div class="line">	&#123;title: &apos;grendel&apos;, author: &apos;grendel&apos;&#125;,</div><div class="line">	&#123;title: &apos;after&apos;&#125;</div><div class="line">], &apos;author&apos;);</div><div class="line"></div><div class="line">*pairs* 接收一个对象，并把它变成这个嵌套数组</div><div class="line">var demo = _.pairs(&#123;title: &apos;chthon&apos;, author: &apos;anthony&apos;&#125;)</div><div class="line">console.log(demo) // [[&apos;title&apos;, &apos;chthon&apos;],[&apos;author&apos;, &apos;anthony&apos;]]</div><div class="line"></div><div class="line">*object* 将其重新组合成一个新的对象</div><div class="line">var zombie = &#123;name: &apos;bub&apos;, film: &apos;day&apos;&#125;</div><div class="line">var dd = _.object(_.map(_.pairs(zombie), function (pair) &#123;</div><div class="line">	return [pair[0].toUpperCase(), pair[1]]</div><div class="line">&#125;))</div><div class="line">console.log(dd)	// &#123;NAME: &quot;bub&quot;, FILM: &quot;day&quot;&#125;</div><div class="line"></div><div class="line">*invert* 翻转key和value</div><div class="line">var zombie = &#123;name: &apos;bub&apos;, film: &apos;day&apos;&#125;</div><div class="line">var dd = _.invert(zombie);</div><div class="line">console.log(dd) // &#123;bub: &quot;name&quot;, day: &quot;film&quot;&#125;</div><div class="line"></div><div class="line">*defaults* 用于扩充传入的对象，如为某个属性添加默认值</div><div class="line">var dd = _.pluck(_.map([</div><div class="line">		&#123;title: &apos;chthon&apos;, author: &apos;anthony&apos;&#125;,</div><div class="line">		&#123;title: &apos;grendel&apos;, author: &apos;gardner&apos;&#125;,</div><div class="line">		&#123;title: &apos;after&apos;&#125;,</div><div class="line">	], function (obj) &#123;</div><div class="line">		return _.defaults(obj, &#123;author: &apos;Unknown&apos;&#125;)</div><div class="line">	&#125;),</div><div class="line">&apos;author&apos;);</div><div class="line">console.log(dd)	// [&quot;anthony&quot;, &quot;gardner&quot;, &quot;Unknown&quot;]</div><div class="line"></div><div class="line">*pick* 根据参数筛选对象</div><div class="line">*omit* 根据参数筛选对象</div><div class="line">var person = &#123;</div><div class="line">	name: &apos;romy&apos;,</div><div class="line">	token: &apos;j3900&apos;,</div><div class="line">	password: &apos;3333&apos;</div><div class="line">&#125;;</div><div class="line">var info = _.pick(person, &apos;token&apos;, &apos;password&apos;)</div><div class="line">var other = _.omit(person, &apos;token&apos;, &apos;password&apos;)</div><div class="line">console.log(info) // &#123;token: &quot;j3900&quot;, password: &quot;3333&quot;&#125;</div><div class="line">console.log(other) // &#123;name: &apos;romy&apos;&#125;</div><div class="line"></div><div class="line">*findWhere* 接收一个对象数组，返回第一个与参数给出的条件匹配的对象</div><div class="line">var library = [</div><div class="line">	&#123;title: &apos;sicp&apos;, isbn: &apos;0234&apos;, ed: 1&#125;,</div><div class="line">	&#123;title: &apos;sicp&apos;, isbn: &apos;0235&apos;, ed: 2&#125;,</div><div class="line">	&#123;title: &apos;joy&apos;, isbn: &apos;0236&apos;, ed: 1&#125;,</div><div class="line">];</div><div class="line">var dd = _.findWhere(library, &#123;title: &apos;sicp&apos;, ed: 2&#125;)</div><div class="line">console.log(dd) // &#123;title: &quot;sicp&quot;, isbn: &quot;0235&quot;, ed: 2&#125; 	</div><div class="line"></div><div class="line">*where* 接收一个对象数组，返回所有条件匹配的对象</div><div class="line">var library = [</div><div class="line">	&#123;title: &apos;sicp&apos;, isbn: &apos;0234&apos;, ed: 1&#125;,</div><div class="line">	&#123;title: &apos;sicp&apos;, isbn: &apos;0235&apos;, ed: 2&#125;,</div><div class="line">	&#123;title: &apos;joy&apos;, isbn: &apos;0236&apos;, ed: 1&#125;,</div><div class="line">];</div><div class="line">var dd = _.where(library, &#123;title: &apos;sicp&apos;&#125;)</div><div class="line">console.log(dd) // &#123;&#123;title: &apos;sicp&apos;, isbn: &apos;0234&apos;, ed: 1&#125;, &#123;title: &apos;sicp&apos;, isbn: &apos;0235&apos;, ed: 2&#125;&#125;</div></pre></td></tr></table></figure>
+
+
+表状（Tabel-Like）数据    
+```
+function project(table, keys){
+    return _.map(table, function (obj){
+        return _.pick.apply(null, construct(obj, keys));
+    });
+}
+var editionResults = project(library, [&apos;title&apos;, &apos;isbn&apos;])
+// [
+    {title: &apos;sicp&apos;, isbn: &apos;0234&apos;},
+    {title: &apos;sicp&apos;, isbn: &apos;0235&apos;},
+    {title: &apos;joy&apos;, isbn: &apos;0236&apos;},
+]
+
+*rename* 为对象属性设置别名
+function rename(obj, newNames){
+    return _.reduce(newNames, function(o, nu, old){
+        if (_.has(obj, okd)) {
+            o[nu] = obj[old];
+            return o;
+        } else {
+            return o;
+        }
+    },
+    _.omit.apply(null, construct(obj, _.keys(newNames))));
+}
+var dd = {a: 1, b: 2}
+console.log(rename(dd, {&apos;a&apos;: &apos;A&apos;})) // {b: 2, A: 1}
+
+*as* 类似于SQL语句 SELECT ed as edition FROM library
+function as(table, newNames){
+    return _.map(table, function(obj){
+        return rename(obj, newNames);
+    });
+}
+var library = [
+        {title: &apos;sicp&apos;, isbn: &apos;0234&apos;, ed: 1},
+        {title: &apos;sicp&apos;, isbn: &apos;0235&apos;, ed: 2},
+        {title: &apos;joy&apos;, isbn: &apos;0236&apos;, ed: 1},
+    ];
+var dd = as(library, {ed: &apos;edition&apos;})
+console.log(dd)
+// [
+        {title: &apos;sicp&apos;, isbn: &apos;0234&apos;, edition: 1},
+        {title: &apos;sicp&apos;, isbn: &apos;0235&apos;, edition: 2},
+        {title: &apos;joy&apos;, isbn: &apos;0236&apos;, edition: 1},
+    ]
+
+*where* 类似于SQL的where语句
+//接收一个函数，作为对表中的每个对象的谓词。每当谓词返回false是，该对象不会出现在新表中
+function restrict(table, pred){
+    return _.reduce(table, function(newTable, obj){
+        if (truthy(pred(obj))) {
+            return newTable;
+        } else {
+            return _.without(newTable, obj)
+        }
+    }, table)
+}
+
+var dd = restrict(library, function (book){
+    return book.ed &gt; 1;
+})
+console.log(dd) // [{title: &apos;sicp&apos;, isbn: &apos;0235&apos;, ed: 2}]
+```    
+</code></pre><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><pre><code>1. 一等函数    
+    可以存储在变量中
+    可以存储在数组中的插槽中
+    可以存储在对象的字段中
+    ...
+2. applicative编程
+    _.map
+    _.reduce
+    _.filter
+</code></pre><blockquote>
+<p>   源代码仓库<br>    <a href="https://github.com/fanerge/Functional-reading-notes" target="_blank" rel="external">函数式编程-读书笔记</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/07/25/PWA-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/25/PWA-1/" itemprop="url">
+                  PWA-1
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-25T22:35:26+08:00">
+                2017-07-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PWA/" itemprop="url" rel="index">
+                    <span itemprop="name">PWA</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/25/PWA-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/07/25/PWA-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Lavas-–-基于-Vue-的-PWA-解决方案，帮助开发者快速搭建-PWA-应用，解决接入-PWA-的各种问题"><a href="#Lavas-–-基于-Vue-的-PWA-解决方案，帮助开发者快速搭建-PWA-应用，解决接入-PWA-的各种问题" class="headerlink" title="Lavas – 基于 Vue 的 PWA 解决方案，帮助开发者快速搭建 PWA 应用，解决接入 PWA 的各种问题"></a>Lavas – 基于 Vue 的 PWA 解决方案，帮助开发者快速搭建 PWA 应用，解决接入 PWA 的各种问题</h2><p><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
+<h3 id="基础教程"><a href="#基础教程" class="headerlink" title="基础教程"></a>基础教程</h3><ol>
+<li>Lavas 介绍<br>Lavas 是什么？<pre><code>Lavas 是一个基于 Vue 的 PWA (Progressive Web Apps) 完整解决方案。
+</code></pre>Lavas 做什么？<pre><code>站点 PWA 化需要做什么，Lavas 就做什么。
+PWA (Progressive Web Apps) 是一种 Web App 新模型：
+1.站点可添加至主屏幕
+2.全屏方式运行
+3.支持离线缓存
+4.消息推送 ...
+</code></pre></li>
+<li>探索PWA<br>什么是PWA？<br>  PWA 工程的解决方案中借助了 service worker 的离线存储能力，消息推送能力以及系统的添加桌面能力，从而形成一个完善的 Web App 解决方案，帮助我们在 Web 端低成本的开发和维护一个逐步类 Native App 化的 Web App。<br>什么站点适合改造成 PWA？<br>  除了对系统强依赖的 App, 以及游戏类的 App 等, 所有的 Native App 都可以改造成 PWA 应用。<br>PWA 的效果？<br>  1.https 环境部署。<br>  2.响应式设计，一次部署，可以在移动设备和 PC 设备上运行。<br>  3.在不同浏览器下可正常访问。<br>  4.浏览器离线和弱网环境可极速访问。<br>  5.可以把 App Icon 入口添加到桌面。<br>  6.点击 Icon 入口有类似 Native App 的动画效果。<br>  7.灵活的热更新。<br>离线缓存<br>  HTML5 新的 <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Service_Worker_API" target="_blank" rel="external">service worker API</a>，提供的离线缓存能力<br>SPA (Single Page Apps)<br>基于 Vue 架构的 PWA 工程<br>App Shell<br>  App Shell 架构是构建 PWA 工程的一种方式，这种应用能可靠且即时地加载到您的用户屏幕上，与本地应用相似。</li>
+<li>快速开始 PWA 工程<br>依赖工具<br>  $ npm install -g lavas<br>初始化工程<br>  $ lavas init<br>运行<br>  cd projectName<br>  npm install<br>  npm run dev</li>
+<li><p>开发一个页面（以NotFound页面为例）<br>添加路由    </p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">const NotFound = () =&gt; import(&apos;@/pages/NotFound.vue&apos;);</div><div class="line"></div><div class="line">routes: [</div><div class="line">	// 省略其他路由对象</div><div class="line">	&#123;</div><div class="line">		path: &apos;*&apos;,</div><div class="line">		name: &apos;notFound&apos;,</div><div class="line">		component: NotFound</div><div class="line">	&#125;</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>页面组织结构<br>  标准.vue单文件<br>与app shell 的交互<br>  vuex<br>监听全局事件    </p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">import EventBus from &apos;@/event-bus&apos;;</div><div class="line"></div><div class="line">// 在 activated 钩子中注册</div><div class="line">EventBus.$on(`app-header:click-action`, (&#123;actionIdx&#125;) =&gt; &#123;</div><div class="line">	// 处理点击按钮事件</div><div class="line">	// ...</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>组件开发<br>  <a href="https://vuetifyjs.com/" target="_blank" rel="external">vuetify</a><br>异步请求数据<br>   <a href="">axios</a></p>
+</li>
+<li>调试工程<br>webpack dev-server<br>chrome 调试    </li>
+<li>构建部署工程<br>生产环境构建<br>部署到服务器</li>
+</ol>
+<h3 id="进阶教程"><a href="#进阶教程" class="headerlink" title="进阶教程"></a>进阶教程</h3><ol>
+<li>维护 service-worker.js 文件<br>service-worker.js<br>  service-worker.js 文件作为缓存管理的重要文件<br>如何配置缓存内容<br>  通过 config/sw-precache.js 文件进行缓存配置，根据配置为用户缓存网站静态与动态资源，并截获用户的所有网络请求，决定是从缓存还是网络获取相应资源，限制缓存大小等。</li>
+<li>Service Worker 与页面通信<br>如何使用 postMessage 方法发送信息<br>  在 sw.js 中向接管页面发信息，可以采用 client.postMessage() 方法<br>  在主页面给 Service Worker 发消息，可以采用 navigator.serviceWorker.controller.postMessage() 方法<br>如何接收 postMessage 发送的信息<br>  在 sw.js 中接收主页面发来的信息，示例代码如下，通过 event.data 来读取数据<br>  在页面中接收 sw.js 发来的信息，示例代码如下，通过 event.data 来读取数据</li>
+<li>App Shell 调整及扩展<br>App Shell 模型<br>调整及扩展 App Shell<br>  状态管理<br>  与路由组件通信<br>  扩展 Shell</li>
+<li>App Skeleton 介绍<br>Lavas 的 Skeleton 支持<br>默认 Skeleton</li>
+<li>页面切换动画效果<br>具体实现</li>
+<li>修改项目主题<br>配置文件<br>  主题相关的配置文件在 config/theme.js 中<br>  使用预定义的颜色变量<br>  使用主题变量</li>
+<li>在项目中使用图标<br>字体文件<br>自定义 SVG</li>
+<li>使用 Material Design UI 开发<br>muse-ui、vue-material、vuetify</li>
+<li>HTTPS 环境部署</li>
+<li>服务器端渲染</li>
+</ol>
+<p>参考：</p>
+<blockquote>
+<p><a href="https://lavas.baidu.com/" target="_blank" rel="external">lavas-百度PWA解决方案</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/07/25/js函数式编程-读书笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/25/js函数式编程-读书笔记/" itemprop="url">
+                  js函数式编程-javascript函数式编程的简介
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-25T21:11:13+08:00">
+                2017-07-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
+                    <span itemprop="name">函数式编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/25/js函数式编程-读书笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/07/25/js函数式编程-读书笔记/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸<strong>函数式编程</strong>。<br><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
+<h3 id="javascript函数式编程的简介"><a href="#javascript函数式编程的简介" class="headerlink" title="javascript函数式编程的简介"></a>javascript函数式编程的简介</h3><h4 id="javascript案列"><a href="#javascript案列" class="headerlink" title="javascript案列"></a>javascript案列</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">javascript函数式编程初试</div><div class="line">function splt (fn)　&#123;</div><div class="line">	return function (array) &#123;</div><div class="line">		return fn.apply(null, array)</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">// example</div><div class="line">var addArrayElements = splt(function (x, y) &#123;</div><div class="line">	return x + y;</div><div class="line">&#125;)</div><div class="line">console.log(addArrayElements([1,2])) // 3</div><div class="line"></div><div class="line">function unsplat (fun) &#123;</div><div class="line">	return function () &#123;</div><div class="line">		return fun.call(null, _.toArray(arguments))</div><div class="line">	&#125;;</div><div class="line">&#125;</div><div class="line">let joinElments = unsplat(function (array) &#123;</div><div class="line">	return array.join(&apos; &apos;)</div><div class="line">&#125;)</div><div class="line">// example</div><div class="line">console.log(joinElments(&apos;@&apos;, &apos;$&apos;, &apos;*&apos;)) // @ $ *</div></pre></td></tr></table></figure>
+</code></pre><h4 id="开始函数式编程"><a href="#开始函数式编程" class="headerlink" title="开始函数式编程"></a>开始函数式编程</h4><pre><code>直白的定义：函数式编程通过使用函数来将值转换成抽象单元，接着用于构建软件系统。
+以函数为抽象单元
+例子：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">function parseAge (age) &#123;</div><div class="line">	if (!_.isString(age)) &#123;</div><div class="line">		throw new Error(&apos;expecting a string&apos;);</div><div class="line">	&#125;</div><div class="line">	let a;</div><div class="line">	console.log(&apos;attempting to parse an age&apos;)</div><div class="line">	a = parseInt(age, 10);</div><div class="line">	if (_.isNaN(a)) &#123;</div><div class="line">		console.log([&quot;could not parse age:&quot;, age].join(&apos; &apos;));</div><div class="line">		a = 0;</div><div class="line">	&#125;</div><div class="line">	return a;</div><div class="line">&#125;</div><div class="line">// example</div><div class="line">console.log(parseAge(34)) // throw Error</div><div class="line"></div><div class="line">// 如果我们想修改输出错误、信息和警告呈现的方式，较好的</div><div class="line">方式是将错误、信息和警告的概念抽象成不同的函数</div><div class="line">function fail(thing) &#123;</div><div class="line">	throw new Error(thing);</div><div class="line">&#125;</div><div class="line">function warn(thing) &#123;</div><div class="line">	console.log([&apos;WARNING:&apos;, thing].join(&apos; &apos;));</div><div class="line">&#125;</div><div class="line">function note(thing) &#123;</div><div class="line">	console.log([&apos;NOTE:&apos;, thing].join(&apos; &apos;));</div><div class="line">&#125;</div><div class="line"></div><div class="line">function parseAge (age) &#123;</div><div class="line">	if (!_.isString(age)) &#123;</div><div class="line">		fail(&apos;Expecting a string&apos;);</div><div class="line">	&#125;</div><div class="line">	let a;</div><div class="line">	note(&apos;Attempting to parse an age&apos;)</div><div class="line">	a = parseInt(age, 10);</div><div class="line">	if (_.isNaN(a)) &#123;</div><div class="line">		warn([&apos;Could not parse age:&apos;, age].join(&apos; &apos;));</div><div class="line">		a = 0;</div><div class="line">	&#125;</div><div class="line">	return a;</div><div class="line">&#125;</div><div class="line">// example</div><div class="line">console.log(parseAge(&apos;df&apos;)) // throw Error</div></pre></td></tr></table></figure>
+
+封装和隐藏（闭包）
+以函数为行为单位
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">function nativeNth(a, index) &#123;</div><div class="line">	return a[index];</div><div class="line">&#125;</div><div class="line">var letters = [&apos;a&apos;, &apos;b&apos;];</div><div class="line">// example</div><div class="line">console.log(nativeNth(letters, 0)) // a</div><div class="line"></div><div class="line">// </div><div class="line">function nth(a, index) &#123;</div><div class="line">	if (!_.isNumber(index)) &#123;</div><div class="line">		fail(&apos;Expected a number as the index&apos;);</div><div class="line">	&#125;</div><div class="line">	if (!isIndexed(a)) &#123;</div><div class="line">		fail(&apos;Not supported on non-indexed type&apos;);</div><div class="line">	&#125;</div><div class="line">	if ((index &lt; 0) || (index &gt; a.length -1)) &#123;</div><div class="line">		fail(&apos;Index value is out of bounds&apos;);</div><div class="line">	&#125;</div><div class="line">	return a[index];</div><div class="line">&#125;</div><div class="line"></div><div class="line">var letters = [&apos;1&apos;, &apos;2&apos;]</div><div class="line">console.log(nth(letters, 1))</div></pre></td></tr></table></figure>
+
+数据抽象
+    Javascript的对象原型模型是一个丰富且基础的数据方案。
+函数式javascript初试
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// existy 定义事物的存在（js中null和undefined表示不存在）</div><div class="line">function existy(x) &#123; return x != null &#125;</div><div class="line">// example</div><div class="line">existy(null) // false</div><div class="line"></div><div class="line">truthy 用来判断一个对象是否应该被认为是true的同义词</div><div class="line">// js的原始真类型</div><div class="line">function truthy(x) &#123;</div><div class="line">	return (x !== false) &amp;&amp; existy(x)</div><div class="line">&#125;</div><div class="line">console.log(truthy(&apos;&apos;)) // true</div></pre></td></tr></table></figure>
+</code></pre><h4 id="Underscore示例"><a href="#Underscore示例" class="headerlink" title="Underscore示例"></a>Underscore示例</h4><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><pre><code>一种用于构建Javascript应用程序的技术称为“函数式编程”        
+    1.确定抽象，并为其构建函数。
+    2.利用已有的函数来构建更为复杂的抽象。
+    3.通过将现有的函数传给其他的函数来构建更加复杂的抽象。
+</code></pre><blockquote>
+<p>   书籍【javascript函数式编程】</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/07/24/js函数式编程-6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/24/js函数式编程-6/" itemprop="url">
+                  js函数式编程-6
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-24T21:25:38+08:00">
+                2017-07-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
+                    <span itemprop="name">函数式编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/24/js函数式编程-6/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/07/24/js函数式编程-6/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Applicative-Functor"><a href="#Applicative-Functor" class="headerlink" title="Applicative Functor"></a>Applicative Functor</h2><p><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
+<h3 id="应用-applicative-functor"><a href="#应用-applicative-functor" class="headerlink" title="应用 applicative functor"></a>应用 applicative functor</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Container.of(2).chain(function(two) &#123;</div><div class="line">  return Container.of(3).map(add(two));</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h3 id="瓶中之船"><a href="#瓶中之船" class="headerlink" title="瓶中之船"></a>瓶中之船</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">// ap 就是这样一种函数，能够把一个 functor 的函数值应用到另一个 functor 的值上。</div><div class="line">Container.prototype.ap = function(other_container) &#123;</div><div class="line">  return other_container.map(this.__value);</div><div class="line">&#125;</div><div class="line">Container.of(add(2)).ap(Container.of(3)); // Container(5)</div><div class="line"></div><div class="line">// all together now</div><div class="line">Container.of(2).map(add).ap(Container.of(3)); // Container(5</div></pre></td></tr></table></figure>
+</code></pre><h3 id="协调与激励"><a href="#协调与激励" class="headerlink" title="协调与激励"></a>协调与激励</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">// 帮助函数：</div><div class="line">//  $ :: String -&gt; IO DOM</div><div class="line">var $ = function(selector) &#123;</div><div class="line">  return new IO(function()&#123; return document.querySelector(selector) &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">//  getVal :: String -&gt; IO String</div><div class="line">var getVal = compose(map(_.prop(&apos;value&apos;)), $);</div><div class="line"></div><div class="line">// Example:</div><div class="line">//  signIn :: String -&gt; String -&gt; Bool -&gt; User</div><div class="line">var signIn = curry(function(username, password, remember_me)&#123; /* signing in */  &#125;)</div><div class="line"></div><div class="line">IO.of(signIn).ap(getVal(&apos;#email&apos;)).ap(getVal(&apos;#password&apos;)).ap(IO.of(false));</div><div class="line">// IO(&#123;id: 3, email: &quot;gg@allin.com&quot;&#125;)</div></pre></td></tr></table></figure>
+</code></pre><h3 id="定律"><a href="#定律" class="headerlink" title="定律"></a>定律</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">同一律（identity）</div><div class="line">	A.of(id).ap(v) == v</div><div class="line">	var v = Identity.of(&quot;Pillow Pets&quot;);</div><div class="line">	Identity.of(id).ap(v) == v</div><div class="line">同态（homomorphism）</div><div class="line">	A.of(f).ap(A.of(x)) == A.of(f(x))</div><div class="line">	Either.of(_.toUpper).ap(Either.of(&quot;oreos&quot;)) == Either.of(_.toUpper(&quot;oreos&quot;))</div><div class="line">互换（interchange）</div><div class="line">	v.ap(A.of(x)) == A.of(function(f) &#123; return f(x) &#125;).ap(v)</div><div class="line">	var v = Task.of(_.reverse);</div><div class="line">	var x = &apos;Sparklehorse&apos;;</div><div class="line">	v.ap(Task.of(x)) == Task.of(function(f) &#123; return f(x) &#125;).ap(v)</div><div class="line">组合（composition）</div><div class="line">	A.of(compose).ap(u).ap(v).ap(w) == u.ap(v.ap(w));</div><div class="line">	var u = IO.of(_.toUpper);</div><div class="line">	var v = IO.of(_.concat(&quot;&amp; beyond&quot;));</div><div class="line">	var w = IO.of(&quot;blood bath &quot;);</div><div class="line">	IO.of(_.compose).ap(u).ap(v).ap(w) == u.ap(v.ap(w))</div></pre></td></tr></table></figure>
+</code></pre><blockquote>
+<p><a href="https://llh911001.gitbooks.io/mostly-adequate-guide-chinese/content/ch7.html#自由定理" target="_blank" rel="external">js函数式编程</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/07/24/js函数式编程-5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1342,366 +2117,11 @@ compose(id, f) === compose(f, id) === f;
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/07/12/vue-vuex/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/07/12/vue-vuex/" itemprop="url">
-                  vue vuex
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-12T21:57:30+08:00">
-                2017-07-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/vue/" itemprop="url" rel="index">
-                    <span itemprop="name">vue</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/07/12/vue-vuex/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/07/12/vue-vuex/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="今天来总结下，在项目中使用vuex，项目采用easy-mock模拟数据"><a href="#今天来总结下，在项目中使用vuex，项目采用easy-mock模拟数据" class="headerlink" title="今天来总结下，在项目中使用vuex，项目采用easy-mock模拟数据"></a>今天来总结下，在项目中使用vuex，项目采用<a href="https://easy-mock.com" target="_blank" rel="external">easy-mock</a>模拟数据</h2><p><em>如有不正确的地方，请大家联系我，谢谢。</em></p>
-<h3 id="首先在项目中添加vuex"><a href="#首先在项目中添加vuex" class="headerlink" title="首先在项目中添加vuex"></a>首先在项目中添加vuex</h3><ol>
-<li><p>在store文件夹下面建立index.js,内容如下</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">  import Vue from &apos;vue&apos;</div><div class="line">  import Vuex from &apos;vuex&apos;</div><div class="line">  import &#123; login &#125; from &apos;@/api/http&apos; // 用于登录的</div><div class="line">  Vue.use(Vuex)</div><div class="line">const store = new Vuex.Store(&#123;</div><div class="line">  state: &#123; // 保存全局state --- this.$store.state[key]-- 放在computed</div><div class="line">	userInfo: null,</div><div class="line">	token: &apos;&apos;</div><div class="line">  &#125;,</div><div class="line">  getters: &#123; // 对state进行不修改操作，相当于数据库的查操作 --- this.$store.getter[key]-- 放在computed</div><div class="line"></div><div class="line">  &#125;,</div><div class="line">  mutations: &#123; // 同步操作state --- this.$store.commit(&apos;func&apos;,payload)-- 放在methods</div><div class="line">	login (state, payload) &#123;</div><div class="line">	  state.userInfo = payload</div><div class="line">	&#125;,</div><div class="line">	setToken (state, payload) &#123;</div><div class="line">	  state.token = payload</div><div class="line">	&#125;</div><div class="line">  &#125;,</div><div class="line">  actions: &#123; // 异步操作state --- this.$store.dispatch(&apos;func&apos;,payload)-- 放在methods</div><div class="line">	login (&#123; commit &#125;, userInfo) &#123;</div><div class="line">	  return new Promise((resolve, reject) =&gt; &#123;</div><div class="line">		login(userInfo.username, userInfo.password)</div><div class="line">		.then((res) =&gt; &#123;</div><div class="line">		  commit(&apos;login&apos;, res.userInfo) // 全局state中保存用户信息</div><div class="line">		  commit(&apos;setToken&apos;, res.token) // 全局state中保存token</div><div class="line">		  resolve(res) // 这里很关键，必须要传递res参数，登录之后的其他操作</div><div class="line">		&#125;)</div><div class="line">		.catch((err) =&gt; &#123;</div><div class="line">		  reject(err)</div><div class="line">		&#125;)</div><div class="line">	  &#125;)</div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">&#125;)</div><div class="line"></div><div class="line">export default store</div></pre></td></tr></table></figure>
-</li>
-<li><p>在main.js中添加</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">import store from &apos;./store&apos;</div><div class="line">new Vue(&#123;</div><div class="line">  el: &apos;#app&apos;,</div><div class="line">  router,</div><div class="line">  store,</div><div class="line">  template: &apos;&lt;App/&gt;&apos;,</div><div class="line">  components: &#123;App&#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
-</li>
-<li><p>在api文件夹中http.js文件中</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">import http from &apos;./axios&apos;</div><div class="line">export function login (username, password) &#123;</div><div class="line">  return http.post(&apos;user/login&apos;, &#123;</div><div class="line">	username,</div><div class="line">	password</div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p>在登录组件中login.vue    </p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">methods: &#123;</div><div class="line">     login (data) &#123;</div><div class="line">       this.$store.dispatch(&apos;login&apos;, data)</div><div class="line">       .then((res) =&gt; &#123;</div><div class="line">         console.dir(res)</div><div class="line">       &#125;)</div><div class="line">       .catch((err) =&gt; &#123;</div><div class="line">         console.error(err)</div><div class="line">       &#125;)</div><div class="line">     &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/07/11/vue-admin/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/07/11/vue-admin/" itemprop="url">
-                  vue admin
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-11T20:54:43+08:00">
-                2017-07-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/vue/" itemprop="url" rel="index">
-                    <span itemprop="name">vue</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/07/11/vue-admin/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/07/11/vue-admin/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="最近个人接触了一些后台管理系统的搭建，参考了很多资料，打算把自己的后台管理系统开发经验写成博客，可能会帮助到一些想做后台管理系统的朋友，更主要的记录整个开发思路，以及vue的一整套解决方案。"><a href="#最近个人接触了一些后台管理系统的搭建，参考了很多资料，打算把自己的后台管理系统开发经验写成博客，可能会帮助到一些想做后台管理系统的朋友，更主要的记录整个开发思路，以及vue的一整套解决方案。" class="headerlink" title="最近个人接触了一些后台管理系统的搭建，参考了很多资料，打算把自己的后台管理系统开发经验写成博客，可能会帮助到一些想做后台管理系统的朋友，更主要的记录整个开发思路，以及vue的一整套解决方案。"></a>最近个人接触了一些后台管理系统的搭建，参考了很多资料，打算把自己的后台管理系统开发经验写成博客，可能会帮助到一些想做后台管理系统的朋友，更主要的记录整个开发思路，以及vue的一整套解决方案。</h2><p><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
-<h3 id="后台管理系统主要功能-vue-cli搭建项目"><a href="#后台管理系统主要功能-vue-cli搭建项目" class="headerlink" title="后台管理系统主要功能(vue-cli搭建项目)"></a>后台管理系统主要功能(vue-cli搭建项目)</h3><ol>
-<li>element-ui 饿了么出品的vue2.0 pc端 UI框架</li>
-<li>axios vue官方推荐的请求库 支持Promise</li>
-<li>html5的本地存储LocalStorage（用于记住密码等） 与 SessionStorage （用于存储个人信息和token等）</li>
-<li>浏览器样式兼容库 normalize.css 格式化css</li>
-<li>类似于YouTube的页面跳转精度条-nprogress 轻量的全局进度条控制</li>
-<li>官方提供的状态管理库 vuex</li>
-<li>官方提供路由 vue-router</li>
-<li>集成icon-font图标(symbol方式)</li>
-<li>添加全屏功能<br>（后续会继续添加）</li>
-</ol>
-<h3 id="先在项目中引入-element-ui"><a href="#先在项目中引入-element-ui" class="headerlink" title="先在项目中引入 element-ui"></a>先在项目中引入 <a href="http://element.eleme.io/#/zh-CN" target="_blank" rel="external">element-ui</a></h3><ol>
-<li>安装 element-ui  npm i element-ui -S</li>
-<li>引入相关资源<br> import ElementUI from ‘element-ui’<br> import ‘element-ui/lib/theme-default/index.css’<br> Vue.use(ElementUI)<br> 这样你就可以愉快的在你的项目中使用element的组件了。</li>
-<li>例如使用 Message 消息提示<br> 就可以在任何vue组件中 this.$message(‘这是一条消息提示’); // this指向vue实例</li>
-</ol>
-<h3 id="在项目中引入axios请求库axios"><a href="#在项目中引入axios请求库axios" class="headerlink" title="在项目中引入axios请求库axios"></a>在项目中引入axios请求库<a href="https://www.axios.com/" target="_blank" rel="external">axios</a></h3><ol>
-<li>安装 axios npm i axios -S   </li>
-<li>在使用axios的时候我们经常要进行一些封装和全局配置等<br> 我一般开发时会在src目录下新建一个api的文件夹，里面存放对axios的封装（axios.js）和项目所有请求（http.js）</li>
-<li><p>这里重点讲一下axios.js这个文件夹，也就是对axios的封装以及拦截操作<br> 这里是全局配置</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">var service = axios.create(&#123;</div><div class="line">  baseURL:&quot;https://some-domain.com/api/&quot;,</div><div class="line">  timeout:1000,</div><div class="line">  headers: &#123;&apos;X-Custom-Header&apos;:&apos;foobar&apos;&#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p> 这里是request拦截操作</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">// request拦截器</div><div class="line">service.interceptors.request.use(config =&gt; &#123;</div><div class="line">  if (store.getters.token) &#123; // 判断全局状态中是否有token，也就是说判断你不是合法用户</div><div class="line">	config.headers[&apos;token&apos;] = store.getters.token; // 让每个请求携带自定义token，开心不用没个请求都带上token字段了</div><div class="line">  &#125;</div><div class="line">  return config;</div><div class="line">&#125;, error =&gt; &#123;</div><div class="line">  Promise.reject(error);</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
-<p> 这里是response拦截操作</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">// respone拦截器</div><div class="line">service.interceptors.response.use(</div><div class="line">  response =&gt; &#123;</div><div class="line">	// code为非20000是抛错 可结合自己业务进行修改</div><div class="line">	const res = response.data;</div><div class="line">	if (res.code !== 20000) &#123;</div><div class="line">	  // 在该页面使用element组件，别忘了需要引入哦！！</div><div class="line">	  Message(&#123;</div><div class="line">		message: res.data,</div><div class="line">		type: &apos;error&apos;,</div><div class="line">		duration: 5 * 1000</div><div class="line">	  &#125;);</div><div class="line"></div><div class="line">	  // 50008:非法的token; 50012:其他客户端登录了;  50014:Token 过期了;</div><div class="line">	  if (res.code === 50008 || res.code === 50012 || res.code === 50014) &#123;</div><div class="line">		// 这里需要你进行相应的操作处理</div><div class="line">	  &#125;</div><div class="line">	  return Promise.reject(error);</div><div class="line">	&#125; else &#123;</div><div class="line">	  return response.data;</div><div class="line">	&#125;</div><div class="line">  &#125;,</div><div class="line">  error =&gt; &#123;</div><div class="line">	Message(&#123;</div><div class="line">	  message: error.message,</div><div class="line">	  type: &apos;error&apos;,</div><div class="line">	  duration: 5 * 1000</div><div class="line">	&#125;);</div><div class="line">	return Promise.reject(error);</div><div class="line">  &#125;</div><div class="line">)</div><div class="line">// 最后被忘了，要export 这个实例</div><div class="line">export default service;</div></pre></td></tr></table></figure>
-</li>
-<li><p>阻止http.js请求文件<br> 里面的内容大致是这样的</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">import service from &apos;./axios&apos;</div><div class="line">const ApiUrl = &#123;</div><div class="line">	login: &apos;login/&apos;, // 存放api路径</div><div class="line">	...</div><div class="line">&#125;</div><div class="line">export default &#123;</div><div class="line">	login () &#123;</div><div class="line">		// 这里后期我会发在vuex中的actions里面</div><div class="line">		service.post(ApiUrl.login, &#123;</div><div class="line">		  username: &apos;fanerge&apos;,</div><div class="line">		  password: &apos;XXXXXX&apos;</div><div class="line">		&#125;)</div><div class="line">		.then((res) =&gt; &#123;</div><div class="line">			let resp = res.data</div><div class="line">			console.log(resp)</div><div class="line">		&#125;)</div><div class="line">		.catch((err) =&gt; &#123;</div><div class="line">			console.error(err)</div><div class="line">		&#125;)</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<blockquote>
-<p>参考<a href="https://juejin.im/post/595b4d776fb9a06bbe7dba56" target="_blank" rel="external">vueAdmin-template</a>    </p>
-</blockquote>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1746,7 +2166,7 @@ compose(id, f) === compose(f, id) === f;
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1757,7 +2177,7 @@ compose(id, f) === compose(f, id) === f;
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -1768,7 +2188,7 @@ compose(id, f) === compose(f, id) === f;
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

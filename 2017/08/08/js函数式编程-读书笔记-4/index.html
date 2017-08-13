@@ -96,7 +96,7 @@
 <meta property="og:url" content="https://fanerge.github.io/2017/08/08/js函数式编程-读书笔记-4/index.html">
 <meta property="og:site_name" content="余真帆的个人博客">
 <meta property="og:description" content="最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸函数式编程。如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。 由函数构建函数函数式组合的精华函数组合的精华：使用现有的零部件来建立新的行为，这些新行为同样也成为了已有的零部件。 123456789101112131415161718192021function dispatch() &amp;#123;	let funs = _.toArra">
-<meta property="og:updated_time" content="2017-08-09T13:03:43.049Z">
+<meta property="og:updated_time" content="2017-08-13T03:08:39.760Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="js函数式编程-由函数构建函数">
 <meta name="twitter:description" content="最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸函数式编程。如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。 由函数构建函数函数式组合的精华函数组合的精华：使用现有的零部件来建立新的行为，这些新行为同样也成为了已有的零部件。 123456789101112131415161718192021function dispatch() &amp;#123;	let funs = _.toArra">
@@ -396,7 +396,10 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">function rigthCurryDiv(d) &#123;</div><div class="line">	return function (n) &#123;</div><div class="line">		return n/d;</div><div class="line">	&#125;;</div><div class="line">&#125;</div><div class="line">let divideBy10 = rigthCurryDiv(10); // 被除数</div><div class="line">let dd = divideBy10(2); // 除数</div><div class="line">var d1 = rigthCurryDiv(10)(2)</div><div class="line">console.log(d1); // 0.2</div><div class="line"></div><div class="line">// 柯里化一个参数</div><div class="line">function curry(fun) &#123;</div><div class="line">	return function(arg) &#123;</div><div class="line">		return fun(arg);</div><div class="line">	&#125;;</div><div class="line">&#125;</div><div class="line">let dd = [&apos;11&apos;, &apos;11&apos;, &apos;11&apos; ,&apos;11&apos;].map(curry(parseInt))</div><div class="line">console.log(dd) // [&apos;11&apos;, &apos;11&apos;, &apos;11&apos; ,&apos;11&apos;]</div><div class="line"></div><div class="line">// 柯里化两个参数</div><div class="line">function curry2(fun) &#123;</div><div class="line">	return function(secondArg) &#123;</div><div class="line">		return function(firstArg) &#123;</div><div class="line">			return fun(firstArg, secondArg);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">function div(n, d) &#123;</div><div class="line">	return n / d;</div><div class="line">&#125;</div><div class="line">let dd = curry2(div)(10)(50);</div><div class="line">console.log(dd) // 5</div><div class="line"></div><div class="line">function toHex(n) &#123;</div><div class="line">	let hex = n.toString(16);</div><div class="line">	return (hex.length &lt; 2) ? [0, hex].join(&apos;&apos;) : hex;</div><div class="line">&#125;</div><div class="line">function rgbToHexString(r, g, b) &#123;</div><div class="line">	return [&apos;#&apos;, toHex(r), toHex(g), toHex(b)].join(&apos;&apos;);</div><div class="line">&#125;</div><div class="line">let dd = rgbToHexString(255, 255, 255);</div><div class="line">console.log(dd) // #ffffff</div></pre></td></tr></table></figure>
 </code></pre><h4 id="部分应用"><a href="#部分应用" class="headerlink" title="部分应用"></a>部分应用</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">function partial (fun) &#123;</div><div class="line">	let pargs = _.rest(arguments);</div><div class="line">	return function () &#123;</div><div class="line">		let args = cat(pargs, _.toArray(arguments));</div><div class="line">		return fun.apply(fun, args);</div><div class="line">	&#125;;</div><div class="line">&#125;</div><div class="line">var div10by2by4by5000partial = partial(div, 10, 2, 4, 5000);</div><div class="line">console.log(div10by2by4by5000partial()) // 5</div><div class="line"></div><div class="line">// 局部应用实战：前置条件</div><div class="line">function condition1() &#123;</div><div class="line">	let validators = _.toArray(arguments);</div><div class="line">	return function (fun, arg) &#123;</div><div class="line">		let errors = mapcat(function(isValid)&#123;</div><div class="line">			return isValid(arg) ? [] : [isValid.message];</div><div class="line">		&#125;, validators);</div><div class="line">		if (!_.isEmpty(errors)) &#123;</div><div class="line">			throw new Error(error.join(&apos;,&apos;));</div><div class="line">		&#125;</div><div class="line">		return fun(arg);</div><div class="line">	&#125;;</div><div class="line">&#125;</div><div class="line">let sqrPre = condition1(validator(&apos;arg must not be zero&apos;, complement(zero)),</div><div class="line">	validator(&apos;arg must be a number&apos;, _.isNumber));</div><div class="line">let dd = sqrPre(_.identity, 10);</div><div class="line">console.log(dd)</div></pre></td></tr></table></figure>
 </code></pre><h4 id="通过组合端至端的拼接函数"><a href="#通过组合端至端的拼接函数" class="headerlink" title="通过组合端至端的拼接函数"></a>通过组合端至端的拼接函数</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">let isntString = _.compose(function (x) &#123; return !x; &#125;, _.isString);</div><div class="line">let dd = isntString([]);</div><div class="line">console.log(dd)	// true</div></pre></td></tr></table></figure>
-</code></pre>
+</code></pre><blockquote>
+<p>   源代码仓库<br>    <a href="https://github.com/fanerge/Functional-reading-notes" target="_blank" rel="external">函数式编程-读书笔记</a></p>
+</blockquote>
+
       
     </div>
 
@@ -531,7 +534,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -542,7 +545,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -553,7 +556,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
