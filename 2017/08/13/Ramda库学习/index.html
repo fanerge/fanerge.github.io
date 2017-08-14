@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="函数式编程,js,ramda," />
+  <meta name="keywords" content="js,函数式编程,ramda," />
 
 
 
@@ -90,13 +90,13 @@
 
 
 <meta name="description" content="继续学习js函数式编程，这里贴出阮老师总结的Ramda的优点： 1.    Ramda 的数据一律放在最后一个参数，理念是&amp;quot;function first，data last&amp;quot;。 2.    所有方法都支持柯里化。 一、比较运算（gt、gte、lt、lte、eauals、eqBy）gt：判断第一个参数是否大于第二个参数。 1234let gt1 = R.gt(2)(1);// c">
-<meta name="keywords" content="函数式编程,js,ramda">
+<meta name="keywords" content="js,函数式编程,ramda">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ramda库学习">
 <meta property="og:url" content="https://fanerge.github.io/2017/08/13/Ramda库学习/index.html">
 <meta property="og:site_name" content="余真帆的个人博客">
 <meta property="og:description" content="继续学习js函数式编程，这里贴出阮老师总结的Ramda的优点： 1.    Ramda 的数据一律放在最后一个参数，理念是&amp;quot;function first，data last&amp;quot;。 2.    所有方法都支持柯里化。 一、比较运算（gt、gte、lt、lte、eauals、eqBy）gt：判断第一个参数是否大于第二个参数。 1234let gt1 = R.gt(2)(1);// c">
-<meta property="og:updated_time" content="2017-08-13T15:16:08.986Z">
+<meta property="og:updated_time" content="2017-08-14T15:10:47.189Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ramda库学习">
 <meta name="twitter:description" content="继续学习js函数式编程，这里贴出阮老师总结的Ramda的优点： 1.    Ramda 的数据一律放在最后一个参数，理念是&amp;quot;function first，data last&amp;quot;。 2.    所有方法都支持柯里化。 一、比较运算（gt、gte、lt、lte、eauals、eqBy）gt：判断第一个参数是否大于第二个参数。 1234let gt1 = R.gt(2)(1);// c">
@@ -452,7 +452,7 @@ let match1 = R.match(/([a-z]a)/g)(&apos;bananas&apos;)
 // console.log(match1); // [&quot;ba&quot;, &quot;na&quot;, &quot;na&quot;]
 let match2 = R.match(/a/)(&apos;n&apos;);
 // console.log(match2); // []
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">####	五、函数</div><div class="line">#####	5.1函数的合成</div><div class="line">	compose：将多个函数合并成一个函数，从右到左执行</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">####	五、函数</div><div class="line">#####	5.1 函数的合成</div><div class="line">	compose：将多个函数合并成一个函数，从右到左执行</div></pre></td></tr></table></figure>
 
 let compose1 = R.compose(Math.abs, R.add(1), R.multiply(2))(4)
 console.log(compose1); // 9    
@@ -515,6 +515,280 @@ var gt10 = x =&gt; x &gt; 10;
 var lte10 = R.complement(gt10);
 var complement1 = lte10(11);
 // console.log(complement1); // false    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">####	5.3 函数的执行	</div><div class="line">	binary：参数函数执行时，只传入最前面两个参数。</div></pre></td></tr></table></figure>
+
+var takesThreeArgs = function (a, b, c) {
+    return [a, b, c];
+};
+var takesTwoArgs = R.binary(takesThreeArgs);
+var binary1 = takesTwoArgs(1, 2, 3);
+// console.log(binary1); // [1, 2, undefined]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tap：将一个值传入指定函数，并返回该值。</div></pre></td></tr></table></figure>
+
+var sayX = x =&gt; console.log(&apos;x is&apos; + x);
+var tap1 = R.tap(sayX)(100);
+// console.log(tap1); // x is100 100
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">zipWith：将两个数组对应位置的值，一起作为参数传入某个函数。</div></pre></td></tr></table></figure>
+
+var f = (x, y) =&gt; {
+    return x + y;
+};
+var zipWith1 = R.zipWith(f)([1, 2, 3])([4, 5, 6]);
+// console.log(zipWith1); // [5, 7, 9]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apply：将数组转成参数序列，传入指定函数。</div></pre></td></tr></table></figure>
+
+var nums = [1, 2, 3, -99, 42, 6, 7];
+var apply1 = R.apply(Math.max)(nums);
+// console.log(apply1); // 42
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">applySpec：返回一个模板函数，该函数会将参数传入模板内的函数执行，然后将执行结果填充到模板。</div></pre></td></tr></table></figure>
+
+var getMetrics = R.applySpec({
+    sum: R.add,
+    nested: {mul: R.multiply}
+});
+var applySpec1 = getMetrics(2, 4);
+//console.log(applySpec1); // { sum: 6, nested: { mul: 8 } }
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ascend：返回一个升序排列的比较函数，主要用于排序。</div></pre></td></tr></table></figure>
+
+var byAge = R.ascend(R.prop(&apos;age&apos;));
+var people = [
+    {name: &apos;fan&apos;, age: 11},
+    {name: &apos;yu&apos;, age: 8},
+    {name: &apos;zhen&apos;, age: 9}
+];
+var ascend1 = R.sort(byAge)(people);
+// console.log(ascend1); // [ {name: &apos;yu&apos;, age: 8}, {name: &apos;zhen&apos;, age: 9}, name: &apos;fan&apos;, age: 11}];
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ascend：返回一个升序排列的比较函数，主要用于排序。</div></pre></td></tr></table></figure>
+
+var byAge = R.descend(R.prop(&apos;age&apos;));
+var people = [
+    {name: &apos;fan&apos;, age: 11},
+    {name: &apos;yu&apos;, age: 8},
+    {name: &apos;zhen&apos;, age: 9}
+];
+var descend1 = R.sort(byAge)(people);
+// console.log(descend1); // [ {name: &apos;fan&apos;, age: 11}, {name: &apos;zhen&apos;, age: 9}, {name: &apos;yu&apos;, age: 8}];
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">####	六、数组</div><div class="line">#####	6.1 数组的特性判断</div><div class="line">	contains：如果包含某个成员，返回true。</div></pre></td></tr></table></figure>
+
+var contains1 = R.contains(3)([1,2]);
+// console.log(contains1); // false    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">contains：如果包含某个成员，返回true。</div></pre></td></tr></table></figure>
+
+var contains1 = R.contains(3)([1,2]);
+var contains2 = R.contains({name: &apos;fan&apos;})([{name: &apos;fan&apos;},2]);
+// console.log(contains1); // false
+// console.log(contains2); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">all：所有成员都满足指定函数时，返回true，否则返回false</div></pre></td></tr></table></figure>
+
+var equals3 = R.equals(3);
+var all1 = R.all(equals3)([3, 3]);
+// console.log(all1); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">any：只要有一个成员满足条件，就返回true。</div></pre></td></tr></table></figure>
+
+var lessThan0 = R.flip(R.lt)(0);
+var lessThan2 = R.flip(R.lt)(2);
+var any1 = R.any(lessThan0)([1, 2]);
+// console.log(any1); // false
+var any2 = R.any(lessThan2)([1, 2]);
+// console.log(any2); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">none：没有成员满足条件时，返回true。</div></pre></td></tr></table></figure>
+
+var isEven = n =&gt; n % 2 === 0;
+var none1 = R.none(isEven)([1, 3, 5, 7, 9, 11]) // true
+var none2 = R.none(isEven)([1, 3, 5, 7, 8, 11]) // false
+console.log(none2); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">#####	6.2 数值的截取和添加</div><div class="line">	head：返回数组的第一个成员。</div></pre></td></tr></table></figure>
+
+var head1 = R.head([1, 2, 3]);
+// console.log(head1); // 1
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">last：返回数组的最后一个成员。</div></pre></td></tr></table></figure>
+
+var last1 = R.last(&apos;fan&apos;);
+console.log(last1); // n
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tail：返回第一个成员以外的所有成员组成的新数组。</div></pre></td></tr></table></figure>
+
+var tail1 = R.tail([1, 2, 3]);
+// console.log(tail1);  // [2, 3]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">init：返回最后一个成员以外的所有成员组成的新数组。</div></pre></td></tr></table></figure>
+
+var init1 = R.init([1, 2, 3]);
+// console.log(init1);  // [1, 2]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">nth：取出指定位置的成员。</div></pre></td></tr></table></figure>
+
+var list = [1, 2, 3, 4];
+var nth1 = R.nth(0)(list);
+// console.log(nth1); // 1
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">take：取出前 n 个成员。</div></pre></td></tr></table></figure>
+
+var take1 = R.take(3)([1, 2, 3, 4]);
+// console.log(take1); // [1, 2, 3]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">takeLast：取出后 n 个成员。</div></pre></td></tr></table></figure>
+
+var takeLast1 = R.takeLast(3)([1, 2, 3, 4]);
+// console.log(takeLast1); // [2, 3, 4]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">slice：从起始位置（包括）开始，到结束位置（不包括）为止，从原数组截取出一个新数组。</div></pre></td></tr></table></figure>
+
+var slice1 = R.slice(1, 3)([1, 2, 3, 4]);
+// console.log(slice1); // [2, 3]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">remove：移除开始位置后的n个成员。</div></pre></td></tr></table></figure>
+
+var remove1 = R.remove(2, 3)([1, 2, 3, 4, 5, 6, 7, 8]);
+// console.log(remove1); // [1, 2, 6, 7, 8]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">insert：在指定位置插入给定值。</div></pre></td></tr></table></figure>
+
+var insert1 = R.insert(2, &apos;x&apos;)([1, 2, 3]);
+// console.log(insert1); // [1, 2, &quot;x&quot;, 3]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">insertAll：在指定位置，插入另一个数组的所有成员。</div></pre></td></tr></table></figure>
+
+var insertAll1 = R.insertAll(2, [&apos;x&apos;, &apos;y&apos;, &apos;z&apos;])([1, 2, 3, 4]);
+// console.log(insertAll1); // [1, 2, &quot;x&quot;, &quot;y&quot;, &quot;z&quot;, 3, 4]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">prepend：在数组头部插入一个成员。</div></pre></td></tr></table></figure>
+
+var prepend1 = R.prepend(&apos;fee&apos;)([&apos;ss&apos;, &apos;ee&apos;]);
+// console.log(prepend1); // [&quot;fee&quot;, &quot;ss&quot;, &quot;ee&quot;]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">append：在数组尾部追加新的成员。</div></pre></td></tr></table></figure>
+
+var append1 = R.append(&apos;test&apos;)([&apos;ss&apos;]);
+// console.log(append1); // [&quot;ss&quot;, &quot;test&quot;]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">intersperse：在数组成员之间插入表示分隔的成员。</div></pre></td></tr></table></figure>
+
+var intersperse1 = R.intersperse(&apos;/&apos;)([&apos;aa&apos;, &apos;bb&apos;, &apos;cc&apos;]);
+// console.log(intersperse1); // [&quot;aa&quot;, &quot;/&quot;, &quot;bb&quot;, &quot;/&quot;, &quot;cc&quot;]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">join：将数组合并成一个字符串，并在成员之间插入分隔符。</div></pre></td></tr></table></figure>
+
+var join1 = R.join(&apos;|&apos;)([1, 2, 3]);
+// console.log(join1); // 1|2|3
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">#####	6.3 数组的过滤</div><div class="line">	filter：过滤出符合条件的成员。</div></pre></td></tr></table></figure>
+
+var isEven = n =&gt; n % 2 === 0;
+var filter1 = R.filter(isEven)([1, 2, 3]);
+// console.log(filter1); // [2]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">reject：过滤出所有不满足条件的成员。</div></pre></td></tr></table></figure>
+
+var isEven = n =&gt; n % 2 === 0;
+var reject1 = R.reject(isEven)([1, 2, 3]);
+// console.log(reject1); // [1, 3]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">takeWhile：一旦满足条件，取出前面的所有成员。</div></pre></td></tr></table></figure>
+
+var isNotFour = x =&gt; x !== 4;
+var takeWhile1 = R.takeWhile(isNotFour)([1, 2, 3, 4, 3])
+// console.log(takeWhile1); // [1, 2, 3]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dropWhile：一旦满足条件，取出剩余的所有成员。</div></pre></td></tr></table></figure>
+
+var lteTwo = x =&gt; x &lt;= 2;
+var dropWhile1 = R.dropWhile(lteTwo)([1, 2, 3, 4, 3, 2, 1]);
+// console.log(dropWhile1); // [3, 4, 3, 2, 1]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">without：返回指定值以外的成员。</div></pre></td></tr></table></figure>
+
+var without1 = R.without([1, 2])([1, 2, 1, 3, 4]);
+// console.log(without1); // [3, 4]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">#####	6.4 单数组运算</div><div class="line">	countBy：对每个成员执行指定函数以后，返回一个对象，表示各种执行结果分别包含多少成员。</div></pre></td></tr></table></figure>
+
+var numbers = [1.0, 1.1, 1.2, 2.0, 3.0, 2.2];
+var countBy1 = R.countBy(Math.floor)(numbers);
+// console.log(countBy1); // {1: 3, 2: 2, 3: 1}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">splitAt：在给定位置，将原数组分成两个部分。</div></pre></td></tr></table></figure>
+
+var splitAt1 = R.splitAt(1)([1, 2, 3]);
+// console.log(splitAt1); // [[1],[2, 3]]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">splitEvery：按照指定的个数，将原数组分成多个部分。</div></pre></td></tr></table></figure>
+
+var splitEvery1 = R.splitEvery(3)([1, 2, 3, 4, 5, 6, 7]);
+// console.log(splitEvery1); // [[1, 2, 3], [4, 5, 6], [7]]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">splitWhen：以第一个满足指定函数的成员为界，将数组分成两个部分。</div></pre></td></tr></table></figure>
+
+var splitEvery1 = R.splitEvery(3)([1, 2, 3, 4, 5, 6, 7]);
+// console.log(splitEvery1); // [[1, 2, 3], [4, 5, 6], [7]]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">aperture：每个成员与其后给定数量的成员分成一组，这些组构成一个新的数组。</div></pre></td></tr></table></figure>
+
+var aperture1 = R.aperture(3)([1, 2, 3, 4, 5, 6, 7]);
+// console.log(aperture1); // [[1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7]]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">partition：根据是否满足指定函数，将成员分区。</div></pre></td></tr></table></figure>
+
+var partition1 = R.partition(R.contains(&apos;s&apos;))([&apos;aaa&apos;, &apos;bbb&apos;, &apos;sss&apos;]);
+// console.log(partition1); // [[&apos;sss&apos;], [&quot;aaa&quot;, &quot;bbb&quot;]]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">indexOf：某个值在数组中第一次出现的位置。</div></pre></td></tr></table></figure>
+
+var indexOf1 = R.indexOf(3)([1, 2, 3, 4]);
+// console.log(indexOf1); // 2
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">lastIndexOf：某个值在数组中最后一次出现的位置。</div></pre></td></tr></table></figure>
+
+var lastIndexOf1 = R.lastIndexOf(3)([-1, 3, 3, 0, 1, 2, 3, 4]);
+// console.log(lastIndexOf1); // 6
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">map：数组的每个成员依次执行某个函数。</div></pre></td></tr></table></figure>
+
+var double = x =&gt; x * 2;
+var map1 = R.map(double)([1, 2, 3]);
+// console.log(map1); // [2, 4, 6]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mapIndexed：与map类似，区别是遍历函数可以额外获得两个参数：索引位置和原数组。</div></pre></td></tr></table></figure>
+
+var mapIndexed = R.addIndex(R.map);
+var mapIndex1 = mapIndexed((val, idx) =&gt; idx + &apos;-&apos; + val, [&apos;f&apos;, &apos;o&apos;, &apos;o&apos;, &apos;b&apos;, &apos;a&apos;, &apos;r&apos;]);
+// console.log(mapIndex1); // [&quot;0-f&quot;, &quot;1-o&quot;, &quot;2-o&quot;, &quot;3-b&quot;, &quot;4-a&quot;, &quot;5-r&quot;]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">forEach：数组的每个成员依次执行某个函数，总是返回原数组。</div></pre></td></tr></table></figure>
+
+var printXPlusFive = x =&gt; console.log(x + 5);
+var forEach1 = R.forEach(printXPlusFive, [1, 2, 3]); 
+// console.log(forEach1); // [1, 2, 3]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">reduce：数组成员依次执行指定函数，每一次的运算结果都会进入一个累积变量。</div></pre></td></tr></table></figure>
+
+var mySubtract = function (a, b) {
+    return a - b;
+};
+var reduce1 = R.reduce(mySubtract, 0)([1, 2, 3, 4]);
+// console.log(reduce1); // -10
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">reduceRight：与reduce类似，区别是数组成员从左到右执行。</div></pre></td></tr></table></figure>
+
+var reduceRight1 = R.reduceRight(R.subtract, 0)([1, 2, 3, 4]);
+// console.log(reduceRight1); // -2
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">reduceWhile：与reduce类似，区别是有一个判断函数，一旦数组成员不符合条件，就停止累积。</div></pre></td></tr></table></figure>
+
+var isOdd = (acc, x) =&gt; x % 2 === 1;
+var ys = [2, 4, 6];
+var reduceWhile1 = R.reduceWhile(isOdd, R.add, 111)(ys);
+// console.log(reduceWhile1); // 111
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sort：按照给定函数，对数组进行排序。</div></pre></td></tr></table></figure>
+
+var diff = function (a, b) { return a -b; };
+var sort1 = R.sort(diff)([4, 2, 7, 5]);
+// console.log(sort1); // [2, 4, 5, 7]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sortWith：按照给定的一组函数，进行多重排序。</div></pre></td></tr></table></figure>
+
+var alice = {
+    name: &apos;alice&apos;,
+    age: 40
+};
+var bob = {
+    name: &apos;bob&apos;,
+    age: 30
+};
+var clara = {
+    name: &apos;clara&apos;,
+    age: 40
+};
+var people = [clara, bob, alice];
+var ageNameSort = R.sortWith([
+        // R.descend(R.prop(&apos;age&apos;)),
+        R.ascend(R.prop(&apos;name&apos;))
+    ]);
+var sortWith1 = ageNameSort(people);
+console.log(sortWith1); // [{name: &quot;alice&quot;, age: 40}, {name: &quot;bob&quot;, age: 30}, {name: &quot;clara&quot;, age: 40}]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adjust：对指定位置的成员执行给定的函数。</div></pre></td></tr></table></figure>
+
+var adjust1 = R.adjust(R.add(10) ,1)([1, 2, 3]);
+// console.log(adjust1); // [1, 12, 3]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ap：数组成员分别执行一组函数，将结果合成为一个新数组。</div></pre></td></tr></table></figure>
+
+var ap1 = R.ap([R.multiply(2), R.add(3)])([1, 2, 3]);
+// console.log(ap1); // [2, 4, 6, 4, 5, 6]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">flatten：将嵌套数组铺平。</div></pre></td></tr></table></figure>
+
+var flatten1 = R.flatten([1, 2, [ 3, 4, 5, [6]]]);
+// console.log(flatten1); // [1, 2, 3, 4, 5, 6]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">groupWith：将数组成员依次按照指定条件两两比较，并按照结果将所有成员放入子数组。</div></pre></td></tr></table></figure>
+
+var groupWith1 = R.groupWith(R.equals)([0, 1, 1, 2, 3, 5, 8, 13, 21]);
+// console.log(groupWith1); // [[0], [1, 1], [2], [3], [5], [8], [13], [21]]
 ```
 </code></pre>
       
@@ -545,9 +819,9 @@ var complement1 = lte10(11);
       
         <div class="post-tags">
           
-            <a href="/tags/函数式编程/" rel="tag"># 函数式编程</a>
-          
             <a href="/tags/js/" rel="tag"># js</a>
+          
+            <a href="/tags/函数式编程/" rel="tag"># 函数式编程</a>
           
             <a href="/tags/ramda/" rel="tag"># ramda</a>
           
