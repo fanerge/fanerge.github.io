@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fanerge.github.io/"/>
-  <updated>2017-08-15T14:58:58.674Z</updated>
+  <updated>2017-08-15T15:03:17.437Z</updated>
   <id>https://fanerge.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="https://fanerge.github.io/2017/08/13/Ramda%E5%BA%93%E5%AD%A6%E4%B9%A0/"/>
     <id>https://fanerge.github.io/2017/08/13/Ramda库学习/</id>
     <published>2017-08-13T11:28:31.000Z</published>
-    <updated>2017-08-15T14:58:58.674Z</updated>
+    <updated>2017-08-15T15:03:17.437Z</updated>
     
     <content type="html"><![CDATA[<p>继续学习js函数式编程，这里贴出阮老师总结的Ramda的优点：</p>
 <pre><code>1.    Ramda 的数据一律放在最后一个参数，理念是&quot;function first，data last&quot;。
@@ -366,77 +366,36 @@ invertObj：将属性值和属性名互换。如果多个属性的属性值相�
 invert：将属性值和属性名互换，每个属性值对应一个数组。
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var raceResultsByFirstName = &#123;</div><div class="line">  first: &apos;alice&apos;,</div><div class="line">  second: &apos;jake&apos;,</div><div class="line">  third: &apos;alice&apos;,</div><div class="line">&#125;;</div><div class="line">var invert1 = R.invert(raceResultsByFirstName);</div><div class="line">console.log(invert1); // // &#123; &apos;alice&apos;: [&apos;first&apos;, &apos;third&apos;], &apos;jake&apos;:[&apos;second&apos;] &#125;</div></pre></td></tr></table></figure>
 </code></pre><h5 id="7-4-对象的运算（prop、map、mapObjIndexed、forEachObjIndexed、merge、mergeWith、eqProps、evolve）"><a href="#7-4-对象的运算（prop、map、mapObjIndexed、forEachObjIndexed、merge、mergeWith、eqProps、evolve）" class="headerlink" title="7.4 对象的运算（prop、map、mapObjIndexed、forEachObjIndexed、merge、mergeWith、eqProps、evolve）"></a>7.4 对象的运算（prop、map、mapObjIndexed、forEachObjIndexed、merge、mergeWith、eqProps、evolve）</h5><pre><code>prop：返回对象的指定属性。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var prop1 = R.prop(&apos;x&apos;)(&#123;x: 100&#125;);</div><div class="line">// console.log(prop1); // 100</div><div class="line">```	</div><div class="line">map：对象的所有属性依次执行某个函数。</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var prop1 = R.prop(&apos;x&apos;)(&#123;x: 100&#125;);</div><div class="line">// console.log(prop1); // 100</div></pre></td></tr></table></figure>
 
-var double = x =&gt; x * 2;
-var map1 = R.map(double)({x: 1, y: 2, z: 3});
-// console.log(map1); // {x: 2, y: 4, z: 6}
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mapObjIndexed：与map类似，但是会额外传入属性名和整个对象。</div></pre></td></tr></table></figure>
+map：对象的所有属性依次执行某个函数。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var double = x =&gt; x * 2;</div><div class="line">var map1 = R.map(double)(&#123;x: 1, y: 2, z: 3&#125;);</div><div class="line">// console.log(map1); // &#123;x: 2, y: 4, z: 6&#125;</div></pre></td></tr></table></figure>
 
-var values = {x: 1, y: 2, z: 3};
-var prependkeyAndDouble = (num, key, obj) =&gt; key + (num * 2);
-var mapObjIndexed1 = R.mapObjIndexed(prependkeyAndDouble)(values);
-// console.log(mapObjIndexed1); // {x: &quot;x2&quot;, y: &quot;y4&quot;, z: &quot;z6&quot;}
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">forEachObjIndexed：每个属性依次执行给定函数，给定函数的参数分别是属性值和属性名，返回原对象。</div></pre></td></tr></table></figure>
+mapObjIndexed：与map类似，但是会额外传入属性名和整个对象。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var values = &#123;x: 1, y: 2, z: 3&#125;;</div><div class="line">var prependkeyAndDouble = (num, key, obj) =&gt; key + (num * 2);</div><div class="line">var mapObjIndexed1 = R.mapObjIndexed(prependkeyAndDouble)(values);</div><div class="line">// console.log(mapObjIndexed1); // &#123;x: &quot;x2&quot;, y: &quot;y4&quot;, z: &quot;z6&quot;&#125;</div></pre></td></tr></table></figure>
 
-var printkeyConcatValue = (value, key) =&gt; console.log(key + &apos;:&apos; + value);
-var forEachObjIndexed1 = R.forEachObjIndexed(printkeyConcatValue)({x: 1,y: 2});
-// console.log(forEachObjIndexed1); // {x: 1,y: 2}
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">merge：合并两个对象，如果有同名属性，后面的值会覆盖掉前面的值。</div></pre></td></tr></table></figure>
+forEachObjIndexed：每个属性依次执行给定函数，给定函数的参数分别是属性值和属性名，返回原对象。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var printkeyConcatValue = (value, key) =&gt; console.log(key + &apos;:&apos; + value);</div><div class="line">var forEachObjIndexed1 = R.forEachObjIndexed(printkeyConcatValue)(&#123;x: 1,y: 2&#125;);</div><div class="line">// console.log(forEachObjIndexed1); // &#123;x: 1,y: 2&#125;</div></pre></td></tr></table></figure>
 
-var merge1 = R.merge({&apos;name&apos;: &apos;fred&apos;, &apos;age&apos;: 10})({&apos;age&apos;: 40});
-// console.log(merge1); // {name: &quot;fred&quot;, age: 40}
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mergeWith：合并两个对象，如果有同名属性，会使用指定的函数处理。</div></pre></td></tr></table></figure>
+merge：合并两个对象，如果有同名属性，后面的值会覆盖掉前面的值。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var merge1 = R.merge(&#123;&apos;name&apos;: &apos;fred&apos;, &apos;age&apos;: 10&#125;)(&#123;&apos;age&apos;: 40&#125;);</div><div class="line">// console.log(merge1); // &#123;name: &quot;fred&quot;, age: 40&#125;</div></pre></td></tr></table></figure>
 
-var mergeWith1 = R.mergeWith(
-        R.concat,
-        {a: true, values: [10, 20]},
-        {b: true, values: [15, 35]}
-    );
-// console.log(mergeWith1); // { a: true, b: true, values: [10, 20, 15, 35] }
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">eqProps：比较两个对象的指定属性是否相等。</div></pre></td></tr></table></figure>
+mergeWith：合并两个对象，如果有同名属性，会使用指定的函数处理。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var mergeWith1 = R.mergeWith(</div><div class="line">		R.concat,</div><div class="line">		&#123;a: true, values: [10, 20]&#125;,</div><div class="line">		&#123;b: true, values: [15, 35]&#125;</div><div class="line">	);</div><div class="line">// console.log(mergeWith1); // &#123; a: true, b: true, values: [10, 20, 15, 35] &#125;</div></pre></td></tr></table></figure>
 
-var o1 = {a: 1, b: 2, c: 3, d: 4};
-var o2 = {a: 10, b: 20, c: 3, d: 40};
-var eqProps1 = R.eqProps(&apos;c&apos;, o1)(o2);
-// console.log(eqProps1); //true
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">evolve：对象的属性分别经过一组函数的处理，返回一个新对象。</div></pre></td></tr></table></figure>
+eqProps：比较两个对象的指定属性是否相等。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var o1 = &#123;a: 1, b: 2, c: 3, d: 4&#125;;</div><div class="line">var o2 = &#123;a: 10, b: 20, c: 3, d: 40&#125;;</div><div class="line">var eqProps1 = R.eqProps(&apos;c&apos;, o1)(o2);</div><div class="line">// console.log(eqProps1); //true</div></pre></td></tr></table></figure>
 
-var tomato = {
-    firstName: &apos;Tomato&apos;,
-    data: {elapsed: 100, remaining: 1400},
-    id: 123
-};
-var transformations = {
-    firstName: R.trim,
-    lastName: R.trim,
-    data: {elapsed: R.add(1), remaining: R.add(-1)}
-};
-var evolve1 = R.evolve(transformations)(tomato);
-// console.log(evolve1);
-// {
-//   firstName: &apos;Tomato&apos;,
-//   data: {elapsed: 101, remaining: 1399},
-//   id: 123
-// }
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">#####	7.5 复合对象（path、pathEq、assocPath）</div><div class="line">	path：取出数组中指定路径的值。</div></pre></td></tr></table></figure>
+evolve：对象的属性分别经过一组函数的处理，返回一个新对象。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">var tomato = &#123;</div><div class="line">	firstName: &apos;Tomato&apos;,</div><div class="line">	data: &#123;elapsed: 100, remaining: 1400&#125;,</div><div class="line">	id: 123</div><div class="line">&#125;;</div><div class="line">var transformations = &#123;</div><div class="line">	firstName: R.trim,</div><div class="line">	lastName: R.trim,</div><div class="line">	data: &#123;elapsed: R.add(1), remaining: R.add(-1)&#125;</div><div class="line">&#125;;</div><div class="line">var evolve1 = R.evolve(transformations)(tomato);</div><div class="line">// console.log(evolve1);</div><div class="line">// &#123;</div><div class="line">//   firstName: &apos;Tomato&apos;,</div><div class="line">//   data: &#123;elapsed: 101, remaining: 1399&#125;,</div><div class="line">//   id: 123</div><div class="line">// &#125;</div></pre></td></tr></table></figure>
+</code></pre><h5 id="7-5-复合对象（path、pathEq、assocPath）"><a href="#7-5-复合对象（path、pathEq、assocPath）" class="headerlink" title="7.5 复合对象（path、pathEq、assocPath）"></a>7.5 复合对象（path、pathEq、assocPath）</h5><pre><code>path：取出数组中指定路径的值。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var path1 = R.path([&apos;a&apos;, &apos;b&apos;], &#123;a: &#123;b: 2&#125;&#125;);</div><div class="line">// console.log(path1); // 2</div></pre></td></tr></table></figure>
 
-var path1 = R.path([&apos;a&apos;, &apos;b&apos;], {a: {b: 2}});
-// console.log(path1); // 2
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pathEq：返回指定路径的值符合条件的成员。</div></pre></td></tr></table></figure>
+pathEq：返回指定路径的值符合条件的成员。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var user1 = &#123;address: &#123;zipCode: 11111&#125;&#125;;</div><div class="line">var user2 = &#123;address: &#123;zipCode: 22222&#125;&#125;;</div><div class="line">var user3 = &#123;address: &#123;zipCode: 33333&#125;&#125;;</div><div class="line">var users = [user1, user2, user3];</div><div class="line">var isFamous = R.pathEq([&apos;address&apos;, &apos;zipCode&apos;], 11111);</div><div class="line">var pathEq1 = R.filter(isFamous)(users);</div><div class="line">// console.log(pathEq1); // [user1]</div></pre></td></tr></table></figure>
 
-var user1 = {address: {zipCode: 11111}};
-var user2 = {address: {zipCode: 22222}};
-var user3 = {address: {zipCode: 33333}};
-var users = [user1, user2, user3];
-var isFamous = R.pathEq([&apos;address&apos;, &apos;zipCode&apos;], 11111);
-var pathEq1 = R.filter(isFamous)(users);
-// console.log(pathEq1); // [user1]
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">assocPath：添加或改写指定路径的属性的值。</div></pre></td></tr></table></figure>
-
-var assocPath1 = R.assocPath([&apos;a&apos;, &apos;b&apos;, &apos;c&apos;], 42)({a: {b: {c: 0}}});
-// console.log(assocPath1); // {a: {b: {c: 42}}}
-```
+assocPath：添加或改写指定路径的属性的值。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var assocPath1 = R.assocPath([&apos;a&apos;, &apos;b&apos;, &apos;c&apos;], 42)(&#123;a: &#123;b: &#123;c: 0&#125;&#125;&#125;);</div><div class="line">// console.log(assocPath1); // &#123;a: &#123;b: &#123;c: 42&#125;&#125;&#125;</div></pre></td></tr></table></figure>
 </code></pre>]]></content>
     
     <summary type="html">
@@ -451,9 +410,9 @@ var assocPath1 = R.assocPath([&apos;a&apos;, &apos;b&apos;, &apos;c&apos;], 42)(
       <category term="函数式编程" scheme="https://fanerge.github.io/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
-    
       <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
+    
+      <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
     
       <category term="ramda" scheme="https://fanerge.github.io/tags/ramda/"/>
     
