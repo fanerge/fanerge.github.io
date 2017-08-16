@@ -282,6 +282,170 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/08/16/ramda库的使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/08/16/ramda库的使用/" itemprop="url">
+                  ramda库的使用
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-16T20:24:01+08:00">
+                2017-08-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
+                    <span itemprop="name">函数式编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/16/ramda库的使用/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/08/16/ramda库的使用/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://github.com/fanerge/Ramda-study/blob/master/ramda/js/pointfree.js" target="_blank" rel="external">学习源代码地址</a></p>
+<h4 id="了解Pointfree的概念"><a href="#了解Pointfree的概念" class="headerlink" title="了解Pointfree的概念"></a>了解Pointfree的概念</h4><pre><code>概念：fn = R.pipe(f1, f2, f3);
+可以把数据处理的过程，定义成一种与参数无关的合成运算。
+**不使用所要处理的值，只合成运算过程。**
+</code></pre><h5 id="一些小例子"><a href="#一些小例子" class="headerlink" title="一些小例子"></a>一些小例子</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">// pointfree例子</div><div class="line">var addOne = x =&gt; x + 1;</div><div class="line">var square = x =&gt; x * x;</div><div class="line">var addOneThenSquare = R.pipe(square, addOne);</div><div class="line">var pointfree1 = addOneThenSquare(3);</div><div class="line">console.log(pointfree1); // 10</div><div class="line">// addOneThenSquare是一个合成函数。定义它的时候，根本不需要提到要处理的值，这就是 Pointfree。</div><div class="line"></div><div class="line">var prop = (p, obj) =&gt; obj[p]; // 封装了读取操作，它需要两个参数p（属性名）和obj（对象）。</div><div class="line">var propRole = R.curry(prop)(&apos;role&apos;); // 将函数柯里化</div><div class="line">var demo1 = propRole(&#123;role: &apos;fan&apos;&#125;);</div><div class="line">console.log(demo1); // fan</div><div class="line"></div><div class="line">var data = [</div><div class="line">  &#123;name: &apos;张三&apos;, role: &apos;worker&apos;&#125;,</div><div class="line">  &#123;name: &apos;李四&apos;, role: &apos;worker&apos;&#125;,</div><div class="line">  &#123;name: &apos;王五&apos;, role: &apos;manager&apos;&#125;,</div><div class="line">];</div><div class="line">var isWorker = r =&gt; r === &apos;worker&apos;;</div><div class="line">var getWorkers = R.filter(R.pipe(R.prop(&apos;role&apos;), isWorker));</div><div class="line">var demo2 = getWorkers(data);</div><div class="line">// console.log(demo2); </div><div class="line">// [</div><div class="line">//   &#123;&quot;name&quot;: &quot;张三&quot;, &quot;role&quot;: &quot;worker&quot;&#125;,</div><div class="line">//   &#123;&quot;name&quot;: &quot;李四&quot;, &quot;role&quot;: &quot;worker&quot;&#125;</div><div class="line">// ]</div></pre></td></tr></table></figure>
+</code></pre><h5 id="Pointfree示例一"><a href="#Pointfree示例一" class="headerlink" title="Pointfree示例一"></a>Pointfree示例一</h5><pre><code>**求下面字符串，请问其中最长的单词有多少个字符？**
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">var str = &apos;Lorem ipsum dolor sit amet consectetur adipiscing elit&apos;;</div><div class="line">// 以空格分割单词</div><div class="line">var splitBySpace = s =&gt; s.split(&apos; &apos;);</div><div class="line">// 获得每个单词的长度</div><div class="line">var getLength = w =&gt; w.length;</div><div class="line">// 单词数组转化为单词长度的数组</div><div class="line">var getLengArr = arr =&gt; R.map(getLength, arr);</div><div class="line">// 返回较大的数字</div><div class="line">var getBiggerNumber = (a, b) =&gt; a &gt; b ? a : b;</div><div class="line">// 返回最大的一个数字</div><div class="line">var findBiggestNumber = arr =&gt; R.reduce(getBiggerNumber, 0, arr);</div><div class="line"></div><div class="line">var getLongestWordLength = R.pipe(  </div><div class="line">	splitBySpace,</div><div class="line">	getLengArr,</div><div class="line">	findBiggestNumber</div><div class="line">  );</div><div class="line">var demo3 = getLongestWordLength(str);</div><div class="line">console.log(demo3); // 11</div><div class="line"></div><div class="line">// 使用ramda库</div><div class="line">var getLongestWordLength = R.pipe(</div><div class="line">	R.split(&apos; &apos;),</div><div class="line">	R.map(R.length),</div><div class="line">	R.reduce(R.max, 0)</div><div class="line">  );</div><div class="line">var demo3 = getLongestWordLength(str);</div><div class="line">// console.log(demo3); // 11</div></pre></td></tr></table></figure>
+</code></pre><h4 id="Pointfree-示例二"><a href="#Pointfree-示例二" class="headerlink" title="Pointfree 示例二"></a>Pointfree 示例二</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div></pre></td><td class="code"><pre><div class="line">// 下面是一段服务器返回的 JSON 数据。</div><div class="line">var data = &#123;</div><div class="line">	result: &quot;SUCCESS&quot;,</div><div class="line">	interfaceVersion: &quot;1.0.3&quot;,</div><div class="line">	requested: &quot;10/17/2013 15:31:20&quot;,</div><div class="line">	lastUpdated: &quot;10/16/2013 10:52:39&quot;,</div><div class="line">	tasks: [</div><div class="line">		&#123;id: 104, complete: false,            priority: &quot;high&quot;,</div><div class="line">				  dueDate: &quot;2013-11-29&quot;,      username: &quot;Scott&quot;,</div><div class="line">				  title: &quot;Do something&quot;,      created: &quot;9/22/2013&quot;&#125;,</div><div class="line">		&#123;id: 105, complete: false,            priority: &quot;medium&quot;,</div><div class="line">				  dueDate: &quot;2013-11-22&quot;,      username: &quot;Lena&quot;,</div><div class="line">				  title: &quot;Do something else&quot;, created: &quot;9/22/2013&quot;&#125;,</div><div class="line">		&#123;id: 107, complete: true,             priority: &quot;high&quot;,</div><div class="line">				  dueDate: &quot;2013-11-22&quot;,      username: &quot;Mike&quot;,</div><div class="line">				  title: &quot;Fix the foo&quot;,       created: &quot;9/22/2013&quot;&#125;,</div><div class="line">		&#123;id: 108, complete: false,            priority: &quot;low&quot;,</div><div class="line">				  dueDate: &quot;2013-11-15&quot;,      username: &quot;Punam&quot;,</div><div class="line">				  title: &quot;Adjust the bar&quot;,    created: &quot;9/25/2013&quot;&#125;,</div><div class="line">		&#123;id: 110, complete: false,            priority: &quot;medium&quot;,</div><div class="line">				  dueDate: &quot;2013-11-15&quot;,      username: &quot;Scott&quot;,</div><div class="line">				  title: &quot;Rename everything&quot;, created: &quot;10/2/2013&quot;&#125;,</div><div class="line">		&#123;id: 112, complete: true,             priority: &quot;high&quot;,</div><div class="line">				  dueDate: &quot;2013-11-27&quot;,      username: &quot;Lena&quot;,</div><div class="line">				  title: &quot;Alter all quuxes&quot;,  created: &quot;10/5/2013&quot;&#125;</div><div class="line">	]</div><div class="line">&#125;;</div><div class="line"></div><div class="line">var fetchData = function (data) &#123;</div><div class="line">  return Promise.resolve(data);</div><div class="line">&#125;;</div><div class="line">// 提取 tasks 属性</div><div class="line">var SelectTasks = R.prop(&apos;tasks&apos;);</div><div class="line"></div><div class="line">// 过滤出指定的用户</div><div class="line">var filterMember = member =&gt; R.filter(</div><div class="line">  R.propEq(&apos;username&apos;, member)</div><div class="line">  );</div><div class="line"></div><div class="line">// 排除已经完成的任务</div><div class="line">var excludeCompletedTasks = R.reject(R.propEq(&apos;complete&apos;, true));</div><div class="line"></div><div class="line">// 选取指定属性</div><div class="line">var selectFields = R.map(</div><div class="line">	R.pick([&apos;id&apos;, &apos;dueDate&apos;, &apos;title&apos;, &apos;priority&apos;])</div><div class="line">  );</div><div class="line"></div><div class="line">// 按照到期日期排序</div><div class="line">var sortByDueDate = R.sortBy(R.prop(&apos;dueDate&apos;));</div><div class="line"></div><div class="line">// 合成函数</div><div class="line">var getIncompleteTaskSummaries = function (membername) &#123;</div><div class="line">  return fetchData(data)</div><div class="line">  .then(R.prop(&apos;tasks&apos;))</div><div class="line">  .then(R.filter(R.propEq(&apos;username&apos;, membername)))</div><div class="line">  .then(R.reject(R.propEq(&apos;complete&apos;, true)))</div><div class="line">  .then(R.map(R.pick([&apos;id&apos;, &apos;dueData&apos;, &apos;title&apos;, &apos;priority&apos;])))</div><div class="line">  .then(R.sortBy(R.prop(&apos;dueData&apos;)));</div><div class="line">&#125;;</div><div class="line"></div><div class="line">var scottList = getIncompleteTaskSummaries(&apos;Scott&apos;);</div><div class="line">console.log(scottList);	</div><div class="line">[[object Object] &#123;</div><div class="line">  dueDate: &quot;2013-11-15&quot;,</div><div class="line">  id: 110,</div><div class="line">  priority: &quot;medium&quot;,</div><div class="line">  title: &quot;Rename everything&quot;</div><div class="line">&#125;, [object Object] &#123;</div><div class="line">  dueDate: &quot;2013-11-29&quot;,</div><div class="line">  id: 104,</div><div class="line">  priority: &quot;high&quot;,</div><div class="line">  title: &quot;Do something&quot;</div><div class="line">&#125;]</div></pre></td></tr></table></figure>
+</code></pre><blockquote>
+<p>   参考文档：<br><a href="http://www.ruanyifeng.com/blog/2017/03/pointfree.html" target="_blank" rel="external">阮老师–Pointfree 编程风格指南</a><br><a href="http://ramda.cn/" target="_blank" rel="external">Ramda 中文</a>    </p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/08/13/Ramda库学习/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -392,7 +556,7 @@
       
         
           
-            <p>经过4个晚上的学习，了解了ramda库120多个api的用法，下一步继续深入学习函数式编程。<br>继续学习js函数式编程，这里贴出阮老师总结的Ramda的优点：</p>
+            <p><a href="https://github.com/fanerge/Ramda-study.git" target="_blank" rel="external">学习源代码</a><br>经过4个晚上的学习，了解了ramda库120多个api的用法，下一步继续深入学习函数式编程。<br>继续学习js函数式编程，这里贴出阮老师总结的Ramda的优点：</p>
 <pre><code>1.    Ramda 的数据一律放在最后一个参数，理念是&quot;function first，data last&quot;。
 2.    所有方法都支持柯里化。
 </code></pre><h4 id="一、比较运算（gt、gte、lt、lte、eauals、eqBy）"><a href="#一、比较运算（gt、gte、lt、lte、eauals、eqBy）" class="headerlink" title="一、比较运算（gt、gte、lt、lte、eauals、eqBy）"></a>一、比较运算（gt、gte、lt、lte、eauals、eqBy）</h4><pre><code>gt：判断第一个参数是否大于第二个参数。
@@ -2267,171 +2431,6 @@ session对象
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/08/03/js函数式编程-读书笔记-3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/08/03/js函数式编程-读书笔记-3/" itemprop="url">
-                  js函数式编程-高阶函数
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-03T20:01:15+08:00">
-                2017-08-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
-                    <span itemprop="name">函数式编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/08/03/js函数式编程-读书笔记-3/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/08/03/js函数式编程-读书笔记-3/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸<strong>函数式编程</strong>。<br><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
-<h3 id="高阶函数"><a href="#高阶函数" class="headerlink" title="高阶函数"></a>高阶函数</h3><h4 id="以其他函数为参数的函数"><a href="#以其他函数为参数的函数" class="headerlink" title="以其他函数为参数的函数"></a>以其他函数为参数的函数</h4><pre><code>如：_.map、_.reduce、_.filter等函数
-关于传递函数的思考：max、finder、best
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">*max 集合中选择最大值的项*</div><div class="line">var dd = _.max([1, 2, 3, 4, 5])</div><div class="line">console.log(dd) // 5</div><div class="line">var people = [&#123;name: &apos;fed&apos;, age: 45&#125;, &#123;name: &apos;fan&apos;, age: 25&#125;];</div><div class="line">var dd = _.max(people, function (item) &#123;</div><div class="line">	return item.age;</div><div class="line">&#125;);</div><div class="line">console.log(dd) // &#123;name: &quot;fed&quot;, age: 45&#125;</div><div class="line"></div><div class="line">*finder *</div><div class="line">function finder(valueFun, bestFun, coll) &#123;</div><div class="line">	return _.reduce(coll, function (best, current) &#123;</div><div class="line">		var bestValue = valueFun(best);</div><div class="line">		var currentValue = valueFun(current);</div><div class="line">		return (bestValue === bestFun(bestValue, currentValue)) ? best : current; </div><div class="line">	&#125;);</div><div class="line">&#125;</div><div class="line">var dd = finder(_.identity, Math.max, [1, 2, 3, 4, 5]);</div><div class="line">console.log(dd) // 5</div><div class="line"></div><div class="line">*best *</div><div class="line">function best(fun, coll)&#123;</div><div class="line">	return _.reduce(coll, function (x, y) &#123;</div><div class="line">		return fun(x, y) ? x : y;	</div><div class="line">	&#125;);	</div><div class="line">&#125;</div><div class="line">var dd = best(function (x, y) &#123;</div><div class="line">	return x &gt; y;</div><div class="line">&#125;, [1, 2, 3, 4]);</div><div class="line">console.log(dd)// 4</div></pre></td></tr></table></figure>
-
-关于传递函数的更多思考：重复、反复和条件迭代
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">function repeat(times, VALUE) &#123;</div><div class="line">	return _.map(_.range(times), function () &#123; return VALUE; &#125;)</div><div class="line">&#125;</div><div class="line">var dd = repeat(4, &apos;Major&apos;);</div><div class="line">console.log(dd) // [&apos;Major&apos;,&apos;Major&apos;,&apos;Major&apos;,&apos;Major&apos;]</div><div class="line"></div><div class="line">// 使用函数，而不是值</div><div class="line">function repeatedly(times, fun) &#123;</div><div class="line">	return _.map(_.range(times), fun);</div><div class="line">&#125;</div><div class="line">var dd = repeatedly(4, function () &#123;</div><div class="line">	return Math.floor((Math.random()*10) + 1)</div><div class="line">&#125;);</div><div class="line">console.log(dd)</div><div class="line"></div><div class="line">// 再次强调，&quot;使用函数，而不是值&quot;</div><div class="line">function iterateUntil(fun, check, init) &#123;</div><div class="line">	let ret = [];</div><div class="line">	let result = fun(init);</div><div class="line"></div><div class="line">	while (check(result))&#123;</div><div class="line">		ret.push(result);</div><div class="line">		result = fun(result);</div><div class="line">	&#125;</div><div class="line">	return ret;</div><div class="line">&#125;</div><div class="line"></div><div class="line">let dd = iterateUntil(function (n)&#123; return n+n&#125;, function (n) &#123; return n &lt;= 1024&#125;, 1)</div><div class="line">console.log(dd) // [2, 4, 8, 16, ...]</div></pre></td></tr></table></figure>
-</code></pre><h4 id="返回其他函数的函数"><a href="#返回其他函数的函数" class="headerlink" title="返回其他函数的函数"></a>返回其他函数的函数</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">function always(VALUE)&#123;</div><div class="line">	return function ()&#123;</div><div class="line">		return VALUE;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">var f = always(function () &#123;&#125;)</div><div class="line">var g = always(function () &#123;&#125;)</div><div class="line">console.log(f() === g()) // false</div><div class="line"></div><div class="line">function invoker(NAME, METHOD)&#123;</div><div class="line">	return function(target)&#123;</div><div class="line">		if (!existy(target)) fail(&quot;Must provide a target&quot;);</div><div class="line">		let targetMethod = target[NAME];</div><div class="line">		let args = _.rest(arguments);</div><div class="line">		return doWhen((existy(targetMethod) &amp;&amp; METHOD === targetMethod), function () &#123;</div><div class="line">			return targetMethod.apply(target, args);</div><div class="line">		&#125;)</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">let rev = invoker(&apos;reverse&apos;, Array.prototype.reverse);</div><div class="line">console.log(_.map([[1, 2, 3]], rev))</div><div class="line"></div><div class="line">// 捕获增量值</div><div class="line">function makeUniqueStringFunction(start) &#123;</div><div class="line">	let COUNTER = start;</div><div class="line">	return function(prefix) &#123;</div><div class="line">		return [prefix, COUNTER++].join(&apos;&apos;);</div><div class="line">	&#125;;</div><div class="line">&#125;</div><div class="line">let dd = makeUniqueStringFunction(0);</div><div class="line">let d1 = dd(&apos;fanerge&apos;)</div><div class="line">let d2 = dd(&apos;fanerge&apos;)</div><div class="line">console.log(d1, d2); // fanerge0 fanerge1</div></pre></td></tr></table></figure>
-</code></pre><h4 id="整合：对象校验器"><a href="#整合：对象校验器" class="headerlink" title="整合：对象校验器"></a>整合：对象校验器</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">function aMap(obj) &#123;</div><div class="line">	return _.isObject(obj);</div><div class="line">&#125;</div><div class="line">function hasKeys() &#123;</div><div class="line">	let KEYS = _.toArray(arguments);</div><div class="line">	let fun = function(obj)&#123;</div><div class="line">		return _.every(KEYS, function (k)&#123;</div><div class="line">			return _.has(obj, k);</div><div class="line">		&#125;)</div><div class="line">	&#125;;</div><div class="line">	fun.message = cat([&apos;Must have values for keys:&apos;], KEYS).join(&quot; &quot;);</div><div class="line">	return fun;</div><div class="line">&#125;</div><div class="line">let checkCommand = checker(validator(&quot;Must be a map&quot;, aMap), hasKeys(&apos;msg&apos;, &apos;type&apos;));</div><div class="line">console.log(checkCommand(&#123;msg: &apos;blah&apos;, type: &apos;display&apos;&#125;)); //[]</div></pre></td></tr></table></figure>
-</code></pre><blockquote>
-<p>   源代码仓库<br>    <a href="https://github.com/fanerge/Functional-reading-notes" target="_blank" rel="external">函数式编程-读书笔记</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2481,7 +2480,7 @@ session对象
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
