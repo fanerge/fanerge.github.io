@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fanerge.github.io/"/>
-  <updated>2017-08-21T15:25:23.906Z</updated>
+  <updated>2017-08-23T12:12:04.685Z</updated>
   <id>https://fanerge.github.io/</id>
   
   <author>
@@ -16,11 +16,144 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>ramda部分应用和声明式编程</title>
+    <title>ramda运用</title>
+    <link href="https://fanerge.github.io/2017/08/23/ramda%E8%BF%90%E7%94%A8-3/"/>
+    <id>https://fanerge.github.io/2017/08/23/ramda运用-3/</id>
+    <published>2017-08-23T12:09:42.000Z</published>
+    <updated>2017-08-23T12:12:04.685Z</updated>
+    
+    <content type="html"><![CDATA[<p>继续函数式编程的学习。</p>
+<h4 id="数据不变性和数组"><a href="#数据不变性和数组" class="headerlink" title="数据不变性和数组"></a>数据不变性和数组</h4><h5 id="读取数组元素"><a href="#读取数组元素" class="headerlink" title="读取数组元素"></a>读取数组元素</h5><pre><code>nth -- 类型于对象prop
+slice -- 类似于对象pick
+contains -- 类似于对象的has
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">const numbers = [10, 20, 30, 40, 50, 60]</div><div class="line">R.nth(3, numbers) // =&gt; 40  (0-based indexing)</div><div class="line">R.nth(-2, numbers) // =&gt; 50 (negative numbers start from the right)</div><div class="line">R.slice(2, 5, numbers) // =&gt; [30, 40, 50] (see below)</div><div class="line">R.contains(20, numbers) // =&gt; true</div></pre></td></tr></table></figure>
+
+nth(0) === head
+nth(length-1) === last
+tail -- 访问除首个元素之外的所有元素的函数
+init -- 除最后一个元素之外的所有元素的方法
+take(N) -- 前 N 个元素
+takeLast(N) -- 后 N 个元素
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">const numbers = [10, 20, 30, 40, 50, 60]</div><div class="line">R.head(numbers) // =&gt; 10</div><div class="line">R.tail(numbers) // =&gt; [20, 30, 40, 50, 60]</div><div class="line">R.last(numbers) // =&gt; 60</div><div class="line">R.init(numbers) // =&gt; [10, 20, 30, 40, 50]</div><div class="line">R.take(3, numbers) // =&gt; [10, 20, 30]</div><div class="line">R.takeLast(3, numbers) // =&gt; [40, 50, 60]</div></pre></td></tr></table></figure>
+</code></pre><h5 id="增、删、改数组元素"><a href="#增、删、改数组元素" class="headerlink" title="增、删、改数组元素"></a>增、删、改数组元素</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">insert：将元素插入到 list 指定索引处。</div><div class="line">R.insert(2, &apos;x&apos;, [1,2,3,4]); //=&gt; [1,2,&apos;x&apos;,3,4]</div><div class="line">update：替换数组中指定索引处的值。</div><div class="line">R.update(1, 11, [0, 1, 2]);     //=&gt; [0, 11, 2]</div><div class="line">append：在列表末尾拼接一个元素。</div><div class="line">R.append(&apos;tests&apos;, [&apos;write&apos;, &apos;more&apos;]); //=&gt; [&apos;write&apos;, &apos;more&apos;, &apos;tests&apos;]</div><div class="line">prepend：在列表头部之前拼接一个元素。</div><div class="line">R.prepend(&apos;fee&apos;, [&apos;fi&apos;, &apos;fo&apos;, &apos;fum&apos;]); //=&gt; [&apos;fee&apos;, &apos;fi&apos;, &apos;fo&apos;, &apos;fum&apos;]</div><div class="line">concat：连接列表或字符串。</div><div class="line">R.concat([4, 5, 6], [1, 2, 3]); //=&gt; [4, 5, 6, 1, 2, 3]</div><div class="line">// 反转数组拼接</div><div class="line">const concatAfter = R.flip(R.concat)</div><div class="line">remove：删除列表中从 start 开始的 count 个元素。</div><div class="line">R.remove(2, 3, [1,2,3,4,5,6,7,8]); //=&gt; [1,2,6,7,8]</div><div class="line">without：求第二个列表中，未包含在第一个列表中的任一元素的集合。</div><div class="line">R.without([1, 2], [1, 2, 1, 3, 4]); //=&gt; [3, 4]</div><div class="line">drop：删除给定 list，string 或者 transducer/transformer（或者具有 drop 方法的对象）的前 n 个元素。</div><div class="line">R.drop(1, [&apos;foo&apos;, &apos;bar&apos;, &apos;baz&apos;]); //=&gt; [&apos;bar&apos;, &apos;baz&apos;]</div><div class="line">dropLast：删除 &quot;list&quot; 末尾的 n 个元素。</div><div class="line">R.dropLast(1, [&apos;foo&apos;, &apos;bar&apos;, &apos;baz&apos;]); //=&gt; [&apos;foo&apos;, &apos;bar&apos;]</div></pre></td></tr></table></figure>
+</code></pre><h5 id="变换元素"><a href="#变换元素" class="headerlink" title="变换元素"></a>变换元素</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">adjust：将数组中指定索引处的值替换为经函数变换的值。</div><div class="line">R.adjust(R.add(10), 1, [1, 2, 3]);     //=&gt; [1, 12, 3]</div></pre></td></tr></table></figure>
+</code></pre><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><pre><code>本节学习了：pointfree(无参数风格编程) 
+对象属性：读取(prop、pick、has、path、propOr、pathOr、keys、values、)
+增删改查(assoc、assocPath、dissoc、dissocPath、omit)
+属性转换(evolve)
+合并对象(merge)
+</code></pre><blockquote>
+<p>   参考文献：<br>    <a href="http://www.cnblogs.com/whitewolf/p/javascript-functional-programming-Ramdajs.html" target="_blank" rel="external">JavaScript函数编程-Ramdajs</a><br>    <a href="https://zhuanlan.zhihu.com/p/27446536" target="_blank" rel="external">Thinking in Ramda系列文章</a></p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;继续函数式编程的学习。&lt;/p&gt;
+&lt;h4 id=&quot;数据不变性和数组&quot;&gt;&lt;a href=&quot;#数据不变性和数组&quot; class=&quot;headerlink&quot; title=&quot;数据不变性和数组&quot;&gt;&lt;/a&gt;数据不变性和数组&lt;/h4&gt;&lt;h5 id=&quot;读取数组元素&quot;&gt;&lt;a href=&quot;#读取数组
+    
+    </summary>
+    
+      <category term="函数式编程" scheme="https://fanerge.github.io/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
+    
+      <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
+    
+      <category term="ramda" scheme="https://fanerge.github.io/tags/ramda/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ramda运用</title>
+    <link href="https://fanerge.github.io/2017/08/22/ramda%E8%BF%90%E7%94%A8-2/"/>
+    <id>https://fanerge.github.io/2017/08/22/ramda运用-2/</id>
+    <published>2017-08-22T11:36:23.000Z</published>
+    <updated>2017-08-23T12:07:54.225Z</updated>
+    
+    <content type="html"><![CDATA[<p>继续函数式编程的学习。</p>
+<h4 id="Pointfree-风格（无参数风格）"><a href="#Pointfree-风格（无参数风格）" class="headerlink" title="Pointfree 风格（无参数风格）"></a>Pointfree 风格（无参数风格）</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var forever21 = age =&gt; R.ifElse(R.gte(R.__, 21), R.always(21), R.inc)(age);</div><div class="line">// console.log(forever21(23)); // 21</div><div class="line"></div><div class="line">// pointfree风格的</div><div class="line">var forever21 = R.ifElse(R.gte(R.__, 21), R.always(21), R.inc);</div><div class="line">// console.log(forever21(21));</div><div class="line">// 我们刚刚让 age 消失了。这就是 Pointfree 风格。注意，这两个版本所做的事情完全一样。我们仍然返回一个接受年龄的函数，但并未显示的指定 age 参数。</div></pre></td></tr></table></figure>
+</code></pre><h4 id="多元函数（多参数函数）"><a href="#多元函数（多参数函数）" class="headerlink" title="多元函数（多参数函数）"></a>多元函数（多参数函数）</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">var titlesForYear = R.curry((year, books) =&gt; &#123;</div><div class="line">  R.pipe(</div><div class="line">	R.filter(publishedInYear(year)),</div><div class="line">	R.map(book =&gt; book.title)    </div><div class="line">  )(books);</div><div class="line">&#125;);</div><div class="line">// console.log(titlesForYear(2012)(books));</div><div class="line"></div><div class="line">var titlesForYear = year =&gt; &#123;</div><div class="line">  R.pipe(</div><div class="line">	R.filter(publishedInYear(year)),</div><div class="line">	R.map(book =&gt; book.title)</div><div class="line">  )</div><div class="line">&#125;;</div><div class="line">console.log(titlesForYear(2012));</div></pre></td></tr></table></figure>
+</code></pre><h4 id="重构为-pointfree-风格的代码"><a href="#重构为-pointfree-风格的代码" class="headerlink" title="重构为 pointfree 风格的代码"></a>重构为 pointfree 风格的代码</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">// 改写18岁投票系统</div><div class="line">const wasBornInCountry = person =&gt; person.birthCountry === OUR_COUNTRY</div><div class="line">const wasNaturalized = person =&gt; Boolean(person.naturalizationDate)</div><div class="line">const isOver18 = person =&gt; person.age &gt;= 18</div><div class="line">const isCitizen = person =&gt; wasBornInCountry(person) || wasNaturalized(person)</div><div class="line">const isEligibleToVote = person =&gt; isOver18(person) &amp;&amp; isCitizen(person)</div><div class="line"></div><div class="line">const isEligibleToVote = person =&gt; both(isOver18, isCitizen)(person)</div><div class="line">const isCitizen = either(wasBornInCountry, wasNaturalized)</div><div class="line">const isEligibleToVote = both(isOver18, isCitizen)</div></pre></td></tr></table></figure>
+</code></pre><h4 id="读取对象属性"><a href="#读取对象属性" class="headerlink" title="读取对象属性"></a>读取对象属性</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">const wasBornInCountry = person =&gt; person.birthCountry === OUR_COUNTRY</div><div class="line">const wasNaturalized = person =&gt; Boolean(person.naturalizationDate)</div><div class="line">const isOver18 = person =&gt; person.age &gt;= 18</div><div class="line">const isCitizen = either(wasBornInCountry, wasNaturalized)</div><div class="line">const isEligibleToVote = both(isOver18, isCitizen)</div><div class="line"></div><div class="line">// 改写为</div><div class="line">const wasBornInCountry = person =&gt; equals(person.birthCountry, OUR_COUNTRY)</div><div class="line">const wasNaturalized = person =&gt; Boolean(person.naturalizationDate)</div><div class="line">const isOver18 = person =&gt; gte(person.age, 18)</div></pre></td></tr></table></figure>
+</code></pre><h5 id="prop"><a href="#prop" class="headerlink" title="prop"></a>prop</h5><pre><code>定义：取出对象中指定属性的值。如果不存在，则返回 undefined。
+R.prop(&apos;x&apos;, {x: 100}); //=&gt; 100
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var wasBornInCountry = R.compose(R.equals(&apos;CHINA&apos;), R.prop(&apos;birthCountry&apos;))</div><div class="line">var wasNaturalized = R.compose(Boolean, R.prop(&apos;naturalizationDate&apos;))</div><div class="line">var isOver18 = R.compose(R.gte(R.__, 18), R.prop(&apos;age&apos;))</div><div class="line">console.log(R.both(wasBornInCountry, isOver18)(person1)); // true</div></pre></td></tr></table></figure>
+</code></pre><h5 id="pick"><a href="#pick" class="headerlink" title="pick"></a>pick</h5><pre><code>定义：返回对象的部分拷贝，其中仅包含指定键对应的属性。如果某个键不存在，则忽略该属性。
+R.pick([&apos;a&apos;, &apos;d&apos;], {a: 1, b: 2, c: 3, d: 4}); //=&gt; {a: 1, d: 4}
+</code></pre><h5 id="has-hasIn"><a href="#has-hasIn" class="headerlink" title="has/hasIn"></a>has/hasIn</h5><pre><code>has定义：如果对象自身含有指定的属性，则返回 true；否则返回 false。
+R.has(&apos;name&apos;)({name: &apos;alice&apos;});
+hasIn定义：如果对象自身或其原型链上含有指定的属性，则返回 true；否则返回 false。
+</code></pre><h5 id="path"><a href="#path" class="headerlink" title="path"></a>path</h5><pre><code>定义：取出给定路径上的值。
+R.path([&apos;a&apos;, &apos;b&apos;], {a: {b: 2}}); //=&gt; 2
+</code></pre><h5 id="propOr-pathOr"><a href="#propOr-pathOr" class="headerlink" title="propOr / pathOr"></a>propOr / pathOr</h5><pre><code>propOr定义：propOr 和 pathOr 像是 prop/path 与 defaultTo 的组合。如果在目标对象中找不到属性或路径的值，它们允许你提供默认值
+propOr(&apos;&lt;Unnamed&gt;&apos;, &apos;name&apos;, person);
+</code></pre><h5 id="keys-values"><a href="#keys-values" class="headerlink" title="keys / values"></a>keys / values</h5><pre><code>keys 返回一个包含对象中所有属性名称的数组，values 返回这些属性的值组成的数组。
+</code></pre><h5 id="对属性增、删、改、查"><a href="#对属性增、删、改、查" class="headerlink" title="对属性增、删、改、查"></a>对属性增、删、改、查</h5><pre><code>···    
+assoc/assocPath
+assoc：浅复制对象，然后设置或覆盖对象的指定属性。
+R.assoc(&apos;c&apos;, 3, {a: 1, b: 2}); //=&gt; {a: 1, b: 2, c: 3}
+assocPath：浅复制对象，设置或覆盖即将创建的给定路径所需的节点，并将特定值放在该路径的末端。
+R.assocPath([&apos;a&apos;, &apos;b&apos;, &apos;c&apos;], 42, {a: {b: {c: 0}}}); //=&gt; {a: {b: {c: 42}}}
+
+dissoc/dissocPath/omit
+dissoc：删除对象中指定 prop 属性。
+R.dissoc(&apos;b&apos;, {a: 1, b: 2, c: 3}); //=&gt; {a: 1, c: 3}
+dissocPath：浅复制对象，删除返回对象中指定路径上的属性。
+R.dissocPath([&apos;a&apos;, &apos;b&apos;, &apos;c&apos;], {a: {b: {c: 42}}}); //=&gt; {a: {b: {}}}
+omit：删除对象中给定的 keys 对应的属性。
+R.omit([&apos;a&apos;, &apos;d&apos;], {a: 1, b: 2, c: 3, d: 4}); //=&gt; {b: 2, c: 3}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">####	属性转换</div><div class="line">	evolve：递归地对 object 的属性进行变换，变换方式由 transformation 函数定义。</div></pre></td></tr></table></figure>
+
+var tomato  = {firstName: &apos;  Tomato &apos;, data: {elapsed: 100, remaining: 1400}, id:123};
+var transformations = {
+  firstName: R.trim,
+  lastName: R.trim, // Will not get invoked.
+  data: {elapsed: R.add(1), remaining: R.add(-1)}
+};
+R.evolve(transformations, tomato); //=&gt; {firstName: &apos;Tomato&apos;, data: {elapsed: 101, remaining: 1399}, id:123}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">####	合并对象</div><div class="line">	merge：合并两个对象的自身属性（不包括 prototype 属性）。如果某个 key 在两个对象中都存在，使用后一个对象对应的属性值。</div></pre></td></tr></table></figure>
+
+R.merge({ &apos;name&apos;: &apos;fred&apos;, &apos;age&apos;: 10 }, { &apos;age&apos;: 40 });
+//=&gt; { &apos;name&apos;: &apos;fred&apos;, &apos;age&apos;: 40 }
+// 定义一个反转合并的函数(用前面的同名属性覆盖后面的同名属性)
+ reverseMerge：const reverseMerge = R.flip(merge)
+```
+</code></pre><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><pre><code>本节学习了：pointfree(无参数风格编程) 
+对象属性：读取(prop、pick、has、path、propOr、pathOr、keys、values、)
+增删改查(assoc、assocPath、dissoc、dissocPath、omit)
+属性转换(evolve)
+合并对象(merge)
+</code></pre><blockquote>
+<p>   参考文献：<br>    <a href="http://www.cnblogs.com/whitewolf/p/javascript-functional-programming-Ramdajs.html" target="_blank" rel="external">JavaScript函数编程-Ramdajs</a><br>    <a href="https://zhuanlan.zhihu.com/p/27446536" target="_blank" rel="external">Thinking in Ramda系列文章</a></p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;继续函数式编程的学习。&lt;/p&gt;
+&lt;h4 id=&quot;Pointfree-风格（无参数风格）&quot;&gt;&lt;a href=&quot;#Pointfree-风格（无参数风格）&quot; class=&quot;headerlink&quot; title=&quot;Pointfree 风格（无参数风格）&quot;&gt;&lt;/a&gt;Pointfree 
+    
+    </summary>
+    
+      <category term="函数式编程" scheme="https://fanerge.github.io/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
+    
+      <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
+    
+      <category term="ramda" scheme="https://fanerge.github.io/tags/ramda/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ramda无参数风格编程 (Pointfree Style)和声明式编程</title>
     <link href="https://fanerge.github.io/2017/08/21/ramda%E8%BF%90%E7%94%A8-1/"/>
     <id>https://fanerge.github.io/2017/08/21/ramda运用-1/</id>
     <published>2017-08-21T12:37:43.000Z</published>
-    <updated>2017-08-21T15:25:23.906Z</updated>
+    <updated>2017-08-22T11:38:32.585Z</updated>
     
     <content type="html"><![CDATA[<p>继续函数式编程的学习。</p>
 <h4 id="部分应用（Partial-Application）"><a href="#部分应用（Partial-Application）" class="headerlink" title="部分应用（Partial Application）"></a>部分应用（Partial Application）</h4><pre><code>在上篇文章中，简单的函数链式调用（&quot;pipeline&quot;）时，其中的被调用函数都是一元的（除了首个函数）。但如果要使用多元函数呢？
@@ -1355,83 +1488,6 @@ PWA (Progressive Web Apps) 是一种 Web App 新模型：
       <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
     
       <category term="读书笔记" scheme="https://fanerge.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>js函数式编程-6</title>
-    <link href="https://fanerge.github.io/2017/07/24/js%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-6/"/>
-    <id>https://fanerge.github.io/2017/07/24/js函数式编程-6/</id>
-    <published>2017-07-24T13:25:38.000Z</published>
-    <updated>2017-07-25T13:03:13.884Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="Applicative-Functor"><a href="#Applicative-Functor" class="headerlink" title="Applicative Functor"></a>Applicative Functor</h2><p><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
-<h3 id="应用-applicative-functor"><a href="#应用-applicative-functor" class="headerlink" title="应用 applicative functor"></a>应用 applicative functor</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Container.of(2).chain(function(two) &#123;</div><div class="line">  return Container.of(3).map(add(two));</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="瓶中之船"><a href="#瓶中之船" class="headerlink" title="瓶中之船"></a>瓶中之船</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">// ap 就是这样一种函数，能够把一个 functor 的函数值应用到另一个 functor 的值上。</div><div class="line">Container.prototype.ap = function(other_container) &#123;</div><div class="line">  return other_container.map(this.__value);</div><div class="line">&#125;</div><div class="line">Container.of(add(2)).ap(Container.of(3)); // Container(5)</div><div class="line"></div><div class="line">// all together now</div><div class="line">Container.of(2).map(add).ap(Container.of(3)); // Container(5</div></pre></td></tr></table></figure>
-</code></pre><h3 id="协调与激励"><a href="#协调与激励" class="headerlink" title="协调与激励"></a>协调与激励</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">// 帮助函数：</div><div class="line">//  $ :: String -&gt; IO DOM</div><div class="line">var $ = function(selector) &#123;</div><div class="line">  return new IO(function()&#123; return document.querySelector(selector) &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">//  getVal :: String -&gt; IO String</div><div class="line">var getVal = compose(map(_.prop(&apos;value&apos;)), $);</div><div class="line"></div><div class="line">// Example:</div><div class="line">//  signIn :: String -&gt; String -&gt; Bool -&gt; User</div><div class="line">var signIn = curry(function(username, password, remember_me)&#123; /* signing in */  &#125;)</div><div class="line"></div><div class="line">IO.of(signIn).ap(getVal(&apos;#email&apos;)).ap(getVal(&apos;#password&apos;)).ap(IO.of(false));</div><div class="line">// IO(&#123;id: 3, email: &quot;gg@allin.com&quot;&#125;)</div></pre></td></tr></table></figure>
-</code></pre><h3 id="定律"><a href="#定律" class="headerlink" title="定律"></a>定律</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">同一律（identity）</div><div class="line">	A.of(id).ap(v) == v</div><div class="line">	var v = Identity.of(&quot;Pillow Pets&quot;);</div><div class="line">	Identity.of(id).ap(v) == v</div><div class="line">同态（homomorphism）</div><div class="line">	A.of(f).ap(A.of(x)) == A.of(f(x))</div><div class="line">	Either.of(_.toUpper).ap(Either.of(&quot;oreos&quot;)) == Either.of(_.toUpper(&quot;oreos&quot;))</div><div class="line">互换（interchange）</div><div class="line">	v.ap(A.of(x)) == A.of(function(f) &#123; return f(x) &#125;).ap(v)</div><div class="line">	var v = Task.of(_.reverse);</div><div class="line">	var x = &apos;Sparklehorse&apos;;</div><div class="line">	v.ap(Task.of(x)) == Task.of(function(f) &#123; return f(x) &#125;).ap(v)</div><div class="line">组合（composition）</div><div class="line">	A.of(compose).ap(u).ap(v).ap(w) == u.ap(v.ap(w));</div><div class="line">	var u = IO.of(_.toUpper);</div><div class="line">	var v = IO.of(_.concat(&quot;&amp; beyond&quot;));</div><div class="line">	var w = IO.of(&quot;blood bath &quot;);</div><div class="line">	IO.of(_.compose).ap(u).ap(v).ap(w) == u.ap(v.ap(w))</div></pre></td></tr></table></figure>
-</code></pre><blockquote>
-<p><a href="https://llh911001.gitbooks.io/mostly-adequate-guide-chinese/content/ch7.html#自由定理" target="_blank" rel="external">js函数式编程</a></p>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;Applicative-Functor&quot;&gt;&lt;a href=&quot;#Applicative-Functor&quot; class=&quot;headerlink&quot; title=&quot;Applicative Functor&quot;&gt;&lt;/a&gt;Applicative Functor&lt;/h2&gt;&lt;p&gt;&lt;e
-    
-    </summary>
-    
-      <category term="函数式编程" scheme="https://fanerge.github.io/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
-    
-    
-      <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>js函数式编程-5</title>
-    <link href="https://fanerge.github.io/2017/07/24/js%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-5/"/>
-    <id>https://fanerge.github.io/2017/07/24/js函数式编程-5/</id>
-    <published>2017-07-24T11:41:34.000Z</published>
-    <updated>2017-07-24T13:10:54.142Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="Monad"><a href="#Monad" class="headerlink" title="Monad"></a>Monad</h2><p><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
-<h3 id="pointed-functor"><a href="#pointed-functor" class="headerlink" title="pointed functor"></a>pointed functor</h3><pre><code>of 方法不是用来避免使用 new 关键字的，而是用来把值放到默认最小化上下文（default minimal context）中的。
-</code></pre><blockquote>
-<p>  pointed functor 是实现了 of 方法的 functor。</p>
-</blockquote>
-<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">这里的关键是把任意值丢到容器里然后开始到处使用 map 的能力。</div><div class="line">IO.of(&quot;tetris&quot;).map(concat(&quot; master&quot;)); // IO(&quot;tetris master&quot;)</div><div class="line">Maybe.of(1336).map(add(1)); // Maybe(1337)</div></pre></td></tr></table></figure>
-</code></pre><h3 id="混合比喻"><a href="#混合比喻" class="headerlink" title="混合比喻"></a>混合比喻</h3><ol>
-<li><p>例子</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">var fs = require(&apos;fs&apos;);</div><div class="line"></div><div class="line">//  readFile :: String -&gt; IO String</div><div class="line">var readFile = function(filename) &#123;</div><div class="line">  return new IO(function() &#123;</div><div class="line">	return fs.readFileSync(filename, &apos;utf-8&apos;);</div><div class="line">  &#125;);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">//  print :: String -&gt; IO String</div><div class="line">var print = function(x) &#123;</div><div class="line">  return new IO(function() &#123;</div><div class="line">	console.log(x);</div><div class="line">	return x;</div><div class="line">  &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">//  cat :: IO (IO String)</div><div class="line">var cat = compose(map(print), readFile);</div><div class="line"></div><div class="line">cat(&quot;.git/config&quot;)</div><div class="line">// IO(IO(&quot;[core]\nrepositoryformatversion = 0\n&quot;))</div></pre></td></tr></table></figure>
-</li>
-<li><p>剥开洋葱</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">我说过 monad 像洋葱，可以使用一个叫作 join 的方法，来剥开。</div><div class="line">var mmo = Maybe.of(Maybe.of(&quot;nunchucks&quot;));</div><div class="line">// Maybe(Maybe(&quot;nunchucks&quot;))</div><div class="line">mmo.join();</div><div class="line">// Maybe(&quot;nunchucks&quot;)</div><div class="line"></div><div class="line">var ttt = Task.of(Task.of(Task.of(&quot;sewers&quot;)));</div><div class="line">// Task(Task(Task(&quot;sewers&quot;)));</div><div class="line">ttt.join()</div><div class="line">// Task(Task(&quot;sewers&quot;))</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<blockquote>
-<p>   monad 是可以变扁（flatten）的 pointed functor。<br>    一个 functor，只要它定义个了一个 join 方法和一个 of 方法，并遵守一些定律，那么它就是一个 monad。</p>
-</blockquote>
-<pre><code>为Maybe实现join方法
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">Maybe.prototype.join = function () &#123;</div><div class="line">	return this.isNothing() ? Maybe.of(null) : this.__value;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">Example</div><div class="line">//  join :: Monad m =&gt; m (m a) -&gt; m a</div><div class="line">var join = function(mma)&#123; return mma.join(); &#125;</div><div class="line"></div><div class="line">//  firstAddressStreet :: User -&gt; Maybe Street</div><div class="line">var firstAddressStreet = compose(</div><div class="line">  join, map(safeProp(&apos;street&apos;)), join, map(safeHead), safeProp(&apos;addresses&apos;)</div><div class="line">);</div><div class="line"></div><div class="line">firstAddressStreet(</div><div class="line">  &#123;addresses: [&#123;street: &#123;name: &apos;Mulburry&apos;, number: 8402&#125;, postcode: &quot;WC2N&quot; &#125;]&#125;</div><div class="line">);</div><div class="line">// Maybe(&#123;name: &apos;Mulburry&apos;, number: 8402&#125;)</div></pre></td></tr></table></figure>
-</code></pre><h3 id="chain-函数"><a href="#chain-函数" class="headerlink" title="chain 函数"></a>chain 函数</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">// 使用 chain封装（map的后面调用join）</div><div class="line">//  chain :: Monad m =&gt; (a -&gt; m b) -&gt; m a -&gt; m b</div><div class="line">var chain = curry(function(f, m)&#123;</div><div class="line">  return m.map(f).join(); // 或者 compose(join, map(f))(m)</div><div class="line">&#125;);</div><div class="line"></div><div class="line">// map/join</div><div class="line">var firstAddressStreet = compose(</div><div class="line">  join, map(safeProp(&apos;street&apos;)), join, map(safeHead), safeProp(&apos;addresses&apos;)</div><div class="line">);</div><div class="line"></div><div class="line">// chain</div><div class="line">var firstAddressStreet = compose(</div><div class="line">  chain(safeProp(&apos;street&apos;)), chain(safeHead), safeProp(&apos;addresses&apos;)</div><div class="line">);</div><div class="line"></div><div class="line">Example</div><div class="line">Maybe.of(3).chain(function(three) &#123;</div><div class="line">  return Maybe.of(2).map(add(three));</div><div class="line">&#125;);</div><div class="line">// Maybe(5);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="理论"><a href="#理论" class="headerlink" title="理论"></a>理论</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"> // 结合律</div><div class="line">compose(join, map(join)) == compose(join, join)</div></pre></td></tr></table></figure>
-
-总结：monad 能够借给我们从盒子中取出的值，而且知道我们会在结束使用后还给它。
-monad 让我们深入到嵌套的运算当中，使我们能够在完全避免回调金字塔（pyramid of doom）情况下，为变量赋值，运行有序的作用，执行异步任务等等。
-</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;Monad&quot;&gt;&lt;a href=&quot;#Monad&quot; class=&quot;headerlink&quot; title=&quot;Monad&quot;&gt;&lt;/a&gt;Monad&lt;/h2&gt;&lt;p&gt;&lt;em&gt;如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。&lt;/em&gt;&lt;/p&gt;
-&lt;h3 id=&quot;pointed
-    
-    </summary>
-    
-      <category term="函数式编程" scheme="https://fanerge.github.io/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
-    
-    
-      <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
     
   </entry>
   
