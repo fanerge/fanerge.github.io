@@ -92,13 +92,13 @@
 <meta name="description" content="继续函数式编程的学习。 数据不变性和数组读取数组元素nth -- 类型于对象prop slice -- 类似于对象pick contains -- 类似于对象的has 12345const numbers = [10, 20, 30, 40, 50, 60]R.nth(3, numbers) // =&amp;gt; 40  (0-based indexing)R.nth(-2, numbers) //">
 <meta name="keywords" content="js,函数式编程,ramda">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ramda运用">
+<meta property="og:title" content="ramda数组的操作和透镜">
 <meta property="og:url" content="https://fanerge.github.io/2017/08/23/ramda运用-3/index.html">
 <meta property="og:site_name" content="余真帆的个人博客">
 <meta property="og:description" content="继续函数式编程的学习。 数据不变性和数组读取数组元素nth -- 类型于对象prop slice -- 类似于对象pick contains -- 类似于对象的has 12345const numbers = [10, 20, 30, 40, 50, 60]R.nth(3, numbers) // =&amp;gt; 40  (0-based indexing)R.nth(-2, numbers) //">
-<meta property="og:updated_time" content="2017-08-23T12:12:04.685Z">
+<meta property="og:updated_time" content="2017-08-24T12:42:02.708Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ramda运用">
+<meta name="twitter:title" content="ramda数组的操作和透镜">
 <meta name="twitter:description" content="继续函数式编程的学习。 数据不变性和数组读取数组元素nth -- 类型于对象prop slice -- 类似于对象pick contains -- 类似于对象的has 12345const numbers = [10, 20, 30, 40, 50, 60]R.nth(3, numbers) // =&amp;gt; 40  (0-based indexing)R.nth(-2, numbers) //">
 
 
@@ -133,7 +133,7 @@
 
 
 
-  <title> ramda运用 | 余真帆的个人博客 </title>
+  <title> ramda数组的操作和透镜 | 余真帆的个人博客 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -303,7 +303,7 @@
             
             
               
-                ramda运用
+                ramda数组的操作和透镜
               
             
           </h2>
@@ -402,11 +402,19 @@ takeLast(N) -- 后 N 个元素
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">const numbers = [10, 20, 30, 40, 50, 60]</div><div class="line">R.head(numbers) // =&gt; 10</div><div class="line">R.tail(numbers) // =&gt; [20, 30, 40, 50, 60]</div><div class="line">R.last(numbers) // =&gt; 60</div><div class="line">R.init(numbers) // =&gt; [10, 20, 30, 40, 50]</div><div class="line">R.take(3, numbers) // =&gt; [10, 20, 30]</div><div class="line">R.takeLast(3, numbers) // =&gt; [40, 50, 60]</div></pre></td></tr></table></figure>
 </code></pre><h5 id="增、删、改数组元素"><a href="#增、删、改数组元素" class="headerlink" title="增、删、改数组元素"></a>增、删、改数组元素</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">insert：将元素插入到 list 指定索引处。</div><div class="line">R.insert(2, &apos;x&apos;, [1,2,3,4]); //=&gt; [1,2,&apos;x&apos;,3,4]</div><div class="line">update：替换数组中指定索引处的值。</div><div class="line">R.update(1, 11, [0, 1, 2]);     //=&gt; [0, 11, 2]</div><div class="line">append：在列表末尾拼接一个元素。</div><div class="line">R.append(&apos;tests&apos;, [&apos;write&apos;, &apos;more&apos;]); //=&gt; [&apos;write&apos;, &apos;more&apos;, &apos;tests&apos;]</div><div class="line">prepend：在列表头部之前拼接一个元素。</div><div class="line">R.prepend(&apos;fee&apos;, [&apos;fi&apos;, &apos;fo&apos;, &apos;fum&apos;]); //=&gt; [&apos;fee&apos;, &apos;fi&apos;, &apos;fo&apos;, &apos;fum&apos;]</div><div class="line">concat：连接列表或字符串。</div><div class="line">R.concat([4, 5, 6], [1, 2, 3]); //=&gt; [4, 5, 6, 1, 2, 3]</div><div class="line">// 反转数组拼接</div><div class="line">const concatAfter = R.flip(R.concat)</div><div class="line">remove：删除列表中从 start 开始的 count 个元素。</div><div class="line">R.remove(2, 3, [1,2,3,4,5,6,7,8]); //=&gt; [1,2,6,7,8]</div><div class="line">without：求第二个列表中，未包含在第一个列表中的任一元素的集合。</div><div class="line">R.without([1, 2], [1, 2, 1, 3, 4]); //=&gt; [3, 4]</div><div class="line">drop：删除给定 list，string 或者 transducer/transformer（或者具有 drop 方法的对象）的前 n 个元素。</div><div class="line">R.drop(1, [&apos;foo&apos;, &apos;bar&apos;, &apos;baz&apos;]); //=&gt; [&apos;bar&apos;, &apos;baz&apos;]</div><div class="line">dropLast：删除 &quot;list&quot; 末尾的 n 个元素。</div><div class="line">R.dropLast(1, [&apos;foo&apos;, &apos;bar&apos;, &apos;baz&apos;]); //=&gt; [&apos;foo&apos;, &apos;bar&apos;]</div></pre></td></tr></table></figure>
 </code></pre><h5 id="变换元素"><a href="#变换元素" class="headerlink" title="变换元素"></a>变换元素</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">adjust：将数组中指定索引处的值替换为经函数变换的值。</div><div class="line">R.adjust(R.add(10), 1, [1, 2, 3]);     //=&gt; [1, 12, 3]</div></pre></td></tr></table></figure>
-</code></pre><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><pre><code>本节学习了：pointfree(无参数风格编程) 
-对象属性：读取(prop、pick、has、path、propOr、pathOr、keys、values、)
-增删改查(assoc、assocPath、dissoc、dissocPath、omit)
-属性转换(evolve)
-合并对象(merge)
+</code></pre><h4 id="透镜（Lenses）"><a href="#透镜（Lenses）" class="headerlink" title="透镜（Lenses）"></a>透镜（Lenses）</h4><h5 id="什么是透镜？"><a href="#什么是透镜？" class="headerlink" title="什么是透镜？"></a>什么是透镜？</h5><pre><code>透镜将 &quot;getter&quot; 和 &quot;setter&quot; 函数组合为一个单一模块。Ramda 提供了一系列配合透镜一起工作的函数。
+可以将透镜视为对某些较大数据结构的特定部分的聚焦、关注。
+</code></pre><h5 id="如何创建透镜"><a href="#如何创建透镜" class="headerlink" title="如何创建透镜"></a>如何创建透镜</h5><pre><code>lens：返回封装了给定 getter 和 setter 方法的 lens 。 getter 和 setter 分别用于 “获取” 和 “设置” 焦点（lens 聚焦的值）。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var xLens = R.lens(R.prop(&apos;x&apos;), R.assoc(&apos;x&apos;));</div><div class="line">R.view(xLens, &#123;x: 1, y: 2&#125;);            //=&gt; 1</div><div class="line">R.set(xLens, 4, &#123;x: 1, y: 2&#125;);          //=&gt; &#123;x: 4, y: 2&#125;</div><div class="line">// 还有三个便捷函数</div><div class="line">LensProp：创建关注对象某一属性的透镜。</div><div class="line">lensPath: 创建关注对象某一嵌套属性的透镜。</div><div class="line">lensIndex: 创建关注数组某一索引的透镜。</div></pre></td></tr></table></figure>
+</code></pre><h5 id="我能用它做什么呢？"><a href="#我能用它做什么呢？" class="headerlink" title="我能用它做什么呢？"></a>我能用它做什么呢？</h5><pre><code>Ramda 提供了三个配合透镜一起使用的的函数：
+    view：读取透镜的值。
+    set：更新透镜的值。
+    over：将变换函数作用于透镜。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var xLens = R.lens(R.prop(&apos;x&apos;), R.assoc(&apos;x&apos;));</div><div class="line">R.view(xLens, &#123;x: 1, y: 2&#125;);            //=&gt; 1</div><div class="line">R.set(xLens, 4, &#123;x: 1, y: 2&#125;);          //=&gt; &#123;x: 4, y: 2&#125;</div><div class="line">R.over(xLens, R.negate, &#123;x: 1, y: 2&#125;);  //=&gt; &#123;x: -1, y: 2&#125;</div><div class="line">// 区别:</div><div class="line">// set 和 over 会按指定的方式对被透镜关注的属性进行修改，并返回整个新的对象。</div></pre></td></tr></table></figure>
+</code></pre><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><pre><code>本节学习了：某些较大数据结构的处理 -- 透镜。
+数组：读取(nth、slice、contains、head、last、tail、init、take、takeLast)
+增、删、改(insert、update、append、prepend、concat、remove、without、drop、dropLast)
+变换(adjust)
 </code></pre><blockquote>
 <p>   参考文献：<br>    <a href="http://www.cnblogs.com/whitewolf/p/javascript-functional-programming-Ramdajs.html" target="_blank" rel="external">JavaScript函数编程-Ramdajs</a><br>    <a href="https://zhuanlan.zhihu.com/p/27446536" target="_blank" rel="external">Thinking in Ramda系列文章</a></p>
 </blockquote>
@@ -456,8 +464,8 @@ takeLast(N) -- 后 N 个元素
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/08/22/ramda运用-2/" rel="next" title="ramda运用">
-                <i class="fa fa-chevron-left"></i> ramda运用
+              <a href="/2017/08/22/ramda运用-2/" rel="next" title="ramda无参数风格和对象的相关操作">
+                <i class="fa fa-chevron-left"></i> ramda无参数风格和对象的相关操作
               </a>
             
           </div>
@@ -465,6 +473,10 @@ takeLast(N) -- 后 N 个元素
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/24/ramda运用-4/" rel="prev" title="ramda运用概述">
+                ramda运用概述 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -543,7 +555,7 @@ takeLast(N) -- 后 N 个元素
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">31</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -607,7 +619,7 @@ takeLast(N) -- 后 N 个元素
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据不变性和数组"><span class="nav-number">1.</span> <span class="nav-text">数据不变性和数组</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#读取数组元素"><span class="nav-number">1.1.</span> <span class="nav-text">读取数组元素</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#增、删、改数组元素"><span class="nav-number">1.2.</span> <span class="nav-text">增、删、改数组元素</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#变换元素"><span class="nav-number">1.3.</span> <span class="nav-text">变换元素</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据不变性和数组"><span class="nav-number">1.</span> <span class="nav-text">数据不变性和数组</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#读取数组元素"><span class="nav-number">1.1.</span> <span class="nav-text">读取数组元素</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#增、删、改数组元素"><span class="nav-number">1.2.</span> <span class="nav-text">增、删、改数组元素</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#变换元素"><span class="nav-number">1.3.</span> <span class="nav-text">变换元素</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#透镜（Lenses）"><span class="nav-number">2.</span> <span class="nav-text">透镜（Lenses）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#什么是透镜？"><span class="nav-number">2.1.</span> <span class="nav-text">什么是透镜？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#如何创建透镜"><span class="nav-number">2.2.</span> <span class="nav-text">如何创建透镜</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#我能用它做什么呢？"><span class="nav-number">2.3.</span> <span class="nav-text">我能用它做什么呢？</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
@@ -746,7 +758,7 @@ takeLast(N) -- 后 N 个元素
         var disqus_config = function () {
           this.page.url = 'https://fanerge.github.io/2017/08/23/ramda运用-3/';
           this.page.identifier = '2017/08/23/ramda运用-3/';
-          this.page.title = 'ramda运用';
+          this.page.title = 'ramda数组的操作和透镜';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://fanerge.disqus.com/embed.js';

@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fanerge.github.io/"/>
-  <updated>2017-08-23T12:12:04.685Z</updated>
+  <updated>2017-08-28T15:06:40.031Z</updated>
   <id>https://fanerge.github.io/</id>
   
   <author>
@@ -16,11 +16,1244 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>ramda运用</title>
+    <title>ramda运用--官方文档解读</title>
+    <link href="https://fanerge.github.io/2017/08/25/ramda%E8%BF%90%E7%94%A8-5/"/>
+    <id>https://fanerge.github.io/2017/08/25/ramda运用-5/</id>
+    <published>2017-08-25T12:37:40.000Z</published>
+    <updated>2017-08-28T15:06:40.031Z</updated>
+    
+    <content type="html"><![CDATA[<p>继续函数式编程的学习。<br>Rmda中共分为List、Relation、Object、Function、Math、Type、Logic、String共8大类。</p>
+<h4 id="String"><a href="#String" class="headerlink" title="String"></a>String</h4><h5 id="match"><a href="#match" class="headerlink" title="match"></a>match</h5><pre><code>定义：正则匹配字符串。注意，如果没有匹配项，则返回空数组。和 String.prototype.match 不同，后者在没有匹配项时会返回 null。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">R.match(/([a-z]a)/g, &apos;bananas&apos;); //=&gt; [&apos;ba&apos;, &apos;na&apos;, &apos;na&apos;]</div></pre></td></tr></table></figure>
+</code></pre><h5 id="replace"><a href="#replace" class="headerlink" title="replace"></a>replace</h5><pre><code>定义：替换字符串的子串或正则匹配到的值。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">R.replace(&apos;foo&apos;, &apos;bar&apos;, &apos;foo foo foo&apos;); // bar foo foo</div></pre></td></tr></table></figure>
+</code></pre><h5 id="split"><a href="#split" class="headerlink" title="split"></a>split</h5><pre><code>定义：根据指定的分隔符将字符串拆分为字符串类型的数组。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">R.split(&apos;.&apos;, &apos;a.b.c.xyz.d&apos;); // [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;, &apos;xyz&apos;, &apos;d&apos;]</div></pre></td></tr></table></figure>
+</code></pre><h5 id="test"><a href="#test" class="headerlink" title="test"></a>test</h5><pre><code>定义：检测字符串是否匹配给定的正则表达式。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">R.test(/^x/, &apos;xyz&apos;); // true</div></pre></td></tr></table></figure>
+</code></pre><h5 id="toLower"><a href="#toLower" class="headerlink" title="toLower"></a>toLower</h5><pre><code>定义：将字符串转换成小写。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">R.toLower(&apos;XYZ&apos;); // xyz</div></pre></td></tr></table></figure>
+</code></pre><h5 id="toString-NaN"><a href="#toString-NaN" class="headerlink" title="toString"></a>toString</h5><pre><code>定义：返回代表输入元素的字符串。求得的输出结果应该等价于输入的值。许多内建的 toString 方法都不满足这一条件。
+如果输入值是 [object Object] 对象，且自身含有 toString 方法（不是 Object.prototype.toString 方法），那么直接调用这个方法求返回值。这意味着，通过用户自定义的构造函数可以提供合适的 toString 方法。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">R.toString(42); // 42</div></pre></td></tr></table></figure>
+</code></pre><h5 id="toUpper"><a href="#toUpper" class="headerlink" title="toUpper"></a>toUpper</h5><pre><code>定义：将字符串转换为大写。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">R.toUpper(&apos;abc&apos;); // ABC</div></pre></td></tr></table></figure>
+</code></pre><h5 id="trim"><a href="#trim" class="headerlink" title="trim"></a>trim</h5><pre><code>定义：删除字符串首、尾两端的空白字符。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">R.trim(&apos;   xyz  &apos;); //=&gt; &apos;xyz&apos;</div></pre></td></tr></table></figure>
+</code></pre><h4 id="List-Array"><a href="#List-Array" class="headerlink" title="List(Array)"></a>List(Array)</h4><h5 id="adjust"><a href="#adjust" class="headerlink" title="adjust"></a>adjust</h5><pre><code>定义：将数组中指定索引处的值替换为经函数变换的值。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">R.adjust(R.add(10))(1)([1, 2, 3]); // [1, 12, 3]</div></pre></td></tr></table></figure>
+</code></pre><h5 id="all"><a href="#all" class="headerlink" title="all"></a>all</h5><pre><code>定义：如果列表中的所有元素都满足 predicate，则返回 true；否则，返回 false。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var equals3 = R.equals(3);</div><div class="line">R.all(equals3)([3, 3, 3]); // true</div><div class="line">R.all(equals3)([1, 3, 3]); // false</div></pre></td></tr></table></figure>
+</code></pre><h5 id="any"><a href="#any" class="headerlink" title="any"></a>any</h5><pre><code>定义：只要列表中有一个元素满足 predicate，就返回 true，否则返回 false。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var lessThan0 = R.flip(R.lt)(0);</div><div class="line">var lessThan2 = R.flip(R.lt)(2);</div><div class="line">R.any(lessThan0)([1, 2]); // false</div><div class="line">R.any(lessThan2)([1, 2]); // true</div></pre></td></tr></table></figure>
+</code></pre><h5 id="aperture"><a href="#aperture" class="headerlink" title="aperture"></a>aperture</h5><pre><code>定义：返回一个新列表，列表中的元素为由原列表相邻元素组成的 n 元组。如果 n 大于列表的长度，则返回空列表。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">R.aperture(2, [1, 2, 3, 4, 5]); // [[1, 2], [2, 3], [3, 4], [4, 5]]</div></pre></td></tr></table></figure>
+</code></pre><h5 id="append"><a href="#append" class="headerlink" title="append"></a>append</h5><pre><code>定义：在列表末尾拼接一个元素。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">	R.append(5)([1, 2, 3]); // [1, 2, 3, 5]</div><div class="line">	```		</div><div class="line">	</div><div class="line">#####	chain</div><div class="line">	定义：chain 将函数映射到列表中每个元素，并将结果连接起来。 chain 在一些库中也称为 flatMap（先 map 再 flatten ）。</div></pre></td></tr></table></figure>
+
+var duplicate = n =&gt; [n, n];
+R.chain(duplicate, [1, 2, 3]); // [1, 1, 2, 2, 3, 3]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	concat</div><div class="line">	定义：连接列表或字符串。</div></pre></td></tr></table></figure>
+
+R.concat(&apos;ABC&apos;, &apos;DEF&apos;); // ABCDEF
+R.concat([1, 2, 3])([4, 5, 6]); // [1, 2, 3, 4, 5, 6]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	contains</div><div class="line">	定义：只要列表中有一个元素等于指定值，则返回 true；否则返回 false。通过 R.equals 函数进行相等性判断。</div></pre></td></tr></table></figure>
+
+R.contains(2, [1, 2, 3]); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	drop</div><div class="line">	定义：删除给定 list，string 或者 transducer/transformer（或者具有 drop 方法的对象）的前 n 个元素。</div></pre></td></tr></table></figure>
+
+R.drop(2, [&apos;fan&apos;, &apos;yu&apos;, &apos;zhen&apos;]); // [&apos;zhen&apos;]
+R.drop(2, &apos;fanerge&apos;); // nerge
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	dropList</div><div class="line">	定义：删除 &quot;list&quot; 末尾的 n 个元素。</div></pre></td></tr></table></figure>
+
+R.dropLat(2, [&apos;fan&apos;, &apos;yu&apos;, &apos;zhen&apos;]); // [&apos;fan&apos;]
+R.drop(2, &apos;fanerge&apos;); // faner
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	dropLastWhile</div><div class="line">	定义：对 list 从后向前一直删除满足 predicate 的尾部元素，直到遇到第一个 falsy 值，此时停止删除操作。</div><div class="line">	predicate 需要作为第一个参数传入。</div></pre></td></tr></table></figure>
+
+var lteThree = x =&gt; x &lt;= 3;
+R.dropLastWhile(lteThree, [1, 2, 3, 4, 3, 2, 1]); // [1, 2, 3, 4]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	dropRepeats</div><div class="line">	定义：返回一个没有连续重复元素的 list。通过 R.equals 函数进行相等性判断。</div></pre></td></tr></table></figure>
+
+R.dropRepeats([1, 1, 2, 2, 3, 3, 2, 2]); // [1, 2, 3, 2] 
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	dropRepeatsWith</div><div class="line">	定义：返回一个没有连续重复元素的 list。首个参数提供的 predicate 用于检测 list 中相邻的两个元素是否相等。一系列相等元素中的首个元素会被保留。</div></pre></td></tr></table></figure>
+
+var list = [1, -1, 1, 3, 4, -4];
+R.dropRepeatsWith(R.eqBy(Math.abs), list); // [1, 3, 4]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	dropWhile</div><div class="line">	定义：对 list 从前向后删除满足 predicate 的头部元素，直到遇到第一个 falsy 值。</div><div class="line">	predicate 需要作为第一个参数传入。</div></pre></td></tr></table></figure>
+
+var lteTwo = x =&gt; x &lt;= 2;
+R.dropWile(lteTwo, [1, 2, 3, 4, 3, 2, 1]); // [3, 4, 3, 2, 1]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	endsWith</div><div class="line">	定义：检查列表是否以给定的值结尾。</div></pre></td></tr></table></figure>
+
+R.endsWith(&apos;c&apos;, &apos;abc&apos;); // true
+R.endsWith([&apos;c&apos;], [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;]); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	filter</div><div class="line">	定义：使用 predicate 遍历传入的 Filterable，返回满足 predicate 的所有元素的新的 Filterable。新 Filterable 与原先的类型相同。Filterable 类型包括 plain object 或者任何带有 filter 方法的类型，如 Array 。</div></pre></td></tr></table></figure>
+
+var isEven = n =&gt; n % 2 === 0;
+R.filter(isEven, [1, 2, 3, 4]); // [2, 4]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	find</div><div class="line">	定义：查找并返回 list 中首个满足 predicate 的元素；如果未找到满足条件的元素，则返回 undefined 。</div></pre></td></tr></table></figure>
+
+var xs = [{a: 1}, {a: 2}, {a: 3}];
+R.find(R.propEq(&apos;a&apos;, 2))(xs); // {a: 2}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	findIndex</div><div class="line">	定义：查找并返回 list 中首个满足 predicate 的元素的索引；如果未找到满足条件的元素，则返回 -1 。</div></pre></td></tr></table></figure>
+
+var xs = [{a: 1}, {a: 2}, {a: 3}];
+R.findIndex(R.propEq(&apos;a&apos;, 2))(xs); // 1
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	findLast</div><div class="line">	定义：查找并返回 list 中最后一个满足 predicate 的元素；如果未找到满足条件的元素，则返回 undefined 。</div></pre></td></tr></table></figure>
+
+var xs = [{a: 1, b: 0}, {a:1, b: 1}];
+R.findLast(R.propEq(&apos;a&apos;, 1))(xs); // {a: 1, b: 1}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	findLastIndex</div><div class="line">	定义：查找并返回 list 中最后一个满足 predicate 的元素的索引；如果未找到满足条件的元素，则返回 -1 。</div></pre></td></tr></table></figure>
+
+var xs = [{a: 1, b: 0}, {a:1, b: 1}];
+R.findLastIndex(R.propEq(&apos;a&apos;, 1))(xs); // 1
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	flatten</div><div class="line">	定义：获取 list 的所有元素（包含所有子数组中的元素），然后由这些元素组成一个新的数组。深度优先。</div></pre></td></tr></table></figure>
+
+R.flatten([1, [2, [3]]]); // [1, 2, 3]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	forEach</div><div class="line">	定义：遍历 list，对 list 中的每个元素执行方法 fn。</div><div class="line">	Ramda 的 forEach 会将原数组返回。</div></pre></td></tr></table></figure>
+
+var printPlusFive = x =&gt; console.log(x + 5);
+R.forEach(printPlusFive, [1, 2, 3]); // [1, 2, 3]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	fromPairs</div><div class="line">	定义：由一系列 “键值对” 创建一个 object。如果某个键出现多次，选取最右侧的键值对。</div></pre></td></tr></table></figure>
+
+var R.fromPairs([[&apos;a&apos;, 1], [&apos;b&apos;, 2], [&apos;c&apos;, 3]]); // {a: 1, b: 2, c: 3}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	groupBy</div><div class="line">	定义：将列表根据一定规则拆分成多组子列表，并存储在一个对象中。</div><div class="line">	对列表中的每个元素调用函数，根据函数返回结果进行分组。函数返回字符串作为相等性判断，返回的字符串作为存储对象的键，具有相同返回字符串的元素聚合为数组，作为该键的值。</div></pre></td></tr></table></figure>
+
+var byGrade = R.groupBy(function(student) {
+  var score = student.score;
+  return score &lt; 65 ? &apos;F&apos; :
+         score &lt; 70 ? &apos;D&apos; :
+         score &lt; 80 ? &apos;C&apos; :
+         score &lt; 90 ? &apos;B&apos; : &apos;A&apos;;
+});
+var students = [{name: &apos;Abby&apos;, score: 84},
+                {name: &apos;Eddy&apos;, score: 58},
+                // ...
+                {name: &apos;Jack&apos;, score: 69}];
+byGrade(students);
+// {
+//   &apos;A&apos;: [{name: &apos;Dianne&apos;, score: 99}],
+//   &apos;B&apos;: [{name: &apos;Abby&apos;, score: 84}]
+//   // ...,
+//   &apos;F&apos;: [{name: &apos;Eddy&apos;, score: 58}]
+// }
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	groupWith</div><div class="line">	定义：通过给定的对比函数，将列表按顺序分割成多组子列表。</div><div class="line">	对比函数只比较相邻元素。</div></pre></td></tr></table></figure>
+
+var R.groupWith(R.equals, [0, 1, 1, 2, 3, 5, 13, 21]); 
+// [[0], [1, 1], [2], [3], [5], [13], [21]]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	head</div><div class="line">	定义：求列表或字符串的首个元素。在某些库中，该函数也被称作 first。</div></pre></td></tr></table></figure>
+
+R.head([1, 2, 3]); // 1
+R.head(&apos;fan&apos;); // f
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	indexBy</div><div class="line">	定义：通过生成键的函数，将元素为对象的 list 转换为以生成的键为索引的新对象。注意，如果 list 中多个对象元素生成相同的键，以最后一个对象元素作为该键的值。</div></pre></td></tr></table></figure>
+
+var list = [{id: &apos;xyz&apos;, title: &apos;A&apos;}, {id: &apos;abc&apos;, title: &apos;B&apos;}];
+R.indexBy(R.prop(&apos;id&apos;), list);
+//=&gt; {abc: {id: &apos;abc&apos;, title: &apos;B&apos;}, xyz: {id: &apos;xyz&apos;, title: &apos;A&apos;}}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	indexOf</div><div class="line">	定义：返回给定元素在数组中首次出现时的索引值，如果数组中没有该元素，则返回 -1。通过 R.equals 函数进行相等性判断。</div></pre></td></tr></table></figure>
+
+R.indexOf(3, [1, 2, 3, 4]); // 2
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	init</div><div class="line">	定义：返回 list 或 string 删除最后一个元素后的部分。</div></pre></td></tr></table></figure>
+
+R.init([1, 2, 3]);  //=&gt; [1, 2]
+R.init(&apos;abc&apos;);  //=&gt; &apos;ab&apos;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	insert</div><div class="line">	定义：将元素插入到 list 指定索引处。注意，该函数是破坏性的：返回处理后列表的拷贝。函数运行过程中不会破坏任何列表。</div></pre></td></tr></table></figure>
+
+R.insert(2, &apos;x&apos;, [1, 2, 3, 4]); // [1,2,&apos;x&apos;,3,4]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	insertAll</div><div class="line">	定义：将子 list 插入到 list 指定索引处。注意，该函数是破坏性的：返回处理后列表的拷贝。函数运行过程中不会破坏任何列表。</div></pre></td></tr></table></figure>
+
+R.insertAll(2, [&apos;x&apos;, &apos;y&apos;], [1, 2, 3, 4]); // [1, 2, &apos;x&apos;, &apos;y&apos;, 3, 4]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	intersperse</div><div class="line">	定义：在列表的元素之间插入分割元素。</div></pre></td></tr></table></figure>
+
+R.intersperse(&apos;n&apos;, [&apos;ba&apos;, &apos;a&apos;, &apos;a&apos;]); //=&gt; [&apos;ba&apos;, &apos;n&apos;, &apos;a&apos;, &apos;n&apos;, &apos;a&apos;]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	into</div><div class="line">	定义：使用 transducer 对 list 中的元素进行转换，然后使用基于 accumulator 的类型的迭代器函数将转换后的元素依次添加到 accumulator 上。</div></pre></td></tr></table></figure>
+
+var numbers = [1, 2, 3, 4];
+var transducer = R.compose(R.map(R.add(1)), R.take(2));
+R.into([], transducer, numbers); //=&gt; [2, 3]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	join</div><div class="line">	定义：将列表中所有元素通过 分隔符 串连为一个字符串。</div></pre></td></tr></table></figure>
+
+var spacer = R.join(&apos;#&apos;);
+spacer([1, 2, 3]); // 1#2#3
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	last</div><div class="line">	定义：返回列表或字符串的最后一个元素。</div></pre></td></tr></table></figure>
+
+R.last([&apos;fan&apos;, &apos;zhen&apos;, &apos;yu&apos;]); // yu
+R.last(&apos;abc&apos;); // c
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	lastIndexOf</div><div class="line">	定义：返回数组中某元素最后一次出现的位置，如果数组中不包含该项则返回 -1 。通过 R.equals 函数进行相等性判断。</div></pre></td></tr></table></figure>
+
+R.lastIndexOf(3, [-1,3,3,0,1,2,3,4]); // 6
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	length</div><div class="line">	定义：通过 list.length，返回数组的大小（数组中元素的数量）。</div></pre></td></tr></table></figure>
+
+R.length([]); // 0
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	map</div><div class="line">	定义：接收一个函数和一个 functor, 将该函数应用到 functor 的每个值上，返回一个具有相同形态的 functor。</div><div class="line">	Ramda 为 Array 和 Object 提供了合适的 map 实现，因此 R.map 适用于 [1, 2, 3] 或 &#123;x: 1, y: 2, z: 3&#125;。</div><div class="line">	若第二个参数自身存在 map 方法，则调用自身的 map 方法。</div></pre></td></tr></table></figure>
+
+var double = x =&gt; x * 2;
+R.map(double, [1, 2, 3]); // [2, 4, 6]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	mapAccum</div><div class="line">	定义：mapAccum 的行为类似于 map 和 reduce 的组合；它将迭代函数作用于列表中的每个元素，从左往右传递经迭代函数计算的累积值，并将最后的累积值和由所有中间的累积值组成的列表一起返回。 迭代函数接收两个参数，acc 和 value， 返回一个元组 [acc, value]。</div></pre></td></tr></table></figure>
+
+var digits = [&apos;1&apos;, &apos;2&apos;, &apos;3&apos;, &apos;4&apos;];
+var appender = (a, b) =&gt; [a + b, a + b];
+R.mapAccum(appender, 0, digits); // [&apos;01234&apos;, [&apos;01&apos;, &apos;012&apos;, &apos;0123&apos;, &apos;01234&apos;]]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	mapAccumRight</div><div class="line">	定义：mapAccumRight 的行为类似于 map 和 reduce 的组合；它将迭代函数作用于列表中的每个元素，从右往左传递经迭代函数计算的累积值，并将最后的累积值和由所有中间的累积值组成的列表一起返回。</div><div class="line">	和 mapAccum 类似，除了列表遍历顺序是从右往左的。</div><div class="line">	迭代函数接收两个参数，value 和 acc ，返回一个元组 [value, acc]。</div></pre></td></tr></table></figure>
+
+var digits = [&apos;1&apos;, &apos;2&apos;, &apos;3&apos;, &apos;4&apos;];
+var append = (a, b) =&gt; [a + b, a + b];
+R.mapAccumRight(append, 5, digits); // [[&apos;12345&apos;, &apos;2345&apos;, &apos;345&apos;, &apos;45&apos;], &apos;12345&apos;]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	mapObjIndexed</div><div class="line">	定义：Object 版本的 map。mapping function 接受三个参数： (value, key, obj) 。如果仅用到参数 value，则用 map 即可。</div></pre></td></tr></table></figure>
+
+var values = {x: 1, y: 2, z: 3};
+var prependKeyAndDouble = (val, key, obj) =&gt; key + (val * 2);
+R.mapIndexed(prependKeyAndDouble, values); // { x: &apos;x2&apos;, y: &apos;y4&apos;, z: &apos;z6&apos; }
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	mergaAll</div><div class="line">	定义：将对象类型列表合并为一个对象。</div></pre></td></tr></table></figure>
+
+R.mergeAll([{foo: 1}, {bar: 2}, {baz: 3}]); // {foo: 1, bar: 2, baz: 3}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	none</div><div class="line">	定义：如果列表中的元素都不满足 predicate，返回 true；否则返回 false。</div></pre></td></tr></table></figure>
+
+var isEven = n =&gt; n % 2 === 0;
+R.none(isEven, [1, 2, 3]); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	nth</div><div class="line">	定义：返回列表或字符串的第 n 个元素。如果 n 为负数，则返回索引为 length + n 的元素。</div></pre></td></tr></table></figure>
+
+var list = [&apos;foo&apos;, &apos;bar&apos;, &apos;baz&apos;, &apos;quux&apos;];
+R.nth(1, list); // &apos;bar&apos;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	pair</div><div class="line">	定义：接收两个参数，fst 和 snd，返回数组 [fst, snd]。</div></pre></td></tr></table></figure>
+
+R.pair(&apos;foo&apos;, &apos;bar&apos;); // [&apos;foo&apos;, &apos;bar&apos;]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	partition</div><div class="line">	定义：接收两个参数，fst 和 snd，返回数组 [fst, snd]。</div></pre></td></tr></table></figure>
+
+R.partition(R.contains(&apos;s&apos;), [&apos;sss&apos;, &apos;ttt&apos;, &apos;foo&apos;, &apos;bars&apos;]);
+// [ [ &apos;sss&apos;, &apos;bars&apos; ],  [ &apos;ttt&apos;, &apos;foo&apos; ] ]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	pluck</div><div class="line">	定义：从列表内的每个对象元素中取出特定名称的属性，组成一个新的列表。</div><div class="line">	pluck 可以作用于任何 functor ，包括 Array，因为它等价于 R.map(R.prop(k), f)。</div></pre></td></tr></table></figure>
+
+R.pluck(&apos;a&apos;)([{a: 1}, {a: 2}]); // [1, 2]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	prepend</div><div class="line">	定义：在列表头部之前拼接一个元素。</div></pre></td></tr></table></figure>
+
+R.prepend(&apos;fee&apos;, [&apos;fi&apos;, &apos;fo&apos;, &apos;fum&apos;]); // [&apos;fee&apos;, &apos;fi&apos;, &apos;fo&apos;, &apos;fum&apos;]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	range</div><div class="line">	定义：返回从 from 到 to 之间的所有数的升序列表。左闭右开（包含 from，不包含 to）。</div></pre></td></tr></table></figure>
+
+R.range(1, 5); // [1, 2, 3, 4]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	reduce</div><div class="line">	定义：左折叠操作。</div><div class="line">	遍历列表，相继调用二元迭代函数（参数为累积值和从数组中取出的当前元素），将本次迭代结果作为下次迭代的累积值。返回最终累积值。</div><div class="line">	可以用 R.reduced 提前终止遍历操作。</div></pre></td></tr></table></figure>
+
+R.reduce(R.subtract, 0, [1, 2, 3, 4]) // =&gt; ((((0 - 1) - 2) - 3) - 4) = -10
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	reduceBy</div><div class="line">	定义：首先对列表中的每个元素调用函数 keyFn ，根据 keyFn 返回的字符串对列表元素进行分组。然后调用 reducer 函数 valueFn，对组内的元素进行折叠操作。</div><div class="line">	该函数相当于更通用的 groupBy 函数。</div></pre></td></tr></table></figure>
+
+var reduceToNamesBy = R.reduceBy((acc, student) =&gt; acc.concat(student.name), []);
+var namesByGrade = reduceToNamesBy(function(student) {
+  var score = student.score;
+  return score &lt; 65 ? &apos;F&apos; :
+         score &lt; 70 ? &apos;D&apos; :
+         score &lt; 80 ? &apos;C&apos; :
+         score &lt; 90 ? &apos;B&apos; : &apos;A&apos;;
+});
+var students = [{name: &apos;Lucy&apos;, score: 92},
+                {name: &apos;Drew&apos;, score: 85},
+                {name: &apos;Bart&apos;, score: 62}];
+namesByGrade(students);
+// {
+//   &apos;A&apos;: [&apos;Lucy&apos;],
+//   &apos;B&apos;: [&apos;Drew&apos;]
+//   &apos;F&apos;: [&apos;Bart&apos;]
+// }
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	reduced</div><div class="line">	定义：返回一个封装的值，该值代表 reduce 或 transduce 操作的最终结果。</div><div class="line">	返回值是一个黑盒：不保证其内部结构的稳定性。</div></pre></td></tr></table></figure>
+
+R.reduce(
+    (acc, item) =&gt; item &gt; 3 ? R.reduced(acc) : acc.concat(item),
+    [],
+    [1, 2, 3, 4, 5]
+); // [1, 2, 3]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	reduceRight</div><div class="line">	定义：右折叠操作。</div><div class="line">	遍历列表，相继调用二元迭代函数（参数为累积值和从数组中取出的当前元素），将本次迭代结果作为下次迭代的累积值。返回最终累积值。</div><div class="line">	类似于 reduce，除了遍历列表的顺序是从右向左的。</div></pre></td></tr></table></figure>
+
+R.reduceRight(R.subtract, 0, [1, 2, 3, 4]); // (1 - (2 - (3 - (4 - 0)))) = -2
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	reduceWhile</div><div class="line">	定义：与 reduce 类似， reduceWhile 会遍历列表，相继调用二元迭代函数，并返回最终累积值。reduceWhile 在每次调用迭代函数前，先使用 predicate 进行判断，如果 predicate 返回 false ，则提前终止遍历操作，并返回当前累积值。</div></pre></td></tr></table></figure>
+
+var isOdd = (acc, x) =&gt; x % 2 === 1;
+var xs = [1, 3, 5, 60, 777, 800];
+R.reduceWhile(isOdd, R.add, 0, xs); // 9
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	reject</div><div class="line">	定义：filter 的补操作。返回结果为 R.filter 操作结果的补集。</div></pre></td></tr></table></figure>
+
+var isOdd = (acc, x) =&gt; x % 2 === 1;
+R.reject(isOdd, [1, 2, 3, 4]); // [2, 4]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	remove</div><div class="line">	定义：删除列表中从 start 开始的 count 个元素。_ 注意，该操作是非破坏性的：不改变原列表，返回处理后列表的拷贝。</div></pre></td></tr></table></figure>
+
+R.remove(2, 3, [1, 2, 3, 4, 5, 6, 7, 8]); // [1, 2, 6, 7, 8]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	repeat</div><div class="line">	定义：生成包含 n 个同一元素的数组。</div></pre></td></tr></table></figure>
+
+R.repeat(&apos;h&apos;, 5); // [&apos;h&apos;, &apos;h&apos;, &apos;h&apos;, &apos;h&apos;, &apos;h&apos;]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	reverse</div><div class="line">	定义：对列表或字符串的排列顺序取反。</div></pre></td></tr></table></figure>
+
+R.reverse([1, 2, 3]); // [3, 2, 1]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	scan</div><div class="line">	定义：Scan 与 reduce 类似，但会将每次迭代计算的累积值记录下来，组成一个列表返回。</div></pre></td></tr></table></figure>
+
+var numbers = [1, 2, 3, 4];
+var factorials = R.scan(R.multiply, 1, numbers); // [1, 1, 2, 6, 24]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	sequence</div><div class="line">	定义：将一个 Applicative 的 Traversable 转换成一个 Traversable 类型的 Applicative。</div></pre></td></tr></table></figure>
+
+R.sequence(Maybe.of, [Just(1), Just(2), Just(3)]);   //=&gt; Just([1, 2, 3])
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	slice</div><div class="line">	定义：取出给定的列表或字符串（或带有 slice 方法的对象）中，从 fromIndex（包括）到 toIndex（不包括）的元素。</div></pre></td></tr></table></figure>
+
+R.slice(1, 3, [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;, &apos;d&apos;]); // [&apos;b&apos;, &apos;c&apos;]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	sort</div><div class="line">	定义：使用比较函数对列表进行排序。比较函数每次接受两个参数，如果第一个值较小，则返回负数；如果第一个值较大，则返回正数；如果两值相等，返回零。注意，返回的是列表的 拷贝 ，不会修改原列表。</div></pre></td></tr></table></figure>
+
+var diff = function (a, b) { return a - b };
+R.sort(diff, [4, 2, 7, 5]); // [2, 4, 5, 7]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	splitAt</div><div class="line">	定义：在指定的索引处拆分列表或者字符串。</div></pre></td></tr></table></figure>
+
+R.splitAt(1, [1, 2, 3]); // [[1], [2, 3]]
+R.splitAt(5, &apos;hello world&apos;); // [&apos;hello&apos;, &apos;world&apos;]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	splitEvery</div><div class="line">	定义：将列表拆分成指定长度的子列表集。</div></pre></td></tr></table></figure>
+
+R.splitEvery(3, [1, 2, 3, 4, 5, 6, 7]); // [[1, 2, 3], [4, 5, 6], 7]
+R.splitEvery(3, &apos;foobarbaz&apos;); //=&gt; [&apos;foo&apos;, &apos;bar&apos;, &apos;baz&apos;]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	splitWhen</div><div class="line">	定义：查找列表中首个满足 predicate 的元素，在该处将列表拆分为两部分。首个满足 predicate 的元素包含在后一部分。</div></pre></td></tr></table></figure>
+
+R.splitWhen(R.equals(2), [1, 2, 3, 1, 2, 3]);   //=&gt; [[1], [2, 3, 1, 2, 3]]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	startsWith</div><div class="line">	定义：检查列表是否以给定的值开头。</div></pre></td></tr></table></figure>
+
+R.startsWith(&apos;a&apos;, &apos;abc&apos;); // true
+R.startsWith([&apos;a&apos;], [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;]); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	tail</div><div class="line">	定义：删除列表中的首个元素（或者调用对象的 tail 方法）。</div></pre></td></tr></table></figure>
+
+R.tail([1, 2, 3]); // [2, 3]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	take</div><div class="line">	定义：返回列表的前 n 个元素、字符串的前n个字符或者用作 transducer/transform（或者调用对象的 take 方法）。</div></pre></td></tr></table></figure>
+
+R.take(1, [&apos;foo&apos;, &apos;bar&apos;, &apos;baz&apos;]); //=&gt; [&apos;foo&apos;]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	takeLast</div><div class="line">	定义：返回列表的后 n 个元素。如果 n &gt; list.length，则返回 list.length 个元素。</div></pre></td></tr></table></figure>
+
+R.takeLast(1, [&apos;foo&apos;, &apos;bar&apos;, &apos;baz&apos;]); //=&gt; [&apos;baz&apos;]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	takeLastWhile</div><div class="line">	定义：从后往前取出列表元素，直到遇到首个不满足 predicate 的元素为止。取出的元素中不包含首个不满足 predicate 的元素。</div></pre></td></tr></table></figure>
+
+var isNotOne = x =&gt; x !== 1;
+R.takeLastWhile(isNotOne, [1, 2, 3, 4]); // [2, 3, 4]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	takeWhile</div><div class="line">	定义：从前往后取出列表元素，直到遇到首个不满足 predicate 的元素为止。取出的元素中不包含首个不满足 predicate 的元素。</div></pre></td></tr></table></figure>
+
+var isNotFour = x =&gt; x !== 4;
+R.takeLastWhile(isNotFour, [1, 2, 3, 4, 3, 2, 1]); // [1, 2, 3]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	times</div><div class="line">	定义：执行输入的函数 n 次，返回由函数执行结果组成的数组。</div><div class="line">	fn 为一元函数，n 次调用接收的参数为：从 0 递增到 n-1 。</div></pre></td></tr></table></figure>
+
+R.times(R.identity, 5); // [0, 1, 2, 3, 4]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	transduce</div><div class="line">	定义：用 iterator function 初始化 transducer ，生成一个 transformed iterator function。然后顺次遍历列表，对每个列表元素先进行转换，然后与累积值进行归约，返回值作为下一轮迭代的累积值。最终返回与初始累积值类型相同的一个累积值。</div></pre></td></tr></table></figure>
+
+var numbers = [1, 2, 3, 4];
+var transducer = R.compose(R.map(R.add(1)), R.take(2));
+R.transduce(transducer, R.flip(R.append), [], numbers); //=&gt; [2, 3]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	transpose</div><div class="line">	定义：二维数组行列转置。输入 n 个长度为 x 的数组，输出 x 个长度为 n 的数组。</div></pre></td></tr></table></figure>
+
+R.transpose([[1, &apos;a&apos;], [2, &apos;b&apos;], [3, &apos;c&apos;]]); // [[1, 2, 3], [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;]]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	traverse</div><div class="line">	定义：将返回值为 Applicative 类型的函数映射到一个 Traversable 上。然后使用 sequence 将结果由 Traversable of Applicative 转换为 Applicative of Traversable。</div></pre></td></tr></table></figure>
+
+var safeDiv = n =&gt; d =&gt; d === 0 ? Nothing() : Just(n / d);
+R.traverse(Maybe.of, safeDiv(10), [2, 4, 5]); //=&gt; Just([5, 2.5, 2])
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	unfold</div><div class="line">	定义：通过一个种子值（ seed ）创建一个列表。unfold 接受一个迭代函数：该函数或者返回 false 停止迭代，或者返回一个长度为 2 的数组：数组首个元素添加到结果列表，第二个元素作为种子值传给下一轮迭代使用。</div></pre></td></tr></table></figure>
+
+var f = n =&gt; n &gt; 50 ? false : [-n, n + 10];
+R.unfold(f, 10); //=&gt; [-10, -20, -30, -40, -50]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	uniq</div><div class="line">	定义：列表去重操作。返回无重复元素的列表。通过 R.equals 函数进行相等性判断。</div></pre></td></tr></table></figure>
+
+R.uniq([1, 1, 2, 1]); // [1, 2]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	uniqBy</div><div class="line">	定义：返回无重复元素的列表。元素通过给定的函数的返回值以及 R.equals 进行相同性判断。如果给定的函数返回值相同，保留第一个元素。</div></pre></td></tr></table></figure>
+
+R.uniqBy(Math.abs, [1, -1, 2, 1]); // [1, 2]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	uniqWith</div><div class="line">	定义：返回无重复元素的列表。元素通过 predicate 进行相同性判断。如果通过 predicate 判断两元素相同，保留第一个元素。</div></pre></td></tr></table></figure>
+
+var strEq = R.eqBy(String);
+R.uniqWith(strEq)([1, &apos;1&apos;, 2, 1]); //=&gt; [1, 2]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	unnest</div><div class="line">	定义：R.chain(R.identity) 的简写, 对 Chain 类型的数据消除一层嵌套。</div></pre></td></tr></table></figure>
+
+R.unnest([1, [2], [[3]]]); //=&gt; [1, 2, [3]]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	update</div><div class="line">	定义：替换数组中指定索引处的值。</div></pre></td></tr></table></figure>
+
+R.update(1, 11, [0, 1, 2]); // [0, 11, 2]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	without</div><div class="line">	定义：求第二个列表中，未包含在第一个列表中的任一元素的集合。通过 R.equals 函数进行相等性判断。</div></pre></td></tr></table></figure>
+
+R.without([1, 2], [1, 2, 1, 3, 4]); // [3, 4]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	xprod</div><div class="line">	定义：将两个列表的元素两两组合，生成一个新的元素对列表。</div></pre></td></tr></table></figure>
+
+R.xprod([1, 2], [&apos;a&apos;, &apos;b&apos;]); // [[1, &apos;a&apos;], [1, &apos;b&apos;], [2, &apos;a&apos;], [2, &apos;b&apos;]]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	zip</div><div class="line">	定义：将两个列表对应位置的元素组合，生成一个新的元素对列表。生成的列表长度取决于较短的输入列表的长度。</div><div class="line">	注意，zip 等价于 zipWith(function(a, b) &#123; return [a, b] &#125;) 。</div></pre></td></tr></table></figure>
+
+R.zip([1, 2, 3], [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;]); // [[1, &apos;a&apos;], [2, &apos;b&apos;], [3, &apos;c&apos;]]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	zip</div><div class="line">	定义：将两个列表对应位置的元素作为键值对组合，生成一个新的键值对的列表。生成的列表长度取决于较短的输入列表的长度。</div><div class="line">	注意，zip 等价于 pipe(zipWith(pair), fromPairs) 。</div></pre></td></tr></table></figure>
+
+R.zipObj([&apos;a&apos;, &apos;b&apos;, &apos;c&apos;], [1, 2, 3]); // {a: 1, b: 2, c: 3}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	zipWith</div><div class="line">	定义：将两个列表对应位置的元素通过一个函数处理，生成一个新的元素的列表。生成的列表长度取决于较短的输入列表的长度。</div></pre></td></tr></table></figure>
+
+var f = (x, y) =&gt; {
+  // ...
+};
+R.zipWith(f, [1, 2, 3], [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;]);
+//=&gt; [f(1, &apos;a&apos;), f(2, &apos;b&apos;), f(3, &apos;c&apos;)]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">####	Object	</div><div class="line">	</div><div class="line">#####	assoc</div><div class="line">	定义：浅复制对象，然后设置或覆盖对象的指定属性。</div></pre></td></tr></table></figure>
+
+R.assoc(&apos;c&apos;, 3, {a: 1, b: 2}); {a: 1, b: 2, c: 3}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	assocPath</div><div class="line">	定义：浅复制对象，设置或覆盖即将创建的给定路径所需的节点，并将特定值放在该路径的末端。</div></pre></td></tr></table></figure>
+
+R.assocPath([&apos;a&apos;, &apos;b&apos;, &apos;c&apos;], 42, {a: {b: {c: 0}}}); // {a: {b: {c: 42}}}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	clone</div><div class="line">	定义：深复制。其值可能（嵌套）包含 Array、Object、Number、String、Boolean、Date 类型的数据。Function 通过引用复制。</div></pre></td></tr></table></figure>
+
+var objects = [{}, {}, {}];
+var objectsClone = R.clone(objects);
+objects === objectsClone; // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	dissoc</div><div class="line">	定义：删除对象中指定 prop 属性。</div></pre></td></tr></table></figure>
+
+R.dissoc(&apos;b&apos;, {a: 1, b: 2, c: 3}); // {a: 1, c: 3}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	dissocPath</div><div class="line">	定义：浅复制对象，删除返回对象中指定路径上的属性。</div></pre></td></tr></table></figure>
+
+R.dissocPath([&apos;a&apos;, &apos;b&apos;, &apos;c&apos;], {a: {b: {c: 42}}}); // {a: {b: {}}}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	eqProps</div><div class="line">	定义：判断两个对象指定的属性值是否相等。通过 R.equals 函数进行相等性判断。可用作柯里化的 predicate 。</div></pre></td></tr></table></figure>
+
+var o1 = {a: 1, b: 2, c: 3, d: 4};
+var o2 = {a: 10, b: 20, c: 3, d: 40};
+R.eqProps(&apos;a&apos;, o1, o2); // false
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	evolve</div><div class="line">	定义：递归地对 object 的属性进行变换，变换方式由 transformation 函数定义。所有非原始类型属性都通过引用来复制。</div><div class="line">	如果某个 transformation 函数对应的键在被变换的 object 中不存在，那么该方法将不会执行。</div></pre></td></tr></table></figure>
+
+var tomato  = {firstName: &apos;  Tomato &apos;, data: {elapsed: 100, remaining: 1400}, id:123};
+var transformations = {
+    firstName: R.trim,
+    lastName: R.trim, // Will not get invoked
+    data: {elapsed: R.add(1), remaining: R.add(-1)}
+};
+R.evolve(transformations, tomato); // {firstName: &apos;Tomato&apos;, data: {elapsed: 101, remaining: 1399}, id:123}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	forEachObjIndexed</div><div class="line">	定义：遍历 object，对 object 中的每对 key 和 value 执行方法 fn。</div><div class="line">	fn 接收三个参数: (value, key, obj).</div></pre></td></tr></table></figure>
+
+var printKeyConcatValue = (value, key) =&gt; console.log(key + &apos;:&apos; + value);
+R.forEachObjIndexed(printKeyConcatValue, {x: 1, y: 2}); //=&gt; {x: 1, y: 2}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	has</div><div class="line">	定义：如果对象自身含有指定的属性，则返回 true；否则返回 false。</div></pre></td></tr></table></figure>
+
+R.has(&apos;name&apos;)({name: &apos;fanerge&apos;}); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	hasIn</div><div class="line">	定义：如果对象自身或原型链上含有指定的属性，则返回 true；否则返回 false。</div></pre></td></tr></table></figure>
+
+var Rect = function (w, h) {
+    this.width = w;
+    this.height = h;
+};
+Rect.prototype.area = function (){
+    return this.width * this.heigth;
+};
+var rect1 = new Rect(100, 200);
+R.hasIn(&apos;area&apos;)(rect1); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	invert</div><div class="line">	定义：与 R.invertObj 类似，但会将值放入数组中，来处理一个键对应多个值的情况。</div></pre></td></tr></table></figure>
+
+var raceResultsByFirstName = {
+  first: &apos;alice&apos;,
+  second: &apos;jake&apos;,
+  third: &apos;alice&apos;,
+};
+R.invert(raceResultsByFirstName);
+//=&gt; { &apos;alice&apos;: [&apos;first&apos;, &apos;third&apos;], &apos;jake&apos;:[&apos;second&apos;] }
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	invertObj</div><div class="line">	定义：将对象的键、值交换位置：值作为键，对应的键作为值。交换后的键会被强制转换为字符串。注意，如果原对象同一值对应多个键，采用最后遍历到的键。</div></pre></td></tr></table></figure>
+
+var raceResults = {
+  first: &apos;alice&apos;,
+  second: &apos;jake&apos;
+};
+R.invertObj(raceResults);
+//=&gt; { &apos;alice&apos;: &apos;first&apos;, &apos;jake&apos;:&apos;second&apos; }
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	keys</div><div class="line">	定义：返回给定对象所有可枚举的、自身属性的属性名组成的列表。注意，不同 JS 运行环境输出数组的顺序可能不一致。</div></pre></td></tr></table></figure>
+
+R.keys({a: 1, b: 2, c: 3}); // [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	keysIn</div><div class="line">	定义：返回给定对象所有属性（包括 prototype 属性）的属性名组成的列表。注意，不同 JS 运行环境输出数组的顺序可能不一致。</div></pre></td></tr></table></figure>
+
+var F = function () { this.x = &apos;X&apos; };
+F.prototype.y = &apos;Y&apos;;
+var f = new F();
+R.keysIn(f); // [&apos;x&apos;, &apos;y&apos;]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	lens</div><div class="line">	定义：返回封装了给定 getter 和 setter 方法的 lens 。 getter 和 setter 分别用于 “获取” 和 “设置” 焦点（lens 聚焦的值）。setter 不会改变原数据。</div></pre></td></tr></table></figure>
+
+var xLens = R.lens(R.prop(&apos;x&apos;), R.assoc(&apos;x&apos;));
+R.view(xLens, {x: 1, y: 2}); // 1
+R.set(xLens, 4, {x: 1, y: 2}); // {x: 4, y: 2}
+R.over(xLens, R.negate, {x: 1, y: 2}); // {x: -1, y: 2}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	lensIndex</div><div class="line">	定义：返回聚焦到指定索引的 lens。</div></pre></td></tr></table></figure>
+
+var headLens = R.lensIndex(0);
+R.view(headLens, [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;]); // a
+R.set(headLens, &apos;x&apos;, [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;]); // [&apos;x&apos;, &apos;b&apos;, &apos;c&apos;]
+R.over(headLens, R.toUpper, [&apos;a&apos;, &apos;b&apos;, &apos;c&apos;]); // [&apos;A&apos;, &apos;B&apos;, &apos;C&apos;]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	lensPath</div><div class="line">	定义：返回聚焦到指定路径的 lens。</div></pre></td></tr></table></figure>
+
+var xHeadYLens = R.lensPath([&apos;x&apos;, 0, &apos;y&apos;]);
+R.view(xHeadYLens, {x: [{y: 2, z: 3}, {y: 4, z: 5}]});
+//=&gt; 2
+R.set(xHeadYLens, 1, {x: [{y: 2, z: 3}, {y: 4, z: 5}]});
+//=&gt; {x: [{y: 1, z: 3}, {y: 4, z: 5}]}
+R.over(xHeadYLens, R.negate, {x: [{y: 2, z: 3}, {y: 4, z: 5}]});
+//=&gt; {x: [{y: -2, z: 3}, {y: 4, z: 5}]}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	lensProp</div><div class="line">	定义：返回聚焦到指定属性的 lens。</div></pre></td></tr></table></figure>
+
+var xLens = R.lensProp(&apos;x&apos;);
+R.view(xLens, {x: 1, y: 2});            //=&gt; 1
+R.set(xLens, 4, {x: 1, y: 2});          //=&gt; {x: 4, y: 2}
+R.over(xLens, R.negate, {x: 1, y: 2});  //=&gt; {x: -1, y: 2}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	merge</div><div class="line">	定义：合并两个对象的自身属性（不包括 prototype 属性）。如果某个 key 在两个对象中都存在，使用后一个对象对应的属性值。</div></pre></td></tr></table></figure>
+
+R.merge({&apos;name&apos;: &apos;fanerge&apos;, &apos;age&apos;: 10}, {age: 30}); // {&apos;name&apos;: &apos;fanerge&apos;, age: 30}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	mergaDeepLeft</div><div class="line">	定义：合并两个对象的自身属性（不包括 prototype 属性）。如果某个 key 在两个对象中都存在：</div><div class="line">	并且两个值都是对象，则继续递归合并这两个值。</div><div class="line">	否则，采用第一个对象的值。</div></pre></td></tr></table></figure>
+
+R.mergeDeepLeft({ name: &apos;fred&apos;, age: 10, contact: { email: &apos;moo@example.com&apos; }},
+            { age: 40, contact: { email: &apos;baa@example.com&apos; }});
+// { name: &apos;fred&apos;, age: 10, contact: { email: &apos;moo@example.com&apos; }}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	mergaDeepRight</div><div class="line">	定义：合并两个对象的自身属性（不包括 prototype 属性）。如果某个 key 在两个对象中都存在：</div><div class="line">	并且两个值都是对象，则继续递归合并这两个值。</div><div class="line">	否则，采用第二个对象的值。</div></pre></td></tr></table></figure>
+
+R.mergeDeepRight({ name: &apos;fred&apos;, age: 10, contact: { email: &apos;moo@example.com&apos; }},
+             { age: 40, contact: { email: &apos;baa@example.com&apos; }});
+// { name: &apos;fred&apos;, age: 40, contact: { email: &apos;baa@example.com&apos; }}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	mergaDeepWith</div><div class="line">	定义：合并两个对象的自身属性（不包括 prototype 属性）。如果某个 key 在两个对象中都存在：</div><div class="line">	并且两个关联的值都是对象，则继续递归合并这两个值。</div><div class="line">	否则，使用给定函数对两个值进行处理，并将返回值作为该 key 的新值。</div><div class="line">	如果某 key 只存在于一个对象中，该键值对将作为结果对象的键值对。</div></pre></td></tr></table></figure>
+
+R.mergeDeepWith(R.concat,
+            { a: true, c: { values: [10, 20] }},
+            { b: true, c: { values: [15, 35] }});
+// { a: true, b: true, c: { values: [10, 20, 15, 35] }}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	mergeDeepWithKey</div><div class="line">	定义：合并两个对象的自身属性（不包括 prototype 属性）。如果某个 key 在两个对象中都存在：</div><div class="line">	并且两个关联的值都是对象，则继续递归合并这两个值。</div><div class="line">	否则，使用给定函数对该 key 和对应的两个值进行处理，并将返回值作为该 key 的新值。</div><div class="line">	如果某 key 只存在于一个对象中，该键值对将作为结果对象的键值对。</div></pre></td></tr></table></figure>
+
+let concatValues = (k, l, r) =&gt; k == &apos;values&apos; ? R.concat(l, r) : r
+R.mergeDeepWithKey(concatValues,
+                   { a: true, c: { thing: &apos;foo&apos;, values: [10, 20] }},
+                   { b: true, c: { thing: &apos;bar&apos;, values: [15, 35] }});
+// { a: true, b: true, c: { thing: &apos;bar&apos;, values: [10, 20, 15, 35] }}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	mergeWith</div><div class="line">	定义：使用给定的两个对象自身属性（不包括 prototype 属性）来创建一个新对象。</div><div class="line">	如果某个 key 在两个对象中都存在，则使用给定的函数对每个对象该 key 对应的 value 进行处理，处理结果作为新对象该 key 对应的值。</div></pre></td></tr></table></figure>
+
+R.mergeWith(R.concat, 
+                {a: true, values: [10, 20]}, 
+                {b: true, values: [15, 35]});
+// {a: true, b: true, values: [10, 20, 15, 35]}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	mergeWithKey</div><div class="line">	定义：使用给定的两个对象自身属性（不包括 prototype 属性）来创建一个新对象。</div><div class="line">	如果某个 key 在两个对象中都存在，则使用给定的函数对该 key 和每个对象该 key 对应的 value 进行处理，处理结果作为新对象该 key 对应的值。</div></pre></td></tr></table></figure>
+
+let concatValues = (k, l, r) =&gt; k == &apos;values&apos; ? R.concat(l, r) : r
+R.mergeWithKey(concatValues,
+               { a: true, thing: &apos;foo&apos;, values: [10, 20] },
+               { b: true, thing: &apos;bar&apos;, values: [15, 35] });
+// { a: true, b: true, thing: &apos;bar&apos;, values: [10, 20, 15, 35] }
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	objOf</div><div class="line">	定义：创建一个包含单个键值对的对象。</div></pre></td></tr></table></figure>
+
+var matchPhrases = R.compose(
+    R.objOf(&apos;must&apos;),
+    R.map(R.objOf(&apos;match_phrase&apos;))
+);
+matchPhrases([&apos;foo&apos;, &apos;bar&apos;, &apos;baz&apos;]); //=&gt; {must: [{match_phrase: &apos;foo&apos;}, {match_phrase: &apos;bar&apos;}, {match_phrase: &apos;baz&apos;}]}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	omit</div><div class="line">	定义：删除对象中给定的 keys 对应的属性。</div></pre></td></tr></table></figure>
+
+R.omit([&apos;a&apos;, &apos;d&apos;], {a: 1, b: 2, c: 3, d: 4}); // {b: 2, c: 3}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	over</div><div class="line">	定义：对数据结构中被 lens 聚焦的部分进行函数变换。</div></pre></td></tr></table></figure>
+
+var headLens = R.lensIndex(0);
+R.over(headLens, R.toUpper, [&apos;foo&apos;, &apos;bar&apos;, &apos;baz&apos;]); // [&apos;FOO&apos;, &apos;bar&apos;, &apos;baz&apos;]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	path</div><div class="line">	定义：取出给定路径上的值。</div></pre></td></tr></table></figure>
+
+R.path([&apos;a&apos;, &apos;b&apos;], {a: {b: 2}}); // 2
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	pathOr</div><div class="line">	定义：如果非空对象在给定路径上存在值，则将该值返回；否则返回给定的默认值。</div></pre></td></tr></table></figure>
+
+R.pathOr(&apos;N/A&apos;, [&apos;a&apos;, &apos;b&apos;], {a: {b: 2}}); // 2
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	pick</div><div class="line">	定义：返回对象的部分拷贝，其中仅包含指定键对应的属性。如果某个键不存在，则忽略该属性。</div></pre></td></tr></table></figure>
+
+R.pick([&apos;a&apos;, &apos;d&apos;], {a: 1, b: 2, c: 3, d: 4}); // {a: 1, d: 4}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	pickAll</div><div class="line">	定义：与 pick 类似，但 pickAll 会将不存在的属性以 key: undefined 键值对的形式返回。</div></pre></td></tr></table></figure>
+
+R.pickAll([&apos;a&apos;, &apos;d&apos;, &apos;e&apos;], {a: 1, b: 2, c: 3, d: 4}); // {a: 1, d: 4, e: undefined}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	pickBy</div><div class="line">	定义：返回对象的部分拷贝，其中仅包含 key 满足 predicate 的属性。</div></pre></td></tr></table></figure>
+
+var isUpperCase = (val, key) =&gt; key.toUpperCase() === key;
+R.pickBy(isUpperCase, {a: 1,b: 2, A: 3, B: 4}); // {A: 3, B: 4}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	project</div><div class="line">	定义：模拟 SQL 中的 select 语句。</div></pre></td></tr></table></figure>
+
+var abby = {name: &apos;Abby&apos;, age: 7, hair: &apos;blond&apos;, grade: 2};
+var fred = {name: &apos;Fred&apos;, age: 12, hair: &apos;brown&apos;, grade: 7};
+var kids = [abby, fred];
+R.project([&apos;name&apos;, &apos;grade&apos;], kids); // [{name: &apos;Abby&apos;, grade: 2}, {name: &apos;Fred&apos;, grade: 7}]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	prop</div><div class="line">	定义：取出对象中指定属性的值。如果不存在，则返回 undefined。</div></pre></td></tr></table></figure>
+
+R.prop(&apos;x&apos;, {x: 100}); // 100
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	propOr</div><div class="line">	定义：对于给定的非空对象，如果指定属性存在，则返回该属性值；否则返回给定的默认值。</div></pre></td></tr></table></figure>
+
+var alice = {
+  name: &apos;ALICE&apos;,
+  age: 101
+};
+var favorite = R.prop(&apos;favoriteLibrary&apos;);
+var favoriteWithDefault = R.propOr(&apos;Ramda&apos;, &apos;favoriteLibrary&apos;);
+
+favorite(alice);  // undefined
+favoriteWithDefault(alice);  // &apos;Ramda&apos;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	props</div><div class="line">	定义：返回 prop 的数组：输入为 keys 数组，输出为对应的 values 数组。values 数组的顺序与 keys 的相同。</div></pre></td></tr></table></figure>
+
+R.props([&apos;x&apos;, &apos;y&apos;], {x: 1, y: 2}); // [1, 2]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	set</div><div class="line">	定义：通过 lens 对数据结构聚焦的部分进行设置。</div></pre></td></tr></table></figure>
+
+var xLens = R.lensProp(&apos;x&apos;);
+R.set(xLens, 4, {x: 1, y: 2}); // {x: 4, y: 2}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	toPairs</div><div class="line">	定义：将一个对象的属性转换成键、值二元组类型的数组，只处理对象自身的属性。注意：不同 JS 运行环境输出数组的顺序可能不一致。</div></pre></td></tr></table></figure>
+
+R.toPairs({a: 1, b: 2, c: 3}); // [[&apos;a&apos;, 1], [&apos;b&apos;, 2], [&apos;c&apos;, 3]]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	toPairsIn</div><div class="line">	定义：将一个对象的属性转换成键、值二元组类型的数组，包括原型链上的属性。注意，不同 JS 运行环境输出数组的顺序可能不一致。</div></pre></td></tr></table></figure>
+
+var F = function () { this.x = &apos;X&apos;; };
+F.prototype.y = &apos;Y&apos;;
+var f = new F();
+R.toPairsIn(f); // [[&apos;x&apos;,&apos;X&apos;], [&apos;y&apos;,&apos;Y&apos;]]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	values</div><div class="line">	定义：返回对象所有自身可枚举的属性的值。注意：不同 JS 运行环境输出数组的顺序可能不一致。</div></pre></td></tr></table></figure>
+
+R.values({a: 1, b: 2, c: 3}); //=&gt; [1, 2, 3]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	values</div><div class="line">	定义：返回对象所有属性的值，包括原型链上的属性。注意：不同 JS 运行环境输出数组的顺序可能不一致。</div></pre></td></tr></table></figure>
+
+var F = function() { this.x = &apos;X&apos;; };
+F.prototype.y = &apos;Y&apos;;
+var f = new F();
+R.valuesIn(f); //=&gt; [&apos;X&apos;, &apos;Y&apos;]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	view</div><div class="line">	定义：返回数据结构中，lens 聚焦的部分。lens 的焦点决定了数据结构中的哪部分是可见的。</div></pre></td></tr></table></figure>
+
+var xLens = R.lensProp(&apos;x&apos;);
+R.view(xLens, {x: 1, y: 2});  //=&gt; 1
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	where</div><div class="line">	定义：接受一个测试规范对象和一个待检测对象，如果测试满足规范，则返回 true，否则返回 false。测试规范对象的每个属性值都必须是 predicate 。每个 predicate 作用于待检测对象对应的属性值，如果所有 predicate 都返回 true，则 where 返回 true，否则返回 false 。</div><div class="line">	where 非常适合于需要声明式表示约束的函数，比如 filter 和 find 。</div></pre></td></tr></table></figure>
+
+var pred = R.where({
+  a: R.equals(&apos;foo&apos;),
+  b: R.complement(R.equals(&apos;bar&apos;)),
+  x: R.gt(R.__, 10),
+  y: R.lt(R.__, 20)
+});
+
+pred({a: &apos;foo&apos;, b: &apos;xxx&apos;, x: 11, y: 19}); //=&gt; true
+pred({a: &apos;xxx&apos;, b: &apos;xxx&apos;, x: 11, y: 19}); //=&gt; false
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	whereEq</div><div class="line">	定义：接受一个测试规范对象和一个待检测对象，如果测试满足规范，则返回 true，否则返回 false。如果对于每一个测试规范对象的属性值，待检测对象中都有一个对应的相同属性值，则 where 返回 true，否则返回 false 。</div><div class="line">	whereEq 是 where 的一种特殊形式。</div></pre></td></tr></table></figure>
+
+var pred = R.whereEq({a: 1, b: 2});
+pred({a: 1});              //=&gt; false
+pred({a: 1, b: 2});        //=&gt; true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">####	Logic</div><div class="line"></div><div class="line">#####	allPass</div><div class="line">	定义：传入包含多个 predicate 的列表，返回一个 predicate：如果给定的参数满足列表中的所有 predicate ，则返回 true。</div><div class="line">	该函数返回一个柯里化的函数，参数个数由列表中参数最多的 predicate 决定。</div></pre></td></tr></table></figure>
+
+var isQueen = R.propEq(&apos;rank&apos;, &apos;Q&apos;);
+var isSpade = R.propEq(&apos;suit&apos;, &apos;??&apos;);
+var isQueenOfSpades = R.allPass([isQueen, isSpade]);
+isQueenOfSpades({rank: &apos;Q&apos;, suit: &apos;??&apos;}); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	anyPass</div><div class="line">	定义：传入包含多个 predicate 的列表，返回一个 predicate：只要给定的参数满足列表中的一个 predicate ，就返回 true。</div><div class="line">	该函数返回一个柯里化的函数，参数个数由列表中参数最多的 predicate 决定。</div></pre></td></tr></table></figure>
+
+var isQueen = R.propEq(&apos;rank&apos;, &apos;Q&apos;);
+var isSpade = R.propEq(&apos;suit&apos;, &apos;??&apos;);
+var isQueenOfSpades = R.anyPass([isQueen, isSpade]);
+isQueenOfSpades({rank: &apos;K&apos;, suit: &apos;??&apos;}); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	and（针对于值）</div><div class="line">	定义：如果两个参数都是 true，则返回 true；否则返回 false。相当于且（&amp;&amp;）</div></pre></td></tr></table></figure>
+
+R.and(true, true); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	both（针对于函数）</div><div class="line">	定义：该函数调用两个函数，并对两函数返回值进行与操作。若第一个函数结果为 false-y 值 (false, null, 0 等)，则返回该结果，否则返回第二个函数的结果。注意，both 为短路操作，即如果第一个函数返回 false-y 值，则不会调用第二个函数。</div></pre></td></tr></table></figure>
+
+var gt10 = R.gt(R.__, 10);
+var lt20 = R.lt(R.__, 20);
+var f = R.both(gt10, lt20);
+f(15); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	complement</div><div class="line">	定义：对函数的返回值取反。接受一个函数 f，返回一个新函数 g：在输入参数相同的情况下，若 f 返回 &apos;true-y&apos; ，则 g 返回 false-y ，反之亦然。</div></pre></td></tr></table></figure>
+
+var isNotNil = R.complement(R.isNil);
+isNotNil(null); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	cond</div><div class="line">	定义：返回一个封装了 if / else，if / else if/ else逻辑的函数 fn。 R.cond 接受列表元素为 [predicate，transformer] 的列表。 fn 的所有参数顺次作用于每个 predicate，直到有一个返回 &quot;truthy&quot; 值，此时相应 transformer 对参数处理，并作为 fn 的结果返回。 如果没有 predicate 匹配，则 fn 返回 undefined。</div></pre></td></tr></table></figure>
+
+var fn = R.cond([
+    [R.equals(0), R.always(&apos;water freezes at 0&apos;)],
+    [R.equals(100), R.always(&apos;water freezes at 100&apos;)],
+    [R.T, temp =&gt; `nothing special happens at ${temp}`],
+]);
+fn(3); // nothing special happens at 3
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	defaultTo</div><div class="line">	定义：如果第二个参数不是 null、undefined 或 NaN，则返回第二个参数，否则返回第一个参数（默认值）。</div></pre></td></tr></table></figure>
+
+var defaultTo42 = R.defaultTo(42);
+defaultTo42(undefined); // 42 
+defaultTo42(13); // 13 
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	either</div><div class="line">	定义：返回由 || 运算符连接的两个函数的包装函数。如果两个函数中任一函数的执行结果为 truth-y，则返回其执行结果。 注意，这个是短路表达式，意味着如果第一个函数返回 truth-y 值的话，第二个函数将不会执行。</div></pre></td></tr></table></figure>
+
+var gt10 = x =&gt; x &gt; 10;
+var even = x =&gt; x % 2 === 0;
+var f = R.either(gt10, even);
+f(101); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	ifElse</div><div class="line">	定义：根据 condition predicate 的返回值调用 onTrue 或 onFalse 函数。</div></pre></td></tr></table></figure>
+
+var inCount = R.ifElse(
+    R.has(&apos;count&apos;),
+    R.over(R.lensProp(&apos;count&apos;), R.inc),
+    R.assoc(&apos;count&apos;, 1)
+);
+incCount({});           //=&gt; { count: 1 }
+incCount({ count: 1 }); //=&gt; { count: 2 }
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	isEmpty</div><div class="line">	定义：检测给定值是否为其所属类型的空值，若是则返回 true ；否则返回 false 。</div></pre></td></tr></table></figure>
+
+R.isEmpty([1, 2, 3]); // false
+R.isEmpty(&apos;&apos;); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	not</div><div class="line">	定义：逻辑非运算。 当传入参数为 false-y 值时，返回 true；truth-y 值时，返回 false。</div></pre></td></tr></table></figure>
+
+R.not(true); // false
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	or</div><div class="line">	定义：逻辑或运算，只要有一个参数为 truth-y，就返回 true；否则返回 false。</div></pre></td></tr></table></figure>
+
+R.or(true, true); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	pathSatisfies</div><div class="line">	定义：如果对象的给定路径上的属性满足 predicate，返回 ture；否则返回 false。</div></pre></td></tr></table></figure>
+
+R.pathSatisfies(y =&gt; y &gt; 0, [&apos;x&apos;, &apos;y&apos;], {x: {y: 2}}); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	propSatisfies</div><div class="line">	定义：如果指定的对象属性满足 predicate，返回 true；否则返回 false。</div></pre></td></tr></table></figure>
+
+R.propSatisfies(x =&gt; x &gt; 0, &apos;x&apos;, {x: 1, y: 2}); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	unless</div><div class="line">	定义：判断输入值是否满足 predicate，若不符合，则将输入值传给 whenFalseFn 处理，并将处理结果作为返回；若符合，则将输入值原样返回。</div></pre></td></tr></table></figure>
+
+let safeInc = R.unless(R.isNil, R.inc);
+safeInc(null); //=&gt; null
+safeInc(1); //=&gt; 2
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	until</div><div class="line">	定义：接受一个 predicate ，transform function 和 初始值，返回一个与初始值相同类型的值。对输入值进行 transform ，直到 transform 的结果满足 predicate，此时返回这个满足 predicate 的值。</div></pre></td></tr></table></figure>
+
+R.until(R.gt(R.__, 100), R.multiply(2))(1); // 128
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	when</div><div class="line">	定义：判断输入值是否满足 predicate，若符合，则将输入值传给 whenTrueFn 处理，并将处理结果作为返回；若不符合，则将输入值原样返回。</div></pre></td></tr></table></figure>
+
+var truncate = R.when(
+  R.propSatisfies(R.gt(R.__, 10), &apos;length&apos;),
+  R.pipe(R.take(10), R.append(&apos;…&apos;), R.join(&apos;&apos;))
+);
+truncate(&apos;12345&apos;);         // &apos;12345&apos;
+truncate(&apos;0123456789ABC&apos;); // &apos;0123456789…&apos;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">####	Function</div><div class="line"></div><div class="line">#####	__</div><div class="line">	定义：柯里化函数的参数占位符。允许部分应用于任何位置的参数。</div></pre></td></tr></table></figure>
+
+假设 g 代表柯里化的三元函数
+g(1, 2, 3)
+g(R.__, 2, 3)(1)
+g(R.__, R__, 3)(1)(2)
+g(R.__, 2, R.__)(1)(3)
+g(R.__, 2)(R.__, 3)(1)
+// 这些函数都是等价的。
+var greet = R.replace(&apos;{name}&apos;, R.__, &apos;Hello, {name}!&apos;);
+greet(&apos;Fanerge&apos;); // Hello, Fanerge
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	addIndex</div><div class="line">	定义：通过向列表迭代函数的回调函数添加两个新的参数：当前索引、整个列表，创建新的列表迭代函数。</div></pre></td></tr></table></figure>
+
+var mapIndexed = R.addIndex(R.map);
+mapIndexed((val, idx) =&gt; {idx + &apos;-&apos; + val}, [&apos;f&apos;, &apos;a&apos;, &apos;n&apos;]); // [&apos;0-f&apos;, &apos;1-a&apos;, &apos;2-n&apos;]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	always</div><div class="line">	定义：返回一个返回恒定值的函数。注意，对于非原始值，返回的值是对原始值的引用。</div></pre></td></tr></table></figure>
+
+var t = R.always(&apos;Tee&apos;);
+t(); // Tee
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	ap</div><div class="line">	定义：将函数列表作用于值列表上。</div></pre></td></tr></table></figure>
+
+R.ap([R.multiply(2), R.add(3)], [1, 2, 3]); // [2, 4, 6, 4, 5, 6]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	apply</div><div class="line">	定义：将函数 fn 作用于参数列表 args。apply 可以将变参函数转换为为定参函数。如果上下文很重要，则 fn 应该绑定其上下文。</div></pre></td></tr></table></figure>
+
+var nums = [1, 2, 3, -99, 42, 6, 7];
+R.apply(Math.max, nums); // 42
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	applySpec</div><div class="line">	定义：接受一个属性值为函数的对象，返回一个能生成相同结构对象的函数。返回的函数使用传入的参数调用对象的每个属性位对应的函数，来生成相应属性的值。</div></pre></td></tr></table></figure>
+
+var getMetrics = R.applySpec({    
+    sum: R.add,
+    nested: { mul: R.multiply }
+});
+getMetrics(2, 4); // {sum: 6, nested: { mul: 8 }}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	ascend</div><div class="line">	定义：由返回值可与 &lt; 和 &gt; 比较的函数，创建一个升序比较函数。</div></pre></td></tr></table></figure>
+
+var byAge = R.ascend(R.prop(&apos;age&apos;));
+var people = [{name: &apos;yzf&apos;, age: 11}, {name: &apos;wkm&apos;, age: 10}];
+var peopleByYoungestFirst = R.sort(byAge, people); // [{&quot;name&quot;:&quot;wkm&quot;,&quot;age&quot;:10},{&quot;name&quot;:&quot;yzf&quot;,&quot;age&quot;:11}]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	binary</div><div class="line">	定义：将任意元函数封装为二元函数（只接受2个参数）中。任何额外的参数都不会传递给被封装的函数。</div></pre></td></tr></table></figure>
+
+var takesThreeArgs = function (a, b, c){
+    return [a, b, c];
+};
+vat takeTwoArgs = R.binary(takesThreeArgs);
+// takeTwoArgs.length; // 2
+takeTwoArgs(1, 2, 3); // [1, 2, undefined]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	bind</div><div class="line">	定义：创建一个绑定了上下文的函数。</div><div class="line">	注意：与 Function.prototype.bind 不同，R.bind 不会绑定额外参数。</div></pre></td></tr></table></figure>
+
+var log = R.bind(console.log, console);
+log(1); // 1
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	call</div><div class="line">	定义：提取第一个参数作为函数，其余参数作为刚提取的函数的参数，调用该函数并将结果返回。</div></pre></td></tr></table></figure>
+
+R.call(R.add, 1, 2); // 3
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	comparator</div><div class="line">	定义：由首个参数是否小于第二个参数的判断函数，生成一个比较函数。</div></pre></td></tr></table></figure>
+
+var byAge = R.comparator((a, b) =&gt; a.age &lt; b.age);
+var people = [{name: &apos;yzf&apos;, age: 11}, {name: &apos;wkm&apos;, age: 10}];
+var peopleByIncreasingAge = R.sort(byAge, people); // [{&quot;name&quot;:&quot;wkm&quot;,&quot;age&quot;:10},{&quot;name&quot;:&quot;yzf&quot;,&quot;age&quot;:11}]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	compose</div><div class="line">	定义：从右往左执行函数组合（右侧函数的输出作为左侧函数的输入）。最右侧函数可以是任意元函数（参数个数不限），其余函数必须是一元函数。</div></pre></td></tr></table></figure>
+
+R.compose(R.add(1), R.multiply(2))(3); // 7
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	composeK</div><div class="line">	定义：接受一系列函数，返回从右向左的 Kleisli 组合，每个函数必须返回支持 chain 操作的值。</div></pre></td></tr></table></figure>
+
+R.composeK(h, g, f) 等同于 R.compose(R.chain(h)，R.chain(g)，R.chain(f))。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	composeP</div><div class="line">	定义： 从右向左执行返回 Promise 的函数的组合。最右边的函数可以是任意元函数（参数个数不限）; 其余函数必须是一元函数。</div></pre></td></tr></table></figure>
+
+var db = {
+      users: {
+            JOE: {
+              name: &apos;Joe&apos;,
+              followers: [&apos;STEVE&apos;, &apos;SUZY&apos;]
+            }
+      }
+};
+var lookupUser = (userId) =&gt; Promise.resolve(db.users[userId]);
+var lookupFollowers = (user) =&gt; Promise.resolve(user.followers);
+lookupUser(&apos;JOE&apos;).then(lookupFollowers);
+var followersForUser = R.composeP(lookupFollowers, lookupUser);
+followersForUser(&apos;JOE&apos;).then(followers =&gt; console.log(&apos;Followers:&apos;, followers)) // [&quot;STEVE&quot;,&quot;SUZY&quot;]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	construct</div><div class="line">	定义：将构造函数封装进柯里化函数，新函数与原构造函数的传入参数类型及返回值类型相同。</div></pre></td></tr></table></figure>
+
+// constructor function
+function Animal (kind) {
+    this.kind = kind;
+}
+Animal.prototype.sighting = function () {
+    return `it&apos;s a ${this.kind}!`;
+};
+var AnimalConstructor = R.construct(Animal);
+console.log(AnimalConstructor(&apos;PIG&apos;)); // {&quot;kind&quot;:&quot;PIG&quot;}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	constructN</div><div class="line">	定义：将构造函数封装进柯里化函数，新函数与原构造函数的传入参数类型及返回值类型相同。为了能够使用变参的构造函数，返回函数的元数需要明确指定。</div></pre></td></tr></table></figure>
+
+function Salad() {
+  this.ingredients = arguments;
+};
+Salad.prototype.recipe = function() {
+  var instructions = R.map((ingredient) =&gt; (
+    &apos;Add a whollop of &apos; + ingredient, this.ingredients)
+  )
+  return R.join(&apos;\n&apos;, instructions)
+}
+
+var ThreeLayerSalad = R.constructN(3, Salad)
+
+// Notice we no longer need the &apos;new&apos; keyword, and the constructor is curried for 3 arguments.
+var salad = ThreeLayerSalad(&apos;Mayonnaise&apos;)(&apos;Potato Chips&apos;)(&apos;Ketchup&apos;)
+console.log(salad.recipe());
+// Add a whollop of Mayonnaise
+// Add a whollop of Potato Chips
+// Add a whollop of Potato Ketchup
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	converge</div><div class="line">	定义：接受一个 converging 函数和一个分支函数列表，返回一个新函数。当被调用时，新函数接受参数，并将这些参数转发给每个分支函数；然后将每个分支函数的计算结果作为参数传递给 converging 函数，converging 函数的计算结果即新函数的返回值。</div></pre></td></tr></table></figure>
+
+var average = R.converge(R.divide, [R.sum, R.length]);
+average([1, 2, 3, 4, 5, 6, 7]); // 4
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	curry</div><div class="line">	定义：对函数进行柯里化。柯里化函数与其他语言中的柯里化函数相比，有两个非常好的特性：</div><div class="line">	1.参数不需要一次只传入一个。 </div><div class="line">		g(1)(2)(3) === g(1, 2, 3)</div><div class="line">	2.占位符值 R.__ 可用于标记暂未传入参数的位置。允许部分应用于任何参数组合，而无需关心它们的位置和顺序。</div><div class="line">		F(1, 2, 3) === F(R.__, 2, 3)(1) === F(R.__, 3)(1)(2)</div></pre></td></tr></table></figure>
+
+var addFourNumbers = (a, b, c, d) =&gt; a + b + c + d;
+var curriedAddFourNumbers = R.curry(addFourNumbers);
+var f = curriedAddFourNumbers(1); // 返回剩余三个参数的函数
+f(2, 3, 4); // 10(当参数全部传入，才返回结果)
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	curryN</div><div class="line">	定义：对函数进行柯里化，并限制柯里化函数的元数。</div></pre></td></tr></table></figure>
+
+var sumArgs = (...args) =&gt; R.sum(args);
+var curriedFourNumbers = R.curryN(5, sumArgs);
+var f = curriedAddFourNumbers(1, 2);
+var g = f(3, 4, 5); // 15
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	descend</div><div class="line">	定义：由返回值可与 &lt; 和 &gt; 比较的函数，创建一个降序比较函数。</div></pre></td></tr></table></figure>
+
+var byAge = R.descend(R.prop(&apos;age&apos;));
+var people = [
+
+];
+var peopleByOldFirst = R.sort(buAge, people);
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	empty</div><div class="line">	定义：根据传入参数的类型返回其对应的空值。Ramda 定义了各类型的空值如下：Array ([])，Object (&#123;&#125;)，String (&apos;&apos;)，和 Arguments。empty 还支持其它定义了 &lt;Type&gt;.empty 和/或 &lt;Type&gt;.prototype.empty 的类型。</div></pre></td></tr></table></figure>
+
+R.empty(Just(42)); // Noting()
+R.empty([1, 2]); // []
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	F</div><div class="line">	定义：恒定返回 false 的函数。忽略所有的输入参数。</div></pre></td></tr></table></figure>
+
+R.F(); // false
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	flip</div><div class="line">	定义：交换函数前两个参数的位置。</div></pre></td></tr></table></figure>
+
+var mergeThree = (a, b, c) =&gt; [].concat(a, b, c);
+mergeThree(1, 2, 3); // [1, 2, 3]
+R.flip(mergeThree)(1, 2, 3); // [2, 1, 3]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	identity</div><div class="line">	定义：将输入值原样返回。适合用作默认或占位函数。</div></pre></td></tr></table></figure>
+
+R.identity(1); // 1
+var obj = {};
+R.identity(obj) === obj; // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	invoker</div><div class="line">	定义：将具有指定元数（参数个数）的具名方法，转换为可以被给定参数和目标对象直接调用的函数。</div><div class="line">	返回的函数是柯里化的，它接收 arity + 1 个参数，其中最后一个参数是目标对象。</div></pre></td></tr></table></figure>
+
+var sliceFrom = R.invoker(1, &apos;slice&apos;);
+sliceFrom(6, &apos;abcdefghijklm&apos;); //=&gt; &apos;ghijklm&apos;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	juxt</div><div class="line">	定义：juxt 将函数列表作用于值列表。</div></pre></td></tr></table></figure>
+
+var getRange = R.juxt([Math.min, Math.max]);
+getRange(3, 4, 9, -3); // [-3, 9]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	lift</div><div class="line">	定义：提升一个多元函数，使之能映射到列表、函数或其他符合 FantasyLand Apply spec 规范的对象上。</div></pre></td></tr></table></figure>
+
+var madd3 = R.lift((a, b, c) =&gt; a + b + c);
+madd3([1,2,3], [1,2,3], [1]); //=&gt; [3, 4, 5, 4, 5, 6, 5, 6, 7]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	liftN</div><div class="line">	定义：将一个函数提升为指定元数的函数，使之能映射到多个列表、函数或其他符合 FantasyLand Apply spec 规范的对象上。</div></pre></td></tr></table></figure>
+
+var madd3 = R.liftN(3, (...args) =&gt; R.sum(args));
+madd3([1,2,3], [1,2,3], [1]); //=&gt; [3, 4, 5, 4, 5, 6, 5, 6, 7]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	memoize</div><div class="line">	定义：memoize 方法可以缓存函数的计算结果。</div><div class="line">	创建一个新函数，被调用时，缓存特定参数对应的经 fn 计算的结果，并将结果返回。此后如果用相同的参数调用缓存的 fn 时，直接返回该参数对应的缓存结果，不必再调用 fn。</div></pre></td></tr></table></figure>
+
+var count = 0;
+const factorial = R.memoize(n =&gt; {
+    count += 1;
+    return R.product(R.range(1, n + 1));
+});
+factorial(5); // 120
+factorial(5); // 120
+count; // 1(只进行了一次运算)
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	memoizeWith</div><div class="line">	定义：R.memoize 的可定制版本。memoizeWith 需要一个额外的函数，该函数接受一个参数集，用于创建缓存的键值，在该缓存中会存储被缓存函数的结果。注意，生成缓存键值时，要避免可能会错误地覆盖之前已缓存键值对的冲突。</div></pre></td></tr></table></figure>
+
+var count = 0;
+const factorial = R.memoizeWith(R.identity, n =&gt; {
+    count += 1;
+    return R.product(R.range(1, n + 1));
+});
+factorial(5); // 120
+factorial(5); // 120
+count; // 1(只进行了一次运算)
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	nAry</div><div class="line">	定义：将一个任意元（包括零元）的函数，封装成一个确定元数（参数个数）的函数。任何多余的参数都不会传入被封装的函数。</div></pre></td></tr></table></figure>
+
+var takesTwoArgs = (a, b) =&gt; [a, b];
+takesTwoArgs.length; // 2
+takesTwoArgs(1, 2); // [1, 2]
+var takesOneArg = R.nAry(1, takeTwoArgs);
+takesOneArg.length; // 1
+takesOneArg(1, 2); // [1, undefined]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	nthArg</div><div class="line">	定义：返回一个函数，该函数返回它的第 n 个参数。</div></pre></td></tr></table></figure>
+
+R.nthArg(1)(&apos;a&apos;, &apos;b&apos;, &apos;c&apos;); // b
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	o</div><div class="line">	定义：o 是一个柯里化组合函数，返回一元函数。</div><div class="line">	类似于 compose，o 从右到左执行函数组合。但与 compose 不同的是，传递给 o 的最右边的函数为一元函数。</div></pre></td></tr></table></figure>
+
+R.o(R.multiply(10), R.add(10))(-4); // 60
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	of</div><div class="line">	定义：将给定值作为元素，封装成单元素数组。</div></pre></td></tr></table></figure>
+
+R.of(42); // [42]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	once</div><div class="line">	定义：创建一个只能调用一次的函数。</div><div class="line">	将给定函数 fn 封装到新函数fn&apos;中，fn&apos; 确保 fn 只能调用一次。重复调用fn&apos; ，只会返回第一次执行时的结果。</div></pre></td></tr></table></figure>
+
+var addOneOnce = R.once(x =&gt; x + 1);
+addOneOnce(10); // 11
+addOneOnce(51); // 11
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	partial</div><div class="line">	定义：部分应用。</div><div class="line">	接收两个参数：函数 f 和 参数列表，返回函数 g。当调用 g 时，将初始参数和 g 的参数顺次传给 f，并返回 f 的执行结果。</div></pre></td></tr></table></figure>
+
+var multiply2 = (a, b) =&gt; a * b;
+var double = R.partial(multiply2, [2]);
+double(3); // 2*3=6
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	partialRight</div><div class="line">	定义：部分应用。</div><div class="line">	接收两个参数：函数 f 和 参数列表，返回函数 g。当调用 g 时，将 g 的参数和初始参数顺序传给 f，并返回 f 的执行结果。</div></pre></td></tr></table></figure>
+
+var multiply2 = (a, b) =&gt; a * b;
+var double = R.partial(multiply2, [2]);
+double(3); // 3*2=6
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	pipe</div><div class="line">	定义：从左往右执行函数组合。最左边的函数可以是任意元函数（参数个数不限），其余函数必须是一元函数。</div></pre></td></tr></table></figure>
+
+var f = R.pipe(Math.pow, R.negate, R.inc);
+f(3, 4); // -(3^4) + 1
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	pipeK</div><div class="line">	定义：将一系列函数，转换成从左到右的 Kleisli 组合，每个函数必须返回支持chain操作的值。</div><div class="line">	R.pipeK(f, g, h) 等价于 R.pipe(R.chain(f), R.chain(g), R.chain(h))。</div></pre></td></tr></table></figure>
+
+var getStateCode = R.pipeK(
+  parseJson,
+  get(&apos;user&apos;),
+  get(&apos;address&apos;),
+  get(&apos;state&apos;),
+  R.compose(Maybe.of, R.toUpper)
+);
+getStateCode(&apos;{&quot;user&quot;:{&quot;address&quot;:{&quot;state&quot;:&quot;ny&quot;}}}&apos;);
+// Just(&apos;NY&apos;)
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	pipeP</div><div class="line">	定义：从左往右执行返回 Promise 的函数的组合。最左边的函数可以是任意元函数（参数个数不限）；其余函数必须是一元函数。</div></pre></td></tr></table></figure>
+
+var followersForUser = R.pipeP(db.getUserById, db.getFollowers);
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	T</div><div class="line">	定义：恒定返回 true 的函数。忽略所有的输入参数。</div></pre></td></tr></table></figure>
+
+R.T(); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	tap</div><div class="line">	定义：对输入的值执行给定的函数，然后返回输入的值。</div></pre></td></tr></table></figure>
+
+var sayX = x =&gt; console.log(&apos;x is &apos; + x);
+R.tap(sayX, 100); // 100
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	tryCatch</div><div class="line">	定义：tryCatch 接受两个函数：tryer 和 catcher，生成的函数执行 tryer，若未抛出异常，则返回执行结果。若抛出异常，则执行 catcher，返回 catcher 的执行结果。注意，为了有效的组合该函数，tryer 和 catcher 应赶回相同类型的值。</div></pre></td></tr></table></figure>
+
+R.tryCatch(R.prop(&apos;x&apos;), R.f)({x: true}); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	unapply</div><div class="line">	定义：输入一个只接收单个数组作为参数的函数，返回一个新函数：</div><div class="line">	接收任意个参数；</div><div class="line">	将参数组成数组传递给 fn ；</div><div class="line">	返回执行结果。</div><div class="line">	换言之，R.unapply 将一个使用数组作为参数的函数，变为一个不定参函数。 R.unapply 是 R.apply 的逆函数</div></pre></td></tr></table></figure>
+
+R.unapply(JSON.stringify, 1, 2, 3); // &apos;[1, 2, 3]&apos;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	unary</div><div class="line">	定义：将任意元（包括零元）函数封装成一元函数。任何额外的参数都不会传递给被封装的函数。</div></pre></td></tr></table></figure>
+
+var takesTwoArgs = function(a, b) {
+  return [a, b];
+};
+takesTwoArgs.length; //=&gt; 2
+takesTwoArgs(1, 2); //=&gt; [1, 2]
+
+var takesOneArg = R.unary(takesTwoArgs);
+takesOneArg.length; //=&gt; 1
+// 只有一个参数能被传递到函数当中
+takesOneArg(1, 2); //=&gt; [1, undefined]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	uncurryN</div><div class="line">	定义：将一个柯里化的函数转换为一个 n 元函数。</div></pre></td></tr></table></figure>
+
+var addFour = a =&gt; b =&gt; c =&gt; d =&gt; a + b + c + d;
+var uncurriedAddFour = R.uncurryN(4, addFour);
+uncurriedAddFour(1, 2, 3, 4); // 10
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	useWith</div><div class="line">	定义：接受一个函数 fn 和一个 transformer 函数的列表，返回一个柯里化的新函数。当被调用时，新函数将每个参数转发给对应位置的 transformer 函数，然后将每个 transformer 函数的计算结果作为参数传递给 fn，fn 的计算结果即新函数的返回值。</div><div class="line">	如果新函数传传入参数的数量比 transformer 函数的数量多，多出的参数会作为附加参数直接传给 fn 。如果不需要处理多出的那部分参数，除了忽略之外，也可以用 identity 函数来作为 transformer ，以保证新函数的参数数量是确定的。</div></pre></td></tr></table></figure>
+
+R.useWith(Math.pow, [R.identity, R.identity])(3, 4); //=&gt; 81
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">	</div><div class="line"></div><div class="line">####	Math</div><div class="line">	</div><div class="line">#####	add</div><div class="line">	定义：两数相加。</div></pre></td></tr></table></figure>
+
+R.add(2)(3); // 5
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	dec</div><div class="line">	定义：减一。与i--的区别为会生产一个新数据（不改变原有值）。</div></pre></td></tr></table></figure>
+
+R.dec(42); // 41
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	divide</div><div class="line">	定义：两数相除。等价于a / b。</div></pre></td></tr></table></figure>
+
+R.divide(71, 100); // 0.71
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	inc</div><div class="line">	定义：加1。</div></pre></td></tr></table></figure>
+
+R.inc(42); // 43
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	mathMod</div><div class="line">	定义：mathMod 和算术取模操作类似，而不像 % 操作符 （或 R.modulo）。所以 -17 % 5 等于 -2，而 mathMod(-17, 5) 等于 3 。mathMod 要求参数为整型，并且当模数等于 0 或者负数时返回 NaN 。</div></pre></td></tr></table></figure>
+
+R.mathMod(-17, 5); // 3
+R.mathMod(17, 5); // 2
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	mean</div><div class="line">	定义：返回给定数字列表的平均值。</div></pre></td></tr></table></figure>
+
+R.mean([2, 7, 9]); // 6
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	median</div><div class="line">	定义：返回给定数字列表的中位数。</div></pre></td></tr></table></figure>
+
+R.median([2, 9, 7]); // 7
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	modulo</div><div class="line">	定义：用第一个参数除以第二个参数，并返回余数。注意，该函数是 JavaScript-style 的求模操作。数学求模另见 mathMod。</div></pre></td></tr></table></figure>
+
+R.modulo(17, 3); // 2
+R.modulo(-17, 3); // -2
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	multiply</div><div class="line">	定义：两数相乘，等价于柯里化的 a * b 。</div></pre></td></tr></table></figure>
+
+R.multiply(2, 3); // 6
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	negate</div><div class="line">	定义：取反操作。</div></pre></td></tr></table></figure>
+
+R.negate(42); // -42
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	product</div><div class="line">	定义：列表中的所有元素相乘。</div></pre></td></tr></table></figure>
+
+R.product([2, 3, 4]); // 24
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	subtract</div><div class="line">	定义：首个参数减去第二个参数。</div></pre></td></tr></table></figure>
+
+R.subtract(1, 2); // -1
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	sum</div><div class="line">	定义：对数组中所有元素求和。</div></pre></td></tr></table></figure>
+
+R.sum([1, 2, 3]); // 6
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line"></div><div class="line"></div><div class="line">####	Relation</div><div class="line"></div><div class="line">#####	clamp</div><div class="line">	定义：将数字限制在指定的范围内。</div><div class="line">	clamp 也可用于其他有序类型，如字符串和日期。</div></pre></td></tr></table></figure>
+
+R.clamp(1, 10, -5); // 1
+R.clamp(1, 10, 4); // 4
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	countBy</div><div class="line">	定义：根据给定函数提供的统计规则对列表中的元素进行分类计数。返回一个对象，其键值对为：fn 根据列表元素生成键，列表中通过 fn 映射为对应键的元素的个数作为值。</div><div class="line">	注意，由于 JavaScript 对象的实现方式，所有键都被强制转换为字符串。</div></pre></td></tr></table></figure>
+
+var numbers = [1.0, 1.1, 1.2, 2.0, 3.0, 2.2];
+R.countBy(Math.floor, numbers); // {&apos;1&apos;: 3, &apos;2&apos;: 2, &apos;3&apos;: 1 }
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	difference</div><div class="line">	定义：求差集。求第一个列表中，未包含在第二个列表中的任一元素的集合。对象和数组比较数值相等，而非引用相等。</div></pre></td></tr></table></figure>
+
+R.difference([1, 2, 3, 4], [7, 6, 5, 4, 3]); // [1, 2]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	differenceWith</div><div class="line">	定义：求第一个列表中未包含在第二个列表中的所有元素的集合（集合中没有重复元素）。两列表中的元素通过 predicate 判断相应元素是否同时 “包含在” 两列表中。</div></pre></td></tr></table></figure>
+
+var cmp = (x, y) =&gt; x.a === y.a;
+var l1 = [{a: 1}, {a: 2}, {a: 3}];
+var l2 = [{a: 3}, {a: 4}];
+R.differenceWith(cmp, l1, l2); // [{a: 1}, {a: 2}]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	eqBy</div><div class="line">	定义：接受一个函数和两个值，通过传入函数对两个值进行相等性判断。如果两个值的计算结果相等，则返回 true ；否则返回 false 。</div></pre></td></tr></table></figure>
+
+R.eqBy(Math.abs, 5, -5); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	equals</div><div class="line">	定义：如果传入的参数相等，返回 true；否则返回 false。可以处理几乎所有 JavaScript 支持的数据结构。</div></pre></td></tr></table></figure>
+
+R.equals(1, 1); // true
+R.equals([&apos;1&apos;], [&apos;1&apos;]); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	gt</div><div class="line">	定义：如果首个参数大于第二个参数，返回 true；否则返回 false。</div></pre></td></tr></table></figure>
+
+R.gt(2, 1); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	gte</div><div class="line">	定义：如果首个参数大于等于第二个参数，返回 true；否则返回 false。</div></pre></td></tr></table></figure>
+
+R.gte(2, 1); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	identical</div><div class="line">	定义：如果两个参数是完全相同，则返回 true，否则返回 false。如果它们引用相同的内存，也认为是完全相同的。NaN 和 NaN 是完全相同的；0 和 -0 不是完全相同的。</div></pre></td></tr></table></figure>
+
+var o = {};
+R.identical(o, o); //=&gt; true
+R.identical(1, 1); //=&gt; true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	innerJoin</div><div class="line">	定义：接受一个 predicate pred 、列表 xs 和 ys ，返回列表 xs&apos;。依次取出 xs 中的元素，若通过 pred 判断等于 ys 中的一个或多个元素，则放入 xs&apos; 。</div><div class="line">	pred 必须为二元函数，两个参数分别来自于对应两个列表中的元素。</div></pre></td></tr></table></figure>
+
+R.innerJoin(
+  (record, id) =&gt; record.id === id,
+  [{id: 824, name: &apos;Richie Furay&apos;},
+   {id: 956, name: &apos;Dewey Martin&apos;},
+   {id: 313, name: &apos;Bruce Palmer&apos;},
+   {id: 456, name: &apos;Stephen Stills&apos;},
+   {id: 177, name: &apos;Neil Young&apos;}],
+  [177, 456, 999]
+);
+//=&gt; [{id: 456, name: &apos;Stephen Stills&apos;}, {id: 177, name: &apos;Neil Young&apos;}]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#####	intersection</div><div class="line">	定义：取出两个 list 中相同的元素组成的 set （集合：没有重复元素）。</div></pre></td></tr></table></figure>
+
+R.intersection([1, 2, 3, 4], [7, 6, 5, 4, 3]); // [4, 3]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	intersectionWith</div><div class="line">	定义：取出两个 list 中相同的元素组成的 set （集合：没有重复元素）。由给定的 predicate 进行相同性判断。</div></pre></td></tr></table></figure>
+
+var buffaloSpringfield = [
+  {id: 824, name: &apos;Richie Furay&apos;},
+  {id: 956, name: &apos;Dewey Martin&apos;},
+  {id: 313, name: &apos;Bruce Palmer&apos;},
+  {id: 456, name: &apos;Stephen Stills&apos;},
+  {id: 177, name: &apos;Neil Young&apos;}
+];
+var csny = [
+  {id: 204, name: &apos;David Crosby&apos;},
+  {id: 456, name: &apos;Stephen Stills&apos;},
+  {id: 539, name: &apos;Graham Nash&apos;},
+  {id: 177, name: &apos;Neil Young&apos;}
+];
+
+var list = R.intersectionWith(R.eqBy(R.prop(&apos;id&apos;)), buffaloSpringfield, csny);
+//=&gt; [{id: 456, name: &apos;Stephen Stills&apos;}, {id: 177, name: &apos;Neil Young&apos;}]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	lt</div><div class="line">	定义：如果首个参数小于第二个参数，返回 true；否则返回 false。</div></pre></td></tr></table></figure>
+
+R.lt(2, 1); // false
+R.lt(&apos;a&apos;, &apos;b&apos;); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	lte</div><div class="line">	定义：如果首个参数小于或等于第二个参数，返回 true；否则返回 false。</div></pre></td></tr></table></figure>
+
+R.lt(2, 2); // false
+R.lt(&apos;a&apos;, &apos;b&apos;); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	max</div><div class="line">	定义：返回两个参数中的较大值。</div></pre></td></tr></table></figure>
+
+R.max(789, 123); // 789
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	maxBy</div><div class="line">	定义：接收一个函数和两个值，返回使给定函数执行结果较大的值。</div></pre></td></tr></table></figure>
+
+var square = n =&gt; n * n;
+R.maxBy(square, -3, 2); // -3
+R.reduce(R.maxBy(square), 0, [3, -5, 4, 1, -2]); // -5
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	min</div><div class="line">	定义：返回两个参数中的较小值。</div></pre></td></tr></table></figure>
+
+R.min(789, 123); // 123
+R.min(&apos;a&apos;, &apos;c&apos;); // a
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	minBy</div><div class="line">	定义：接收一个函数和两个值，返回使给定函数执行结果较小的值。</div></pre></td></tr></table></figure>
+
+var square = n =&gt; n * n;
+R.minBy(square, -3, 2); // 2
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	pathEq</div><div class="line">	定义：判断对象的嵌套路径上是否为给定的值，通过 R.equals 函数进行相等性判断。常用于列表过滤。</div></pre></td></tr></table></figure>
+
+var user1 = { address: { zipCode: 90210 } };
+var user2 = { address: { zipCode: 55555 } };
+var user3 = { name: &apos;Bob&apos; };
+var users = [ user1, user2, user3 ];
+var isFamous = R.pathEq([&apos;address&apos;, &apos;zipCode&apos;], 90210);
+var list = R.filter(isFamous, users); // [{&quot;address&quot;:{&quot;zipCode&quot;:90210}}]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	propEq</div><div class="line">	定义：如果指定对象属性与给定的值相等，则返回 true ；否则返回 false 。通过 R.equals 函数进行相等性判断。</div></pre></td></tr></table></figure>
+
+var abby = {name: &apos;Abby&apos;, age: 7, hair: &apos;blond&apos;};
+var fred = {name: &apos;Fred&apos;, age: 12, hair: &apos;brown&apos;};
+var rusty = {name: &apos;Rusty&apos;, age: 10, hair: &apos;brown&apos;};
+var alois = {name: &apos;Alois&apos;, age: 15, disposition: &apos;surly&apos;};
+var kids = [abby, fred, rusty, alois];
+var hasBrownHair = R.propEq(&apos;hair&apos;, &apos;brown&apos;);
+R.filter(hasBrownHair, kids); //=&gt; [fred, rusty]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	sortBy</div><div class="line">	定义：根据给定的函数对列表进行排序。</div></pre></td></tr></table></figure>
+
+var sortByNameCaseInsensitive = R.sortBy(R.compose(R.toLower, R.prop(&apos;name&apos;)));
+var alice = {
+  name: &apos;ALICE&apos;,
+  age: 101
+};
+var bob = {
+  name: &apos;Bob&apos;,
+  age: -10
+};
+var clara = {
+  name: &apos;clara&apos;,
+  age: 314.159
+};
+var people = [clara, bob, alice];
+sortByNameCaseInsensitive(people); //=&gt; [alice, bob, clara]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	sortWith</div><div class="line">	定义：依据比较函数列表对输入列表进行排序。</div></pre></td></tr></table></figure>
+
+var alice = {
+  name: &apos;alice&apos;,
+  age: 40
+};
+var bob = {
+  name: &apos;bob&apos;,
+  age: 30
+};
+var clara = {
+  name: &apos;clara&apos;,
+  age: 40
+};
+var people = [clara, bob, alice];
+var ageNameSort = R.sortWith([
+  R.descend(R.prop(&apos;age&apos;)),
+  R.ascend(R.prop(&apos;name&apos;))
+]);
+ageNameSort(people); //=&gt; [alice, clara, bob]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	symmetricDifference</div><div class="line">	定义：求对称差集。所有不属于两列表交集元素的集合，其元素在且仅在给定列表中的一个里面出现。</div></pre></td></tr></table></figure>
+
+R.symmetricDifference([1,2,3,4], [7,6,5,4,3]); //=&gt; [1,2,7,6,5]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	symmetricDifferenceWith</div><div class="line">	定义：求对称差集。所有不属于两列表交集元素的集合。交集的元素由条件函数的返回值决定。</div></pre></td></tr></table></figure>
+
+var eqA = R.eqBy(R.prop(&apos;a&apos;));
+var l1 = [{a: 1}, {a: 2}, {a: 3}, {a: 4}];
+var l2 = [{a: 3}, {a: 4}, {a: 5}, {a: 6}];
+R.symmetricDifferenceWith(eqA, l1, l2); //=&gt; [{a: 1}, {a: 2}, {a: 5}, {a: 6}]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	union</div><div class="line">	定义：集合并运算，合并两个列表为新列表（新列表中无重复元素）。</div></pre></td></tr></table></figure>
+
+R.union([1, 2, 3], [2, 3, 4]); //=&gt; [1, 2, 3, 4]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	unionWith</div><div class="line">	定义：集合并运算，合并两个列表为新列表（新列表中无重复元素）。由 predicate 的返回值决定两元素是否重复。</div></pre></td></tr></table></figure>
+
+var l1 = [{a: 1}, {a: 2}];
+var l2 = [{a: 1}, {a: 4}];
+R.unionWith(R.eqBy(R.prop(&apos;a&apos;)), l1, l2); //=&gt; [{a: 1}, {a: 2}, {a: 4}]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">	</div><div class="line">####	Type</div><div class="line">	</div><div class="line">#####	is</div><div class="line">	定义：检测一个对象（val）是否是给定构造函数的实例。该函数会依次检测其原型链，如果存在的话。</div></pre></td></tr></table></figure>
+
+R.is(Object, {}); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	isNil</div><div class="line">	定义：检测输入值是否为 null 或 undefined 。</div></pre></td></tr></table></figure>
+
+R.isNil(null); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	propIs</div><div class="line">	定义：判断指定对象的属性是否为给定的数据类型，是则返回 true ；否则返回 false 。</div></pre></td></tr></table></figure>
+
+R.propIs(Number, &apos;x&apos;, {x: 1, y: 2}); // true
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">#####	type</div><div class="line">	定义：用一个单词来描述输入值的（原生）类型，返回诸如 &apos;Object&apos;、&apos;Number&apos;、&apos;Array&apos;、&apos;Null&apos; 之类的结果。不区分用户自定义的类型，统一返回 &apos;Object&apos;。</div></pre></td></tr></table></figure>
+
+R.type([]); // Array
+```
+</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;继续函数式编程的学习。&lt;br&gt;Rmda中共分为List、Relation、Object、Function、Math、Type、Logic、String共8大类。&lt;/p&gt;
+&lt;h4 id=&quot;String&quot;&gt;&lt;a href=&quot;#String&quot; class=&quot;headerlink&quot;
+    
+    </summary>
+    
+      <category term="函数式编程" scheme="https://fanerge.github.io/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
+    
+      <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
+    
+      <category term="ramda" scheme="https://fanerge.github.io/tags/ramda/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ramda运用概述</title>
+    <link href="https://fanerge.github.io/2017/08/24/ramda%E8%BF%90%E7%94%A8-4/"/>
+    <id>https://fanerge.github.io/2017/08/24/ramda运用-4/</id>
+    <published>2017-08-24T12:05:16.000Z</published>
+    <updated>2017-08-24T13:00:30.150Z</updated>
+    
+    <content type="html"><![CDATA[<p>继续函数式编程的学习。</p>
+<p>它提供了一系列以函数式、声明式和数据不变性方式工作的函数。<br>在这个系列中，我们了解了蕴含在 Ramda API 背后的一些指导原则：</p>
+<ol>
+<li>数据最后：几乎所有的函数都将数据参数作为最后一个参数。</li>
+<li>柯里化：Ramda 几乎所有的函数都是自动柯里化的。也即，可以使用函数必需参数的子集来调用函数，这会返回一个接受剩余参数的新函数。当所有参数都传入后，原始函数才被调用。</li>
+</ol>
+<h4 id="章节总结"><a href="#章节总结" class="headerlink" title="章节总结"></a>章节总结</h4><p>入门：介绍了函数、纯函数和数据不变性思想。作为入门，展示了一些集合迭代函数，如：map、filter 和 reduce 等。<br>函数组合：演示了可以使用工具（如 both、either、pipe 和 compose）以多种方式组合函数。<br>部分应用(Partial Application)：演示了一种非常有用的函数延时调用方式：可以先向函数传入部分参数，以后根据需要将其余参数传入。借助 partial 和 curry 可以实现部分应用。我们还学习了 flip 和占位符（__）。<br>声明式编程：介绍了命令式和函数式编程之间的区别。学习了如何使用 Ramda 的声明式函数代替算术、比较、逻辑和条件运算符。<br>无参数风格编程(Pointfree Style)：介绍了 pointfree 风格的思想，也被称为 “tatic” 式编程。在 pointfree 式编程时，实际上不会看到正在操作的数据参数，数据被隐含在函数中了。程序是由许多较小的、简单的构建模块组合而成。只有在最后才将组合后的函数应用于实际的数据上。<br>数据不变性和对象：该节让我们回到了声明式编程的思想，展示了读取、更新、删除和转换对象属性所需的工具。<br>数据不变性和数组：继续上一节的主题，展示了数据不变性在数组中的应用。<br>透镜(Lenses)：引入了透镜的概念，该结构允许我们把重点聚焦在较大的数据结构的一小部分上。借助 view、set 和 over 函数，可以对较大数据结构的小部分被关注数据进行读取、更新和变换操作。</p>
+<blockquote>
+<p>   参考文献：<br>    <a href="http://www.cnblogs.com/whitewolf/p/javascript-functional-programming-Ramdajs.html" target="_blank" rel="external">JavaScript函数编程-Ramdajs</a><br>    <a href="https://zhuanlan.zhihu.com/p/27446536" target="_blank" rel="external">Thinking in Ramda系列文章</a></p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;继续函数式编程的学习。&lt;/p&gt;
+&lt;p&gt;它提供了一系列以函数式、声明式和数据不变性方式工作的函数。&lt;br&gt;在这个系列中，我们了解了蕴含在 Ramda API 背后的一些指导原则：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;数据最后：几乎所有的函数都将数据参数作为最后一个参数。&lt;/li&gt;
+&lt;l
+    
+    </summary>
+    
+      <category term="函数式编程" scheme="https://fanerge.github.io/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
+    
+      <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
+    
+      <category term="ramda" scheme="https://fanerge.github.io/tags/ramda/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ramda数组的操作和透镜</title>
     <link href="https://fanerge.github.io/2017/08/23/ramda%E8%BF%90%E7%94%A8-3/"/>
     <id>https://fanerge.github.io/2017/08/23/ramda运用-3/</id>
     <published>2017-08-23T12:09:42.000Z</published>
-    <updated>2017-08-23T12:12:04.685Z</updated>
+    <updated>2017-08-24T12:42:02.708Z</updated>
     
     <content type="html"><![CDATA[<p>继续函数式编程的学习。</p>
 <h4 id="数据不变性和数组"><a href="#数据不变性和数组" class="headerlink" title="数据不变性和数组"></a>数据不变性和数组</h4><h5 id="读取数组元素"><a href="#读取数组元素" class="headerlink" title="读取数组元素"></a>读取数组元素</h5><pre><code>nth -- 类型于对象prop
@@ -37,11 +1270,19 @@ takeLast(N) -- 后 N 个元素
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">const numbers = [10, 20, 30, 40, 50, 60]</div><div class="line">R.head(numbers) // =&gt; 10</div><div class="line">R.tail(numbers) // =&gt; [20, 30, 40, 50, 60]</div><div class="line">R.last(numbers) // =&gt; 60</div><div class="line">R.init(numbers) // =&gt; [10, 20, 30, 40, 50]</div><div class="line">R.take(3, numbers) // =&gt; [10, 20, 30]</div><div class="line">R.takeLast(3, numbers) // =&gt; [40, 50, 60]</div></pre></td></tr></table></figure>
 </code></pre><h5 id="增、删、改数组元素"><a href="#增、删、改数组元素" class="headerlink" title="增、删、改数组元素"></a>增、删、改数组元素</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">insert：将元素插入到 list 指定索引处。</div><div class="line">R.insert(2, &apos;x&apos;, [1,2,3,4]); //=&gt; [1,2,&apos;x&apos;,3,4]</div><div class="line">update：替换数组中指定索引处的值。</div><div class="line">R.update(1, 11, [0, 1, 2]);     //=&gt; [0, 11, 2]</div><div class="line">append：在列表末尾拼接一个元素。</div><div class="line">R.append(&apos;tests&apos;, [&apos;write&apos;, &apos;more&apos;]); //=&gt; [&apos;write&apos;, &apos;more&apos;, &apos;tests&apos;]</div><div class="line">prepend：在列表头部之前拼接一个元素。</div><div class="line">R.prepend(&apos;fee&apos;, [&apos;fi&apos;, &apos;fo&apos;, &apos;fum&apos;]); //=&gt; [&apos;fee&apos;, &apos;fi&apos;, &apos;fo&apos;, &apos;fum&apos;]</div><div class="line">concat：连接列表或字符串。</div><div class="line">R.concat([4, 5, 6], [1, 2, 3]); //=&gt; [4, 5, 6, 1, 2, 3]</div><div class="line">// 反转数组拼接</div><div class="line">const concatAfter = R.flip(R.concat)</div><div class="line">remove：删除列表中从 start 开始的 count 个元素。</div><div class="line">R.remove(2, 3, [1,2,3,4,5,6,7,8]); //=&gt; [1,2,6,7,8]</div><div class="line">without：求第二个列表中，未包含在第一个列表中的任一元素的集合。</div><div class="line">R.without([1, 2], [1, 2, 1, 3, 4]); //=&gt; [3, 4]</div><div class="line">drop：删除给定 list，string 或者 transducer/transformer（或者具有 drop 方法的对象）的前 n 个元素。</div><div class="line">R.drop(1, [&apos;foo&apos;, &apos;bar&apos;, &apos;baz&apos;]); //=&gt; [&apos;bar&apos;, &apos;baz&apos;]</div><div class="line">dropLast：删除 &quot;list&quot; 末尾的 n 个元素。</div><div class="line">R.dropLast(1, [&apos;foo&apos;, &apos;bar&apos;, &apos;baz&apos;]); //=&gt; [&apos;foo&apos;, &apos;bar&apos;]</div></pre></td></tr></table></figure>
 </code></pre><h5 id="变换元素"><a href="#变换元素" class="headerlink" title="变换元素"></a>变换元素</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">adjust：将数组中指定索引处的值替换为经函数变换的值。</div><div class="line">R.adjust(R.add(10), 1, [1, 2, 3]);     //=&gt; [1, 12, 3]</div></pre></td></tr></table></figure>
-</code></pre><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><pre><code>本节学习了：pointfree(无参数风格编程) 
-对象属性：读取(prop、pick、has、path、propOr、pathOr、keys、values、)
-增删改查(assoc、assocPath、dissoc、dissocPath、omit)
-属性转换(evolve)
-合并对象(merge)
+</code></pre><h4 id="透镜（Lenses）"><a href="#透镜（Lenses）" class="headerlink" title="透镜（Lenses）"></a>透镜（Lenses）</h4><h5 id="什么是透镜？"><a href="#什么是透镜？" class="headerlink" title="什么是透镜？"></a>什么是透镜？</h5><pre><code>透镜将 &quot;getter&quot; 和 &quot;setter&quot; 函数组合为一个单一模块。Ramda 提供了一系列配合透镜一起工作的函数。
+可以将透镜视为对某些较大数据结构的特定部分的聚焦、关注。
+</code></pre><h5 id="如何创建透镜"><a href="#如何创建透镜" class="headerlink" title="如何创建透镜"></a>如何创建透镜</h5><pre><code>lens：返回封装了给定 getter 和 setter 方法的 lens 。 getter 和 setter 分别用于 “获取” 和 “设置” 焦点（lens 聚焦的值）。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var xLens = R.lens(R.prop(&apos;x&apos;), R.assoc(&apos;x&apos;));</div><div class="line">R.view(xLens, &#123;x: 1, y: 2&#125;);            //=&gt; 1</div><div class="line">R.set(xLens, 4, &#123;x: 1, y: 2&#125;);          //=&gt; &#123;x: 4, y: 2&#125;</div><div class="line">// 还有三个便捷函数</div><div class="line">LensProp：创建关注对象某一属性的透镜。</div><div class="line">lensPath: 创建关注对象某一嵌套属性的透镜。</div><div class="line">lensIndex: 创建关注数组某一索引的透镜。</div></pre></td></tr></table></figure>
+</code></pre><h5 id="我能用它做什么呢？"><a href="#我能用它做什么呢？" class="headerlink" title="我能用它做什么呢？"></a>我能用它做什么呢？</h5><pre><code>Ramda 提供了三个配合透镜一起使用的的函数：
+    view：读取透镜的值。
+    set：更新透镜的值。
+    over：将变换函数作用于透镜。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var xLens = R.lens(R.prop(&apos;x&apos;), R.assoc(&apos;x&apos;));</div><div class="line">R.view(xLens, &#123;x: 1, y: 2&#125;);            //=&gt; 1</div><div class="line">R.set(xLens, 4, &#123;x: 1, y: 2&#125;);          //=&gt; &#123;x: 4, y: 2&#125;</div><div class="line">R.over(xLens, R.negate, &#123;x: 1, y: 2&#125;);  //=&gt; &#123;x: -1, y: 2&#125;</div><div class="line">// 区别:</div><div class="line">// set 和 over 会按指定的方式对被透镜关注的属性进行修改，并返回整个新的对象。</div></pre></td></tr></table></figure>
+</code></pre><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><pre><code>本节学习了：某些较大数据结构的处理 -- 透镜。
+数组：读取(nth、slice、contains、head、last、tail、init、take、takeLast)
+增、删、改(insert、update、append、prepend、concat、remove、without、drop、dropLast)
+变换(adjust)
 </code></pre><blockquote>
 <p>   参考文献：<br>    <a href="http://www.cnblogs.com/whitewolf/p/javascript-functional-programming-Ramdajs.html" target="_blank" rel="external">JavaScript函数编程-Ramdajs</a><br>    <a href="https://zhuanlan.zhihu.com/p/27446536" target="_blank" rel="external">Thinking in Ramda系列文章</a></p>
 </blockquote>
@@ -66,11 +1307,11 @@ takeLast(N) -- 后 N 个元素
   </entry>
   
   <entry>
-    <title>ramda运用</title>
+    <title>ramda无参数风格和对象的相关操作</title>
     <link href="https://fanerge.github.io/2017/08/22/ramda%E8%BF%90%E7%94%A8-2/"/>
     <id>https://fanerge.github.io/2017/08/22/ramda运用-2/</id>
     <published>2017-08-22T11:36:23.000Z</published>
-    <updated>2017-08-23T12:07:54.225Z</updated>
+    <updated>2017-08-23T12:15:45.084Z</updated>
     
     <content type="html"><![CDATA[<p>继续函数式编程的学习。</p>
 <h4 id="Pointfree-风格（无参数风格）"><a href="#Pointfree-风格（无参数风格）" class="headerlink" title="Pointfree 风格（无参数风格）"></a>Pointfree 风格（无参数风格）</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var forever21 = age =&gt; R.ifElse(R.gte(R.__, 21), R.always(21), R.inc)(age);</div><div class="line">// console.log(forever21(23)); // 21</div><div class="line"></div><div class="line">// pointfree风格的</div><div class="line">var forever21 = R.ifElse(R.gte(R.__, 21), R.always(21), R.inc);</div><div class="line">// console.log(forever21(21));</div><div class="line">// 我们刚刚让 age 消失了。这就是 Pointfree 风格。注意，这两个版本所做的事情完全一样。我们仍然返回一个接受年龄的函数，但并未显示的指定 age 参数。</div></pre></td></tr></table></figure>
@@ -1373,112 +2614,6 @@ console.log(dd) // [{title: &apos;sicp&apos;, isbn: &apos;0235&apos;, ed: 2}]
     
       &lt;p&gt;最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸&lt;strong&gt;函数式编程&lt;/strong&gt;。&lt;br&gt;&lt;em&gt;如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。&lt;/em&gt;&lt;/p&gt;
 &lt;h3 id=&quot;一等函数与Applicative编程&quot;&gt;&lt;a href=&quot;#一等
-    
-    </summary>
-    
-      <category term="函数式编程" scheme="https://fanerge.github.io/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
-    
-    
-      <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
-    
-      <category term="读书笔记" scheme="https://fanerge.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>PWA-1</title>
-    <link href="https://fanerge.github.io/2017/07/25/PWA-1/"/>
-    <id>https://fanerge.github.io/2017/07/25/PWA-1/</id>
-    <published>2017-07-25T14:35:26.000Z</published>
-    <updated>2017-07-26T11:42:13.027Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="Lavas-–-基于-Vue-的-PWA-解决方案，帮助开发者快速搭建-PWA-应用，解决接入-PWA-的各种问题"><a href="#Lavas-–-基于-Vue-的-PWA-解决方案，帮助开发者快速搭建-PWA-应用，解决接入-PWA-的各种问题" class="headerlink" title="Lavas – 基于 Vue 的 PWA 解决方案，帮助开发者快速搭建 PWA 应用，解决接入 PWA 的各种问题"></a>Lavas – 基于 Vue 的 PWA 解决方案，帮助开发者快速搭建 PWA 应用，解决接入 PWA 的各种问题</h2><p><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
-<h3 id="基础教程"><a href="#基础教程" class="headerlink" title="基础教程"></a>基础教程</h3><ol>
-<li>Lavas 介绍<br>Lavas 是什么？<pre><code>Lavas 是一个基于 Vue 的 PWA (Progressive Web Apps) 完整解决方案。
-</code></pre>Lavas 做什么？<pre><code>站点 PWA 化需要做什么，Lavas 就做什么。
-PWA (Progressive Web Apps) 是一种 Web App 新模型：
-1.站点可添加至主屏幕
-2.全屏方式运行
-3.支持离线缓存
-4.消息推送 ...
-</code></pre></li>
-<li>探索PWA<br>什么是PWA？<br>  PWA 工程的解决方案中借助了 service worker 的离线存储能力，消息推送能力以及系统的添加桌面能力，从而形成一个完善的 Web App 解决方案，帮助我们在 Web 端低成本的开发和维护一个逐步类 Native App 化的 Web App。<br>什么站点适合改造成 PWA？<br>  除了对系统强依赖的 App, 以及游戏类的 App 等, 所有的 Native App 都可以改造成 PWA 应用。<br>PWA 的效果？<br>  1.https 环境部署。<br>  2.响应式设计，一次部署，可以在移动设备和 PC 设备上运行。<br>  3.在不同浏览器下可正常访问。<br>  4.浏览器离线和弱网环境可极速访问。<br>  5.可以把 App Icon 入口添加到桌面。<br>  6.点击 Icon 入口有类似 Native App 的动画效果。<br>  7.灵活的热更新。<br>离线缓存<br>  HTML5 新的 <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Service_Worker_API" target="_blank" rel="external">service worker API</a>，提供的离线缓存能力<br>SPA (Single Page Apps)<br>基于 Vue 架构的 PWA 工程<br>App Shell<br>  App Shell 架构是构建 PWA 工程的一种方式，这种应用能可靠且即时地加载到您的用户屏幕上，与本地应用相似。</li>
-<li>快速开始 PWA 工程<br>依赖工具<br>  $ npm install -g lavas<br>初始化工程<br>  $ lavas init<br>运行<br>  cd projectName<br>  npm install<br>  npm run dev</li>
-<li><p>开发一个页面（以NotFound页面为例）<br>添加路由    </p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">const NotFound = () =&gt; import(&apos;@/pages/NotFound.vue&apos;);</div><div class="line"></div><div class="line">routes: [</div><div class="line">	// 省略其他路由对象</div><div class="line">	&#123;</div><div class="line">		path: &apos;*&apos;,</div><div class="line">		name: &apos;notFound&apos;,</div><div class="line">		component: NotFound</div><div class="line">	&#125;</div><div class="line">]</div></pre></td></tr></table></figure>
-<p>页面组织结构<br>  标准.vue单文件<br>与app shell 的交互<br>  vuex<br>监听全局事件    </p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">import EventBus from &apos;@/event-bus&apos;;</div><div class="line"></div><div class="line">// 在 activated 钩子中注册</div><div class="line">EventBus.$on(`app-header:click-action`, (&#123;actionIdx&#125;) =&gt; &#123;</div><div class="line">	// 处理点击按钮事件</div><div class="line">	// ...</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p>组件开发<br>  <a href="https://vuetifyjs.com/" target="_blank" rel="external">vuetify</a><br>异步请求数据<br>   <a href="">axios</a></p>
-</li>
-<li>调试工程<br>webpack dev-server<br>chrome 调试    </li>
-<li>构建部署工程<br>生产环境构建<br>部署到服务器</li>
-</ol>
-<h3 id="进阶教程"><a href="#进阶教程" class="headerlink" title="进阶教程"></a>进阶教程</h3><ol>
-<li>维护 service-worker.js 文件<br>service-worker.js<br>  service-worker.js 文件作为缓存管理的重要文件<br>如何配置缓存内容<br>  通过 config/sw-precache.js 文件进行缓存配置，根据配置为用户缓存网站静态与动态资源，并截获用户的所有网络请求，决定是从缓存还是网络获取相应资源，限制缓存大小等。</li>
-<li>Service Worker 与页面通信<br>如何使用 postMessage 方法发送信息<br>  在 sw.js 中向接管页面发信息，可以采用 client.postMessage() 方法<br>  在主页面给 Service Worker 发消息，可以采用 navigator.serviceWorker.controller.postMessage() 方法<br>如何接收 postMessage 发送的信息<br>  在 sw.js 中接收主页面发来的信息，示例代码如下，通过 event.data 来读取数据<br>  在页面中接收 sw.js 发来的信息，示例代码如下，通过 event.data 来读取数据</li>
-<li>App Shell 调整及扩展<br>App Shell 模型<br>调整及扩展 App Shell<br>  状态管理<br>  与路由组件通信<br>  扩展 Shell</li>
-<li>App Skeleton 介绍<br>Lavas 的 Skeleton 支持<br>默认 Skeleton</li>
-<li>页面切换动画效果<br>具体实现</li>
-<li>修改项目主题<br>配置文件<br>  主题相关的配置文件在 config/theme.js 中<br>  使用预定义的颜色变量<br>  使用主题变量</li>
-<li>在项目中使用图标<br>字体文件<br>自定义 SVG</li>
-<li>使用 Material Design UI 开发<br>muse-ui、vue-material、vuetify</li>
-<li>HTTPS 环境部署</li>
-<li>服务器端渲染</li>
-</ol>
-<p>参考：</p>
-<blockquote>
-<p><a href="https://lavas.baidu.com/" target="_blank" rel="external">lavas-百度PWA解决方案</a></p>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;Lavas-–-基于-Vue-的-PWA-解决方案，帮助开发者快速搭建-PWA-应用，解决接入-PWA-的各种问题&quot;&gt;&lt;a href=&quot;#Lavas-–-基于-Vue-的-PWA-解决方案，帮助开发者快速搭建-PWA-应用，解决接入-PWA-的各种问题&quot; clas
-    
-    </summary>
-    
-      <category term="PWA" scheme="https://fanerge.github.io/categories/PWA/"/>
-    
-    
-      <category term="有趣的" scheme="https://fanerge.github.io/tags/%E6%9C%89%E8%B6%A3%E7%9A%84/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>js函数式编程-javascript函数式编程的简介</title>
-    <link href="https://fanerge.github.io/2017/07/25/js%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-    <id>https://fanerge.github.io/2017/07/25/js函数式编程-读书笔记/</id>
-    <published>2017-07-25T13:11:13.000Z</published>
-    <updated>2017-07-27T13:08:54.023Z</updated>
-    
-    <content type="html"><![CDATA[<p>最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸<strong>函数式编程</strong>。<br><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
-<h3 id="javascript函数式编程的简介"><a href="#javascript函数式编程的简介" class="headerlink" title="javascript函数式编程的简介"></a>javascript函数式编程的简介</h3><h4 id="javascript案列"><a href="#javascript案列" class="headerlink" title="javascript案列"></a>javascript案列</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">javascript函数式编程初试</div><div class="line">function splt (fn)　&#123;</div><div class="line">	return function (array) &#123;</div><div class="line">		return fn.apply(null, array)</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">// example</div><div class="line">var addArrayElements = splt(function (x, y) &#123;</div><div class="line">	return x + y;</div><div class="line">&#125;)</div><div class="line">console.log(addArrayElements([1,2])) // 3</div><div class="line"></div><div class="line">function unsplat (fun) &#123;</div><div class="line">	return function () &#123;</div><div class="line">		return fun.call(null, _.toArray(arguments))</div><div class="line">	&#125;;</div><div class="line">&#125;</div><div class="line">let joinElments = unsplat(function (array) &#123;</div><div class="line">	return array.join(&apos; &apos;)</div><div class="line">&#125;)</div><div class="line">// example</div><div class="line">console.log(joinElments(&apos;@&apos;, &apos;$&apos;, &apos;*&apos;)) // @ $ *</div></pre></td></tr></table></figure>
-</code></pre><h4 id="开始函数式编程"><a href="#开始函数式编程" class="headerlink" title="开始函数式编程"></a>开始函数式编程</h4><pre><code>直白的定义：函数式编程通过使用函数来将值转换成抽象单元，接着用于构建软件系统。
-以函数为抽象单元
-例子：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">function parseAge (age) &#123;</div><div class="line">	if (!_.isString(age)) &#123;</div><div class="line">		throw new Error(&apos;expecting a string&apos;);</div><div class="line">	&#125;</div><div class="line">	let a;</div><div class="line">	console.log(&apos;attempting to parse an age&apos;)</div><div class="line">	a = parseInt(age, 10);</div><div class="line">	if (_.isNaN(a)) &#123;</div><div class="line">		console.log([&quot;could not parse age:&quot;, age].join(&apos; &apos;));</div><div class="line">		a = 0;</div><div class="line">	&#125;</div><div class="line">	return a;</div><div class="line">&#125;</div><div class="line">// example</div><div class="line">console.log(parseAge(34)) // throw Error</div><div class="line"></div><div class="line">// 如果我们想修改输出错误、信息和警告呈现的方式，较好的</div><div class="line">方式是将错误、信息和警告的概念抽象成不同的函数</div><div class="line">function fail(thing) &#123;</div><div class="line">	throw new Error(thing);</div><div class="line">&#125;</div><div class="line">function warn(thing) &#123;</div><div class="line">	console.log([&apos;WARNING:&apos;, thing].join(&apos; &apos;));</div><div class="line">&#125;</div><div class="line">function note(thing) &#123;</div><div class="line">	console.log([&apos;NOTE:&apos;, thing].join(&apos; &apos;));</div><div class="line">&#125;</div><div class="line"></div><div class="line">function parseAge (age) &#123;</div><div class="line">	if (!_.isString(age)) &#123;</div><div class="line">		fail(&apos;Expecting a string&apos;);</div><div class="line">	&#125;</div><div class="line">	let a;</div><div class="line">	note(&apos;Attempting to parse an age&apos;)</div><div class="line">	a = parseInt(age, 10);</div><div class="line">	if (_.isNaN(a)) &#123;</div><div class="line">		warn([&apos;Could not parse age:&apos;, age].join(&apos; &apos;));</div><div class="line">		a = 0;</div><div class="line">	&#125;</div><div class="line">	return a;</div><div class="line">&#125;</div><div class="line">// example</div><div class="line">console.log(parseAge(&apos;df&apos;)) // throw Error</div></pre></td></tr></table></figure>
-
-封装和隐藏（闭包）
-以函数为行为单位
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">function nativeNth(a, index) &#123;</div><div class="line">	return a[index];</div><div class="line">&#125;</div><div class="line">var letters = [&apos;a&apos;, &apos;b&apos;];</div><div class="line">// example</div><div class="line">console.log(nativeNth(letters, 0)) // a</div><div class="line"></div><div class="line">// </div><div class="line">function nth(a, index) &#123;</div><div class="line">	if (!_.isNumber(index)) &#123;</div><div class="line">		fail(&apos;Expected a number as the index&apos;);</div><div class="line">	&#125;</div><div class="line">	if (!isIndexed(a)) &#123;</div><div class="line">		fail(&apos;Not supported on non-indexed type&apos;);</div><div class="line">	&#125;</div><div class="line">	if ((index &lt; 0) || (index &gt; a.length -1)) &#123;</div><div class="line">		fail(&apos;Index value is out of bounds&apos;);</div><div class="line">	&#125;</div><div class="line">	return a[index];</div><div class="line">&#125;</div><div class="line"></div><div class="line">var letters = [&apos;1&apos;, &apos;2&apos;]</div><div class="line">console.log(nth(letters, 1))</div></pre></td></tr></table></figure>
-
-数据抽象
-    Javascript的对象原型模型是一个丰富且基础的数据方案。
-函数式javascript初试
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// existy 定义事物的存在（js中null和undefined表示不存在）</div><div class="line">function existy(x) &#123; return x != null &#125;</div><div class="line">// example</div><div class="line">existy(null) // false</div><div class="line"></div><div class="line">truthy 用来判断一个对象是否应该被认为是true的同义词</div><div class="line">// js的原始真类型</div><div class="line">function truthy(x) &#123;</div><div class="line">	return (x !== false) &amp;&amp; existy(x)</div><div class="line">&#125;</div><div class="line">console.log(truthy(&apos;&apos;)) // true</div></pre></td></tr></table></figure>
-</code></pre><h4 id="Underscore示例"><a href="#Underscore示例" class="headerlink" title="Underscore示例"></a>Underscore示例</h4><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><pre><code>一种用于构建Javascript应用程序的技术称为“函数式编程”        
-    1.确定抽象，并为其构建函数。
-    2.利用已有的函数来构建更为复杂的抽象。
-    3.通过将现有的函数传给其他的函数来构建更加复杂的抽象。
-</code></pre><blockquote>
-<p>   书籍【javascript函数式编程】</p>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸&lt;strong&gt;函数式编程&lt;/strong&gt;。&lt;br&gt;&lt;em&gt;如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。&lt;/em&gt;&lt;/p&gt;
-&lt;h3 id=&quot;javascript函数式编程的简介&quot;&gt;&lt;a href=&quot;#ja
     
     </summary>
     
