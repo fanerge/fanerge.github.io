@@ -282,6 +282,173 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/08/13/js面向对象编程-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/08/13/js面向对象编程-2/" itemprop="url">
+                  js面向对象编程-非构造函数的继承
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-13T16:08:41+08:00">
+                2017-08-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面向对象编程/" itemprop="url" rel="index">
+                    <span itemprop="name">面向对象编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/13/js面向对象编程-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/08/13/js面向对象编程-2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>重新复习 – js面向对象编程知识，本文介绍-对象之间的非构造函数实现”继承”。</p>
+<h4 id="先来两个对象（父类和子类）"><a href="#先来两个对象（父类和子类）" class="headerlink" title="先来两个对象（父类和子类）"></a>先来两个对象（父类和子类）</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">let Chinese = &#123;</div><div class="line">	nation: &apos;中国&apos;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">let Doctor = &#123;</div><div class="line">	career: &apos;医生&apos;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+</code></pre><h4 id="一、object-方法"><a href="#一、object-方法" class="headerlink" title="一、object()方法"></a>一、object()方法</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">let Chinese = &#123;</div><div class="line">	nation: &apos;中国&apos;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">function object (o) &#123;</div><div class="line">	function F () &#123;&#125;;</div><div class="line">	F.prototype = o;</div><div class="line">	return new F();</div><div class="line">&#125;</div><div class="line"></div><div class="line">let Doctor = object(Chinese);</div><div class="line">Doctor.career = &apos;医生&apos;;</div><div class="line">console.log(Doctor.nation) // 中国</div></pre></td></tr></table></figure>
+
+这个object()函数，其实只做一件事，就是把子对象的prototype属性，指向父对象，从而使得子对象与父对象连在一起。
+</code></pre><h4 id="浅拷贝"><a href="#浅拷贝" class="headerlink" title="浅拷贝"></a>浅拷贝</h4><pre><code>把父对象的属性，全部拷贝给子对象，也能实现继承。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">let Chinese = &#123;</div><div class="line">	nation: &apos;中国&apos;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">function extendCopy (p) &#123;</div><div class="line">	let c = &#123;&#125;;</div><div class="line">	for (let i in p) &#123;</div><div class="line">		c[i] = p[i];</div><div class="line">	&#125;</div><div class="line">	return c;</div><div class="line">&#125;</div><div class="line">let Doctor = extendCopy(Chinese);</div><div class="line">Doctor.career = &apos;医生&apos;;</div><div class="line">console.log(Doctor.nation) // 中国</div></pre></td></tr></table></figure>
+
+存在问题：只拷贝基本类型，对于引用类型拷贝内存地址，存在父对象别篡改的可能。
+</code></pre><h4 id="深拷贝"><a href="#深拷贝" class="headerlink" title="深拷贝"></a>深拷贝</h4><pre><code>所谓&quot;深拷贝&quot;，就是能够实现真正意义上的数组和对象的拷贝。它的实现并不难，只要递归调用&quot;浅拷贝&quot;就行了。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">let Chinese = &#123;</div><div class="line">	nation: &apos;中国&apos;,</div><div class="line">	cities: [&apos;成都&apos;, &apos;北京&apos;]</div><div class="line">&#125;;</div><div class="line">function deepCopy(p, c) &#123;</div><div class="line">	var c = c || &#123;&#125;;</div><div class="line">	for (let i in p) &#123;</div><div class="line">		if (typeof p[i] === &apos;object&apos;) &#123;</div><div class="line">			c[i] = (p[i].constructor === Array) ? [] : &#123;&#125;;</div><div class="line">			deepCopy(p[i], c[i]);</div><div class="line">		&#125; else &#123;</div><div class="line">			c[i] = p[i];</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	return c;</div><div class="line">&#125; </div><div class="line">let Doctor = deepCopy(Chinese);</div><div class="line">Doctor.career = &apos;医生&apos;;</div><div class="line">console.log(Doctor.cities)  // [&quot;成都&quot;, &quot;北京&quot;]</div></pre></td></tr></table></figure>
+</code></pre><blockquote>
+<p>   参考：<br>    <a href="http://www.ruanyifeng.com/blog/2010/05/object-oriented_javascript_inheritance_continued.html" target="_blank" rel="external">阮老师-Javascript面向对象编程（三）：非构造函数的继承</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/08/13/js面向对象编程-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1866,194 +2033,6 @@ session对象
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/07/30/js函数式编程-读书笔记-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的个人博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/07/30/js函数式编程-读书笔记-2/" itemprop="url">
-                  js函数式编程-变量的作用域和闭包
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-30T10:42:20+08:00">
-                2017-07-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
-                    <span itemprop="name">函数式编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/07/30/js函数式编程-读书笔记-2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/07/30/js函数式编程-读书笔记-2/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸<strong>函数式编程</strong>。<br><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
-<h3 id="变量的作用域和闭包"><a href="#变量的作用域和闭包" class="headerlink" title="变量的作用域和闭包"></a>变量的作用域和闭包</h3><h4 id="全局作用域"><a href="#全局作用域" class="headerlink" title="全局作用域"></a>全局作用域</h4><pre><code>动态作用域 -- this（函数调用时确定的）
-静态作用域（词法作用域）-- 函数声明时确定的
-</code></pre><h4 id="词法作用域"><a href="#词法作用域" class="headerlink" title="词法作用域"></a>词法作用域</h4><pre><code>定义：所谓的词法作用域其实是指作用域在词法解析阶段既确定了,不会改变。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var aVariable = &apos;outer&apos;;</div><div class="line">function afunc()&#123;</div><div class="line">	let aVariable = &apos;middle&apos;;</div><div class="line">	return _.map([1, 2, 3], function (e)&#123;</div><div class="line">		let aVariable = &apos;in&apos;; // 使用最内层的aVariable</div><div class="line">		return [aVariable,e].join(&apos; &apos;);</div><div class="line">	&#125;);</div><div class="line">&#125;</div><div class="line">console.log(afunc()) // [&quot;in 1&quot;, &quot;in 2&quot;, &quot;in 3&quot;]</div></pre></td></tr></table></figure>
-</code></pre><h4 id="动态作用域"><a href="#动态作用域" class="headerlink" title="动态作用域"></a>动态作用域</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">var globals = &#123;&#125;;</div><div class="line">function makeBindFun(resolver)&#123;</div><div class="line">	return function(k, v)&#123;</div><div class="line">		let stack = globals[k] || [];</div><div class="line">		globals[k] = resolver(stack, v);</div><div class="line">		return globals;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">var stackBinder = makeBindFun(function(stack, v)&#123;</div><div class="line">	stack.push(v);</div><div class="line">	return stack;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">var stackUnBinder = makeBindFun(function(stack, v)&#123;</div><div class="line">	stack.pop(v);</div><div class="line">	return stack;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">var dd = stackBinder(&apos;sd&apos;, &apos;dd&apos;)</div><div class="line">console.log(dd) //&#123;sd: [&apos;dd&apos;]&#125;</div></pre></td></tr></table></figure>
-
-
-javascript的动态作用域（对this引用的讨论）
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">*bind* 锁定this使其不被更改</div><div class="line">function globalThis() &#123;</div><div class="line">	return this;</div><div class="line">&#125;</div><div class="line">var nopeThis = _.bind(globalThis, &apos;nope&apos;);</div><div class="line">nopeThis.call(&apos;wat&apos;) // &apos;nope&apos;;</div><div class="line"></div><div class="line">*bindAll* 锁定this引用到对应的命名函数</div><div class="line">var target = &#123;</div><div class="line">	name: &apos;the right value&apos;,</div><div class="line">	aux: function () &#123;</div><div class="line">		return this.name;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">var dd = _.bindAll(target, &apos;aux&apos;)</div><div class="line">console.log(target.aux.call(&apos;wat&apos;)) // the right value</div></pre></td></tr></table></figure>
-</code></pre><h4 id="函数作用域"><a href="#函数作用域" class="headerlink" title="函数作用域"></a>函数作用域</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">*clone* 克隆一个对象</div><div class="line">function f()&#123;</div><div class="line">	this[&apos;a&apos;] = 200;</div><div class="line">	return this[&apos;a&apos;] + this[&apos;b&apos;];</div><div class="line">&#125;</div><div class="line">var globals = &#123;&apos;b&apos;: 2&#125;;</div><div class="line">var dd = f.call(_.clone(globals))</div><div class="line">console.log(dd) // 202</div></pre></td></tr></table></figure>
-</code></pre><h4 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h4><pre><code>模拟闭包
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">function whatWasTheLocal() &#123;</div><div class="line">	let CAPTURED = &quot;Oh hai&quot;;</div><div class="line">	return function () &#123;</div><div class="line">		return &quot;The local was:&quot; + CAPTURED;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">var dd = whatWasTheLocal();</div><div class="line">console.log(dd()) // The local was:Oh hai</div><div class="line"></div><div class="line">function createWeirdScaleFunction(FACTOR) &#123;</div><div class="line">	return function (v) &#123;</div><div class="line">		this[&apos;FACTOR&apos;] = FACTOR;</div><div class="line">		let captures = this;</div><div class="line">		return _.map(v, _.bind(function (n) &#123;</div><div class="line">			return (n * this[&apos;FACTOR&apos;]);	</div><div class="line">		&#125;, captures));</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">let scale10 = createWeirdScaleFunction(10);</div><div class="line">let dd = scale10.call(&#123;&#125;, [3, 4, 5])</div><div class="line">console.log(dd)</div></pre></td></tr></table></figure>
-
-遮蔽
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var shadowed = 220;</div><div class="line">function argShadow(shadowed) &#123;</div><div class="line">	return [&apos;value is&apos;, shadowed].join();</div><div class="line">&#125;</div><div class="line"></div><div class="line">var dd = argShadow()</div><div class="line">console.log(dd)</div></pre></td></tr></table></figure>
-
-使用闭包
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">let pingpong = (function () &#123;</div><div class="line">	let PRIVATE = 0;</div><div class="line">	return &#123;</div><div class="line">		inc: function (n) &#123;</div><div class="line">			return PRIVATE += n;</div><div class="line">		&#125;,</div><div class="line">		dec: function (n) &#123;</div><div class="line">			return PRIVATE -= n;</div><div class="line">		&#125;</div><div class="line">	&#125;;</div><div class="line">&#125;)();</div><div class="line"></div><div class="line">let dd = pingpong.inc(10);</div><div class="line">console.log(dd) // 10</div></pre></td></tr></table></figure>
-
-闭包的抽象
-```
-function plucker (FIELD) {
-    return function (obj) {
-        return (obj &amp;&amp; obj[FIELD])
-    }
-}
-let best = {title: &apos;infinite jest&apos;, author: &apos;dfw&apos;}
-let getTitle = plucker(&apos;title&apos;)
-let dd = getTitle(best);
-console.log(dd) // infinite jest
-```    
-</code></pre><blockquote>
-<p>   源代码仓库<br>    <a href="https://github.com/fanerge/Functional-reading-notes" target="_blank" rel="external">函数式编程-读书笔记</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2103,7 +2082,7 @@ console.log(dd) // infinite jest
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-count">33</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
