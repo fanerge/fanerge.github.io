@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fanerge.github.io/"/>
-  <updated>2017-08-30T13:27:38.643Z</updated>
+  <updated>2017-08-31T14:37:33.948Z</updated>
   <id>https://fanerge.github.io/</id>
   
   <author>
@@ -14,6 +14,80 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>css加强（单选复选Switch、Loading）</title>
+    <link href="https://fanerge.github.io/2017/08/30/css%E5%8A%A0%E5%BC%BA-2/"/>
+    <id>https://fanerge.github.io/2017/08/30/css加强-2/</id>
+    <published>2017-08-30T13:36:57.000Z</published>
+    <updated>2017-08-31T14:37:33.948Z</updated>
+    
+    <content type="html"><![CDATA[<p>在接下来的一段时间学习看云上购买的一本<a href="https://www.kancloud.cn/dennis/javascriptmethod/261472" target="_blank" rel="external">Web开发实战</a>书籍，来提升自己的软实力。<br>本部分为css实战部分。</p>
+<h4 id="单选复选Switch"><a href="#单选复选Switch" class="headerlink" title="单选复选Switch"></a>单选复选Switch</h4><p>switch组件是常用组件，默认的单选复选框都很丑，是这里使用CSS3美化switch。<br>    <img src="/images/switch.png" alt="效果图"><br>本问重点将一下整体思路（以单选为例）</p>
+<h5 id="创建模版"><a href="#创建模版" class="headerlink" title="创建模版"></a>创建模版</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&lt;label class=&quot;fan-check-radio fan-check-flat-radio&quot;&gt;</div><div class="line">       &lt;input type=&quot;radio&quot; name=&quot;sex&quot; checked&gt;</div><div class="line">       &lt;div class=&quot;fan-check-media&quot;&gt;&lt;/div&gt;</div><div class="line">       &lt;div class=&quot;fan-check-inner&quot;&gt;</div><div class="line">           &lt;div class=&quot;fan-check-title&quot;&gt;男&lt;/div&gt;</div><div class="line">       &lt;/div&gt;</div><div class="line">   &lt;/label&gt;</div><div class="line">   &lt;label class=&quot;fan-check-radio fan-check-flat-radio&quot;&gt;</div><div class="line">       &lt;input type=&quot;radio&quot; name=&quot;sex&quot;&gt;</div><div class="line">       &lt;div class=&quot;fan-check-media&quot;&gt;&lt;/div&gt;</div><div class="line">       &lt;div class=&quot;fan-check-inner&quot;&gt;</div><div class="line">           &lt;div class=&quot;fan-check-title&quot;&gt;女&lt;/div&gt;</div><div class="line">       &lt;/div&gt;</div><div class="line">   &lt;/label&gt;</div></pre></td></tr></table></figure>
+
+这里讲解一下DOM结构用义：
+</code></pre><ol>
+<li>label包含整个组件，并且是label绑定与input的关系。</li>
+<li>主要前端效果通过<div class="fan-check-media"></div>节点及其伪类完成</li>
+<li><p>通过input:checked 和 兄弟选择器 + 控制类fan-check-media元素的样式</p>
+<h5 id="设置样式"><a href="#设置样式" class="headerlink" title="设置样式"></a>设置样式</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div></pre></td><td class="code"><pre><div class="line">*&#123;</div><div class="line">  box-sizing: border-box;</div><div class="line">&#125;</div><div class="line">.fan-check-radio&#123;</div><div class="line">	display: flex;</div><div class="line">	padding: 5px 0;</div><div class="line">	cursor: pointer;</div><div class="line">	justify-content: center;</div><div class="line">	align-items: center;</div><div class="line">&#125;</div><div class="line">.fan-check-radio&gt;input&#123;</div><div class="line">	display: none;</div><div class="line">&#125;</div><div class="line">.fan-check-radio:hover .fan-check-media &#123;</div><div class="line">	border-color: red!important;</div><div class="line">&#125;</div><div class="line">.fan-check-inner,.fan-check-media</div><div class="line">&#123;</div><div class="line">	position: relative;</div><div class="line">&#125;</div><div class="line"> .fan-check-radio .fan-check-media &#123;</div><div class="line">	line-height: 20px;</div><div class="line">	width: 22px;</div><div class="line">	height: 22px;</div><div class="line">	margin-right: 5px;</div><div class="line">	text-align: center;</div><div class="line">	color: #fff;</div><div class="line">	border: 1px solid #d9d9d9;</div><div class="line">	border-radius: 11px;</div><div class="line">&#125;</div><div class="line"> .fan-check-checkbox .fan-check-media &#123;</div><div class="line">	line-height: 20px;</div><div class="line">	width: 22px;</div><div class="line">	height: 22px;</div><div class="line">	margin-right: 5px;</div><div class="line">	text-align: center;</div><div class="line">	color: #fff;</div><div class="line">	border: 1px solid #d9d9d9;</div><div class="line">	border-radius: 2px;</div><div class="line">&#125;</div><div class="line">.fan-check-radio&gt;input:checked + .fan-check-media &#123;</div><div class="line">	border: 1px solid #1aa500;</div><div class="line">&#125;</div><div class="line">.fan-check-radio&gt;input:checked + .fan-check-media:after &#123;</div><div class="line">	content: &apos;&apos;;</div><div class="line">	position: absolute;</div><div class="line">	animation: radiozoom .1s linear forwards;</div><div class="line">	border-radius: 6px;</div><div class="line">	background: #1aa500; </div><div class="line">&#125;</div><div class="line">@keyframes radiozoom &#123;</div><div class="line">	from &#123;</div><div class="line">		top: 8px;</div><div class="line">		left:8px;</div><div class="line">		width: 2px;</div><div class="line">		height: 2px;</div><div class="line">	&#125;</div><div class="line">	to &#123;</div><div class="line">		top: 4px;</div><div class="line">		left:4px;    </div><div class="line">		width: 12px;</div><div class="line">		height: 12px;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>解释：<br>我们需要隐藏radio默认的样式，来做我们自己的UI：.fan-check-radio&gt;input{ display: none; }<br>然后在就只这个<div class="fan-check-media"></div>节点及其伪类上下功夫了。<br>.fan-check-media这个节点需要使用相对定位，其伪类上使用绝对定位。<br>先设定input未选中时的样式，也是通过.fan-check-media及其伪类来控制。<br>在设置input选中时的样式，通过属性选择其[type=’radio’]:checked来控制radio被选中的样式。<br>具体操作请参考，下面的代码库</p>
+</li>
+</ol>
+<h4 id="loading"><a href="#loading" class="headerlink" title="loading"></a>loading</h4><p>先来看下效果<br>    <img src="/images/loading.png" alt="loading"><br>    讲解一下大体思路：</p>
+<ol>
+<li>构建外层包裹div（相对定位），内部8个span分别占据一周（使它们绕中心一周）通过绝对定位。</li>
+<li>创建一个动画，并为每个span添加动画及动画延迟。（需要满足动画周期 === 8* animation-delay ）</li>
+</ol>
+<h5 id="创建模版-1"><a href="#创建模版-1" class="headerlink" title="创建模版"></a>创建模版</h5><pre><code>我们创意个正方形的div，里面放置8个子元素。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;div class=&quot;loader circle-line small&quot;&gt;</div><div class="line">	&lt;span&gt;&lt;/span&gt;</div><div class="line">	&lt;span&gt;&lt;/span&gt;</div><div class="line">	&lt;span&gt;&lt;/span&gt;</div><div class="line">	&lt;span&gt;&lt;/span&gt;</div><div class="line">	&lt;span&gt;&lt;/span&gt;</div><div class="line">	&lt;span&gt;&lt;/span&gt;</div><div class="line">	&lt;span&gt;&lt;/span&gt;</div><div class="line">	&lt;span&gt;&lt;/span&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
+</code></pre><h5 id="设置样式-1"><a href="#设置样式-1" class="headerlink" title="设置样式"></a>设置样式</h5><pre><code>通过定位和css的转换来移动每一个span的位置。
+设置容器的基本样式和span的基本样式
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">.loader &#123;</div><div class="line">	position: relative;</div><div class="line">	width: 5rem;</div><div class="line">	height: 5rem;</div><div class="line">&#125;</div><div class="line">.loader.circle-line span &#123;</div><div class="line">	position: absolute;</div><div class="line">	display: inline-block;</div><div class="line">	width: 1.5rem;</div><div class="line">	height: .5rem;</div><div class="line">	border-top-left-radius: .25rem;</div><div class="line">	border-bottom-left-radius: .25rem;</div><div class="line">	background: #1aa500;</div><div class="line">	opacity: .05;</div><div class="line">	-webkit-animation: circle-line 1s ease infinite;</div><div class="line">	animation: circle-line 1s ease infinite;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+通过css3-transform得到loading图案
+当然这哥定位还是很复杂，我直接参考[web开始实战](https://www.kancloud.cn/dennis/javascriptmethod/261478)的源代码
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div></pre></td><td class="code"><pre><div class="line">.loader.circle-line span:nth-child(1) &#123;</div><div class="line">	top: 50%;</div><div class="line">	left: 0;</div><div class="line">	margin-top: -.25rem;</div><div class="line">	animation-delay: .13s;</div><div class="line">&#125;</div><div class="line">.loader.circle-line span:nth-child(2) &#123;</div><div class="line">	top: 1rem;</div><div class="line">	left: .5rem;</div><div class="line">	-webkit-transform: rotate(45deg);</div><div class="line">	transform: rotate(45deg);</div><div class="line">	animation-delay: .26s;</div><div class="line">&#125;</div><div class="line"></div><div class="line">.loader.circle-line span:nth-child(3) &#123;</div><div class="line">	left: 50%;</div><div class="line">	top: .5rem;</div><div class="line">	margin-left: -.75rem;</div><div class="line">	-webkit-transform: rotate(90deg);</div><div class="line">	transform: rotate(90deg);</div><div class="line">	animation-delay: .39s;</div><div class="line">&#125;</div><div class="line"></div><div class="line">.loader.circle-line span:nth-child(4) &#123;</div><div class="line">	right: .5rem;</div><div class="line">	top: 1rem;</div><div class="line">	-webkit-transform: rotate(145deg);</div><div class="line">	transform: rotate(145deg);</div><div class="line">	animation-delay: .52s;</div><div class="line">&#125;</div><div class="line"></div><div class="line">.loader.circle-line span:nth-child(5) &#123;</div><div class="line">	left: 3.5rem;</div><div class="line">	top: 50%;</div><div class="line">	margin-top: -.25rem;</div><div class="line">	-webkit-transform: rotate(180deg);</div><div class="line">	transform: rotate(180deg);</div><div class="line">	animation-delay: .65s;</div><div class="line">&#125;</div><div class="line"></div><div class="line">.loader.circle-line span:nth-child(6) &#123;</div><div class="line">	bottom: 1rem;</div><div class="line">	right: .5rem;</div><div class="line">	-webkit-transform: rotate(-145deg);</div><div class="line">	transform: rotate(-145deg);</div><div class="line">	animation-delay: .78s;</div><div class="line">&#125;</div><div class="line"></div><div class="line">.loader.circle-line span:nth-child(7) &#123;</div><div class="line">	left: 50%;</div><div class="line">	bottom: .5rem;</div><div class="line">	margin-left: -15px;</div><div class="line">	-webkit-transform: rotate(-90deg);</div><div class="line">	transform: rotate(-90deg);</div><div class="line">	animation-delay: 0.91s;</div><div class="line">&#125;</div><div class="line"></div><div class="line">.loader.circle-line span:nth-child(8) &#123;</div><div class="line">	bottom: 1rem;</div><div class="line">	left: .5rem;</div><div class="line">	-webkit-transform: rotate(-45deg);</div><div class="line">	transform: rotate(-45deg);</div><div class="line">	animation-delay: 1.04s;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+注意：上面动画的周期必须要无限接近于最后一个span元素的动画延迟（动画延迟是平均分配的哦）。
+
+动画，这是使用Opcity动画。
+```
+@keyframes circle-line {
+    0% {
+        opacity: .05;
+    }
+    100% {
+        opacity: .7;
+    }
+}
+```    
+</code></pre><blockquote>
+<p>   参考文档</p>
+<ol>
+<li><a href="https://www.kancloud.cn/dennis/javascriptmethod/261473" target="_blank" rel="external">web开发实战</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/linear-gradient3.    [transform](http://www.runoob.com/cssref/css3-pr-transform.html" target="_blank" rel="external">linear-gradient</a><br><a href="https://github.com/fanerge/web-/tree/master" target="_blank" rel="external">代码仓库</a></li>
+</ol>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在接下来的一段时间学习看云上购买的一本&lt;a href=&quot;https://www.kancloud.cn/dennis/javascriptmethod/261472&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Web开发实战&lt;/a&gt;书籍，来提升自己的软实
+    
+    </summary>
+    
+      <category term="css" scheme="https://fanerge.github.io/categories/css/"/>
+    
+    
+      <category term="css" scheme="https://fanerge.github.io/tags/css/"/>
+    
+      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
+    
+      <category term="读书笔记" scheme="https://fanerge.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
   
   <entry>
     <title>css加强（水中倒影、工具提示tooltip）</title>
@@ -2887,20 +2961,6 @@ session对象
       <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
     
       <category term="读书笔记" scheme="https://fanerge.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>js函数式编程</title>
-    <link href="https://fanerge.github.io/2017/08/03/js%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
-    <id>https://fanerge.github.io/2017/08/03/js函数式编程/</id>
-    <published>2017-08-03T12:00:21.000Z</published>
-    <updated>2017-08-03T12:00:21.958Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
     
   </entry>
   
