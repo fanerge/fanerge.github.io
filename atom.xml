@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fanerge.github.io/"/>
-  <updated>2017-08-31T14:41:41.075Z</updated>
+  <updated>2017-09-03T13:47:49.913Z</updated>
   <id>https://fanerge.github.io/</id>
   
   <author>
@@ -14,6 +14,227 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>css加强（进度条和遮罩条和切角）</title>
+    <link href="https://fanerge.github.io/2017/09/03/css%E5%8A%A0%E5%BC%BA-3/"/>
+    <id>https://fanerge.github.io/2017/09/03/css加强-3/</id>
+    <published>2017-09-03T09:39:50.000Z</published>
+    <updated>2017-09-03T13:47:49.913Z</updated>
+    
+    <content type="html"><![CDATA[<p>在接下来的一段时间学习看云上购买的一本<a href="https://www.kancloud.cn/dennis/javascriptmethod/261472" target="_blank" rel="external">Web开发实战</a>书籍，来提升自己的软实力。<br>本部分为css实战部分。<br>进度条<br>    <img src="./images/progress.png" alt="进度条"></p>
+<h4 id="进度条"><a href="#进度条" class="headerlink" title="进度条"></a>进度条</h4><h5 id="创建进度条"><a href="#创建进度条" class="headerlink" title="创建进度条"></a>创建进度条</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">	&lt;div class=&quot;fan-progress fan-striped fan-active&quot;&gt;</div><div class="line">		&lt;div class=&quot;fan-progress-bar&quot; style=&quot;width: 40%;&quot;&gt;40%&lt;/div&gt;</div><div class="line">	&lt;/div&gt;</div><div class="line">	```	</div><div class="line">	解释：</div><div class="line">	1.	fan-progress为定义进度条的整体样式（背景）</div><div class="line">	2.	fan-striped为定义斑纹样式（背景）</div><div class="line">	3. 	fan-active为定义动态进度条样式（背景）</div><div class="line">	4.	fan-progress-bar为定义当前行进到样式</div><div class="line">#####	设置样式</div></pre></td></tr></table></figure>
+
+* {
+    box-sizing: border-box;
+}
+fan-progress {
+    box-sizing: border-box;
+    height: 20px;
+    line-height: 20px;
+    background: #f7f7f7;
+    overflow: hidden;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .08), inset 0 2px 2px rgba(0, 0, 0, .08);
+    border-radius: 4px;
+}
+fan-progress-bar {
+    width: 0;
+    height: 100%;
+    background: #009dd8;
+    float: left;
+    transition: width .6s ease;
+    font-size: 12px;
+    color: #fff;
+    text-align: center;
+    background-image: linear-gradient(to bottom, #oob4f5, #008dc5);
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .3), inset 0 0 0 1px rgba(0, 0, 0, .1);
+    text-shadow: 0 -1px 0 rgba(0,0,0,.2);
+}
+/*条纹*/
+.fan-progress-striped .fan-progress-bar {
+    background-image:linear-gradient(-45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+    background-size:30px 30px;
+}
+/*动态*/
+.fan-progress-striped.fan-active .fan-progress-bar {
+    animation: fan-progress-active 2s linear infinite;
+}
+@keyframes fan-progress-active {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 30px 0;
+    }
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">####	遮罩条</div><div class="line">	设计思路：</div><div class="line">1.	用一个DOM容器包图片</div><div class="line">2. 	遮罩条主要以容器的伪类来创建</div><div class="line">3.	通过hover效果和css3的transition和transform完成相应动画</div><div class="line">#####	创建DOM节点</div></pre></td></tr></table></figure>
+
+&lt;div class=&quot;mask&quot; data-title=&quot;遮罩条&quot;&gt;
+    &lt;img src=&quot;img/demo.png&quot; alt=&quot;&quot;&gt;
+&lt;/div&gt;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">#####	设置样式</div></pre></td></tr></table></figure>
+
+.mask {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+}   
+.mask:before {
+    content: attr(data-title);
+    position: absolute;
+    top: 100%;
+    left: 0;
+    padding: .7em 0;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    background: rgba(0,0,0,.5);
+    transform: translate(0, 100%);
+    transition: all .3s ease-in-out;
+    opacity: 0;
+}  
+.mask:hover:before {
+    top: 80%;
+    transform: translate(0, 0);
+    opacity: 1;
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">####	切角</div><div class="line">#####	创建DOM节点</div></pre></td></tr></table></figure>
+
+&lt;div class=&quot;box corner&quot;&gt;单个切角&lt;/div&gt;
+&lt;div class=&quot;box corner1&quot;&gt;多个切角&lt;/div&gt;
+&lt;div class=&quot;box corner2&quot;&gt;多个园角&lt;/div&gt;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">#####	设置样式</div></pre></td></tr></table></figure>
+
+.corner {
+    background: linear-gradient(-45deg, transparent 15px, #58a 15px);
+}
+.corner1 {
+    background: linear-gradient(135deg, transparent 15px, #58a 0) top left, 
+        linear-gradient(-135deg, transparent 15px, #58a 0) top right, 
+        linear-gradient(-45deg, transparent 15px, #58a 0) bottom right,
+        linear-gradient(45deg, transparent 15px, #58a 0) bottom left;
+    background-size: 50% 50%;
+    background-repeat: no-repeat;
+}
+.corner2 {
+    background: radial-gradient(circle at top left, transparent 15px, #58a 0) top left, 
+        radial-gradient(circle at top right, transparent 15px, #58a 0) top right, 
+        radial-gradient(circle at bottom right, transparent 15px, #58a 0) bottom right, 
+        radial-gradient(circle at bottom left, transparent 15px, #58a 0) bottom left;
+    background-size: 50% 50%;
+    background-repeat: no-repeat;
+}
+```
+</code></pre><blockquote>
+<p>   参考文档</p>
+<ol>
+<li><a href="https://www.kancloud.cn/dennis/javascriptmethod/261473" target="_blank" rel="external">web开发实战</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/linear-gradient3.    [transform](http://www.runoob.com/cssref/css3-pr-transform.html" target="_blank" rel="external">linear-gradient</a><br><a href="https://github.com/fanerge/web-/tree/master" target="_blank" rel="external">代码仓库</a></li>
+</ol>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在接下来的一段时间学习看云上购买的一本&lt;a href=&quot;https://www.kancloud.cn/dennis/javascriptmethod/261472&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Web开发实战&lt;/a&gt;书籍，来提升自己的软实
+    
+    </summary>
+    
+      <category term="css" scheme="https://fanerge.github.io/categories/css/"/>
+    
+    
+      <category term="css" scheme="https://fanerge.github.io/tags/css/"/>
+    
+      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
+    
+      <category term="读书笔记" scheme="https://fanerge.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>node-api手册</title>
+    <link href="https://fanerge.github.io/2017/09/01/node-api%E6%89%8B%E5%86%8C/"/>
+    <id>https://fanerge.github.io/2017/09/01/node-api手册/</id>
+    <published>2017-09-01T11:11:34.000Z</published>
+    <updated>2017-09-01T11:22:07.835Z</updated>
+    
+    <content type="html"><![CDATA[<p>开始系统的学习node.js,为自己的职业生涯铺好路。</p>
+<h4 id="assert-断言"><a href="#assert-断言" class="headerlink" title="assert-断言"></a>assert-断言</h4><p>assert 模块提供了断言测试的函数，用于测试不变式。</p>
+<h5 id="assert-value-message"><a href="#assert-value-message" class="headerlink" title="assert(value[, message])"></a>assert(value[, message])</h5><pre><code>value &lt;any&gt;
+message &lt;any&gt;
+assert.ok() 的别名。
+</code></pre><h5 id="assert-deepEqual-actual-expected-message"><a href="#assert-deepEqual-actual-expected-message" class="headerlink" title="assert.deepEqual(actual, expected[, message])"></a>assert.deepEqual(actual, expected[, message])</h5><pre><code>测试 actual 参数与 expected 参数是否深度相等。 原始值使用相等运算符（==）比较。
+</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;开始系统的学习node.js,为自己的职业生涯铺好路。&lt;/p&gt;
+&lt;h4 id=&quot;assert-断言&quot;&gt;&lt;a href=&quot;#assert-断言&quot; class=&quot;headerlink&quot; title=&quot;assert-断言&quot;&gt;&lt;/a&gt;assert-断言&lt;/h4&gt;&lt;p&gt;assert 
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>http缓存相关的知识</title>
+    <link href="https://fanerge.github.io/2017/09/01/http%E7%BC%93%E5%AD%98%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/"/>
+    <id>https://fanerge.github.io/2017/09/01/http缓存知识总结/</id>
+    <published>2017-09-01T10:56:40.000Z</published>
+    <updated>2017-09-01T10:56:51.213Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="http缓存整理"><a href="#http缓存整理" class="headerlink" title="http缓存整理"></a>http缓存整理</h4><h5 id="缓存过程"><a href="#缓存过程" class="headerlink" title="缓存过程"></a>缓存过程</h5><pre><code>当一个用户发送一个静态资源请求通过下面几步获取资源：
+</code></pre><ol>
+<li>当第一次发送请求时，http返回200的状态码。</li>
+<li>在没有关闭缓存请求的时候，则返回header中返回包含last-Modified以及Etag和Expires的字段，然后将文件保存在Cache目录下。</li>
+<li>后续请求该文件时，先本地查找该资源。如果本地缓存存在该资源，但不知道是否过期，则发送一个http请求到服务器，然后服务器来判断。<br>如果该文件没有改动，则返回304，继续使用本地资源。<br>如果该文件发生改动，服务器返回该资源并返回200。<br>如果服务器没有这个资源，则返回404。<h5 id="http头部缓存相关key"><a href="#http头部缓存相关key" class="headerlink" title="http头部缓存相关key"></a>http头部缓存相关key</h5><h6 id="request-header缓存相关"><a href="#request-header缓存相关" class="headerlink" title="request header缓存相关"></a>request header缓存相关</h6>cache-control：<br>  其缓存指令对于前端常用的有如下no-cache、no-store、max-age这几个值；<br>if-none-match：<br>  该字段与响应中的eTag一起使用，表示检查实体是否有更新改变;客户端第一次发送请求时候响应报文会包含字段Etag，表示资源状态，当资源改变后该值也会改变（客户端不必关心该值怎么生成）<br>  然后缓存保存下该字段，第二次已经有该缓存时候在浏览本地缓存时候会将该值赋给if-none-match字段发送给服务器，服务器将发送的值与当前的状态进行对比，<br>  如果值一样的话则答复304去使用缓存数据，如果值改变了则发送最新数据给客户端替代现有缓存数据，并且返回状态200;<br>if-modified-since:<br>  该字段与last-modified配合使用，跟上述原理差不多，都是响应端先返回一个last-modified时间字段，再次请求时候 request头部会将缓存中的last-modified字段拿出来赋给if-modified-since，<br>  发送给服务器，服务器去判断时间是否过期，如未过期则返回304，告诉客户使用缓存数据，如果过期则重新返回一个last-modified并且返回200；<h6 id="response-header缓存相关："><a href="#response-header缓存相关：" class="headerlink" title="response header缓存相关："></a>response header缓存相关：</h6>Etag：<br>  刚才也说过 是跟if-none-match配合去使用，它根据实体内容生成的一段hash字符串（类似于MD5或者SHA1之后的结果），可以标识资源的状态。 当资源发送改变时，ETag也随之发生变化。<br>  使用Etag主要是为了解决根据时间无法解决的问题：比如文件修改频繁（秒之内修改），导致根据时间无法判断是否更新；以及修改时间变了，但是内容没变（我们应该认为该文件是没变的）<br>expires：<br>  表示缓存过期时间例如:expires:Mon Dec 30 2011 11:01:19 GMT，跟cache-control中的max-age作用一样，不过在碰见max-age之后，该值会被覆盖从而被max-age替代;<br>last-modified:<br>  表示文件最后修改时间；</li>
+</ol>
+<h5 id="实现有关前端对于缓存的操作"><a href="#实现有关前端对于缓存的操作" class="headerlink" title="实现有关前端对于缓存的操作"></a>实现有关前端对于缓存的操作</h5><h6 id="使用缓存"><a href="#使用缓存" class="headerlink" title="使用缓存"></a>使用缓存</h6><pre><code>方法一：
+在服务器进行配置其max-age或者expires使其设置一个过期值为当前一年之后。这样每次进行检验时候都会使用缓存中文件。
+例如在.htaccess中
+&lt;IfModule mod_headers.c&gt;
+ &lt;FilesMatch &quot;.(gif|jpg|jpeg|png|ico)$&quot;&gt;
+Header set Cache-Control &quot;max-age=604800&quot;
+ &lt;/FilesMatch&gt;
+方法二：
+前端设置if-modified-since去设置一个上次修改时间大于当前日期，
+方法三：
+服务器端根据etag去判断是否匹配来根据实际业务来使用缓存；
+后面两个方法属于弱缓存数据头，需要浪费http连接，所以建议使用第一种方式;
+</code></pre><h6 id="禁用缓存"><a href="#禁用缓存" class="headerlink" title="禁用缓存"></a>禁用缓存</h6><pre><code>方法一：
+可以在meta标签标明
+&lt;meta http-equiv=&quot;pragma&quot; content=&quot;no-cache&quot;&gt;
+&lt;meta http-equiv=&quot;cache-control&quot; content=&quot;no-cache&quot;&gt;
+&lt;meta http-equiv=&quot;expires&quot; content=&quot;0&quot;&gt; 
+方法二：
+也可以动态去setRequestHeader，强制不用缓存设置组合如下：
+cache-control=&apos;no-cache,no-store&apos;
+pragma=&apos;no-cache&apos;
+if-modified-since=0;
+方法三：
+请求端设置if-modified-since为已经过期的某个时间，可以是几年前或者几十年前。
+方法四：
+服务端设置Expires为过期某个时间，例如PHP中header(&quot;Expires: Mon, 26 Jul 1997 05:00:00 GMT&quot;);
+实际开发中如果需要一致性检测则尽量去配合Etag以及last-Modified去进行比较然后返回使用缓存还是新数据;这个有点偏服务器端了，不再赘述
+方法五：
+url后面加随机数或者时间戳url += “&amp;random=” + Math.random()这个方法js以及PHP经常用，原理就是每个请求的url都不一样这样一来缓存中找不到对应数据，就自动去服务器寻找最新资源;
+</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;http缓存整理&quot;&gt;&lt;a href=&quot;#http缓存整理&quot; class=&quot;headerlink&quot; title=&quot;http缓存整理&quot;&gt;&lt;/a&gt;http缓存整理&lt;/h4&gt;&lt;h5 id=&quot;缓存过程&quot;&gt;&lt;a href=&quot;#缓存过程&quot; class=&quot;headerlink&quot; 
+    
+    </summary>
+    
+      <category term="http" scheme="https://fanerge.github.io/categories/http/"/>
+    
+    
+      <category term="http" scheme="https://fanerge.github.io/tags/http/"/>
+    
+      <category term="缓存" scheme="https://fanerge.github.io/tags/%E7%BC%93%E5%AD%98/"/>
+    
+  </entry>
   
   <entry>
     <title>css加强（单选复选Switch、Loading）</title>
@@ -1724,9 +1945,9 @@ R.type([]); // Array
       <category term="函数式编程" scheme="https://fanerge.github.io/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
-    
       <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
+    
+      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
     
       <category term="ramda" scheme="https://fanerge.github.io/tags/ramda/"/>
     
@@ -1764,9 +1985,9 @@ R.type([]); // Array
       <category term="函数式编程" scheme="https://fanerge.github.io/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
-    
       <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
+    
+      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
     
       <category term="ramda" scheme="https://fanerge.github.io/tags/ramda/"/>
     
@@ -1822,9 +2043,9 @@ takeLast(N) -- 后 N 个元素
       <category term="函数式编程" scheme="https://fanerge.github.io/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
-    
       <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
+    
+      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
     
       <category term="ramda" scheme="https://fanerge.github.io/tags/ramda/"/>
     
@@ -1905,9 +2126,9 @@ R.merge({ &apos;name&apos;: &apos;fred&apos;, &apos;age&apos;: 10 }, { &apos;age
       <category term="函数式编程" scheme="https://fanerge.github.io/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
-    
       <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
+    
+      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
     
       <category term="ramda" scheme="https://fanerge.github.io/tags/ramda/"/>
     
@@ -1977,9 +2198,9 @@ isNil：检测输入值是否为 null 或 undefined 。
       <category term="函数式编程" scheme="https://fanerge.github.io/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
-    
       <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
+    
+      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
     
       <category term="ramda" scheme="https://fanerge.github.io/tags/ramda/"/>
     
@@ -2031,9 +2252,9 @@ compose：从右往左执行函数组合（右侧函数的输出作为左侧函�
       <category term="函数式编程" scheme="https://fanerge.github.io/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
-    
       <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
+    
+      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
     
       <category term="ramda" scheme="https://fanerge.github.io/tags/ramda/"/>
     
@@ -2069,9 +2290,9 @@ compose：从右往左执行函数组合（右侧函数的输出作为左侧函�
       <category term="函数式编程" scheme="https://fanerge.github.io/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
-    
       <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
+    
+      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
     
       <category term="ramda" scheme="https://fanerge.github.io/tags/ramda/"/>
     
@@ -2472,9 +2693,9 @@ assocPath：添加或改写指定路径的属性的值。
       <category term="函数式编程" scheme="https://fanerge.github.io/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
-    
       <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
+    
+      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
     
       <category term="ramda" scheme="https://fanerge.github.io/tags/ramda/"/>
     
@@ -2637,9 +2858,9 @@ console.log(Animal.prototype.constructor); // Cat
       <category term="函数式编程" scheme="https://fanerge.github.io/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
-    
       <category term="读书笔记" scheme="https://fanerge.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
     
   </entry>
   
@@ -2673,9 +2894,9 @@ console.log(Animal.prototype.constructor); // Cat
       <category term="函数式编程" scheme="https://fanerge.github.io/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
-    
       <category term="读书笔记" scheme="https://fanerge.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
     
   </entry>
   
@@ -2707,251 +2928,9 @@ console.log(Animal.prototype.constructor); // Cat
       <category term="函数式编程" scheme="https://fanerge.github.io/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
     
     
-      <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
-    
       <category term="读书笔记" scheme="https://fanerge.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
-  </entry>
-  
-  <entry>
-    <title>JSP学习-了解</title>
-    <link href="https://fanerge.github.io/2017/08/09/%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%AD%A6%E4%B9%A0/"/>
-    <id>https://fanerge.github.io/2017/08/09/服务端学习/</id>
-    <published>2017-08-09T11:56:56.000Z</published>
-    <updated>2017-08-09T12:06:00.711Z</updated>
-    
-    <content type="html"><![CDATA[<p>最近，由于最近项目需要集成到老项目中去，采用原始的前后端不分离开发，需要学习jsp语言。<br><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
-<h3 id="JSP简介"><a href="#JSP简介" class="headerlink" title="JSP简介"></a>JSP简介</h3><pre><code>1.    JSP全称Java Server Pages，是一种动态网页开发技术。它使用JSP标签在HTML网页中插入Java代码。标签通常以&lt;%开头以%&gt;结束。
-</code></pre><h3 id="JSP-生命周期"><a href="#JSP-生命周期" class="headerlink" title="JSP 生命周期"></a>JSP 生命周期</h3><pre><code>1.    编译阶段：
-当浏览器请求JSP页面时，JSP引擎会首先去检查是否需要编译这个文件。如果这个文件没有被编译过，或者在上次编译后被更改过，则编译这个JSP文件。
-编译的过程包括三个步骤：
-    解析JSP文件。
-    将JSP文件转为servlet。
-    编译servlet。
-2.    初始化阶段：
-    容器载入JSP文件后，它会在为请求提供任何服务前调用jspInit()方法。如果您需要执行自定义的JSP初始化任务，复写jspInit()方法就行了，就像下面这样：
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public void jspInit()&#123;</div><div class="line">  // 初始化代码</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-    一般来讲程序只初始化一次，servlet也是如此。通常情况下您可以在jspInit()方法中初始化数据库连接、打开文件和创建查询表。
-执行阶段：
-    这一阶段描述了JSP生命周期中一切与请求相关的交互行为，直到被销毁。
-    当JSP网页完成初始化后，JSP引擎将会调用_jspService()方法。
-    _jspService()方法需要一个HttpServletRequest对象和一个HttpServletResponse对象作为它的参数，就像下面这样：
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">void _jspService(HttpServletRequest request,</div><div class="line">				 HttpServletResponse response)</div><div class="line">&#123;</div><div class="line">   // 服务端处理代码</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-    _jspService()方法在每个request中被调用一次并且负责产生与之相对应的response，并且它还负责产生所有7个HTTP方法的回应，比如GET、POST、DELETE等等。
-销毁阶段：
-    SP生命周期的销毁阶段描述了当一个JSP网页从容器中被移除时所发生的一切。
-    jspDestroy()方法在JSP中等价于servlet中的销毁方法。当您需要执行任何清理工作时复写jspDestroy()方法，比如释放数据库连接或者关闭文件夹等等。
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">jspDestroy()方法的格式如下：</div><div class="line">public void jspDestroy()</div><div class="line">&#123;</div><div class="line">   // 清理代码</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="JSP语法"><a href="#JSP语法" class="headerlink" title="JSP语法"></a>JSP语法</h3><pre><code>语法格式：
-    &lt;% 代码片段 %&gt;
-    &lt;jsp:scriptlet&gt;
-       代码片段
-    &lt;/jsp:scriptlet&gt;
-中文编码问题：
-    &lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot; pageEncoding=&quot;UTF-8&quot;%&gt;
-JSP声明
-    &lt;%! declaration; [ declaration; ]+ ... %&gt;
-    &lt;jsp:declaration&gt;
-       代码片段
-    &lt;/jsp:declaration&gt;
-    例子：
-    &lt;%! int i = 0; %&gt; 
-JSP表达式    
-    &lt;%= 表达式 %&gt;
-    &lt;jsp:expression&gt;
-       表达式
-    &lt;/jsp:expression&gt;
-JSP注释
-    &lt;%-- 注释 --%&gt;
-JSP指令
-    JSP指令用来设置与整个JSP页面相关的属性。
-    &lt;%@ directive attribute=&quot;value&quot; %&gt;
-    例子：
-    &lt;%@ page ... %&gt;    定义页面的依赖属性，比如脚本语言、error页面、缓存需求等等
-    &lt;%@ include ... %&gt;    包含其他文件
-    &lt;%@ taglib ... %&gt;    引入标签库的定义，可以是自定义标签
-JSP行为
-    JSP行为标签使用XML语法结构来控制servlet引擎。
-    &lt;jsp:action_name attribute=&quot;value&quot; /&gt;
-JSP隐含对象
-    JSP支持九个自动定义的变量，江湖人称隐含对象。
-    request    HttpServletRequest类的实例
-    response    HttpServletResponse类的实例
-判断语句
-    if-else
-        &lt;%! int day =  %&gt;
-        &lt;% if (day == 1 | day == 7) { %&gt;
-            &lt;p&gt;今天是周末&lt;/p&gt;
-        &lt;% } else { %&gt;
-              &lt;p&gt;今天不是周末&lt;/p&gt;
-        &lt;% } %&gt;
-    switch-case
-        &lt;% 
-        switch(day) {
-        case 0:
-           out.println(&quot;星期天&quot;);
-           break;
-        case 1:
-           out.println(&quot;星期一&quot;);
-           break;
-        default:
-           out.println(&quot;星期六&quot;);
-        }
-        %&gt;
-循环语句
-    for
-        &lt;%for ( fontSize = 1; fontSize &lt;= 3; fontSize++){ %&gt;
-           &lt;font color=&quot;green&quot; size=&quot;&lt;%= fontSize %&gt;&quot;&gt;
-            菜鸟教程
-           &lt;/font&gt;&lt;br /&gt;
-        &lt;%}%&gt;
-    while
-        &lt;%while ( fontSize &lt;= 3){ %&gt;
-           &lt;font color=&quot;green&quot; size=&quot;&lt;%= fontSize %&gt;&quot;&gt;
-            菜鸟教程
-           &lt;/font&gt;&lt;br /&gt;
-        &lt;%fontSize++;%&gt;
-        &lt;%}%&gt;
-JSP 字面量
-    布尔值(boolean)：true 和 false;
-    整型(int)：与 Java 中的一样;
-    浮点型(float)：与 Java 中的一样;
-    字符串(string)：以单引号或双引号开始和结束;
-    Null：null。
-</code></pre><h3 id="JSP指令"><a href="#JSP指令" class="headerlink" title="JSP指令"></a>JSP指令</h3><pre><code>JSP指令用来设置整个JSP页面相关的属性，如网页的编码方式和脚本语言。
-    &lt;%@ directive attribute=&quot;value&quot; %&gt;
-Page指令
-    Page指令为容器提供当前页面的使用说明。一个JSP页面可以包含多个page指令。
-    &lt;%@ page attribute=&quot;value&quot; %&gt;
-    &lt;jsp:directive.page attribute=&quot;value&quot; /&gt;
-Include指令
-    JSP可以通过include指令来包含其他文件。被包含的文件可以是JSP文件、HTML文件或文本文件。
-    &lt;%@ include file=&quot;文件相对 url 地址&quot; %&gt;
-    &lt;jsp:directive.include file=&quot;文件相对 url 地址&quot; /&gt;
-Taglib指令
-    JSP API允许用户自定义标签，一个自定义标签库就是自定义标签的集合。
-    &lt;%@ taglib uri=&quot;uri&quot; prefix=&quot;prefixOfTag&quot; %&gt;
-    &lt;jsp:directive.taglib uri=&quot;uri&quot; prefix=&quot;prefixOfTag&quot; /&gt;
-</code></pre><h3 id="JSP动作元素"><a href="#JSP动作元素" class="headerlink" title="JSP动作元素"></a>JSP动作元素</h3><pre><code>JSP动作元素在请求处理阶段起作用。JSP动作元素是用XML语法写成的。
-    &lt;jsp:action_name attribute=&quot;value&quot; /&gt;
-</code></pre><h3 id="JSP隐式对象"><a href="#JSP隐式对象" class="headerlink" title="JSP隐式对象"></a>JSP隐式对象</h3><pre><code>JSP隐式对象是JSP容器为每个页面提供的Java对象，开发者可以直接使用它们而不用显式声明。JSP隐式对象也被称为预定义变量。    
-</code></pre><h3 id="JSP客户端请求"><a href="#JSP客户端请求" class="headerlink" title="JSP客户端请求"></a>JSP客户端请求</h3><pre><code>当浏览器请求一个网页时，它会向网络服务器发送一系列不能被直接读取的信息，因为这些信息是作为HTTP信息头的一部分来传送的。您可以查阅HTTP协议来获得更多的信息。
-</code></pre><h3 id="JSP服务器响应"><a href="#JSP服务器响应" class="headerlink" title="JSP服务器响应"></a>JSP服务器响应</h3><pre><code>Response响应对象主要将JSP容器处理后的结果传回到客户端。可以通过response变量设置HTTP的状态和向客户端发送数据，如Cookie、HTTP文件头信息等。
-</code></pre><h3 id="JSP-HTTP状态码"><a href="#JSP-HTTP状态码" class="headerlink" title="JSP HTTP状态码"></a>JSP HTTP状态码</h3><pre><code>以状态行+CRLF（回车换行）开始
-零行或多行头模块+CRLF
-一个空行，比如CRLF
-可选的消息体比如文件，查询数据，查询输出
-</code></pre><h3 id="JSP-表单处理"><a href="#JSP-表单处理" class="headerlink" title="JSP 表单处理"></a>JSP 表单处理</h3><pre><code>JSP 读取表单数据
-    getParameter(): 使用 request.getParameter() 方法来获取表单参数的值。
-    getParameterValues(): 获得如checkbox类（名字相同，但值有多个）的数据。 接收数组变量 ，如checkbox类型
-    getParameterNames():该方法可以取得所有变量的名称，该方法返回一个Emumeration。
-    getInputStream():调用此方法来读取来自客户端的二进制数据流。
-</code></pre><h3 id="JSP过滤器"><a href="#JSP过滤器" class="headerlink" title="JSP过滤器"></a>JSP过滤器</h3><pre><code>JSP 和 Servlet 中的过滤器都是 Java 类。
-过滤器可以动态地拦截请求和响应，以变换或使用包含在请求或响应中的信息。
-可以将一个或多个过滤器附加到一个 Servlet 或一组 Servlet。过滤器也可以附加到 JavaServer Pages (JSP) 文件和 HTML 页面。
-过滤器是可用于 Servlet 编程的 Java 类，可以实现以下目的：
-在客户端的请求访问后端资源之前，拦截这些请求。
-在服务器的响应发送回客户端之前，处理这些响应。
-</code></pre><h3 id="JSP-Cookie-处理"><a href="#JSP-Cookie-处理" class="headerlink" title="JSP Cookie 处理"></a>JSP Cookie 处理</h3><pre><code>Cookie是存储在客户机的文本文件，它们保存了大量轨迹信息。在servlet技术基础上，JSP显然能够提供对HTTP cookie的支持。
-</code></pre><h3 id="JSP-Session"><a href="#JSP-Session" class="headerlink" title="JSP Session"></a>JSP Session</h3><pre><code>有三种方法来维持客户端与服务器的会话
-    Cookies
-    隐藏表单域  &lt;input type=&quot;hidden&quot; name=&quot;sessionid&quot; value=&quot;12345&quot;&gt;
-    重写URL   http://w3cschool.cc/file.htm;sessionid=12345
-session对象
-    JSP利用servlet提供的HttpSession接口来识别一个用户，存储这个用户的所有访问信息。
-    默认情况下，JSP允许会话跟踪，一个新的HttpSession对象将会自动地为新的客户端实例化。
-</code></pre><h3 id="JSP-文件上传"><a href="#JSP-文件上传" class="headerlink" title="JSP 文件上传"></a>JSP 文件上传</h3><h3 id="JSP-日期处理"><a href="#JSP-日期处理" class="headerlink" title="JSP 日期处理"></a>JSP 日期处理</h3><pre><code>使用JSP最重要的优势之一，就是可以使用所有Java  API。本章将会详细地讲述Java中的Date类，它在java.util包下，封装了当前日期和时间。
-</code></pre><h3 id="JSP-页面重定向"><a href="#JSP-页面重定向" class="headerlink" title="JSP 页面重定向"></a>JSP 页面重定向</h3><pre><code>当需要将文档移动到一个新的位置时，就需要使用JSP重定向了。
-</code></pre><h3 id="JSP-点击量统计"><a href="#JSP-点击量统计" class="headerlink" title="JSP 点击量统计"></a>JSP 点击量统计</h3><h3 id="JSP-自动刷新"><a href="#JSP-自动刷新" class="headerlink" title="JSP 自动刷新"></a>JSP 自动刷新</h3><pre><code>想象一下，如果要直播比赛的比分，或股票市场的实时状态，或当前的外汇配给，该怎么实现呢？显然，要实现这种实时功能，您就不得不规律性地刷新页面。
-</code></pre><h3 id="JSP-发送邮件"><a href="#JSP-发送邮件" class="headerlink" title="JSP 发送邮件"></a>JSP 发送邮件</h3>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;最近，由于最近项目需要集成到老项目中去，采用原始的前后端不分离开发，需要学习jsp语言。&lt;br&gt;&lt;em&gt;如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。&lt;/em&gt;&lt;/p&gt;
-&lt;h3 id=&quot;JSP简介&quot;&gt;&lt;a href=&quot;#JSP简介&quot; class=&quot;headerl
-    
-    </summary>
-    
-      <category term="服务端" scheme="https://fanerge.github.io/categories/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
-    
-    
-      <category term="jsp" scheme="https://fanerge.github.io/tags/jsp/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>js函数式编程-由函数构建函数</title>
-    <link href="https://fanerge.github.io/2017/08/08/js%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-4/"/>
-    <id>https://fanerge.github.io/2017/08/08/js函数式编程-读书笔记-4/</id>
-    <published>2017-08-08T11:02:29.000Z</published>
-    <updated>2017-08-13T03:08:39.760Z</updated>
-    
-    <content type="html"><![CDATA[<p>最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸<strong>函数式编程</strong>。<br><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
-<h3 id="由函数构建函数"><a href="#由函数构建函数" class="headerlink" title="由函数构建函数"></a>由函数构建函数</h3><h4 id="函数式组合的精华"><a href="#函数式组合的精华" class="headerlink" title="函数式组合的精华"></a>函数式组合的精华</h4><pre><code>函数组合的精华：使用现有的零部件来建立新的行为，这些新行为同样也成为了已有的零部件。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">function dispatch() &#123;</div><div class="line">	let funs = _.toArray(arguments);</div><div class="line">	let size = funs.length;</div><div class="line">	return function (target) &#123;</div><div class="line">		let ret = undefined;</div><div class="line">		let args = _.rest(arguments);</div><div class="line">		for(let funIndex = 0; funIndex &lt; size; funIndex++)&#123;</div><div class="line">			let fun = funs[funIndex];</div><div class="line">			ret = fun.apply(fun, construct(target, args));</div><div class="line">			if (existy(ret)) return ret;	</div><div class="line">		&#125;</div><div class="line">		return ret;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">let str = dispatch(invoker(&apos;toString&apos;, Array.prototype.toString),</div><div class="line">	invoker(&apos;toString&apos;, String.prototype.toString)</div><div class="line">	)</div><div class="line">let dd = str(&apos;a&apos;);</div><div class="line"></div><div class="line">console.log(dd) // &apos;a&apos;</div></pre></td></tr></table></figure>
-</code></pre><h4 id="柯里化（Currying）"><a href="#柯里化（Currying）" class="headerlink" title="柯里化（Currying）"></a>柯里化（Currying）</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">function rightAwayInvoker() &#123;</div><div class="line">	let args = _.toArray(arguments);</div><div class="line">	let method = args.shift();</div><div class="line">	let target = args.shift();</div><div class="line">	return method.apply(target, args);</div><div class="line">&#125;</div><div class="line">let dd = rightAwayInvoker(Array.prototype.reverse, [1, 2, 3]);</div><div class="line">console.log(dd) // [3, 2, 1]</div></pre></td></tr></table></figure>
-
-柯里化的方向（默认向右）
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">function rigthCurryDiv(d) &#123;</div><div class="line">	return function (n) &#123;</div><div class="line">		return n/d;</div><div class="line">	&#125;;</div><div class="line">&#125;</div><div class="line">let divideBy10 = rigthCurryDiv(10); // 被除数</div><div class="line">let dd = divideBy10(2); // 除数</div><div class="line">var d1 = rigthCurryDiv(10)(2)</div><div class="line">console.log(d1); // 0.2</div><div class="line"></div><div class="line">// 柯里化一个参数</div><div class="line">function curry(fun) &#123;</div><div class="line">	return function(arg) &#123;</div><div class="line">		return fun(arg);</div><div class="line">	&#125;;</div><div class="line">&#125;</div><div class="line">let dd = [&apos;11&apos;, &apos;11&apos;, &apos;11&apos; ,&apos;11&apos;].map(curry(parseInt))</div><div class="line">console.log(dd) // [&apos;11&apos;, &apos;11&apos;, &apos;11&apos; ,&apos;11&apos;]</div><div class="line"></div><div class="line">// 柯里化两个参数</div><div class="line">function curry2(fun) &#123;</div><div class="line">	return function(secondArg) &#123;</div><div class="line">		return function(firstArg) &#123;</div><div class="line">			return fun(firstArg, secondArg);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">function div(n, d) &#123;</div><div class="line">	return n / d;</div><div class="line">&#125;</div><div class="line">let dd = curry2(div)(10)(50);</div><div class="line">console.log(dd) // 5</div><div class="line"></div><div class="line">function toHex(n) &#123;</div><div class="line">	let hex = n.toString(16);</div><div class="line">	return (hex.length &lt; 2) ? [0, hex].join(&apos;&apos;) : hex;</div><div class="line">&#125;</div><div class="line">function rgbToHexString(r, g, b) &#123;</div><div class="line">	return [&apos;#&apos;, toHex(r), toHex(g), toHex(b)].join(&apos;&apos;);</div><div class="line">&#125;</div><div class="line">let dd = rgbToHexString(255, 255, 255);</div><div class="line">console.log(dd) // #ffffff</div></pre></td></tr></table></figure>
-</code></pre><h4 id="部分应用"><a href="#部分应用" class="headerlink" title="部分应用"></a>部分应用</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">function partial (fun) &#123;</div><div class="line">	let pargs = _.rest(arguments);</div><div class="line">	return function () &#123;</div><div class="line">		let args = cat(pargs, _.toArray(arguments));</div><div class="line">		return fun.apply(fun, args);</div><div class="line">	&#125;;</div><div class="line">&#125;</div><div class="line">var div10by2by4by5000partial = partial(div, 10, 2, 4, 5000);</div><div class="line">console.log(div10by2by4by5000partial()) // 5</div><div class="line"></div><div class="line">// 局部应用实战：前置条件</div><div class="line">function condition1() &#123;</div><div class="line">	let validators = _.toArray(arguments);</div><div class="line">	return function (fun, arg) &#123;</div><div class="line">		let errors = mapcat(function(isValid)&#123;</div><div class="line">			return isValid(arg) ? [] : [isValid.message];</div><div class="line">		&#125;, validators);</div><div class="line">		if (!_.isEmpty(errors)) &#123;</div><div class="line">			throw new Error(error.join(&apos;,&apos;));</div><div class="line">		&#125;</div><div class="line">		return fun(arg);</div><div class="line">	&#125;;</div><div class="line">&#125;</div><div class="line">let sqrPre = condition1(validator(&apos;arg must not be zero&apos;, complement(zero)),</div><div class="line">	validator(&apos;arg must be a number&apos;, _.isNumber));</div><div class="line">let dd = sqrPre(_.identity, 10);</div><div class="line">console.log(dd)</div></pre></td></tr></table></figure>
-</code></pre><h4 id="通过组合端至端的拼接函数"><a href="#通过组合端至端的拼接函数" class="headerlink" title="通过组合端至端的拼接函数"></a>通过组合端至端的拼接函数</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">let isntString = _.compose(function (x) &#123; return !x; &#125;, _.isString);</div><div class="line">let dd = isntString([]);</div><div class="line">console.log(dd)	// true</div></pre></td></tr></table></figure>
-</code></pre><blockquote>
-<p>   源代码仓库<br>    <a href="https://github.com/fanerge/Functional-reading-notes" target="_blank" rel="external">函数式编程-读书笔记</a></p>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸&lt;strong&gt;函数式编程&lt;/strong&gt;。&lt;br&gt;&lt;em&gt;如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。&lt;/em&gt;&lt;/p&gt;
-&lt;h3 id=&quot;由函数构建函数&quot;&gt;&lt;a href=&quot;#由函数构建函数&quot; clas
-    
-    </summary>
-    
-      <category term="函数式编程" scheme="https://fanerge.github.io/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
-    
-    
       <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
-    
-      <category term="读书笔记" scheme="https://fanerge.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>js函数式编程-高阶函数</title>
-    <link href="https://fanerge.github.io/2017/08/03/js%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-3/"/>
-    <id>https://fanerge.github.io/2017/08/03/js函数式编程-读书笔记-3/</id>
-    <published>2017-08-03T12:01:15.000Z</published>
-    <updated>2017-08-13T03:08:32.409Z</updated>
-    
-    <content type="html"><![CDATA[<p>最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸<strong>函数式编程</strong>。<br><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
-<h3 id="高阶函数"><a href="#高阶函数" class="headerlink" title="高阶函数"></a>高阶函数</h3><h4 id="以其他函数为参数的函数"><a href="#以其他函数为参数的函数" class="headerlink" title="以其他函数为参数的函数"></a>以其他函数为参数的函数</h4><pre><code>如：_.map、_.reduce、_.filter等函数
-关于传递函数的思考：max、finder、best
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">*max 集合中选择最大值的项*</div><div class="line">var dd = _.max([1, 2, 3, 4, 5])</div><div class="line">console.log(dd) // 5</div><div class="line">var people = [&#123;name: &apos;fed&apos;, age: 45&#125;, &#123;name: &apos;fan&apos;, age: 25&#125;];</div><div class="line">var dd = _.max(people, function (item) &#123;</div><div class="line">	return item.age;</div><div class="line">&#125;);</div><div class="line">console.log(dd) // &#123;name: &quot;fed&quot;, age: 45&#125;</div><div class="line"></div><div class="line">*finder *</div><div class="line">function finder(valueFun, bestFun, coll) &#123;</div><div class="line">	return _.reduce(coll, function (best, current) &#123;</div><div class="line">		var bestValue = valueFun(best);</div><div class="line">		var currentValue = valueFun(current);</div><div class="line">		return (bestValue === bestFun(bestValue, currentValue)) ? best : current; </div><div class="line">	&#125;);</div><div class="line">&#125;</div><div class="line">var dd = finder(_.identity, Math.max, [1, 2, 3, 4, 5]);</div><div class="line">console.log(dd) // 5</div><div class="line"></div><div class="line">*best *</div><div class="line">function best(fun, coll)&#123;</div><div class="line">	return _.reduce(coll, function (x, y) &#123;</div><div class="line">		return fun(x, y) ? x : y;	</div><div class="line">	&#125;);	</div><div class="line">&#125;</div><div class="line">var dd = best(function (x, y) &#123;</div><div class="line">	return x &gt; y;</div><div class="line">&#125;, [1, 2, 3, 4]);</div><div class="line">console.log(dd)// 4</div></pre></td></tr></table></figure>
-
-关于传递函数的更多思考：重复、反复和条件迭代
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">function repeat(times, VALUE) &#123;</div><div class="line">	return _.map(_.range(times), function () &#123; return VALUE; &#125;)</div><div class="line">&#125;</div><div class="line">var dd = repeat(4, &apos;Major&apos;);</div><div class="line">console.log(dd) // [&apos;Major&apos;,&apos;Major&apos;,&apos;Major&apos;,&apos;Major&apos;]</div><div class="line"></div><div class="line">// 使用函数，而不是值</div><div class="line">function repeatedly(times, fun) &#123;</div><div class="line">	return _.map(_.range(times), fun);</div><div class="line">&#125;</div><div class="line">var dd = repeatedly(4, function () &#123;</div><div class="line">	return Math.floor((Math.random()*10) + 1)</div><div class="line">&#125;);</div><div class="line">console.log(dd)</div><div class="line"></div><div class="line">// 再次强调，&quot;使用函数，而不是值&quot;</div><div class="line">function iterateUntil(fun, check, init) &#123;</div><div class="line">	let ret = [];</div><div class="line">	let result = fun(init);</div><div class="line"></div><div class="line">	while (check(result))&#123;</div><div class="line">		ret.push(result);</div><div class="line">		result = fun(result);</div><div class="line">	&#125;</div><div class="line">	return ret;</div><div class="line">&#125;</div><div class="line"></div><div class="line">let dd = iterateUntil(function (n)&#123; return n+n&#125;, function (n) &#123; return n &lt;= 1024&#125;, 1)</div><div class="line">console.log(dd) // [2, 4, 8, 16, ...]</div></pre></td></tr></table></figure>
-</code></pre><h4 id="返回其他函数的函数"><a href="#返回其他函数的函数" class="headerlink" title="返回其他函数的函数"></a>返回其他函数的函数</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">function always(VALUE)&#123;</div><div class="line">	return function ()&#123;</div><div class="line">		return VALUE;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">var f = always(function () &#123;&#125;)</div><div class="line">var g = always(function () &#123;&#125;)</div><div class="line">console.log(f() === g()) // false</div><div class="line"></div><div class="line">function invoker(NAME, METHOD)&#123;</div><div class="line">	return function(target)&#123;</div><div class="line">		if (!existy(target)) fail(&quot;Must provide a target&quot;);</div><div class="line">		let targetMethod = target[NAME];</div><div class="line">		let args = _.rest(arguments);</div><div class="line">		return doWhen((existy(targetMethod) &amp;&amp; METHOD === targetMethod), function () &#123;</div><div class="line">			return targetMethod.apply(target, args);</div><div class="line">		&#125;)</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">let rev = invoker(&apos;reverse&apos;, Array.prototype.reverse);</div><div class="line">console.log(_.map([[1, 2, 3]], rev))</div><div class="line"></div><div class="line">// 捕获增量值</div><div class="line">function makeUniqueStringFunction(start) &#123;</div><div class="line">	let COUNTER = start;</div><div class="line">	return function(prefix) &#123;</div><div class="line">		return [prefix, COUNTER++].join(&apos;&apos;);</div><div class="line">	&#125;;</div><div class="line">&#125;</div><div class="line">let dd = makeUniqueStringFunction(0);</div><div class="line">let d1 = dd(&apos;fanerge&apos;)</div><div class="line">let d2 = dd(&apos;fanerge&apos;)</div><div class="line">console.log(d1, d2); // fanerge0 fanerge1</div></pre></td></tr></table></figure>
-</code></pre><h4 id="整合：对象校验器"><a href="#整合：对象校验器" class="headerlink" title="整合：对象校验器"></a>整合：对象校验器</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">function aMap(obj) &#123;</div><div class="line">	return _.isObject(obj);</div><div class="line">&#125;</div><div class="line">function hasKeys() &#123;</div><div class="line">	let KEYS = _.toArray(arguments);</div><div class="line">	let fun = function(obj)&#123;</div><div class="line">		return _.every(KEYS, function (k)&#123;</div><div class="line">			return _.has(obj, k);</div><div class="line">		&#125;)</div><div class="line">	&#125;;</div><div class="line">	fun.message = cat([&apos;Must have values for keys:&apos;], KEYS).join(&quot; &quot;);</div><div class="line">	return fun;</div><div class="line">&#125;</div><div class="line">let checkCommand = checker(validator(&quot;Must be a map&quot;, aMap), hasKeys(&apos;msg&apos;, &apos;type&apos;));</div><div class="line">console.log(checkCommand(&#123;msg: &apos;blah&apos;, type: &apos;display&apos;&#125;)); //[]</div></pre></td></tr></table></figure>
-</code></pre><blockquote>
-<p>   源代码仓库<br>    <a href="https://github.com/fanerge/Functional-reading-notes" target="_blank" rel="external">函数式编程-读书笔记</a></p>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸&lt;strong&gt;函数式编程&lt;/strong&gt;。&lt;br&gt;&lt;em&gt;如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。&lt;/em&gt;&lt;/p&gt;
-&lt;h3 id=&quot;高阶函数&quot;&gt;&lt;a href=&quot;#高阶函数&quot; class=&quot;hea
-    
-    </summary>
-    
-      <category term="函数式编程" scheme="https://fanerge.github.io/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
-    
-    
-      <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
-    
-      <category term="读书笔记" scheme="https://fanerge.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
   </entry>
   
