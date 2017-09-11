@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fanerge.github.io/"/>
-  <updated>2017-09-05T14:38:59.140Z</updated>
+  <updated>2017-09-11T14:41:00.874Z</updated>
   <id>https://fanerge.github.io/</id>
   
   <author>
@@ -16,11 +16,68 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>grid布局</title>
+    <link href="https://fanerge.github.io/2017/09/11/grid%E5%B8%83%E5%B1%80/"/>
+    <id>https://fanerge.github.io/2017/09/11/grid布局/</id>
+    <published>2017-09-11T12:09:01.000Z</published>
+    <updated>2017-09-11T14:41:00.874Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="设置在网格容器上的属性"><a href="#设置在网格容器上的属性" class="headerlink" title="设置在网格容器上的属性"></a>设置在网格容器上的属性</h4><pre><code>display: grid | inline-grid | subgrid;
+grid-template-columns
+grid-template-rows
+grid-template-areas
+grid-column-gap
+grid-row-gap
+grid-gap
+justify-items
+align-items
+align-content
+grid-auto-columns
+grid-auto-rows
+grid-auto-flow
+grid
+</code></pre><h4 id="显式的网格"><a href="#显式的网格" class="headerlink" title="显式的网格"></a>显式的网格</h4><h5 id="html"><a href="#html" class="headerlink" title="html"></a>html</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;section class=&quot;grid&quot;&gt;</div><div class="line">	&lt;div class=&quot;item&quot;&gt;item1&lt;/div&gt;</div><div class="line">	&lt;div class=&quot;item&quot;&gt;item1&lt;/div&gt;</div><div class="line">	&lt;div class=&quot;item&quot;&gt;item1&lt;/div&gt;</div><div class="line">	&lt;div class=&quot;item&quot;&gt;item1&lt;/div&gt;</div><div class="line">	&lt;div class=&quot;item&quot;&gt;item1&lt;/div&gt;</div><div class="line">	&lt;div class=&quot;item&quot;&gt;item1&lt;/div&gt;</div><div class="line">	&lt;div class=&quot;item&quot;&gt;item1&lt;/div&gt;</div><div class="line">&lt;/section&gt;</div></pre></td></tr></table></figure>
+</code></pre><h5 id="css"><a href="#css" class="headerlink" title="css"></a>css</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">.grid &#123;</div><div class="line">	display: grid; </div><div class="line">	grid-template-columns: 1fr 2fr 3fr; // 指定3个列，分别指定每个列的宽度（1/6, 2/6, 3/6）。</div><div class="line">	grid-template-rows: 100px 100px; // 指定2行，分别指定每个行的宽度</div><div class="line">	grid-gap: 20px 10px; // 指定行间距和列间距（若只有一个参数是行和类间距取相同值）</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h4 id="重复轨道"><a href="#重复轨道" class="headerlink" title="重复轨道"></a>重复轨道</h4><h5 id="css-1"><a href="#css-1" class="headerlink" title="css"></a>css</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">.grid &#123;</div><div class="line">	display: grid;</div><div class="line">	grid-template-columns: repeat(3, 1fr 2fr); // 第一个参数指定的是重复次数，第二个参数是每次重复的轨道列表（共3*2=6列）。</div><div class="line">	grid-template-rows: 100px 100px;</div><div class="line">	grid-gap: 20px 1px;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h4 id="自动重复轨道"><a href="#自动重复轨道" class="headerlink" title="自动重复轨道"></a>自动重复轨道</h4><h5 id="css-2"><a href="#css-2" class="headerlink" title="css"></a>css</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">.grid &#123;</div><div class="line">	display: grid;</div><div class="line">	grid-template-columns: repeat(auto-fill, 100px); // auto-fill关键词创建了许多与网格容器相匹配的轨道，而不会导致网格溢出。</div><div class="line">	grid-template-rows: 100px 100px;</div><div class="line">	grid-gap: 20px 10px;</div><div class="line">&#125;</div><div class="line">.grid &#123;</div><div class="line">	display: grid;</div><div class="line">	grid-template-columns: repeat(auto-fit, 100px); // auto-fit关键词与auto-fill有点类似，只是在网格项放置之后，它只会在需要时创建尽可能多的轨道，而重复的空轨道会堆叠在一起（合并）。</div><div class="line">	grid-template-rows: 100px 100px;</div><div class="line">	grid-gap: 20px 10px;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h4 id="隐式网格"><a href="#隐式网格" class="headerlink" title="隐式网格"></a>隐式网格</h4><pre><code>如果网格中有更多的网格项，或者网格项被放置在显式网格之外，网格容器就会通过向网格中添加网格线来自动生成网格轨道。
+显式网格和这些额外的隐式轨道和网格线构成了所谓的隐式网格。
+</code></pre><h5 id="css-3"><a href="#css-3" class="headerlink" title="css"></a>css</h5><pre><code>对于子项目
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">.item:first-child &#123;</div><div class="line">	grid-column-start: -1;</div><div class="line">&#125;</div><div class="line">.item:nth-child(2) &#123;</div><div class="line">	grid-row-start: 4;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h4 id="隐式轨道尺寸"><a href="#隐式轨道尺寸" class="headerlink" title="隐式轨道尺寸"></a>隐式轨道尺寸</h4><h5 id="css-4"><a href="#css-4" class="headerlink" title="css"></a>css</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">.grid &#123; </div><div class="line">	display: grid; </div><div class="line">	grid-template-columns: repeat(4, 1fr); </div><div class="line">	grid-template-rows: 100px 100px; </div><div class="line">	grid-gap: 20px; </div><div class="line">	grid-auto-columns: 200px; </div><div class="line">	grid-auto-rows: 60px; </div><div class="line">	grid-auto-columns: minmax(200px, auto); // 隐藏轨道现在最小宽度是200px</div><div class="line">	grid-auto-rows: minmax(auto, 300px); // 隐藏轨道现在最大高度度是300px</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h4 id="将网格扩展到开始"><a href="#将网格扩展到开始" class="headerlink" title="将网格扩展到开始"></a>将网格扩展到开始</h4><h5 id="css-5"><a href="#css-5" class="headerlink" title="css"></a>css</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">.item:first-child &#123;</div><div class="line">  grid-row-end: 1;</div><div class="line">  grid-row-start: span 3; // 开始跨越3个单元格</div><div class="line">&#125;</div><div class="line">.item:nth-child(2) &#123;</div><div class="line">  grid-column-end: 2;</div><div class="line">  grid-column-start: span 2; // 开始跨越2个单元格</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h4 id="自动放置"><a href="#自动放置" class="headerlink" title="自动放置"></a>自动放置</h4><h5 id="css-6"><a href="#css-6" class="headerlink" title="css"></a>css</h5><p>我们可以通过使用grid-auto-flow属性来指定如何把网格项目自动放置到网格容器。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">.grid2 &#123;</div><div class="line">	grid-auto-flow: column;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4 id="未定义显式网格"><a href="#未定义显式网格" class="headerlink" title="未定义显式网格"></a>未定义显式网格</h4><p>使用grid-auto-rows和grid-auto-columns可以自动地调整单元格大小，因此不需要定义显式网格。</p>
+<blockquote>
+<p>   参考文档</p>
+<ol>
+<li><a href="http://www.w3cplus.com/css3/difference-explicit-implicit-grids.html" target="_blank" rel="external">显式网格和隐式网格的区别 </a>    </li>
+<li><a href="http://www.jianshu.com/p/d183265a8dad" target="_blank" rel="external">Grid布局指南</a></li>
+</ol>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;设置在网格容器上的属性&quot;&gt;&lt;a href=&quot;#设置在网格容器上的属性&quot; class=&quot;headerlink&quot; title=&quot;设置在网格容器上的属性&quot;&gt;&lt;/a&gt;设置在网格容器上的属性&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;display: grid | inline-gri
+    
+    </summary>
+    
+      <category term="css" scheme="https://fanerge.github.io/categories/css/"/>
+    
+    
+      <category term="css" scheme="https://fanerge.github.io/tags/css/"/>
+    
+      <category term="布局" scheme="https://fanerge.github.io/tags/%E5%B8%83%E5%B1%80/"/>
+    
+  </entry>
+  
+  <entry>
     <title>node-学习（七天学会NodeJs）</title>
     <link href="https://fanerge.github.io/2017/09/05/node-%E5%AD%A6%E4%B9%A0/"/>
     <id>https://fanerge.github.io/2017/09/05/node-学习/</id>
     <published>2017-09-05T14:32:47.000Z</published>
-    <updated>2017-09-05T14:38:59.140Z</updated>
+    <updated>2017-09-05T14:43:17.292Z</updated>
     
     <content type="html"><![CDATA[<h4 id="NodeJs基础"><a href="#NodeJs基础" class="headerlink" title="NodeJs基础"></a>NodeJs基础</h4><h5 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h5><pre><code>在编写每个模块时，都有require、exports、module三个预先定义好的变量可供使用。
 </code></pre><h6 id="require"><a href="#require" class="headerlink" title="require"></a>require</h6><pre><code>require函数用于在当前模块中加载和使用别的模块，传入一个模块名，返回一个模块导出对象。模块名可使用相对路径（以./开头），或者是绝对路径（以/或C:之类的盘符开头）。另外，模块名中的.js扩展名可以省略。
@@ -262,6 +319,8 @@ node.js调用终端简化目录拷贝
       <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
     
       <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
+    
+      <category term="读书笔记" scheme="https://fanerge.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
       <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
     
@@ -3161,39 +3220,6 @@ console.log(Animal.prototype.constructor); // Cat
       <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
     
       <category term="面向对象编程" scheme="https://fanerge.github.io/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>js函数式编程-读书笔记</title>
-    <link href="https://fanerge.github.io/2017/08/11/js%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-7/"/>
-    <id>https://fanerge.github.io/2017/08/11/js函数式编程-读书笔记-7/</id>
-    <published>2017-08-11T12:59:55.000Z</published>
-    <updated>2017-08-13T03:08:05.210Z</updated>
-    
-    <content type="html"><![CDATA[<p>最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸<strong>函数式编程</strong>。<br><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
-<h3 id="基于流的编程-or-无类编程"><a href="#基于流的编程-or-无类编程" class="headerlink" title="基于流的编程 or 无类编程"></a>基于流的编程 or 无类编程</h3><h4 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">function createPerson () &#123;</div><div class="line">	let firstName = &apos;&apos;;</div><div class="line">	let lastName = &apos;&apos;;</div><div class="line">	let age = 0;</div><div class="line">	return &#123;</div><div class="line">		setFirstName: function (fn) &#123;</div><div class="line">			firstName = fn;</div><div class="line">			return this;	</div><div class="line">		&#125;,</div><div class="line">		setLastName: function (fn) &#123;</div><div class="line">			lastName = fn;</div><div class="line">			return this;	</div><div class="line">		&#125;,</div><div class="line">		setAge: function (fn) &#123;</div><div class="line">			age = fn;</div><div class="line">			return this;</div><div class="line">		&#125;,</div><div class="line">		toString: function () &#123;</div><div class="line">			return [firstName, lastName, age].join(&apos; &apos;);</div><div class="line">		&#125;</div><div class="line">	&#125;;</div><div class="line">&#125;</div><div class="line">let dd = createPerson()</div><div class="line">		.setFirstName(&apos;yu&apos;)</div><div class="line">		.setLastName(&apos;fan&apos;)</div><div class="line">		.setAge(11)</div><div class="line">		.toString();</div><div class="line">console.log(dd) // yu fan 11</div></pre></td></tr></table></figure>
-</code></pre><h4 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h4><pre><code>pipeline(a, _.compact, _.initial, _.rest, rev) // 对数据a进行一系列的操作
-</code></pre><h4 id="数据流与控制流"><a href="#数据流与控制流" class="headerlink" title="数据流与控制流"></a>数据流与控制流</h4><h3 id="无类编程"><a href="#无类编程" class="headerlink" title="无类编程"></a>无类编程</h3><h4 id=""><a href="#" class="headerlink" title=" "></a> </h4><h4 id="数据导向"><a href="#数据导向" class="headerlink" title="数据导向"></a>数据导向</h4><h4 id="Mixins"><a href="#Mixins" class="headerlink" title="Mixins"></a>Mixins</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div></pre></td><td class="code"><pre><div class="line">类层次结构</div><div class="line">function ContainerClass () &#123;&#125;</div><div class="line">function ObservedContainerClass () &#123;&#125;</div><div class="line">function HoleClass () &#123;&#125;</div><div class="line">function CASClass () &#123;&#125;</div><div class="line">function TableBaseClass () &#123;&#125;</div><div class="line"></div><div class="line">ObservedContainerClass.prototype = new ContainerClass();</div><div class="line">HoleClass.prototype = new ObservedContainerClass();</div><div class="line">CASClass.prototype = new HoleClass();</div><div class="line">TableBaseClass.prototype = new HoleClass();</div><div class="line"></div><div class="line">// 用Mixin扁平化层级结构</div><div class="line">function Container (val) &#123;</div><div class="line">	this._value = val;</div><div class="line">	this.init(val);</div><div class="line">&#125;</div><div class="line">Container.prototype.init = _.identity;</div><div class="line">let Hole = function (val) &#123;</div><div class="line">	Container.call(this, val);</div><div class="line">&#125;</div><div class="line">let HoleMixin = &#123;</div><div class="line">	setValue: function (newValue) &#123;</div><div class="line">		let oldVal = this._value;</div><div class="line">		this.validate(newValue);</div><div class="line">		this._value = newValue;</div><div class="line">		this.notify(oldVal, newValue);</div><div class="line">		return this._value;</div><div class="line">	&#125;,</div><div class="line">&#125;;</div><div class="line">let ObserverMixin = (function () &#123;</div><div class="line">	let _watchers = [];</div><div class="line">	return &#123;</div><div class="line">		watch: function (fun) &#123;</div><div class="line">			_watchers.push(fun);</div><div class="line">			return _.size(_watchers);</div><div class="line">		&#125;,</div><div class="line">		notify: function (oldVal, newVal) &#123;</div><div class="line">			_.each(_._watchers, function (watcher) &#123;</div><div class="line">				watcher.call(this, oldVal, newVal);</div><div class="line">			&#125;);</div><div class="line">			return _.size(_watchers);</div><div class="line">		&#125;</div><div class="line">	&#125;;</div><div class="line">&#125;);</div><div class="line">let ValidateMixin = &#123;</div><div class="line">	addValidator: function (fun) &#123;</div><div class="line">		this._validator = fun;</div><div class="line">	&#125;,</div><div class="line">	init: function (val) &#123;</div><div class="line">		this.validate(val);</div><div class="line">	&#125;,</div><div class="line">	validate: function (val) &#123;</div><div class="line">		if (existy(this._validator) &amp;&amp;</div><div class="line">			!this._validator(val)) &#123;</div><div class="line">			fail(&apos;Attrmpted to set invalid value&apos; + polyToString(val));</div><div class="line">		&#125;</div><div class="line"></div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line">_.extend(Hole.prototype, HoleMixin, ValidateMixin, ObserverMixin); // 同级继承</div><div class="line">let h = new Hole(43);</div><div class="line">h.addValidator(always(false));</div><div class="line">console.log(h); // 43</div><div class="line"></div><div class="line">let SwapMixin = &#123;</div><div class="line">	swap: function (fun) &#123;</div><div class="line">		let args = _.rest(arguemnts);</div><div class="line">		let newValue = fun.apply(this, _.identity);</div><div class="line">		return this.setValue(newValue);</div><div class="line">	&#125;,</div><div class="line">&#125;;</div><div class="line">let o = &#123;_value: 0, setValue: _.identity&#125;</div><div class="line">_.extend(o, SwapMixin);</div><div class="line">o.swap(construct, [1, 2, 3]); //[0, 1, 2, 3]</div></pre></td></tr></table></figure>
-</code></pre><blockquote>
-<p>   源代码仓库<br>    <a href="https://github.com/fanerge/Functional-reading-notes" target="_blank" rel="external">函数式编程-读书笔记</a></p>
-</blockquote>
-<pre><code>```
-</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸&lt;strong&gt;函数式编程&lt;/strong&gt;。&lt;br&gt;&lt;em&gt;如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。&lt;/em&gt;&lt;/p&gt;
-&lt;h3 id=&quot;基于流的编程-or-无类编程&quot;&gt;&lt;a href=&quot;#基于流的编程
-    
-    </summary>
-    
-      <category term="函数式编程" scheme="https://fanerge.github.io/categories/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
-    
-    
-      <category term="函数式编程" scheme="https://fanerge.github.io/tags/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/"/>
-    
-      <category term="读书笔记" scheme="https://fanerge.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
   </entry>
   
