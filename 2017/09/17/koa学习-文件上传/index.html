@@ -1,0 +1,807 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="js,web开发,服务端,koa," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="余真帆的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="busboy模块模块是用来解析POST请求，node原生req中的文件流。 busboy 是用来解析出请求中文件流。 封装上传文件到写入服务的方法创建上传模块upload.js 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960">
+<meta name="keywords" content="js,web开发,服务端,koa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="koa学习-文件上传">
+<meta property="og:url" content="https://fanerge.github.io/2017/09/17/koa学习-文件上传/index.html">
+<meta property="og:site_name" content="余真帆的博客">
+<meta property="og:description" content="busboy模块模块是用来解析POST请求，node原生req中的文件流。 busboy 是用来解析出请求中文件流。 封装上传文件到写入服务的方法创建上传模块upload.js 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960">
+<meta property="og:updated_time" content="2017-09-17T14:10:50.207Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="koa学习-文件上传">
+<meta name="twitter:description" content="busboy模块模块是用来解析POST请求，node原生req中的文件流。 busboy 是用来解析出请求中文件流。 封装上传文件到写入服务的方法创建上传模块upload.js 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://fanerge.github.io/2017/09/17/koa学习-文件上传/"/>
+
+
+
+
+
+  <title> koa学习-文件上传 | 余真帆的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?947609e8bcc46de32a1dca9cc56cd8a1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">余真帆的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/17/koa学习-文件上传/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                koa学习-文件上传
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-17T20:20:14+08:00">
+                2017-09-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
+                    <span itemprop="name">NodeJS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/17/koa学习-文件上传/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/17/koa学习-文件上传/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="busboy模块"><a href="#busboy模块" class="headerlink" title="busboy模块"></a>busboy模块</h3><pre><code>模块是用来解析POST请求，node原生req中的文件流。
+busboy 是用来解析出请求中文件流。
+</code></pre><h3 id="封装上传文件到写入服务的方法"><a href="#封装上传文件到写入服务的方法" class="headerlink" title="封装上传文件到写入服务的方法"></a>封装上传文件到写入服务的方法</h3><pre><code>创建上传模块upload.js
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div></pre></td><td class="code"><pre><div class="line">const inspect = require(&apos;util&apos;).inspect;</div><div class="line">const path = require(&apos;path&apos;);</div><div class="line">const os = require(&apos;os&apos;);</div><div class="line">const fs = require(&apos;fs&apos;);</div><div class="line">const Busboy = require(&apos;busboy&apos;);</div><div class="line"></div><div class="line">/*</div><div class="line">* 同步创建文件目录</div><div class="line">* @param &#123;string&#125; dirname 目录绝对地址</div><div class="line">* @return &#123;boolean&#125; 创建目录结果</div><div class="line">*/</div><div class="line">function mkdirsSync (dirname) &#123;</div><div class="line">	if (fs.existsSync(dirname)) &#123;</div><div class="line">		return true;</div><div class="line">	&#125; else &#123;</div><div class="line">		if (mkdirsSync(path.dirname(dirname))) &#123;</div><div class="line">			fs.mkdirSync(dirname);</div><div class="line">			return true;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">/*</div><div class="line">* 获取上传文件的后缀名</div><div class="line">* @param &#123;string&#125; fileName 获取上传文件的后缀名</div><div class="line">* @return &#123;string&#125; 文件后缀名</div><div class="line">*/</div><div class="line">function getSuffixName (fileName) &#123;</div><div class="line">	/*let nameList = fileName.split(&apos;.&apos;);</div><div class="line">	return nameList[nameList.length-1]*/</div><div class="line">	return path.extname(fileName);</div><div class="line">&#125;</div><div class="line"></div><div class="line">/*</div><div class="line">* 上传文件</div><div class="line">* @param &#123;object&#125; ctx koa上下文</div><div class="line">* @param &#123;object&#125; options 文件上传参数 fileType文件类型， path文件存放路径</div><div class="line">* @return &#123;promise&#125;</div><div class="line">*/</div><div class="line">function uploadFile (ctx, options) &#123;</div><div class="line">	let req = ctx.req;</div><div class="line">	let res = ctx.res;</div><div class="line">	let busboy = new Busboy(&#123;headers: req.headers&#125;);</div><div class="line"></div><div class="line">	// 获取类型</div><div class="line">	let fileType = options.fileType || &apos;common&apos;;</div><div class="line">	let filePath = path.join(options.path, fileType);</div><div class="line">	let mkdirResult = mkdirsSync(filePath);</div><div class="line"></div><div class="line">	return new Promise((resolve, reject) =&gt; &#123;</div><div class="line">		console.log(&apos;文件上传中...&apos;);</div><div class="line">		let result = &#123;</div><div class="line">			success: false,</div><div class="line">			formData: &#123;&#125;,</div><div class="line">		&#125;;</div><div class="line"></div><div class="line">		// 解析请求文件事件</div><div class="line">		busboy.on(&apos;file&apos;, function(fieldname, file, filename, encoding, mimetype) &#123;</div><div class="line">		  let fileName = Math.random().toString(16).substr(2) + &apos;.&apos; + getSuffixName(filename)</div><div class="line">		  let _uploadFilePath = path.join( filePath, fileName )</div><div class="line">		  let saveTo = path.join(_uploadFilePath)</div><div class="line"></div><div class="line">		  // 文件保存到制定路径</div><div class="line">		  file.pipe(fs.createWriteStream(saveTo))</div><div class="line"></div><div class="line">		  // 文件写入事件结束</div><div class="line">		  file.on(&apos;end&apos;, function() &#123;</div><div class="line">			result.success = true</div><div class="line">			result.message = &apos;文件上传成功&apos;</div><div class="line"></div><div class="line">			console.log(&apos;文件上传成功！&apos;)</div><div class="line">			resolve(result)</div><div class="line">		  &#125;)</div><div class="line">		&#125;)</div><div class="line"></div><div class="line">		// 解析表单中其他字段信息</div><div class="line">		busboy.on(&apos;field&apos;, function(fieldname, val, fieldnameTruncated, valTruncated, encoding, mimetype) &#123;</div><div class="line">		  console.log(&apos;表单字段数据 [&apos; + fieldname + &apos;]: value: &apos; + inspect(val));</div><div class="line">		  result.formData[fieldname] = inspect(val);</div><div class="line">		&#125;);</div><div class="line"></div><div class="line">		// 解析结束事件</div><div class="line">		busboy.on(&apos;finish&apos;, function( ) &#123;</div><div class="line">		  console.log(&apos;文件上结束&apos;)</div><div class="line">		  resolve(result)</div><div class="line">		&#125;)</div><div class="line"></div><div class="line">		// 解析错误事件</div><div class="line">		busboy.on(&apos;error&apos;, function(err) &#123;</div><div class="line">		  console.log(&apos;文件上出错&apos;)</div><div class="line">		  reject(result)</div><div class="line">		&#125;)</div><div class="line"></div><div class="line">		req.pipe(busboy)</div><div class="line"></div><div class="line">	&#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">module.exports =  &#123;</div><div class="line">  uploadFile</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+入口文件
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">const Koa = require(&apos;koa&apos;)</div><div class="line">const path = require(&apos;path&apos;)</div><div class="line">const app = new Koa()</div><div class="line">// const bodyParser = require(&apos;koa-bodyparser&apos;)</div><div class="line"></div><div class="line">const &#123; uploadFile &#125; = require(&apos;./util/upload&apos;)</div><div class="line"></div><div class="line">// app.use(bodyParser())</div><div class="line"></div><div class="line">app.use( async ( ctx ) =&gt; &#123;</div><div class="line"></div><div class="line">  if ( ctx.url === &apos;/&apos; &amp;&amp; ctx.method === &apos;GET&apos; ) &#123;</div><div class="line">	// 当GET请求时候返回表单页面</div><div class="line">	let html = `</div><div class="line">	  &lt;h1&gt;koa2 upload demo&lt;/h1&gt;</div><div class="line">	  &lt;form method=&quot;POST&quot; action=&quot;/upload.json&quot; enctype=&quot;multipart/form-data&quot;&gt;</div><div class="line">		&lt;p&gt;file upload&lt;/p&gt;</div><div class="line">		&lt;span&gt;picName:&lt;/span&gt;&lt;input name=&quot;picName&quot; type=&quot;text&quot; /&gt;&lt;br/&gt;</div><div class="line">		&lt;input name=&quot;file&quot; type=&quot;file&quot; /&gt;&lt;br/&gt;&lt;br/&gt;</div><div class="line">		&lt;button type=&quot;submit&quot;&gt;submit&lt;/button&gt;</div><div class="line">	  &lt;/form&gt;</div><div class="line">	`</div><div class="line">	ctx.body = html</div><div class="line"></div><div class="line">  &#125; else if ( ctx.url === &apos;/upload.json&apos; &amp;&amp; ctx.method === &apos;POST&apos; ) &#123;</div><div class="line">	// 上传文件请求处理</div><div class="line">	let result = &#123; success: false &#125;</div><div class="line">	let serverFilePath = path.join( __dirname, &apos;upload-files&apos; )</div><div class="line"></div><div class="line">	// 上传文件事件</div><div class="line">	result = await uploadFile( ctx, &#123;</div><div class="line">	  fileType: &apos;album&apos;, // common or album</div><div class="line">	  path: serverFilePath</div><div class="line">	&#125;)</div><div class="line"></div><div class="line">	ctx.body = result</div><div class="line">  &#125; else &#123;</div><div class="line">	// 其他请求显示404</div><div class="line">	ctx.body = &apos;&lt;h1&gt;404！！！ o(╯□╰)o&lt;/h1&gt;&apos;</div><div class="line">  &#125;</div><div class="line">&#125;)</div><div class="line"></div><div class="line">app.listen(3004, () =&gt; &#123;</div><div class="line">  console.log(&apos;[demo] upload-simple is starting at port 3000&apos;)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="https://chenshenhai.github.io/koa2-note/note/request/post-use-middleware.html" target="_blank" rel="external">koa-note</a><br>    <a href="https://www.npmjs.com/package/cookies" target="_blank" rel="external">cookies</a></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/js/" rel="tag"># js</a>
+          
+            <a href="/tags/web开发/" rel="tag"># web开发</a>
+          
+            <a href="/tags/服务端/" rel="tag"># 服务端</a>
+          
+            <a href="/tags/koa/" rel="tag"># koa</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/17/koa学习-模版引擎/" rel="next" title="koa学习-模版引擎">
+                <i class="fa fa-chevron-left"></i> koa学习-模版引擎
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="余真帆-fanerge" />
+          <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">56</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#busboy模块"><span class="nav-number">1.</span> <span class="nav-text">busboy模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#封装上传文件到写入服务的方法"><span class="nav-number">2.</span> <span class="nav-text">封装上传文件到写入服务的方法</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fanerge.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://fanerge.github.io/2017/09/17/koa学习-文件上传/';
+          this.page.identifier = '2017/09/17/koa学习-文件上传/';
+          this.page.title = 'koa学习-文件上传';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fanerge.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+</body>
+</html>
