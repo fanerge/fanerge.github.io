@@ -282,6 +282,597 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/08/23/ramda运用-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/08/23/ramda运用-3/" itemprop="url">
+                  ramda数组的操作和透镜
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-23T20:09:42+08:00">
+                2017-08-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
+                    <span itemprop="name">函数式编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/23/ramda运用-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/08/23/ramda运用-3/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>继续函数式编程的学习。</p>
+<h4 id="数据不变性和数组"><a href="#数据不变性和数组" class="headerlink" title="数据不变性和数组"></a>数据不变性和数组</h4><h5 id="读取数组元素"><a href="#读取数组元素" class="headerlink" title="读取数组元素"></a>读取数组元素</h5><pre><code>nth -- 类型于对象prop
+slice -- 类似于对象pick
+contains -- 类似于对象的has
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">const numbers = [10, 20, 30, 40, 50, 60]</div><div class="line">R.nth(3, numbers) // =&gt; 40  (0-based indexing)</div><div class="line">R.nth(-2, numbers) // =&gt; 50 (negative numbers start from the right)</div><div class="line">R.slice(2, 5, numbers) // =&gt; [30, 40, 50] (see below)</div><div class="line">R.contains(20, numbers) // =&gt; true</div></pre></td></tr></table></figure>
+
+nth(0) === head
+nth(length-1) === last
+tail -- 访问除首个元素之外的所有元素的函数
+init -- 除最后一个元素之外的所有元素的方法
+take(N) -- 前 N 个元素
+takeLast(N) -- 后 N 个元素
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">const numbers = [10, 20, 30, 40, 50, 60]</div><div class="line">R.head(numbers) // =&gt; 10</div><div class="line">R.tail(numbers) // =&gt; [20, 30, 40, 50, 60]</div><div class="line">R.last(numbers) // =&gt; 60</div><div class="line">R.init(numbers) // =&gt; [10, 20, 30, 40, 50]</div><div class="line">R.take(3, numbers) // =&gt; [10, 20, 30]</div><div class="line">R.takeLast(3, numbers) // =&gt; [40, 50, 60]</div></pre></td></tr></table></figure>
+</code></pre><h5 id="增、删、改数组元素"><a href="#增、删、改数组元素" class="headerlink" title="增、删、改数组元素"></a>增、删、改数组元素</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">insert：将元素插入到 list 指定索引处。</div><div class="line">R.insert(2, &apos;x&apos;, [1,2,3,4]); //=&gt; [1,2,&apos;x&apos;,3,4]</div><div class="line">update：替换数组中指定索引处的值。</div><div class="line">R.update(1, 11, [0, 1, 2]);     //=&gt; [0, 11, 2]</div><div class="line">append：在列表末尾拼接一个元素。</div><div class="line">R.append(&apos;tests&apos;, [&apos;write&apos;, &apos;more&apos;]); //=&gt; [&apos;write&apos;, &apos;more&apos;, &apos;tests&apos;]</div><div class="line">prepend：在列表头部之前拼接一个元素。</div><div class="line">R.prepend(&apos;fee&apos;, [&apos;fi&apos;, &apos;fo&apos;, &apos;fum&apos;]); //=&gt; [&apos;fee&apos;, &apos;fi&apos;, &apos;fo&apos;, &apos;fum&apos;]</div><div class="line">concat：连接列表或字符串。</div><div class="line">R.concat([4, 5, 6], [1, 2, 3]); //=&gt; [4, 5, 6, 1, 2, 3]</div><div class="line">// 反转数组拼接</div><div class="line">const concatAfter = R.flip(R.concat)</div><div class="line">remove：删除列表中从 start 开始的 count 个元素。</div><div class="line">R.remove(2, 3, [1,2,3,4,5,6,7,8]); //=&gt; [1,2,6,7,8]</div><div class="line">without：求第二个列表中，未包含在第一个列表中的任一元素的集合。</div><div class="line">R.without([1, 2], [1, 2, 1, 3, 4]); //=&gt; [3, 4]</div><div class="line">drop：删除给定 list，string 或者 transducer/transformer（或者具有 drop 方法的对象）的前 n 个元素。</div><div class="line">R.drop(1, [&apos;foo&apos;, &apos;bar&apos;, &apos;baz&apos;]); //=&gt; [&apos;bar&apos;, &apos;baz&apos;]</div><div class="line">dropLast：删除 &quot;list&quot; 末尾的 n 个元素。</div><div class="line">R.dropLast(1, [&apos;foo&apos;, &apos;bar&apos;, &apos;baz&apos;]); //=&gt; [&apos;foo&apos;, &apos;bar&apos;]</div></pre></td></tr></table></figure>
+</code></pre><h5 id="变换元素"><a href="#变换元素" class="headerlink" title="变换元素"></a>变换元素</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">adjust：将数组中指定索引处的值替换为经函数变换的值。</div><div class="line">R.adjust(R.add(10), 1, [1, 2, 3]);     //=&gt; [1, 12, 3]</div></pre></td></tr></table></figure>
+</code></pre><h4 id="透镜（Lenses）"><a href="#透镜（Lenses）" class="headerlink" title="透镜（Lenses）"></a>透镜（Lenses）</h4><h5 id="什么是透镜？"><a href="#什么是透镜？" class="headerlink" title="什么是透镜？"></a>什么是透镜？</h5><pre><code>透镜将 &quot;getter&quot; 和 &quot;setter&quot; 函数组合为一个单一模块。Ramda 提供了一系列配合透镜一起工作的函数。
+可以将透镜视为对某些较大数据结构的特定部分的聚焦、关注。
+</code></pre><h5 id="如何创建透镜"><a href="#如何创建透镜" class="headerlink" title="如何创建透镜"></a>如何创建透镜</h5><pre><code>lens：返回封装了给定 getter 和 setter 方法的 lens 。 getter 和 setter 分别用于 “获取” 和 “设置” 焦点（lens 聚焦的值）。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var xLens = R.lens(R.prop(&apos;x&apos;), R.assoc(&apos;x&apos;));</div><div class="line">R.view(xLens, &#123;x: 1, y: 2&#125;);            //=&gt; 1</div><div class="line">R.set(xLens, 4, &#123;x: 1, y: 2&#125;);          //=&gt; &#123;x: 4, y: 2&#125;</div><div class="line">// 还有三个便捷函数</div><div class="line">LensProp：创建关注对象某一属性的透镜。</div><div class="line">lensPath: 创建关注对象某一嵌套属性的透镜。</div><div class="line">lensIndex: 创建关注数组某一索引的透镜。</div></pre></td></tr></table></figure>
+</code></pre><h5 id="我能用它做什么呢？"><a href="#我能用它做什么呢？" class="headerlink" title="我能用它做什么呢？"></a>我能用它做什么呢？</h5><pre><code>Ramda 提供了三个配合透镜一起使用的的函数：
+    view：读取透镜的值。
+    set：更新透镜的值。
+    over：将变换函数作用于透镜。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var xLens = R.lens(R.prop(&apos;x&apos;), R.assoc(&apos;x&apos;));</div><div class="line">R.view(xLens, &#123;x: 1, y: 2&#125;);            //=&gt; 1</div><div class="line">R.set(xLens, 4, &#123;x: 1, y: 2&#125;);          //=&gt; &#123;x: 4, y: 2&#125;</div><div class="line">R.over(xLens, R.negate, &#123;x: 1, y: 2&#125;);  //=&gt; &#123;x: -1, y: 2&#125;</div><div class="line">// 区别:</div><div class="line">// set 和 over 会按指定的方式对被透镜关注的属性进行修改，并返回整个新的对象。</div></pre></td></tr></table></figure>
+</code></pre><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><pre><code>本节学习了：某些较大数据结构的处理 -- 透镜。
+数组：读取(nth、slice、contains、head、last、tail、init、take、takeLast)
+增、删、改(insert、update、append、prepend、concat、remove、without、drop、dropLast)
+变换(adjust)
+</code></pre><blockquote>
+<p>   参考文献：<br>    <a href="http://www.cnblogs.com/whitewolf/p/javascript-functional-programming-Ramdajs.html" target="_blank" rel="external">JavaScript函数编程-Ramdajs</a><br>    <a href="https://zhuanlan.zhihu.com/p/27446536" target="_blank" rel="external">Thinking in Ramda系列文章</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/08/22/ramda运用-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/08/22/ramda运用-2/" itemprop="url">
+                  ramda无参数风格和对象的相关操作
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-22T19:36:23+08:00">
+                2017-08-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
+                    <span itemprop="name">函数式编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/22/ramda运用-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/08/22/ramda运用-2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>继续函数式编程的学习。</p>
+<h4 id="Pointfree-风格（无参数风格）"><a href="#Pointfree-风格（无参数风格）" class="headerlink" title="Pointfree 风格（无参数风格）"></a>Pointfree 风格（无参数风格）</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var forever21 = age =&gt; R.ifElse(R.gte(R.__, 21), R.always(21), R.inc)(age);</div><div class="line">// console.log(forever21(23)); // 21</div><div class="line"></div><div class="line">// pointfree风格的</div><div class="line">var forever21 = R.ifElse(R.gte(R.__, 21), R.always(21), R.inc);</div><div class="line">// console.log(forever21(21));</div><div class="line">// 我们刚刚让 age 消失了。这就是 Pointfree 风格。注意，这两个版本所做的事情完全一样。我们仍然返回一个接受年龄的函数，但并未显示的指定 age 参数。</div></pre></td></tr></table></figure>
+</code></pre><h4 id="多元函数（多参数函数）"><a href="#多元函数（多参数函数）" class="headerlink" title="多元函数（多参数函数）"></a>多元函数（多参数函数）</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">var titlesForYear = R.curry((year, books) =&gt; &#123;</div><div class="line">  R.pipe(</div><div class="line">	R.filter(publishedInYear(year)),</div><div class="line">	R.map(book =&gt; book.title)    </div><div class="line">  )(books);</div><div class="line">&#125;);</div><div class="line">// console.log(titlesForYear(2012)(books));</div><div class="line"></div><div class="line">var titlesForYear = year =&gt; &#123;</div><div class="line">  R.pipe(</div><div class="line">	R.filter(publishedInYear(year)),</div><div class="line">	R.map(book =&gt; book.title)</div><div class="line">  )</div><div class="line">&#125;;</div><div class="line">console.log(titlesForYear(2012));</div></pre></td></tr></table></figure>
+</code></pre><h4 id="重构为-pointfree-风格的代码"><a href="#重构为-pointfree-风格的代码" class="headerlink" title="重构为 pointfree 风格的代码"></a>重构为 pointfree 风格的代码</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">// 改写18岁投票系统</div><div class="line">const wasBornInCountry = person =&gt; person.birthCountry === OUR_COUNTRY</div><div class="line">const wasNaturalized = person =&gt; Boolean(person.naturalizationDate)</div><div class="line">const isOver18 = person =&gt; person.age &gt;= 18</div><div class="line">const isCitizen = person =&gt; wasBornInCountry(person) || wasNaturalized(person)</div><div class="line">const isEligibleToVote = person =&gt; isOver18(person) &amp;&amp; isCitizen(person)</div><div class="line"></div><div class="line">const isEligibleToVote = person =&gt; both(isOver18, isCitizen)(person)</div><div class="line">const isCitizen = either(wasBornInCountry, wasNaturalized)</div><div class="line">const isEligibleToVote = both(isOver18, isCitizen)</div></pre></td></tr></table></figure>
+</code></pre><h4 id="读取对象属性"><a href="#读取对象属性" class="headerlink" title="读取对象属性"></a>读取对象属性</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">const wasBornInCountry = person =&gt; person.birthCountry === OUR_COUNTRY</div><div class="line">const wasNaturalized = person =&gt; Boolean(person.naturalizationDate)</div><div class="line">const isOver18 = person =&gt; person.age &gt;= 18</div><div class="line">const isCitizen = either(wasBornInCountry, wasNaturalized)</div><div class="line">const isEligibleToVote = both(isOver18, isCitizen)</div><div class="line"></div><div class="line">// 改写为</div><div class="line">const wasBornInCountry = person =&gt; equals(person.birthCountry, OUR_COUNTRY)</div><div class="line">const wasNaturalized = person =&gt; Boolean(person.naturalizationDate)</div><div class="line">const isOver18 = person =&gt; gte(person.age, 18)</div></pre></td></tr></table></figure>
+</code></pre><h5 id="prop"><a href="#prop" class="headerlink" title="prop"></a>prop</h5><pre><code>定义：取出对象中指定属性的值。如果不存在，则返回 undefined。
+R.prop(&apos;x&apos;, {x: 100}); //=&gt; 100
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var wasBornInCountry = R.compose(R.equals(&apos;CHINA&apos;), R.prop(&apos;birthCountry&apos;))</div><div class="line">var wasNaturalized = R.compose(Boolean, R.prop(&apos;naturalizationDate&apos;))</div><div class="line">var isOver18 = R.compose(R.gte(R.__, 18), R.prop(&apos;age&apos;))</div><div class="line">console.log(R.both(wasBornInCountry, isOver18)(person1)); // true</div></pre></td></tr></table></figure>
+</code></pre><h5 id="pick"><a href="#pick" class="headerlink" title="pick"></a>pick</h5><pre><code>定义：返回对象的部分拷贝，其中仅包含指定键对应的属性。如果某个键不存在，则忽略该属性。
+R.pick([&apos;a&apos;, &apos;d&apos;], {a: 1, b: 2, c: 3, d: 4}); //=&gt; {a: 1, d: 4}
+</code></pre><h5 id="has-hasIn"><a href="#has-hasIn" class="headerlink" title="has/hasIn"></a>has/hasIn</h5><pre><code>has定义：如果对象自身含有指定的属性，则返回 true；否则返回 false。
+R.has(&apos;name&apos;)({name: &apos;alice&apos;});
+hasIn定义：如果对象自身或其原型链上含有指定的属性，则返回 true；否则返回 false。
+</code></pre><h5 id="path"><a href="#path" class="headerlink" title="path"></a>path</h5><pre><code>定义：取出给定路径上的值。
+R.path([&apos;a&apos;, &apos;b&apos;], {a: {b: 2}}); //=&gt; 2
+</code></pre><h5 id="propOr-pathOr"><a href="#propOr-pathOr" class="headerlink" title="propOr / pathOr"></a>propOr / pathOr</h5><pre><code>propOr定义：propOr 和 pathOr 像是 prop/path 与 defaultTo 的组合。如果在目标对象中找不到属性或路径的值，它们允许你提供默认值
+propOr(&apos;&lt;Unnamed&gt;&apos;, &apos;name&apos;, person);
+</code></pre><h5 id="keys-values"><a href="#keys-values" class="headerlink" title="keys / values"></a>keys / values</h5><pre><code>keys 返回一个包含对象中所有属性名称的数组，values 返回这些属性的值组成的数组。
+</code></pre><h5 id="对属性增、删、改、查"><a href="#对属性增、删、改、查" class="headerlink" title="对属性增、删、改、查"></a>对属性增、删、改、查</h5><pre><code>···    
+assoc/assocPath
+assoc：浅复制对象，然后设置或覆盖对象的指定属性。
+R.assoc(&apos;c&apos;, 3, {a: 1, b: 2}); //=&gt; {a: 1, b: 2, c: 3}
+assocPath：浅复制对象，设置或覆盖即将创建的给定路径所需的节点，并将特定值放在该路径的末端。
+R.assocPath([&apos;a&apos;, &apos;b&apos;, &apos;c&apos;], 42, {a: {b: {c: 0}}}); //=&gt; {a: {b: {c: 42}}}
+
+dissoc/dissocPath/omit
+dissoc：删除对象中指定 prop 属性。
+R.dissoc(&apos;b&apos;, {a: 1, b: 2, c: 3}); //=&gt; {a: 1, c: 3}
+dissocPath：浅复制对象，删除返回对象中指定路径上的属性。
+R.dissocPath([&apos;a&apos;, &apos;b&apos;, &apos;c&apos;], {a: {b: {c: 42}}}); //=&gt; {a: {b: {}}}
+omit：删除对象中给定的 keys 对应的属性。
+R.omit([&apos;a&apos;, &apos;d&apos;], {a: 1, b: 2, c: 3, d: 4}); //=&gt; {b: 2, c: 3}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	</div><div class="line">####	属性转换</div><div class="line">	evolve：递归地对 object 的属性进行变换，变换方式由 transformation 函数定义。</div></pre></td></tr></table></figure>
+
+var tomato  = {firstName: &apos;  Tomato &apos;, data: {elapsed: 100, remaining: 1400}, id:123};
+var transformations = {
+  firstName: R.trim,
+  lastName: R.trim, // Will not get invoked.
+  data: {elapsed: R.add(1), remaining: R.add(-1)}
+};
+R.evolve(transformations, tomato); //=&gt; {firstName: &apos;Tomato&apos;, data: {elapsed: 101, remaining: 1399}, id:123}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">####	合并对象</div><div class="line">	merge：合并两个对象的自身属性（不包括 prototype 属性）。如果某个 key 在两个对象中都存在，使用后一个对象对应的属性值。</div></pre></td></tr></table></figure>
+
+R.merge({ &apos;name&apos;: &apos;fred&apos;, &apos;age&apos;: 10 }, { &apos;age&apos;: 40 });
+//=&gt; { &apos;name&apos;: &apos;fred&apos;, &apos;age&apos;: 40 }
+// 定义一个反转合并的函数(用前面的同名属性覆盖后面的同名属性)
+ reverseMerge：const reverseMerge = R.flip(merge)
+```
+</code></pre><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><pre><code>本节学习了：pointfree(无参数风格编程) 
+对象属性：读取(prop、pick、has、path、propOr、pathOr、keys、values、)
+增删改查(assoc、assocPath、dissoc、dissocPath、omit)
+属性转换(evolve)
+合并对象(merge)
+</code></pre><blockquote>
+<p>   参考文献：<br>    <a href="http://www.cnblogs.com/whitewolf/p/javascript-functional-programming-Ramdajs.html" target="_blank" rel="external">JavaScript函数编程-Ramdajs</a><br>    <a href="https://zhuanlan.zhihu.com/p/27446536" target="_blank" rel="external">Thinking in Ramda系列文章</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/08/21/ramda运用-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/08/21/ramda运用-1/" itemprop="url">
+                  ramda无参数风格编程 (Pointfree Style)和声明式编程
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-21T20:37:43+08:00">
+                2017-08-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
+                    <span itemprop="name">函数式编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/21/ramda运用-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/08/21/ramda运用-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>继续函数式编程的学习。</p>
+<h4 id="部分应用（Partial-Application）"><a href="#部分应用（Partial-Application）" class="headerlink" title="部分应用（Partial Application）"></a>部分应用（Partial Application）</h4><pre><code>在上篇文章中，简单的函数链式调用（&quot;pipeline&quot;）时，其中的被调用函数都是一元的（除了首个函数）。但如果要使用多元函数呢？
+例如，假设有一个书籍对象的集合，我们想要找到特定年份出版的所有图书的标题。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">var books = [</div><div class="line">  &#123;year: 1991, title: &apos;11111&apos;&#125;,</div><div class="line">  &#123;year: 1991, title: &apos;22222&apos;&#125;,</div><div class="line">  &#123;year: 1992, title: &apos;33333&apos;&#125;</div><div class="line">];</div><div class="line">const publishedInYear = (book, year) =&gt; book.year === year;</div><div class="line">const titlesForYear = (books, year) =&gt; &#123;</div><div class="line">  const selected = R.filter(book =&gt; publishedInYear(book, year), books);</div><div class="line">  return R.map(book =&gt; book.title, selected);</div><div class="line">&#125;;</div><div class="line">var book1 = titlesForYear(books, 1991); // [&apos;11111&apos;, &apos;22222&apos;]</div></pre></td></tr></table></figure>
+</code></pre><h5 id="高阶函数"><a href="#高阶函数" class="headerlink" title="高阶函数"></a>高阶函数</h5><pre><code>获取或返回其他函数的函数称为 &quot;高阶函数&quot;。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">// 高阶函数</div><div class="line">var publishedInYear = function (year) &#123;</div><div class="line">  return function (book) &#123;</div><div class="line">	return book.year === year;</div><div class="line">  &#125;;</div><div class="line">&#125;;</div><div class="line">// 箭头函数</div><div class="line">// var publishedInYear = year =&gt; book =&gt; book.year === year;</div><div class="line">var titlesForYear = (books, year) =&gt; &#123;</div><div class="line">  const selected = R.filter(publishedInYear(year), books);</div><div class="line">  return R.map(book =&gt; book.title, selected);</div><div class="line">&#125;; </div><div class="line">console.log(titlesForYear(books, 1992)); // &apos;33333&apos;</div></pre></td></tr></table></figure>
+</code></pre><h5 id="部分应用函数"><a href="#部分应用函数" class="headerlink" title="部分应用函数"></a>部分应用函数</h5><pre><code>partial/partialRight（部分应用）
+定义：这两个函数可以让我们不必一次传递所有需要的参数，也可以调用函数。它们都返回一个接受剩余参数的新函数，当所有参数都传入后，才会真正调用被包裹的原函数。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// 例子，只是想检查一本书是否是在指定年份出版的。</div><div class="line">var publishedInYear = (book, year) =&gt; book.year === year;</div><div class="line">var titleForYear = (books, year) =&gt; &#123;</div><div class="line">  const selected = R.filter(R.partialRight(publishedInYear, [year]), books);</div><div class="line">  return R.map(book =&gt; book.title, selected);</div><div class="line">&#125;;</div><div class="line">// console.log(titleForYear(books, 1992)); // [&apos;33333&apos;]</div></pre></td></tr></table></figure>
+</code></pre><h5 id="柯里化-Curry"><a href="#柯里化-Curry" class="headerlink" title="柯里化(Curry)"></a>柯里化(Curry)</h5><pre><code>定义：一个柯里化了的函数是一系列高阶一元函数，将多参数函数转化为单参数函数。
+一般来说，我只有需要在多个地方对同一个函数使用 partial 的时候，才会对函数进行柯里化。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var publishedInYear = R.curry((year, book) =&gt; book.year === year);</div><div class="line">var titlesForYear = (books, year) =&gt; &#123;</div><div class="line">  const selected = R.filter(publishedInYear(year), books);</div><div class="line">  return R.map(book =&gt; book.title, selected);</div><div class="line">&#125;;</div><div class="line">console.log(titlesForYear(books, 1992)); // [&apos;33333&apos;]</div><div class="line">var book2 = publishedInYear(1992, &#123;year: 1992, title: &apos;33333&apos;&#125;); // true</div></pre></td></tr></table></figure>
+</code></pre><h5 id="顺序错误的参数"><a href="#顺序错误的参数" class="headerlink" title="顺序错误的参数"></a>顺序错误的参数</h5><pre><code>filp：交换函数前两个参数的位置。    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var mergeThree = (a, b, c) =&gt; [].concat(a, b, c);</div><div class="line">console.log(R.flip(mergeThree)(1, 2, 3)); // [2, 1, 3]</div></pre></td></tr></table></figure>
+
+__或placeholder (占位符)
+定义：柯里化函数的参数占位符。允许部分应用于任何位置的参数。
+更通用的选择是使用 &quot;placeholder&quot; 参数（__）
+假设有一个三元柯里化的函数，并且我们想传入第一个和最后一个参数，中间参数后续再传，应该怎么办呢？我们可以使用 &quot;占位符&quot; 作为中间参数：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">const threeArgs = curry((a, b, c) =&gt; &#123; /* ... */ &#125;);</div><div class="line">const middleArgumentLater = threeArgs(&apos;value for a&apos;, R.__, &apos;value for c&apos;);</div><div class="line"></div><div class="line">var publishedInYear = R.curry((year, book) =&gt; book.year === year)</div><div class="line">var titlesForYear = R.curry((year, books) =&gt;</div><div class="line">  R.pipe(</div><div class="line">	R.filter(publishedInYear(year)),</div><div class="line">	R.map(book =&gt; book.title)</div><div class="line">  )(books)</div><div class="line">)</div><div class="line">// console.log(titlesForYear(1991, books)); // [&quot;11111&quot;, &quot;22222&quot;]</div></pre></td></tr></table></figure>
+</code></pre><h4 id="声明式编程"><a href="#声明式编程" class="headerlink" title="声明式编程"></a>声明式编程</h4><h5 id="命令式-vs-声明式"><a href="#命令式-vs-声明式" class="headerlink" title="命令式 vs 声明式"></a>命令式 vs 声明式</h5><pre><code>命令式编程中，程序员需要告诉计算机怎么做来完成任务。
+声明式编程，程序员只需告诉计算机我想要什么，然后计算机自己理清如何产生结果。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">var square = x =&gt; R.multiply(x, x);</div><div class="line">var operate = R.pipe(</div><div class="line">  R.multiply,</div><div class="line">  R.add(1),</div><div class="line">  square</div><div class="line">  );</div><div class="line">var operate3 = operate(3, 4); // 169</div><div class="line">// add(1) 与增量运算符（++）非常相似，但 ++ 修改了被操作的值，因此它是 &quot;mutation&quot; 的。</div><div class="line">// 所以使用R.add(1),R.subtract(1)代替++ 和 --</div><div class="line">// Ramda提供了R.inc和R.dec</div><div class="line">R.dec(42); //=&gt; 41</div><div class="line">R.negate(42); //=&gt; -42 取反</div></pre></td></tr></table></figure>
+</code></pre><h5 id="比较-Comparison"><a href="#比较-Comparison" class="headerlink" title="比较(Comparison)"></a>比较(Comparison)</h5><pre><code>使用R.gt()、R.gte()、R.lt()、R.lte()、R.equals()代替&gt;、&gt;=、&lt;、&lt;=、===
+identical：如果两个参数是完全相同，则返回 true，否则返回 false。如果它们引用相同的内存，也认为是完全相同的。
+isEmpty：检测给定值是否为其所属类型的空值，若是则返回 true ；否则返回 false 。
+isNil：检测输入值是否为 null 或 undefined 。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// 改写投票的例子</div><div class="line">var wasBornInCountry = person =&gt; R.equals(person.birthCountry, &apos;CHINA&apos;);</div><div class="line">var wasNaturalized = person =&gt; Boolean(person.naturalizationDate);</div><div class="line">var isOver18 = person =&gt; R.gte(person.age, 18);</div><div class="line">var isCitizen = R.either(wasBornInCountry, wasBornInCountry);</div><div class="line">var isEligibleToVote = R.both(isOver18, isCitizen);</div><div class="line">console.log(isEligibleToVote(&#123;</div><div class="line">  birthCountry: &apos;CHINA&apos;, </div><div class="line">  naturalizationDate: false,</div><div class="line">  age: 22</div><div class="line">&#125;)); // true</div></pre></td></tr></table></figure>
+</code></pre><h5 id="逻辑-Logic"><a href="#逻辑-Logic" class="headerlink" title="逻辑(Logic)"></a>逻辑(Logic)</h5><pre><code>both 和 either 来代替 &amp;&amp; 和 || 运算符。使用 complement 代替 !。
+我以下列方式进行分类：and、or 和 not 用于处理数值；both、either 和 complement 用于处理函数。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var setting = &#123;&#125;;</div><div class="line">var lineWith = setting.lineWith || 80;</div><div class="line">var lineWith = R.defaultTo(80, setting.lineWith);</div><div class="line">console.log(lineWith); //使用后者代替前者</div></pre></td></tr></table></figure>
+</code></pre><h5 id="条件-Conditionals"><a href="#条件-Conditionals" class="headerlink" title="条件(Conditionals)"></a>条件(Conditionals)</h5><pre><code>R.ifElse 代替 if-else
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var forever21 = age =&gt; age &gt;= 21 ? 21 : age + 1</div><div class="line">// console.log(forever21(19)); // 20</div><div class="line">var forever21 = age =&gt; R.ifElse(R.gte(R.__, 21), () =&gt; 21, R.inc)(age)</div><div class="line">// console.log(forever21(19)); // 20</div></pre></td></tr></table></figure>
+</code></pre><h5 id="constants-常量"><a href="#constants-常量" class="headerlink" title="constants (常量)"></a>constants (常量)</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">R.always(42) 代替 42</div><div class="line">R.T() === true 忽略所有参数</div><div class="line">console.log(R.T(false)); // true</div><div class="line">R.F() === false 忽略所有参数</div></pre></td></tr></table></figure>
+</code></pre><h5 id="identity-恒等"><a href="#identity-恒等" class="headerlink" title="identity (恒等)"></a>identity (恒等)</h5><pre><code>输出恒等于输入。如，a =&gt; a
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">identity：将输入值原样返回。适合用作默认或占位函数。</div><div class="line">nthArg；返回一个函数，该函数返回它的第 n 个参数。</div><div class="line">const alwaysDrivingAge = age =&gt; ifElse(lt(__, 16), always(16), a =&gt; a)(age)</div></pre></td></tr></table></figure>
+</code></pre><h5 id="when-和-unless"><a href="#when-和-unless" class="headerlink" title="when 和 unless"></a>when 和 unless</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var alwaysDrivingAge = age =&gt; R.unless(R.gte(R.__, 16), R.always(16))(age)</div><div class="line">console.log(alwaysDrivingAge(15)); // 16</div></pre></td></tr></table></figure>
+</code></pre><h5 id="cond"><a href="#cond" class="headerlink" title="cond"></a>cond</h5><pre><code>作用：来代替 switch 语句或链式的 if...then...else 语句
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">const water = temperature =&gt; R.cond([</div><div class="line">  [R.equals(0),   R.always(&apos;water freezes at 0°C&apos;)],</div><div class="line">  [R.equals(100), R.always(&apos;water boils at 100°C&apos;)],</div><div class="line">  [R.T,           temp =&gt; `nothing special happens at $&#123;temp&#125;°C`]</div><div class="line">])(temperature)</div><div class="line">console.log(water(23)); // nothing special happens at 23°C</div></pre></td></tr></table></figure>
+</code></pre><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><pre><code>本节学习了：高阶函数、部分应用函数、柯里化（Curry）、改变参数顺序的方法（flip、plachhokder__、pipeline）
+常用的声明式编程替换命令式编程：add、subtract、multiply、divide等等
+</code></pre><blockquote>
+<p>   参考文献：<br>    <a href="http://www.cnblogs.com/whitewolf/p/javascript-functional-programming-Ramdajs.html" target="_blank" rel="external">JavaScript函数编程-Ramdajs</a><br>    <a href="https://zhuanlan.zhihu.com/p/27446536" target="_blank" rel="external">Thinking in Ramda系列文章</a></p>
+<p>   参考文献：<br>    <a href="http://www.cnblogs.com/whitewolf/p/javascript-functional-programming-Ramdajs.html" target="_blank" rel="external">JavaScript函数编程-Ramdajs</a><br>    <a href="https://zhuanlan.zhihu.com/p/27446536" target="_blank" rel="external">Thinking in Ramda系列文章</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/08/20/ramda运用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1822,630 +2413,6 @@ console.log(Animal.prototype.constructor); // Cat
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/08/10/js函数式编程-读书笔记-6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/08/10/js函数式编程-读书笔记-6/" itemprop="url">
-                  js函数式编程-纯度、不变性和更改政策
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T21:13:43+08:00">
-                2017-08-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
-                    <span itemprop="name">函数式编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/08/10/js函数式编程-读书笔记-6/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/08/10/js函数式编程-读书笔记-6/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸<strong>函数式编程</strong>。<br><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
-<h3 id="纯度、不变性和更改政策"><a href="#纯度、不变性和更改政策" class="headerlink" title="纯度、不变性和更改政策"></a>纯度、不变性和更改政策</h3><h4 id="纯度"><a href="#纯度" class="headerlink" title="纯度"></a>纯度</h4><pre><code>纯函数
-1.其结果只能从它的参数的值来计算
-2.不能依赖于能被外部操作改变的数据
-3.不能改变外部状态
-</code></pre><h4 id="不变性"><a href="#不变性" class="headerlink" title="不变性"></a>不变性</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">// 不变性</div><div class="line">function summ (array) &#123;</div><div class="line">	let result = 0;</div><div class="line">	let sz = array.length;</div><div class="line">	for (let i = 0; i &lt; sz; i++) &#123;</div><div class="line">		result += array[i];</div><div class="line">	&#125;</div><div class="line">	return result;</div><div class="line">&#125;</div><div class="line">let dd = summ(_.range(1, 11));</div><div class="line">console.log(dd); // 55</div><div class="line"></div><div class="line">// 递归</div><div class="line">function summRec (array, seed) &#123;</div><div class="line">	if (_.isEmpty(array))&#123;</div><div class="line">		return seed;</div><div class="line">	&#125; else &#123;</div><div class="line">		return summRec(_.rest(array), _.first(array) + seed)</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">let dd = summRec(_.range(1, 11), 0);</div><div class="line">console.log(dd); // 55</div><div class="line"></div><div class="line">// 冻结和克隆</div><div class="line">Object.freeze(a) // 浅冻结</div><div class="line">// 深冻结</div><div class="line">function deepFreeze(obj) &#123;</div><div class="line">	if (!Object.isFrozen(obj)) &#123;</div><div class="line">		Object.freeze(obj);</div><div class="line">	&#125;</div><div class="line">	for (let key in obj) &#123;</div><div class="line">		if (!obj.hasOwnProperty(key) || !_.isObject(obj[key])) &#123;</div><div class="line">			continue;</div><div class="line">		&#125;</div><div class="line">		deepFreeze(obj[key]);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">let x = [&#123;a: [1, 2, 3], b: 42&#125;, &#123;c: &#123;d: []&#125;&#125;];</div><div class="line">deepFreeze(x);</div><div class="line">x[0] = null;</div><div class="line">console.dir(x); // [&#123;a: [1, 2, 3], b: 42&#125;, &#123;c: &#123;d: []&#125;&#125;]</div></pre></td></tr></table></figure>
-</code></pre><h4 id="控制变化的政策"><a href="#控制变化的政策" class="headerlink" title="控制变化的政策"></a>控制变化的政策</h4><pre><code>用容器封装数据，不能直接更改数据。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">function Container (init) &#123;</div><div class="line">	this._value = init;</div><div class="line">&#125;</div><div class="line">Container.prototype = &#123;</div><div class="line">	update: function (fun) &#123;</div><div class="line">		let args = _.rest(arguments);</div><div class="line">		let oldValue = this._value;</div><div class="line"></div><div class="line">		this._value = fun.apply(this, constructor(oldValue, args));</div><div class="line">		return this._value;</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line">let aNumber = new Container(42);</div><div class="line">let dd = aNumber.update(function (n) &#123; return n + 1; &#125;);</div><div class="line">console.log(dd) // 43</div></pre></td></tr></table></figure>
-</code></pre><blockquote>
-<p>   源代码仓库<br>    <a href="https://github.com/fanerge/Functional-reading-notes" target="_blank" rel="external">函数式编程-读书笔记</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/08/09/js函数式编程-读书笔记-5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/08/09/js函数式编程-读书笔记-5/" itemprop="url">
-                  js函数式编程-递归
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-09T21:07:36+08:00">
-                2017-08-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
-                    <span itemprop="name">函数式编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/08/09/js函数式编程-读书笔记-5/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/08/09/js函数式编程-读书笔记-5/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸<strong>函数式编程</strong>。<br><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
-<h3 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h3><h4 id="自吸收函数（调用自己的函数）"><a href="#自吸收函数（调用自己的函数）" class="headerlink" title="自吸收函数（调用自己的函数）"></a>自吸收函数（调用自己的函数）</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">function myLength (ary) &#123;</div><div class="line">	if (_.isEmpty(ary)) &#123;</div><div class="line">		return 0;</div><div class="line">	&#125; else &#123;</div><div class="line">		return 1 + myLength(_.rest(ary));</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">let dd = myLength([1, 2, 3]);</div><div class="line">console.log(dd); // 3</div><div class="line"></div><div class="line">function cycle(times, ary) &#123;</div><div class="line">	if (times &lt;= 0) &#123;</div><div class="line">		return [];</div><div class="line">	&#125; else &#123;</div><div class="line">		return cat(ary, cycle(times -1, ary));</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">let dd = cycle(2, [1, 2, 3]);</div><div class="line">console.log(dd); // [1, 2, 3, 1, 2, 3]</div><div class="line"></div><div class="line">*_.zip*</div><div class="line">function cycle(times, ary) &#123;</div><div class="line">	if (times &lt;= 0) &#123;</div><div class="line">		return [];</div><div class="line">	&#125; else &#123;</div><div class="line">		return cat(ary, cycle(times -1, ary));</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">let dd = _.zip([&apos;a&apos;, &apos;b&apos;, &apos;c&apos;], [1, 2, 3]);</div><div class="line">console.dir(dd); // [[&apos;a&apos;, 1],[&apos;b&apos;, 2], [&apos;c&apos;, 3]]</div></pre></td></tr></table></figure>
-
-// 深度优先自递归搜索
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">*andify 组合函数*</div><div class="line">function andify () &#123;</div><div class="line">	let preds = _.toArray(arguments);</div><div class="line">	return function () &#123;</div><div class="line">		let args = _.toArray(arguments);</div><div class="line">		let everything = function (ps, truth) &#123;</div><div class="line">			if (_.isEmpty(ps)) &#123;</div><div class="line">				return truth;</div><div class="line">			&#125; else &#123;</div><div class="line">				return _.every(args, _.first(ps))</div><div class="line">						&amp;&amp; everything(_.rest(ps), truth);</div><div class="line">			&#125;</div><div class="line">		&#125;;</div><div class="line">		return everything(preds, true);</div><div class="line">	&#125;;</div><div class="line">&#125;</div><div class="line">let evenNums = andify(_.isNumber, isEven);</div><div class="line">console.log(evenNums(4, 2)); // true</div><div class="line"></div><div class="line">*andify 组合函数*</div><div class="line">function orify () &#123;</div><div class="line">	let preds = _.toArray(arguments);</div><div class="line">	return function () &#123;</div><div class="line">		let args = _.toArray(arguments);</div><div class="line">		let something = function (ps, truth) &#123;</div><div class="line">			if (_.isEmpty(ps)) &#123;</div><div class="line">				return truth;</div><div class="line">			&#125; else &#123;</div><div class="line">				return _.some(args, _.first(ps))</div><div class="line">						|| something(_.rest(ps), truth);</div><div class="line">			&#125;</div><div class="line">		&#125;;</div><div class="line">		return something(preds, true);</div><div class="line">	&#125;;</div><div class="line">&#125;</div><div class="line">let evenNums = orify(_.isNumber, isEven);</div><div class="line">console.log(evenNums(1, 2)); // true</div></pre></td></tr></table></figure>
-</code></pre><h4 id="相互关联函数（函数调用其他会再调用回他的函数）"><a href="#相互关联函数（函数调用其他会再调用回他的函数）" class="headerlink" title="相互关联函数（函数调用其他会再调用回他的函数）"></a>相互关联函数（函数调用其他会再调用回他的函数）</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line">function evenSteven(n) &#123;</div><div class="line">	if (n === 0) &#123;</div><div class="line">		return true;</div><div class="line">	&#125; else &#123;</div><div class="line">		return oddJohn(Math.abs(n) - 1);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">function oddJohn(n) &#123;</div><div class="line">	if (n === 0) &#123;</div><div class="line">		return false;</div><div class="line">	&#125; else &#123;</div><div class="line">		return evenSteven(Math.abs(n) - 1);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">let dd = evenSteven(3);</div><div class="line">console.log(dd); // false</div><div class="line"></div><div class="line">*flat 展开嵌套数组*</div><div class="line">function flat(array) &#123;</div><div class="line">	if (_.isArray(array)) &#123;</div><div class="line">		return cat.apply(cat, _.map(array, flat));</div><div class="line">	&#125; else &#123;</div><div class="line">		return [array];</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">let dd = flat([[1, 2], [3, 4]]);</div><div class="line">console.log(dd) // [1, 2, 3, 4]</div><div class="line"></div><div class="line">*clone 浅clone*</div><div class="line">let x = [&#123;a: [1, 2, 3], b: 42&#125;, &#123;c: &#123;d: []&#125;&#125;]</div><div class="line">let y = _.clone(x);</div><div class="line">console.log(y) // [&#123;a: [1, 2, 3], b: 42&#125;, &#123;c: &#123;d: []&#125;&#125;]	</div><div class="line"></div><div class="line">*deepClone 深clone*</div><div class="line">function deepClone(obj) &#123;</div><div class="line">	if (!existy(obj) || !_.isObject(obj)) &#123;</div><div class="line">		return obj;</div><div class="line">	&#125;</div><div class="line">	let temp = new obj.constructor();</div><div class="line">	for (let key in obj) &#123;</div><div class="line">		if (obj.hasOwnProperty(key)) &#123;</div><div class="line">			temp[key] = deepClone(obj[key]);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	return temp;</div><div class="line">&#125;</div><div class="line">let x = [&#123;a: [1, 2, 3], b: 42&#125;, &#123;c: &#123;d: []&#125;&#125;]</div><div class="line">let y = deepClone(x);</div><div class="line">x[1][&apos;c&apos;][&apos;d&apos;] = 100;</div><div class="line">console.log(_.isEqual(x, y)); // false</div><div class="line"></div><div class="line">// 遍历嵌套数组的数组</div><div class="line">function visit(mapFun, resultFun, array) &#123;</div><div class="line">	if (_.isArray(array)) &#123;</div><div class="line">		return resultFun(_.map(array, mapFun));</div><div class="line">	&#125; else &#123;</div><div class="line">		return resultFun(array);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">let dd = visit(_.identity, _.isNumber, 42);</div><div class="line">console.log(dd); // true</div></pre></td></tr></table></figure>
-</code></pre><h4 id="太多递归了"><a href="#太多递归了" class="headerlink" title="太多递归了"></a>太多递归了</h4><h4 id="递归是一个底层操作"><a href="#递归是一个底层操作" class="headerlink" title="递归是一个底层操作"></a>递归是一个底层操作</h4><blockquote>
-<p>   源代码仓库<br>    <a href="https://github.com/fanerge/Functional-reading-notes" target="_blank" rel="external">函数式编程-读书笔记</a>    </p>
-</blockquote>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/08/09/服务端学习/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/08/09/服务端学习/" itemprop="url">
-                  JSP学习-了解
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-09T19:56:56+08:00">
-                2017-08-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/服务端/" itemprop="url" rel="index">
-                    <span itemprop="name">服务端</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/08/09/服务端学习/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/08/09/服务端学习/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近，由于最近项目需要集成到老项目中去，采用原始的前后端不分离开发，需要学习jsp语言。<br><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
-<h3 id="JSP简介"><a href="#JSP简介" class="headerlink" title="JSP简介"></a>JSP简介</h3><pre><code>1.    JSP全称Java Server Pages，是一种动态网页开发技术。它使用JSP标签在HTML网页中插入Java代码。标签通常以&lt;%开头以%&gt;结束。
-</code></pre><h3 id="JSP-生命周期"><a href="#JSP-生命周期" class="headerlink" title="JSP 生命周期"></a>JSP 生命周期</h3><pre><code>1.    编译阶段：
-当浏览器请求JSP页面时，JSP引擎会首先去检查是否需要编译这个文件。如果这个文件没有被编译过，或者在上次编译后被更改过，则编译这个JSP文件。
-编译的过程包括三个步骤：
-    解析JSP文件。
-    将JSP文件转为servlet。
-    编译servlet。
-2.    初始化阶段：
-    容器载入JSP文件后，它会在为请求提供任何服务前调用jspInit()方法。如果您需要执行自定义的JSP初始化任务，复写jspInit()方法就行了，就像下面这样：
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public void jspInit()&#123;</div><div class="line">  // 初始化代码</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-    一般来讲程序只初始化一次，servlet也是如此。通常情况下您可以在jspInit()方法中初始化数据库连接、打开文件和创建查询表。
-执行阶段：
-    这一阶段描述了JSP生命周期中一切与请求相关的交互行为，直到被销毁。
-    当JSP网页完成初始化后，JSP引擎将会调用_jspService()方法。
-    _jspService()方法需要一个HttpServletRequest对象和一个HttpServletResponse对象作为它的参数，就像下面这样：
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">void _jspService(HttpServletRequest request,</div><div class="line">				 HttpServletResponse response)</div><div class="line">&#123;</div><div class="line">   // 服务端处理代码</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-    _jspService()方法在每个request中被调用一次并且负责产生与之相对应的response，并且它还负责产生所有7个HTTP方法的回应，比如GET、POST、DELETE等等。
-销毁阶段：
-    SP生命周期的销毁阶段描述了当一个JSP网页从容器中被移除时所发生的一切。
-    jspDestroy()方法在JSP中等价于servlet中的销毁方法。当您需要执行任何清理工作时复写jspDestroy()方法，比如释放数据库连接或者关闭文件夹等等。
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">jspDestroy()方法的格式如下：</div><div class="line">public void jspDestroy()</div><div class="line">&#123;</div><div class="line">   // 清理代码</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="JSP语法"><a href="#JSP语法" class="headerlink" title="JSP语法"></a>JSP语法</h3><pre><code>语法格式：
-    &lt;% 代码片段 %&gt;
-    &lt;jsp:scriptlet&gt;
-       代码片段
-    &lt;/jsp:scriptlet&gt;
-中文编码问题：
-    &lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot; pageEncoding=&quot;UTF-8&quot;%&gt;
-JSP声明
-    &lt;%! declaration; [ declaration; ]+ ... %&gt;
-    &lt;jsp:declaration&gt;
-       代码片段
-    &lt;/jsp:declaration&gt;
-    例子：
-    &lt;%! int i = 0; %&gt; 
-JSP表达式    
-    &lt;%= 表达式 %&gt;
-    &lt;jsp:expression&gt;
-       表达式
-    &lt;/jsp:expression&gt;
-JSP注释
-    &lt;%-- 注释 --%&gt;
-JSP指令
-    JSP指令用来设置与整个JSP页面相关的属性。
-    &lt;%@ directive attribute=&quot;value&quot; %&gt;
-    例子：
-    &lt;%@ page ... %&gt;    定义页面的依赖属性，比如脚本语言、error页面、缓存需求等等
-    &lt;%@ include ... %&gt;    包含其他文件
-    &lt;%@ taglib ... %&gt;    引入标签库的定义，可以是自定义标签
-JSP行为
-    JSP行为标签使用XML语法结构来控制servlet引擎。
-    &lt;jsp:action_name attribute=&quot;value&quot; /&gt;
-JSP隐含对象
-    JSP支持九个自动定义的变量，江湖人称隐含对象。
-    request    HttpServletRequest类的实例
-    response    HttpServletResponse类的实例
-判断语句
-    if-else
-        &lt;%! int day =  %&gt;
-        &lt;% if (day == 1 | day == 7) { %&gt;
-            &lt;p&gt;今天是周末&lt;/p&gt;
-        &lt;% } else { %&gt;
-              &lt;p&gt;今天不是周末&lt;/p&gt;
-        &lt;% } %&gt;
-    switch-case
-        &lt;% 
-        switch(day) {
-        case 0:
-           out.println(&quot;星期天&quot;);
-           break;
-        case 1:
-           out.println(&quot;星期一&quot;);
-           break;
-        default:
-           out.println(&quot;星期六&quot;);
-        }
-        %&gt;
-循环语句
-    for
-        &lt;%for ( fontSize = 1; fontSize &lt;= 3; fontSize++){ %&gt;
-           &lt;font color=&quot;green&quot; size=&quot;&lt;%= fontSize %&gt;&quot;&gt;
-            菜鸟教程
-           &lt;/font&gt;&lt;br /&gt;
-        &lt;%}%&gt;
-    while
-        &lt;%while ( fontSize &lt;= 3){ %&gt;
-           &lt;font color=&quot;green&quot; size=&quot;&lt;%= fontSize %&gt;&quot;&gt;
-            菜鸟教程
-           &lt;/font&gt;&lt;br /&gt;
-        &lt;%fontSize++;%&gt;
-        &lt;%}%&gt;
-JSP 字面量
-    布尔值(boolean)：true 和 false;
-    整型(int)：与 Java 中的一样;
-    浮点型(float)：与 Java 中的一样;
-    字符串(string)：以单引号或双引号开始和结束;
-    Null：null。
-</code></pre><h3 id="JSP指令"><a href="#JSP指令" class="headerlink" title="JSP指令"></a>JSP指令</h3><pre><code>JSP指令用来设置整个JSP页面相关的属性，如网页的编码方式和脚本语言。
-    &lt;%@ directive attribute=&quot;value&quot; %&gt;
-Page指令
-    Page指令为容器提供当前页面的使用说明。一个JSP页面可以包含多个page指令。
-    &lt;%@ page attribute=&quot;value&quot; %&gt;
-    &lt;jsp:directive.page attribute=&quot;value&quot; /&gt;
-Include指令
-    JSP可以通过include指令来包含其他文件。被包含的文件可以是JSP文件、HTML文件或文本文件。
-    &lt;%@ include file=&quot;文件相对 url 地址&quot; %&gt;
-    &lt;jsp:directive.include file=&quot;文件相对 url 地址&quot; /&gt;
-Taglib指令
-    JSP API允许用户自定义标签，一个自定义标签库就是自定义标签的集合。
-    &lt;%@ taglib uri=&quot;uri&quot; prefix=&quot;prefixOfTag&quot; %&gt;
-    &lt;jsp:directive.taglib uri=&quot;uri&quot; prefix=&quot;prefixOfTag&quot; /&gt;
-</code></pre><h3 id="JSP动作元素"><a href="#JSP动作元素" class="headerlink" title="JSP动作元素"></a>JSP动作元素</h3><pre><code>JSP动作元素在请求处理阶段起作用。JSP动作元素是用XML语法写成的。
-    &lt;jsp:action_name attribute=&quot;value&quot; /&gt;
-</code></pre><h3 id="JSP隐式对象"><a href="#JSP隐式对象" class="headerlink" title="JSP隐式对象"></a>JSP隐式对象</h3><pre><code>JSP隐式对象是JSP容器为每个页面提供的Java对象，开发者可以直接使用它们而不用显式声明。JSP隐式对象也被称为预定义变量。    
-</code></pre><h3 id="JSP客户端请求"><a href="#JSP客户端请求" class="headerlink" title="JSP客户端请求"></a>JSP客户端请求</h3><pre><code>当浏览器请求一个网页时，它会向网络服务器发送一系列不能被直接读取的信息，因为这些信息是作为HTTP信息头的一部分来传送的。您可以查阅HTTP协议来获得更多的信息。
-</code></pre><h3 id="JSP服务器响应"><a href="#JSP服务器响应" class="headerlink" title="JSP服务器响应"></a>JSP服务器响应</h3><pre><code>Response响应对象主要将JSP容器处理后的结果传回到客户端。可以通过response变量设置HTTP的状态和向客户端发送数据，如Cookie、HTTP文件头信息等。
-</code></pre><h3 id="JSP-HTTP状态码"><a href="#JSP-HTTP状态码" class="headerlink" title="JSP HTTP状态码"></a>JSP HTTP状态码</h3><pre><code>以状态行+CRLF（回车换行）开始
-零行或多行头模块+CRLF
-一个空行，比如CRLF
-可选的消息体比如文件，查询数据，查询输出
-</code></pre><h3 id="JSP-表单处理"><a href="#JSP-表单处理" class="headerlink" title="JSP 表单处理"></a>JSP 表单处理</h3><pre><code>JSP 读取表单数据
-    getParameter(): 使用 request.getParameter() 方法来获取表单参数的值。
-    getParameterValues(): 获得如checkbox类（名字相同，但值有多个）的数据。 接收数组变量 ，如checkbox类型
-    getParameterNames():该方法可以取得所有变量的名称，该方法返回一个Emumeration。
-    getInputStream():调用此方法来读取来自客户端的二进制数据流。
-</code></pre><h3 id="JSP过滤器"><a href="#JSP过滤器" class="headerlink" title="JSP过滤器"></a>JSP过滤器</h3><pre><code>JSP 和 Servlet 中的过滤器都是 Java 类。
-过滤器可以动态地拦截请求和响应，以变换或使用包含在请求或响应中的信息。
-可以将一个或多个过滤器附加到一个 Servlet 或一组 Servlet。过滤器也可以附加到 JavaServer Pages (JSP) 文件和 HTML 页面。
-过滤器是可用于 Servlet 编程的 Java 类，可以实现以下目的：
-在客户端的请求访问后端资源之前，拦截这些请求。
-在服务器的响应发送回客户端之前，处理这些响应。
-</code></pre><h3 id="JSP-Cookie-处理"><a href="#JSP-Cookie-处理" class="headerlink" title="JSP Cookie 处理"></a>JSP Cookie 处理</h3><pre><code>Cookie是存储在客户机的文本文件，它们保存了大量轨迹信息。在servlet技术基础上，JSP显然能够提供对HTTP cookie的支持。
-</code></pre><h3 id="JSP-Session"><a href="#JSP-Session" class="headerlink" title="JSP Session"></a>JSP Session</h3><pre><code>有三种方法来维持客户端与服务器的会话
-    Cookies
-    隐藏表单域  &lt;input type=&quot;hidden&quot; name=&quot;sessionid&quot; value=&quot;12345&quot;&gt;
-    重写URL   http://w3cschool.cc/file.htm;sessionid=12345
-session对象
-    JSP利用servlet提供的HttpSession接口来识别一个用户，存储这个用户的所有访问信息。
-    默认情况下，JSP允许会话跟踪，一个新的HttpSession对象将会自动地为新的客户端实例化。
-</code></pre><h3 id="JSP-文件上传"><a href="#JSP-文件上传" class="headerlink" title="JSP 文件上传"></a>JSP 文件上传</h3><h3 id="JSP-日期处理"><a href="#JSP-日期处理" class="headerlink" title="JSP 日期处理"></a>JSP 日期处理</h3><pre><code>使用JSP最重要的优势之一，就是可以使用所有Java  API。本章将会详细地讲述Java中的Date类，它在java.util包下，封装了当前日期和时间。
-</code></pre><h3 id="JSP-页面重定向"><a href="#JSP-页面重定向" class="headerlink" title="JSP 页面重定向"></a>JSP 页面重定向</h3><pre><code>当需要将文档移动到一个新的位置时，就需要使用JSP重定向了。
-</code></pre><h3 id="JSP-点击量统计"><a href="#JSP-点击量统计" class="headerlink" title="JSP 点击量统计"></a>JSP 点击量统计</h3><h3 id="JSP-自动刷新"><a href="#JSP-自动刷新" class="headerlink" title="JSP 自动刷新"></a>JSP 自动刷新</h3><pre><code>想象一下，如果要直播比赛的比分，或股票市场的实时状态，或当前的外汇配给，该怎么实现呢？显然，要实现这种实时功能，您就不得不规律性地刷新页面。
-</code></pre><h3 id="JSP-发送邮件"><a href="#JSP-发送邮件" class="headerlink" title="JSP 发送邮件"></a>JSP 发送邮件</h3>
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2495,7 +2462,7 @@ session对象
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">56</span>
+                <span class="site-state-item-count">59</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

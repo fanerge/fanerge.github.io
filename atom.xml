@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fanerge.github.io/"/>
-  <updated>2017-09-17T14:10:50.207Z</updated>
+  <updated>2017-09-18T14:56:31.296Z</updated>
   <id>https://fanerge.github.io/</id>
   
   <author>
@@ -14,6 +14,116 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>koa学习-测试</title>
+    <link href="https://fanerge.github.io/2017/09/18/koa%E5%AD%A6%E4%B9%A0-%E6%B5%8B%E8%AF%95/"/>
+    <id>https://fanerge.github.io/2017/09/18/koa学习-测试/</id>
+    <published>2017-09-18T14:21:06.000Z</published>
+    <updated>2017-09-18T14:56:31.296Z</updated>
+    
+    <content type="html"><![CDATA[<p>mocha 模块是测试框架<br>chai 模块是用来进行测试结果断言库，比如一个判断 1 + 1 是否等于 2<br>supertest 模块是http请求测试库，用来请求API接口</p>
+<h3 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h3><pre><code>所需测试demo
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">const koa = require(&apos;koa&apos;);</div><div class="line">const app = new koa();</div><div class="line"></div><div class="line">const server = async (ctx, next) =&gt; &#123;</div><div class="line">	let result = &#123;</div><div class="line">		success: true,</div><div class="line">		data: null</div><div class="line">	&#125;;</div><div class="line">	if (ctx.method === &apos;GET&apos;) &#123;</div><div class="line">		if (ctx.url === &apos;/getString.json&apos;) &#123;</div><div class="line">			result.data = &apos;this is string data&apos;;</div><div class="line">		&#125; else if (ctx.url === &apos;/getNumber.json&apos;)&#123;</div><div class="line">			result.data = 123456;    </div><div class="line">		&#125; else &#123;</div><div class="line">			result.success = false;</div><div class="line">		&#125;</div><div class="line">		ctx.body = result;</div><div class="line">		next &amp;&amp; next();</div><div class="line">	&#125; else if (ctx.method === &apos;POST&apos;) &#123;</div><div class="line">		if (ctx.url === &apos;/postData.json&apos;) &#123;</div><div class="line">			result.data = &apos;ok&apos;;</div><div class="line">		&#125; else &#123;</div><div class="line">			result.success = false;</div><div class="line">		&#125;</div><div class="line">		ctx.body = result;</div><div class="line">		next &amp;&amp; next();</div><div class="line">	&#125; else &#123;</div><div class="line">		ctx.body = &apos;hello world&apos;;</div><div class="line">		next &amp;&amp; next();</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">app.use(server);</div><div class="line"></div><div class="line">module.exports = app;</div><div class="line"></div><div class="line">app.listen(3004, () =&gt; &#123;</div><div class="line">	console.log(&apos;[demo] test-unit is starting at port 3004&apos;)</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h3 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">const supertest = require(&apos;supertest&apos;)</div><div class="line">const chai = require(&apos;chai&apos;)</div><div class="line">const app = require(&apos;./../index&apos;)</div><div class="line"></div><div class="line">const expect = chai.expect</div><div class="line">const request = supertest( app.listen() )</div><div class="line"></div><div class="line">// 测试套件/组</div><div class="line">describe( &apos;开始测试demo的GET请求&apos;, ( ) =&gt; &#123;</div><div class="line"></div><div class="line">  // 测试用例</div><div class="line">  it(&apos;测试/getString.json请求&apos;, ( done ) =&gt; &#123;</div><div class="line">	  request</div><div class="line">		.get(&apos;/getString.json&apos;)</div><div class="line">		.expect(200)</div><div class="line">		.end(( err, res ) =&gt; &#123;</div><div class="line">			// 断言判断结果是否为object类型</div><div class="line">			expect(res.body).to.be.an(&apos;object&apos;)</div><div class="line">			expect(res.body.success).to.be.an(&apos;boolean&apos;)</div><div class="line">			expect(res.body.data).to.be.an(&apos;string&apos;)</div><div class="line">			done()</div><div class="line">		&#125;)</div><div class="line">  &#125;)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="https://chenshenhai.github.io/koa2-note/note/request/post-use-middleware.html" target="_blank" rel="external">koa-note</a><br>    <a href="https://www.npmjs.com/package/koa-jsonp" target="_blank" rel="external">koa-jsonp</a></p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;mocha 模块是测试框架&lt;br&gt;chai 模块是用来进行测试结果断言库，比如一个判断 1 + 1 是否等于 2&lt;br&gt;supertest 模块是http请求测试库，用来请求API接口&lt;/p&gt;
+&lt;h3 id=&quot;单元测试&quot;&gt;&lt;a href=&quot;#单元测试&quot; class=&quot;hea
+    
+    </summary>
+    
+      <category term="NodeJS" scheme="https://fanerge.github.io/categories/NodeJS/"/>
+    
+    
+      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
+    
+      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
+    
+      <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
+    
+      <category term="koa" scheme="https://fanerge.github.io/tags/koa/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>koa学习-jsonp实现</title>
+    <link href="https://fanerge.github.io/2017/09/18/koa%E5%AD%A6%E4%B9%A0-jsonp%E5%AE%9E%E7%8E%B0/"/>
+    <id>https://fanerge.github.io/2017/09/18/koa学习-jsonp实现/</id>
+    <published>2017-09-18T13:35:36.000Z</published>
+    <updated>2017-09-18T14:22:25.478Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="原生koa2实现jsonp"><a href="#原生koa2实现jsonp" class="headerlink" title="原生koa2实现jsonp"></a>原生koa2实现jsonp</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">const koa = require(&apos;koa&apos;);</div><div class="line"></div><div class="line">const app = new koa();</div><div class="line"></div><div class="line">app.use(async (ctx) =&gt; &#123;</div><div class="line">	// 判断是否为jsonp的请求</div><div class="line">	if (ctx.method === &apos;GET&apos; &amp;&amp; ctx.url.split(&apos;?&apos;)[0] === &apos;/getData.jsonp&apos;) &#123;</div><div class="line">		// 获取jsonp的callback</div><div class="line">		let callbackName = ctx.query.callback || &apos;callback&apos;;</div><div class="line">		let returnData = &#123;</div><div class="line">			success: true,</div><div class="line">			data: &#123;</div><div class="line">				text: &apos;this is a jsonp api&apos;,</div><div class="line">				time: new Date().getTime()</div><div class="line">			&#125;</div><div class="line">		&#125; </div><div class="line">		// jsonp的script字符串</div><div class="line">		let jsonpStr = `;$&#123;callbackName&#125;($&#123;JSON.stringify(returnData)&#125;)`;      </div><div class="line">		// 用text/javascript，让请求支持跨域获取</div><div class="line">		ctx.type = &apos;text/javascript&apos;;</div><div class="line">		// 输出jsonp字符串</div><div class="line">		ctx.body = jsonpStr</div><div class="line">	&#125; else &#123;</div><div class="line">		ctx.body = &apos;hello jsonp&apos;;</div><div class="line">	&#125;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">app.listen(3004, () =&gt; &#123;</div><div class="line">	console.log(&apos;[demo] jsonp is starting at port 3004&apos;)</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h3 id="koa-jsonp中间件实现"><a href="#koa-jsonp中间件实现" class="headerlink" title="koa-jsonp中间件实现"></a>koa-jsonp中间件实现</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">const koa = require(&apos;koa&apos;);</div><div class="line">const jsonp = require(&apos;koa-jsonp&apos;);</div><div class="line"></div><div class="line">const app = new koa();</div><div class="line"></div><div class="line">app.use(jsonp());</div><div class="line"></div><div class="line">app.use(async (ctx) =&gt; &#123;</div><div class="line">	let returnData = &#123;</div><div class="line">		success: true,</div><div class="line">		data: &#123;</div><div class="line">			text: &apos;this is a jsonp api&apos;,</div><div class="line">			time: new Date().getTime(),</div><div class="line">		&#125;</div><div class="line">	&#125;;</div><div class="line">	// 直接输出json</div><div class="line">	ctx.body = returnData;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">app.listen(3004, () =&gt; &#123;</div><div class="line">	console.log(&apos;[demo] jsonp is starting at port 3004&apos;)</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="https://chenshenhai.github.io/koa2-note/note/request/post-use-middleware.html" target="_blank" rel="external">koa-note</a><br>    <a href="https://www.npmjs.com/package/koa-jsonp" target="_blank" rel="external">koa-jsonp</a></p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;原生koa2实现jsonp&quot;&gt;&lt;a href=&quot;#原生koa2实现jsonp&quot; class=&quot;headerlink&quot; title=&quot;原生koa2实现jsonp&quot;&gt;&lt;/a&gt;原生koa2实现jsonp&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;&lt;figure class=&quot;hig
+    
+    </summary>
+    
+      <category term="NodeJS" scheme="https://fanerge.github.io/categories/NodeJS/"/>
+    
+    
+      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
+    
+      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
+    
+      <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
+    
+      <category term="koa" scheme="https://fanerge.github.io/tags/koa/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>koa学习-数据库mysql</title>
+    <link href="https://fanerge.github.io/2017/09/18/koa%E5%AD%A6%E4%B9%A0-%E6%95%B0%E6%8D%AE%E5%BA%93mysql/"/>
+    <id>https://fanerge.github.io/2017/09/18/koa学习-数据库mysql/</id>
+    <published>2017-09-18T11:56:33.000Z</published>
+    <updated>2017-09-18T13:39:20.144Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="模块介绍"><a href="#模块介绍" class="headerlink" title="模块介绍"></a>模块介绍</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">const mysql = require(&apos;mysql&apos;);</div><div class="line">// 数据库的配置信息</div><div class="line">const connection = mysql.createConnection(&#123;</div><div class="line">	host: &apos;localhost&apos;,</div><div class="line">	port: 3306,</div><div class="line">	user: &apos;root&apos;,</div><div class="line">	password: &apos;root&apos;,</div><div class="line">	database: &apos;sql&apos;</div><div class="line">&#125;);</div><div class="line">// 连接数据库</div><div class="line">connection.connect();</div><div class="line">// 进行数据库操作</div><div class="line">connection.query(&apos;SELECT * FROM apps&apos;, (err, result) =&gt; &#123;</div><div class="line">	if (err)  throw err;</div><div class="line">	console.log(result);</div><div class="line">&#125;);</div><div class="line">// 关闭连接</div><div class="line">connection.end();</div></pre></td></tr></table></figure>
+</code></pre><h3 id="创建数据连接池"><a href="#创建数据连接池" class="headerlink" title="创建数据连接池"></a>创建数据连接池</h3><pre><code>一般情况下操作数据库是很复杂的读写过程，不只是一个会话，如果直接用会话操作，就需要每次会话都要配置连接参数。
+所以这时候就需要连接池管理会话。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">const mysql = require(&apos;mysql&apos;);</div><div class="line">const pool = mysql.createPool(&#123;</div><div class="line">	host: &apos;localhost&apos;,</div><div class="line">	port: 3306,</div><div class="line">	user: &apos;root&apos;,</div><div class="line">	password: &apos;root&apos;,</div><div class="line">	database: &apos;sql&apos;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">// 在数据池中进行会话操作</div><div class="line">pool.getConnection((err, connection) =&gt; &#123;</div><div class="line">	connection.query(&apos;SELECT * FROM apps&apos;, (err, result) =&gt; &#123;</div><div class="line">		console.log(result);</div><div class="line">		// 连接完成，连接将返回连接池</div><div class="line">		connection.release();</div><div class="line">		if (err) throw err;</div><div class="line">	&#125;)</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h3 id="使用promise和async-await来封装"><a href="#使用promise和async-await来封装" class="headerlink" title="使用promise和async-await来封装"></a>使用promise和async-await来封装</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">// promise.js</div><div class="line">const mysql = require(&apos;mysql&apos;);</div><div class="line">const pool = mysql.createPool(&#123;</div><div class="line">	host     :  &apos;127.0.0.1&apos;,</div><div class="line">	user     :  &apos;root&apos;,</div><div class="line">	password :  &apos;root&apos;,</div><div class="line">	database :  &apos;sql&apos;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">let query = function (sql) &#123;</div><div class="line">	return new Promise((resolve, reject) =&gt; &#123;</div><div class="line">		pool.getConnection((err, connection) =&gt; &#123;</div><div class="line">			if (err) &#123;</div><div class="line">				reject(err);</div><div class="line">			&#125; else &#123;</div><div class="line">				connection.query(sql, (err, rows) =&gt; &#123;</div><div class="line">					if (err) &#123;</div><div class="line">						reject(err)</div><div class="line">					&#125; else &#123;</div><div class="line">						resolve(rows);</div><div class="line">					&#125;</div><div class="line">				connection.release();   </div><div class="line">				&#125;);</div><div class="line">			&#125;</div><div class="line"></div><div class="line">		&#125;);</div><div class="line">	&#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">module.exports = query;</div><div class="line"></div><div class="line">// async.js</div><div class="line">const query = require(&apos;./promise&apos;);</div><div class="line"></div><div class="line">async function getData (sql) &#123;</div><div class="line">	let dataList = await query(sql);</div><div class="line">	console.log(dataList);</div><div class="line">&#125;</div><div class="line"></div><div class="line">getData(&apos;SELECT * FROM sql&apos;);</div></pre></td></tr></table></figure>
+</code></pre><h3 id="建表初始化"><a href="#建表初始化" class="headerlink" title="建表初始化"></a>建表初始化</h3><pre><code>+----------+  遍历sql  +---+ 解析所有sql +---+  执行sql  +------------&gt;
+       |   |  目录下的  |   |  文件脚本  |   |   脚本     |   |
++----------+  sql文件   +---+   内容    +---+           +------------&gt;
+
+[详细代码见]()
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="https://chenshenhai.github.io/koa2-note/note/request/post-use-middleware.html" target="_blank" rel="external">koa-note</a><br>    <a href="https://www.npmjs.com/package/cookies" target="_blank" rel="external">cookies</a></p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;模块介绍&quot;&gt;&lt;a href=&quot;#模块介绍&quot; class=&quot;headerlink&quot; title=&quot;模块介绍&quot;&gt;&lt;/a&gt;模块介绍&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;
+    
+    </summary>
+    
+      <category term="NodeJS" scheme="https://fanerge.github.io/categories/NodeJS/"/>
+    
+    
+      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
+    
+      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
+    
+      <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
+    
+      <category term="koa" scheme="https://fanerge.github.io/tags/koa/"/>
+    
+  </entry>
   
   <entry>
     <title>koa学习-文件上传</title>
@@ -1563,11 +1673,11 @@ SELECT name FROM person_tbl WHERE name REGEXP &apos;ok$&apos;;
       <category term="NodeJS" scheme="https://fanerge.github.io/categories/NodeJS/"/>
     
     
+      <category term="node" scheme="https://fanerge.github.io/tags/node/"/>
+    
       <category term="mysql" scheme="https://fanerge.github.io/tags/mysql/"/>
     
       <category term="数据库" scheme="https://fanerge.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
-    
-      <category term="node" scheme="https://fanerge.github.io/tags/node/"/>
     
   </entry>
   
@@ -1634,366 +1744,6 @@ align-self
       <category term="css" scheme="https://fanerge.github.io/tags/css/"/>
     
       <category term="布局" scheme="https://fanerge.github.io/tags/%E5%B8%83%E5%B1%80/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>node-学习（七天学会NodeJs）</title>
-    <link href="https://fanerge.github.io/2017/09/05/node-%E5%AD%A6%E4%B9%A0/"/>
-    <id>https://fanerge.github.io/2017/09/05/node-学习/</id>
-    <published>2017-09-05T14:32:47.000Z</published>
-    <updated>2017-09-05T14:43:17.292Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="NodeJs基础"><a href="#NodeJs基础" class="headerlink" title="NodeJs基础"></a>NodeJs基础</h4><h5 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h5><pre><code>在编写每个模块时，都有require、exports、module三个预先定义好的变量可供使用。
-</code></pre><h6 id="require"><a href="#require" class="headerlink" title="require"></a>require</h6><pre><code>require函数用于在当前模块中加载和使用别的模块，传入一个模块名，返回一个模块导出对象。模块名可使用相对路径（以./开头），或者是绝对路径（以/或C:之类的盘符开头）。另外，模块名中的.js扩展名可以省略。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">var foo1 = require(&apos;./foo&apos;);</div><div class="line">var foo2 = require(&apos;./foo.js&apos;);</div><div class="line">var foo3 = require(&apos;/home/user/foo&apos;);</div><div class="line">var foo4 = require(&apos;/home/user/foo.js&apos;);</div><div class="line">// foo1至foo4中保存的是同一个模块的导出对象。</div></pre></td></tr></table></figure>
-
-还可以加载使用JSON文件
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">var data = require(&apos;./data.json&apos;);</div></pre></td></tr></table></figure>
-</code></pre><h6 id="exports"><a href="#exports" class="headerlink" title="exports"></a>exports</h6><pre><code>exports对象是当前模块的导出对象，用于导出模块公有方法和属性。别的模块通过require函数使用当前模块时得到的就是当前模块的exports对象。
-以下例子中导出了一个公有方法。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">exports.hello = function () &#123;</div><div class="line">	console.log(&apos;fanerge&apos;);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-</code></pre><h6 id="module"><a href="#module" class="headerlink" title="module"></a>module</h6><pre><code>通过module对象可以访问到当前模块的一些相关信息，但最多的用途是替换当前模块的导出对象。
-例如模块导出对象默认是一个普通对象，如果想改成一个函数的话，可以使用以下方式。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">module.exports = function () &#123;</div><div class="line">	console.log(&apos;fanerge&apos;);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-</code></pre><h4 id="代码的组织和部署"><a href="#代码的组织和部署" class="headerlink" title="代码的组织和部署"></a>代码的组织和部署</h4><h5 id="模块路径的解析规则（先后顺序）"><a href="#模块路径的解析规则（先后顺序）" class="headerlink" title="模块路径的解析规则（先后顺序）"></a>模块路径的解析规则（先后顺序）</h5><ol>
-<li>内置模块<br>如果传递给require函数的是NodeJS内置模块名称，不做路径解析，直接返回内部模块的导出对象，例如require(‘fs’)。</li>
-<li><p>node_modules目录（第三方包）<br>NodeJS定义了一个特殊的node_modules目录用于存放模块。例如某个模块的绝对路径是/home/user/hello.js，在该模块中使用require(‘foo/bar’)方式加载模块时，则NodeJS依次尝试使用以下路径。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">/home/user/node_modules/foo/bar</div><div class="line">/home/node_modules/foo/bar</div><div class="line">/node_modules/foo/bar</div></pre></td></tr></table></figure>
-</li>
-<li><p>NODE_PATH环境变量<br>与PATH环境变量类似，NodeJS允许通过NODE_PATH环境变量来指定额外的模块搜索路径。NODE_PATH环境变量中包含一到多个目录路径，路径之间在Linux下使用:分隔，在Windows下使用;分隔。例如定义了以下NODE_PATH环境变量：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">NODE_PATH=/home/user/lib:/home/lib</div></pre></td></tr></table></figure>
-<p>当使用require(‘foo/bar’)的方式加载模块时，则NodeJS依次尝试以下路径。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">/home/user/lib/foo/bar</div><div class="line">/home/lib/foo/bar</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h5 id="包（package）"><a href="#包（package）" class="headerlink" title="包（package）"></a>包（package）</h5><pre><code>我们已经知道了JS模块的基本单位是单个JS文件，但复杂些的模块往往由多个子模块组成。为了便于管理和使用，我们可以把由多个子模块组成的大模块称做包，并把所有子模块放在同一个目录里。在组成一个包的所有子模块中，需要有一个入口模块，入口模块的导出对象被作为包的导出对象。
-示例一个标准包：
--cat:
-    doc -- 包说明文档
-    -lib -- 包具体代码
-        head.js
-        body.js
-        index.js -- 入口文件
-    tests -- 测试用例
-    package.json -- 包的说明及依赖关系
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">// index.js具体代码</div><div class="line">var head = require(&apos;./head&apos;);</div><div class="line">var body = require(&apos;./body&apos;);</div><div class="line">exports.create = function (name) &#123;</div><div class="line">	return &#123;</div><div class="line">		name: name,</div><div class="line">		head: head.create(),</div><div class="line">		body: body.create()</div><div class="line">	&#125;;</div><div class="line">&#125;;</div><div class="line">// package.json具体代码</div><div class="line">&#123;</div><div class="line">	&quot;name&quot;: &quot;cat&quot;,</div><div class="line">	&quot;main&quot;: &quot;./lib/index.js&quot; // 入口模块位置</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h5 id="工程目录"><a href="#工程目录" class="headerlink" title="工程目录"></a>工程目录</h5><pre><code>一个标准的工程目录
-/home/user/workspace/node-echo/ # 工程目录
-    -bin/                       # 存放命令行相关代码
-        node-echo
-    +doc/                       # 存放文档
-    -lib/                       # 存放API相关代码
-        echo.js
-    -node_modules/              # 存放第三方包
-        babel
-    +tests/                     # 存放测试用例
-    package.json                # 元数据文件
-    README.md                    # 说明文件
-</code></pre><h5 id="npm"><a href="#npm" class="headerlink" title="npm"></a>npm</h5><pre><code>安装第三方包
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install argv</div></pre></td></tr></table></figure>
-
-安装第三方包（特定版本）
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install argv@0.0.1</div></pre></td></tr></table></figure>
-
-批量安装
-还可以在package.json中dependencies字段中写入所有依赖包
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&quot;dependencies&quot;: &#123;</div><div class="line">       &quot;argv&quot;: &quot;0.0.2&quot;,</div><div class="line">	...</div><div class="line">   &#125;</div><div class="line">// 在使用指令批量安装</div><div class="line">npm install</div></pre></td></tr></table></figure>
-
-更新包
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm update &lt;package&gt;</div></pre></td></tr></table></figure>
-
-清除NPM本地缓存
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm cache clear（用于对付使用相同版本号发布新版本代码的人）</div></pre></td></tr></table></figure>
-</code></pre><h4 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h4><h5 id="文件拷贝练手"><a href="#文件拷贝练手" class="headerlink" title="文件拷贝练手"></a>文件拷贝练手</h5><pre><code>// copy.js
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">var fs = require(&apos;fs&apos;);</div><div class="line">function copy(src, dst) &#123;</div><div class="line">	fs.writeFileSync(dst, fs.readFileSync(src));</div><div class="line">&#125;</div><div class="line">function main(argv) &#123;</div><div class="line">	copy(argv[0], argv[1]);</div><div class="line">&#125;</div><div class="line">main(process.argv.slice(0, 2));</div><div class="line">// 进行拷贝</div><div class="line">node copy.js</div></pre></td></tr></table></figure>
-
-以上程序使用fs.readFileSync从源路径读取文件内容，并使用fs.writeFileSync将文件内容写入目标路径。
-process是一个全局变量，可通过process.argv获得命令行参数。由于argv[0]固定等于NodeJS执行程序的绝对路径，argv[1]固定等于主模块的绝对路径
-</code></pre><h5 id="文件操作有关的API"><a href="#文件操作有关的API" class="headerlink" title="文件操作有关的API"></a>文件操作有关的API</h5><h6 id="Buffer（数据块）"><a href="#Buffer（数据块）" class="headerlink" title="Buffer（数据块）"></a>Buffer（数据块）</h6><pre><code>NodeJS提供了一个与String对等的全局构造函数Buffer来提供对二进制数据的操作。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">// 构造一个Buffer实例</div><div class="line">var bin = new Buffer([ 0x68, 0x65, 0x6c, 0x6c, 0x6f ]);</div><div class="line">// Buffer实例具有length属性和bin[index]</div><div class="line">bin[0]; // =&gt; 0x68;</div><div class="line">// Buffer实例转化指定编码的字符串</div><div class="line">var str = bin.toString(&apos;utf-8&apos;); // =&gt; &quot;hello&quot;</div><div class="line">// 将字符串转化为指定编码的二进制数据</div><div class="line">var bin = new Buffer(&apos;hello&apos;, &apos;utf-8&apos;); // =&gt; &lt;Buffer 68 65 6c 6c 6f&gt;</div><div class="line">// Buffer与字符串有一个重要区别。字符串是只读的，并且对字符串的任何修改得到的都是一个新字符串，原字符串保持不变。</div><div class="line">// 至于Buffer，更像是可以做指针操作的C语言数组。例如，可以用[index]方式直接修改某个位置的字节。</div></pre></td></tr></table></figure>
-
-Buffer拷贝的例子
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// 如果想要拷贝一份Buffer，得首先创建一个新的Buffer，并通过.copy方法把原Buffer中的数据复制过去。</div><div class="line">// 这个类似于申请一块新的内存，并把已有内存中的数据复制过去。</div><div class="line">var bin = new Buffer([0x68, 0x65, 0x6c, 0x6c, 0x6f]);</div><div class="line">var dup = new Buffer(bin.length);</div><div class="line">bin.copy(dup);</div><div class="line">dup[0] =0x46;</div><div class="line">console.log(bin, dup);</div></pre></td></tr></table></figure>
-</code></pre><h6 id="Stream（数据流）"><a href="#Stream（数据流）" class="headerlink" title="Stream（数据流）"></a>Stream（数据流）</h6><pre><code>Stream的使用场景：
-</code></pre><ol>
-<li>当内存中无法一次装下需要处理的数据时。</li>
-<li>一边读取一边处理更加高效时，我们就需要用到数据流。<br>实例–将a.js拷贝到b.js<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">var fs = require(&apos;fs&apos;);</div><div class="line">var rs = fs.createReadStream(process.argv[1].slice(0, -7) + &apos;a.js&apos;);</div><div class="line">var ws = fs.createWriteStream(process.argv[1].slice(0, -7) + &apos;b.js&apos;);</div><div class="line"></div><div class="line">rs.on(&apos;data&apos;, function (chunk) &#123;</div><div class="line">	// 传入的数据是否写入目标</div><div class="line">	if (ws.write(chunk) === false) &#123;</div><div class="line">			rs.pause();</div><div class="line">		&#125;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">rs.on(&apos;end&apos;, function () &#123;</div><div class="line">	ws.end();</div><div class="line">&#125;);</div><div class="line">// 判断什么时候只写数据流已经将缓存中的数据写入目标，可以传入下一个待写数据了</div><div class="line">ws.on(&apos;drain&apos;, function () &#123;</div><div class="line">	rs.resume();</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h6 id="File-System（文件系统）"><a href="#File-System（文件系统）" class="headerlink" title="File System（文件系统）"></a>File System（文件系统）</h6><pre><code>NodeJS通过fs内置模块提供对文件的操作。fs模块提供的API基本上可以分为以下三类：
-</code></pre><ol>
-<li>文件属性读写。<br>其中常用的有fs.stat、fs.chmod、fs.chown等等。</li>
-<li>文件内容读写。<br>其中常用的有fs.readFile、fs.readdir、fs.writeFile、fs.mkdir等等。</li>
-<li><p>底层文件操作。<br>其中常用的有fs.open、fs.read、fs.write、fs.close等等<br>同步API除了方法名的末尾多了一个Sync之外，异常对象与执行结果的传递方式也有相应变化。<br>// 异步处理文件及异常处理</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">var fs = require(&apos;fs&apos;);</div><div class="line">fs.readFile(process.argv[1].slice(0, -7) + &apos;a.js&apos;, function (error, data) &#123;</div><div class="line">	if (error) &#123;</div><div class="line">		console.error(error);</div><div class="line">	&#125; else &#123;</div><div class="line">		console.log(data);</div><div class="line">	&#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p>// 同步处理文件及异常处理</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var fs = require(&apos;fs&apos;);</div><div class="line">try&#123;</div><div class="line">	var data = fs.readFileSync(process.argv[1].slice(0, -7) + &apos;a.js&apos;);</div><div class="line">	console.log(data);</div><div class="line">&#125;catch(err)&#123;</div><div class="line">	console.error(err)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h6 id="Path（路径）"><a href="#Path（路径）" class="headerlink" title="Path（路径）"></a>Path（路径）</h6><pre><code>NodeJS提供了path内置模块来简化路径相关操作，并提升代码可读性。
-path.normalize(str)
-    将传入的路径转换为标准路径，除了解析路径中的.与..外，还能去掉多余的斜杠。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">var fs = require(&apos;fs&apos;);</div><div class="line">var path = require(&apos;path&apos;);</div><div class="line">var cache = &#123;&#125;;</div><div class="line">function store (key, value) &#123;</div><div class="line">	cache[path.normalize(key)] = value;</div><div class="line">	console.dir(cache);</div><div class="line">&#125;</div><div class="line">store(&apos;/home&apos;, 1);</div><div class="line">store(&apos;/home/user&apos;, 44);</div><div class="line">// 标准化之后的路径里的斜杠在Windows系统下是\，而在Linux系统下是/。如果想保证任何系统下都使用/作为路径分隔符的话，需要用.replace(/\\/g, &apos;/&apos;)再替换一下标准路径。</div></pre></td></tr></table></figure>
-
-path.join()
-将传入的多个路径拼接为标准路径。该方法可避免手工拼接路径字符串的繁琐，并且能在不同系统下正确使用相应的路径分隔符。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">path.join(&apos;foo/&apos;, &apos;baz/&apos;, &apos;../bar&apos;); // =&gt; &quot;foo/bar&quot;</div></pre></td></tr></table></figure>
-
-path.extname()
-当我们需要根据不同文件扩展名做不同操作时，该方法就显得很好用。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">path.extname(&apos;foo/bar.js&apos;); // =&gt; &quot;.js&quot;</div></pre></td></tr></table></figure>
-</code></pre><h5 id="遍历目录"><a href="#遍历目录" class="headerlink" title="遍历目录"></a>遍历目录</h5><pre><code>遍历目录是操作文件时的一个常见需求。比如写一个程序，需要找到并处理指定目录下的所有JS文件时，就需要遍历整个目录。
-</code></pre><h6 id="递归算法"><a href="#递归算法" class="headerlink" title="递归算法"></a>递归算法</h6><pre><code>计算N的阶乘
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">function factorial (n) &#123;</div><div class="line">	if (n === 1) &#123;</div><div class="line">		return 1;</div><div class="line">	&#125; else &#123;</div><div class="line">		return n * factorial(n-1);	</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">// 使用递归算法编写的代码虽然简洁，但由于每递归一次就产生一次函数调用，在需要优先考虑性能时，需要把递归算法转换为循环算法，以减少函数调用次数。</div></pre></td></tr></table></figure>
-</code></pre><h6 id="遍历算法"><a href="#遍历算法" class="headerlink" title="遍历算法"></a>遍历算法</h6><pre><code>目录是一个树状结构，在遍历时一般使用深度优先+先序遍历算法。
-同步遍历
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">function travel (dir, callback) &#123;</div><div class="line">	try &#123;</div><div class="line">		fs.readdirSync(dir).forEach(function (file) &#123;</div><div class="line">			var pathname = path.join(dir, file);</div><div class="line">			if (fs.statSync(pathname).isDirectory()) &#123;</div><div class="line">				travel(pathname, callback);</div><div class="line">			&#125; else &#123;</div><div class="line">				callback(pathname);</div><div class="line">			&#125;</div><div class="line">		&#125;);</div><div class="line">	&#125;catch(e)&#123;</div><div class="line">		console.error(e);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-异步遍历（有点复杂）
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">function travel(dir, callback, finish) &#123;</div><div class="line">	fs.readdir(dir, function (err, files) &#123;</div><div class="line">		(function next(i) &#123;</div><div class="line">			if (i &lt; files.length) &#123;</div><div class="line">				var pathname = path.join(dir, files[i]);</div><div class="line"></div><div class="line">				fs.stat(pathname, function (err, stats) &#123;</div><div class="line">					if (stats.isDirectory()) &#123;</div><div class="line">						travel(pathname, callback, function () &#123;</div><div class="line">							next(i + 1);</div><div class="line">						&#125;);</div><div class="line">					&#125; else &#123;</div><div class="line">						callback(pathname, function () &#123;</div><div class="line">							next(i + 1);</div><div class="line">						&#125;);</div><div class="line">					&#125;</div><div class="line">				&#125;);</div><div class="line">			&#125; else &#123;</div><div class="line">				finish &amp;&amp; finish();</div><div class="line">			&#125;</div><div class="line">		&#125;(0));</div><div class="line">	&#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h5 id="文本编码"><a href="#文本编码" class="headerlink" title="文本编码"></a>文本编码</h5><p>我们常用的文本编码有UTF8和GBK两种，并且UTF8文件还可能带有BOM。在读取不同编码的文本文件时，需要将文件内容转换为JS使用的UTF8编码字符串后才能正常处理。</p>
-<h6 id="BOM的移除"><a href="#BOM的移除" class="headerlink" title="BOM的移除"></a>BOM的移除</h6><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">function readText (pathname) &#123;</div><div class="line">	var bin = fs.readFileAync(pathname);</div><div class="line">	if (bin[0] === 0xFF &amp;&amp; bin[1] === oxBB &amp;&amp; bin[2] === 0xBF) &#123;</div><div class="line">		bin = bin.slice(3);</div><div class="line">	&#125;</div><div class="line">	return bin.toString(&apos;utf-8&apos;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h6 id="GBK转UTF8"><a href="#GBK转UTF8" class="headerlink" title="GBK转UTF8"></a>GBK转UTF8</h6><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">// 第三方包转换编码</div><div class="line">var iconv = require(&apos;iconv-lite&apos;); </div><div class="line">function readGBKText(pathname) &#123;</div><div class="line">	var bin = fs.readFileSync(pathname);</div><div class="line">	return iconv.decode(bin, &apos;gbk&apos;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h6 id="单字节编码"><a href="#单字节编码" class="headerlink" title="单字节编码"></a>单字节编码</h6><pre><code>不管大于0xEF的单个字节在单字节编码下被解析成什么乱码字符，使用同样的单字节编码保存这些乱码字符时，背后对应的字节保持不变。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">function replace(pathname) &#123;</div><div class="line">	var str = fs.readFileSync(pathname, &apos;binary&apos;);</div><div class="line">	str = str.replace(&apos;foo&apos;, &apos;bar&apos;);</div><div class="line">	fs.writeFileSync(pathname, str, &apos;binary&apos;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h4 id="网络操作"><a href="#网络操作" class="headerlink" title="网络操作"></a>网络操作</h4><h5 id="例子开启一个服务"><a href="#例子开启一个服务" class="headerlink" title="例子开启一个服务"></a>例子开启一个服务</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">http.createServer(function (request, response) &#123;</div><div class="line">	response.writeHead(200, &#123;&apos;Content-Type&apos;: &apos;text-plain&apos;&#125;);</div><div class="line">	response.end(&apos;Hello world\n&apos;);</div><div class="line">&#125;).listen(8734);</div><div class="line">// 以上程序创建了一个HTTP服务器并监听8734端口，打开浏览器访问该端口http://127.0.0.1:8124/就能够看到效果。</div></pre></td></tr></table></figure>
-</code></pre><h5 id="网络相关的API"><a href="#网络相关的API" class="headerlink" title="网络相关的API"></a>网络相关的API</h5><h6 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h6><pre><code>&apos;http&apos;模块提供两种使用方式：
-</code></pre><ol>
-<li>作为服务端使用时，创建一个HTTP服务器，监听HTTP客户端请求并返回响应。</li>
-<li>作为客户端使用时，发起一个HTTP客户端请求，获取服务端响应。<br>在回调函数中，除了可以使用request对象访问请求头数据外，还能把request对象当作一个只读数据流来访问请求体数据。<br>除了可以使用response对象来写入响应头数据外，还能把response对象当作一个只写数据流来写入响应体数据。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">http.createServer(function (request, response) &#123;</div><div class="line">	var body = [];</div><div class="line">	console.log(request.method);</div><div class="line">	console.log(request.headers);</div><div class="line">	request.on(&apos;data&apos;, function (chunk) &#123;</div><div class="line">		body.push(chunk);</div><div class="line">	&#125;);</div><div class="line">	request.on(&apos;end&apos;, function () &#123;</div><div class="line">		body = Buffer.concat(body);</div><div class="line">		console.log(body.toString());</div><div class="line">	&#125;);</div><div class="line">&#125;).listen(8734);</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h6 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h6><pre><code>https模块与http模块极为类似，区别在于https模块需要额外处理SSL证书。
-创建一个HTTPS服务器
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">var options = &#123;</div><div class="line">       key: fs.readFileSync(&apos;./ssl/default.key&apos;),</div><div class="line">       cert: fs.readFileSync(&apos;./ssl/default.cer&apos;)</div><div class="line">   &#125;;</div><div class="line">var server = https.createServer(options, function (request, response) &#123;</div><div class="line">		// ...</div><div class="line">&#125;);</div><div class="line">// 与创建HTTP服务器相比，多了一个options对象，通过key和cert字段指定了HTTPS服务器使用的私钥和公钥。</div></pre></td></tr></table></figure>
-
-另外，NodeJS支持SNI技术，可以根据HTTPS客户端请求使用的域名动态使用不同的证书，因此同一个HTTPS服务器可以使用多个域名提供服务。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">server.addContext(&apos;foo.com&apos;, &#123;</div><div class="line">	key: fs.readFileSync(&apos;./ssl/foo.com.key&apos;),</div><div class="line">	cert: fs.readFileSync(&apos;./ssl/foo.com.cer&apos;)</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h6 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h6><pre><code>处理HTTP请求时url模块使用率超高，因为该模块允许解析URL、生成URL，以及拼接URL。
-</code></pre><ol>
-<li><p>url.parse()<br>将一个URL字符串转换为URL对象</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var url = require(&apos;url&apos;, [boolean], [boolean]);</div><div class="line">console.log(url.parse(&apos;http://user:pass@host.com:8080/p/a/t/h?query=string#hash&apos;));</div><div class="line">第二个参数等于true时，该方法返回的URL对象中，query字段不再是一个字符串，而是一个经过querystring模块转换后的参数对象。</div><div class="line">第三个参数等于true时，该方法可以正确解析不带协议头的URL，例如//www.example.com/foo/bar。</div></pre></td></tr></table></figure>
-</li>
-<li><p>url.format()<br>允许将一个URL对象转换为URL字符串</p>
-</li>
-<li>url.resolve()<br>可以用于拼接URL<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var dd = url.resolve(&apos;http://www.baidu.com/yzf/age/sex&apos;, &apos;../va&apos;);</div><div class="line">// http://www.baidu.com/yzf/va</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h6 id="Query-String"><a href="#Query-String" class="headerlink" title="Query String"></a>Query String</h6><pre><code>querystring模块用于实现URL参数字符串与参数对象的互相转换.
-querystring.parse()
-    将字符串参数转化为对象URL参数
-querystring.stringify()
-    将参数对象转化为URL参数字符串
-</code></pre><h6 id="Zlib"><a href="#Zlib" class="headerlink" title="Zlib"></a>Zlib</h6><pre><code>zlib模块提供了数据压缩和解压的功能。当我们处理HTTP请求和响应时，可能需要用到这个模块。
-例子：使用zlib模块压缩HTTP响应体数据。
-这个例子中，判断了客户端是否支持gzip，并在支持的情况下使用zlib模块返回gzip之后的响应体数据。
-zlib.gzip()
-    数据压缩
-zlib.gunzip()
-    数据解压
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">http.createServer(function (request, response) &#123;</div><div class="line">	let i = 1024,</div><div class="line">		data = &apos;&apos;;</div><div class="line">	while (i--) &#123;</div><div class="line">		data += &apos;x&apos;;</div><div class="line">	&#125;</div><div class="line">	if (request.headers[&apos;accept-encoding&apos;].includes(&apos;gzip&apos;)) &#123;</div><div class="line">		zlib.gzip(data, function (err, data) &#123;</div><div class="line">			response.writeHead(200, &#123;</div><div class="line">				&apos;Content-Type&apos;: &apos;text/plain&apos;,</div><div class="line">				&apos;Content-Encoding&apos;: &apos;gzip&apos;</div><div class="line">			&#125;);</div><div class="line">			response.end(data);</div><div class="line">		&#125;)</div><div class="line">	&#125; else &#123;</div><div class="line">		response.writeHead(200, &#123;</div><div class="line">			&apos;Content-Type&apos;: &apos;text/plain&apos;</div><div class="line">		&#125;);</div><div class="line">		response.end(data);</div><div class="line">	&#125;</div><div class="line">&#125;).listen(8888);</div></pre></td></tr></table></figure>
-</code></pre><h6 id="Net"><a href="#Net" class="headerlink" title="Net"></a>Net</h6><pre><code>net模块可用于创建Socket服务器或Socket客户端。
-使用Socket搭建一个HTTP服务器的例子。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">net.createServer(function (conn) &#123;</div><div class="line">	conn.on(&apos;data&apos;, function (data) &#123;</div><div class="line">		conn.write([</div><div class="line">			&apos;HTTP/1.1 200 OK&apos;,</div><div class="line">			&apos;Content-Type: text/plain&apos;,</div><div class="line">			&apos;Content-Length: 12&apos;,</div><div class="line">			&apos;&apos;,</div><div class="line">			&apos;Hello World&apos;</div><div class="line">		].join(&apos;\n&apos;));</div><div class="line">	&#125;);</div><div class="line">&#125;).listen(8888);</div></pre></td></tr></table></figure>
-</code></pre><h4 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h4><pre><code>NodeJS可以感知和控制自身进程的运行环境和状态，也可以创建子进程并与其协同工作，这使得NodeJS可以把多个程序组合在一起共同完成某项工作，并在其中充当胶水和调度器的作用。
-node.js调用终端简化目录拷贝
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">var child_process = require(&apos;child_process&apos;);</div><div class="line">var util = require(&apos;util&apos;);</div><div class="line">function copy(source, target, callback) &#123;</div><div class="line">	child_process.exec(</div><div class="line">		util.format(&apos;cp -r %s/* %s&apos;, source, target), callback);</div><div class="line">&#125;</div><div class="line">copy(process.argv[1].slice(0, -7) + &apos;copy1&apos;, process.argv[1].slice(0, -7) + &apos;copy2&apos;, function (err, data) &#123;</div><div class="line">	if (err) &#123;</div><div class="line">		console.log(err)</div><div class="line">	&#125;</div><div class="line">	console.log(data)</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h5 id="Process"><a href="#Process" class="headerlink" title="Process"></a>Process</h5><pre><code>任何一个进程都有启动进程时使用的命令行参数，有标准输入标准输出，有运行权限，有运行环境和运行状态。
-另外需要注意的是，process不是内置模块，而是一个全局对象，因此在任何地方都可以直接使用。
-</code></pre><h5 id="Child-Process"><a href="#Child-Process" class="headerlink" title="Child Process"></a>Child Process</h5><pre><code>使用child_process模块可以创建和控制子进程。该模块提供的API中最核心的是.spawn，其余API都是针对特定使用场景对它的进一步封装，算是一种语法糖。
-</code></pre><h5 id="Cluster"><a href="#Cluster" class="headerlink" title="Cluster"></a>Cluster</h5><pre><code>cluster模块是对child_process模块的进一步封装，专用于解决单进程NodeJS Web服务器无法充分利用多核CPU的问题。使用该模块可以简化多进程服务器程序的开发，让每个核上运行一个工作进程，并统一通过主进程监听端口和分发请求。
-</code></pre><p>应用场景</p>
-<ol>
-<li>如何获取命令行参数<br>  在NodeJS中可以通过process.argv获取命令行参数。<br>  但是比较意外的是，node执行程序路径和主模块文件路径固定占据了argv[0]和argv[1]两个位置，而第一个命令行参数从argv[2]开始。<br>  一般这样获取：process.argv.slice(2)</li>
-<li><p>如何退出程序</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">try &#123;</div><div class="line">	// ...</div><div class="line">&#125; catch (err) &#123;</div><div class="line">	// ...</div><div class="line">	process.exit(1); // 返回特定的状态码</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p>如何控制输入输出<br>NodeJS程序的标准输入流（stdin）、一个标准输出流（stdout）、一个标准错误流（stderr）分别对应process.stdin、process.stdout和process.stderr，<br>第一个是只读数据流，后边两个是只写数据流，对它们的操作按照对数据流的操作方式即可。</p>
-</li>
-<li><p>如何降权<br>在Linux系统下，我们知道需要使用root权限才能监听1024以下端口。但是一旦完成端口监听后，继续让程序运行在root权限下存在安全隐患，因此最好能把权限降下来。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">http.createServer(callback).listen(80, function () &#123;</div><div class="line">	var env = process.env,</div><div class="line">		uid = parseInt(env[&apos;SUDO_UID&apos;] || process.getuid(), 10),</div><div class="line">		gid = parseInt(env[&apos;SUDO_GID&apos;] || process.getgid(), 10);</div><div class="line">	process.setgid(gid);</div><div class="line">	process.setuid(uid);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</li>
-<li><p>如何创建子进程<br>创建NodeJS子进程</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">var child = child_process.spawn(&apos;node&apos;, [ &apos;a.js&apos; ]);</div><div class="line">child.stdout.on(&apos;data&apos;, function (data) &#123;</div><div class="line">	console.log(&apos;stdout: &apos; + data);</div><div class="line">&#125;);</div><div class="line">child.stderr.on(&apos;data&apos;, function (data) &#123;</div><div class="line">	console.log(&apos;stderr: &apos; + data);</div><div class="line">&#125;);</div><div class="line">child.on(&apos;close&apos;, function (code) &#123;</div><div class="line">	console.log(&apos;child process exited with code &apos; + code);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</li>
-<li><p>进程间如何通讯    </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">/* parent.js */</div><div class="line">var child = child_process.spawn(&apos;node&apos;, [ &apos;child.js&apos; ]);</div><div class="line"></div><div class="line">child.kill(&apos;SIGTERM&apos;);</div><div class="line"></div><div class="line">/* child.js */</div><div class="line">process.on(&apos;SIGTERM&apos;, function () &#123;</div><div class="line">	cleanUp();</div><div class="line">	process.exit(0);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</li>
-<li><p>进程间如何通讯<br>如果父子进程都是NodeJS进程，就可以通过IPC（进程间通讯）双向传递数据。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">/* parent.js */</div><div class="line">var child = child_process.spawn(&apos;node&apos;, [ &apos;child.js&apos; ], &#123;</div><div class="line">		stdio: [ 0, 1, 2, &apos;ipc&apos; ]</div><div class="line">	&#125;);</div><div class="line"></div><div class="line">child.on(&apos;message&apos;, function (msg) &#123;</div><div class="line">	console.log(msg);</div><div class="line">&#125;);</div><div class="line"></div><div class="line">child.send(&#123; hello: &apos;hello&apos; &#125;);</div><div class="line"></div><div class="line">/* child.js */</div><div class="line">process.on(&apos;message&apos;, function (msg) &#123;</div><div class="line">	msg.hello = msg.hello.toUpperCase();</div><div class="line">	process.send(msg);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</li>
-<li><p>如何守护子进程<br>守护进程一般用于监控工作进程的运行状态，在工作进程不正常退出时重启工作进程，保障工作进程不间断运行。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">function spawn(mainModule) &#123;</div><div class="line">	var worker = child_process.spawn(&apos;node&apos;, [ mainModule ]);</div><div class="line">	worker.on(&apos;exit&apos;, function (code) &#123;</div><div class="line">		if (code !== 0) &#123;</div><div class="line">			spawn(mainModule);</div><div class="line">		&#125;</div><div class="line">	&#125;);</div><div class="line">&#125;</div><div class="line">spawn(&apos;worker.js&apos;);</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h4 id="异步编程"><a href="#异步编程" class="headerlink" title="异步编程"></a>异步编程</h4><pre><code>NodeJS最大的卖点——事件机制和异步IO。
-</code></pre><h5 id="回调"><a href="#回调" class="headerlink" title="回调"></a>回调</h5><pre><code>在代码中，异步编程的直接体现就是回调。异步编程依托于回调来实现，但不能说使用了回调后程序就异步化了。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">setTimeout(function () &#123;</div><div class="line">	console.log(&apos;我是setTimeout&apos;)</div><div class="line">&#125;, 1000);</div><div class="line">console.log(&apos;hello&apos;);</div></pre></td></tr></table></figure>
-
-理解js中如何实现异步
-    JS本身是单线程的，无法异步执行，因此我们可以认为setTimeout这类JS规范之外的由运行环境提供的特殊函数做的
-    事情是创建一个平行线程后立即返回，让JS主进程可以接着执行后续代码，并在收到平行进程的通知后再执行回调函数。
-    我们仍然回到JS是单线程运行的这个事实上，这决定了JS在执行完一段代码之前无法执行包括回调函数在内的别的代码。
-    也就是说，即使平行线程完成工作了，通知JS主线程执行回调函数了，回调函数也要等到JS主线程空闲时才能开始执行。
-</code></pre><h5 id="代码设计模式"><a href="#代码设计模式" class="headerlink" title="代码设计模式"></a>代码设计模式</h5><h6 id="函数返回值"><a href="#函数返回值" class="headerlink" title="函数返回值"></a>函数返回值</h6><pre><code>使用一个函数的输出作为另一个函数的输入是很常见的需求。
-同步方式编写代码：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">var output = fn1(fn2(&apos;input&apos;));</div></pre></td></tr></table></figure>
-
-异步方式编写代码：
-由于函数执行结果不是通过返回值，而是通过回调函数传递。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">fn2(&apos;input&apos;, function (output2) &#123;</div><div class="line">	fn1(output2, function (output1) &#123;</div><div class="line">		// do something</div><div class="line">	&#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h6 id="遍历数组"><a href="#遍历数组" class="headerlink" title="遍历数组"></a>遍历数组</h6><pre><code>在遍历数组时，使用某个函数依次对数据成员做一些处理也是常见的需求。
-同步方式编写代码：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">var len = arr.length;</div><div class="line">for (let i = 0; i &lt; len; i++) &#123;</div><div class="line">	arr[i] = sync(arr[i]);</div><div class="line">&#125;</div><div class="line">// 所有的数组项处理完，打算做的事</div></pre></td></tr></table></figure>
-
-异步方式编写代码(异步串行遍历)：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">((function next (i, len, callback) &#123;</div><div class="line">	if (i &lt; len) &#123;</div><div class="line">		async(arr[i], function (value) &#123;</div><div class="line">			arr[i] = value;</div><div class="line">			next(i + 1, len, callback);</div><div class="line">		&#125;);</div><div class="line">	&#125; else &#123;</div><div class="line">		callback();</div><div class="line">	&#125;</div><div class="line">&#125;)(0, arr.length, function () &#123;</div><div class="line">	// 所有的数组项处理完，打算做的事</div><div class="line">&#125;));</div></pre></td></tr></table></figure>
-
-异步方式编写代码(异步并行遍历)：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">((function (i, len, count, callback) &#123;</div><div class="line">	for (; i &lt; len; i++) &#123;</div><div class="line">		(function (i) &#123;</div><div class="line">			async(arr[i], function (value) &#123;</div><div class="line">				arr[i] = value;</div><div class="line">				if (++count === len) &#123;</div><div class="line">					callback();</div><div class="line">				&#125;</div><div class="line">			&#125;)</div><div class="line">		&#125;)(i);</div><div class="line">	&#125;</div><div class="line">&#125;)(0, arr.length, 0, function () &#123;</div><div class="line">	// 所有的数组项处理完，打算做的事</div><div class="line">&#125;))</div></pre></td></tr></table></figure>
-</code></pre><h6 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h6><pre><code>JS自身提供的异常捕获和处理机制——try..catch..，只能用于同步执行的代码。
-同步异常处理：
-因为代码执行路径被打断了，我们就需要在异常冒泡到断点之前用try语句把异常捕获住，并通过回调函数传递被捕获的异常。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">function sync(fn) &#123;</div><div class="line">	return fn();</div><div class="line">&#125;</div><div class="line"></div><div class="line">try &#123;</div><div class="line">	sync(null);</div><div class="line">	// Do something.</div><div class="line">&#125; catch (err) &#123;</div><div class="line">	console.log(&apos;Error: %s&apos;, err.message);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-异步异常处理：
-但由于异步函数会打断代码执行路径，异步函数执行过程中以及执行之后产生的异常冒泡到执行路径被打断的位置时，如果一直没有遇到try语句，就作为一个全局异常抛出。
-因为代码执行路径被打断了，我们就需要在异常冒泡到断点之前用try语句把异常捕获住，并通过回调函数传递被捕获的异常。
-</code></pre><h5 id="域（Domain）"><a href="#域（Domain）" class="headerlink" title="域（Domain）"></a>域（Domain）</h5><pre><code>NodeJS提供了domain模块，可以简化异步代码的异常处理。
-一个域就是一个JS运行环境，在一个运行环境中，如果一个异常没有被捕获，将作为一个全局异常被抛出。NodeJS通过process对象提供了捕获全局异常的方法。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">process.on(&apos;uncaughtException&apos;, function (err) &#123;</div><div class="line">	console.log(&apos;Error: %s&apos;, err.message);</div><div class="line">&#125;);</div><div class="line"></div><div class="line">setTimeout(function (fn) &#123;</div><div class="line">	fn();</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-
-使用domain模块创建一个子域（JS子运行环境）。
-在子域内运行的代码可以随意抛出异常，而这些异常可以通过子域对象的error事件统一捕获。
-我们使用.create方法创建了一个子域对象，并通过.run方法进入需要在子域中运行的代码的入口点。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">function async(request, callback) &#123;</div><div class="line">	// Do something.</div><div class="line">	asyncA(request, function (data) &#123;</div><div class="line">		// Do something</div><div class="line">		asyncB(request, function (data) &#123;</div><div class="line">			// Do something</div><div class="line">			asyncC(request, function (data) &#123;</div><div class="line">				// Do something</div><div class="line">				callback(data);</div><div class="line">			&#125;);</div><div class="line">		&#125;);</div><div class="line">	&#125;);</div><div class="line">&#125;</div><div class="line">http.createServer(function (request, response) &#123;</div><div class="line">	var d = domain.create(); // 创建子域</div><div class="line"></div><div class="line">	d.on(&apos;error&apos;, function () &#123;</div><div class="line">		response.writeHead(500);</div><div class="line">		response.end();</div><div class="line">	&#125;);</div><div class="line"></div><div class="line">	d.run(function () &#123; // 子域运行入口</div><div class="line">		async(request, function (data) &#123;</div><div class="line">			response.writeHead(200);</div><div class="line">			response.end(data);</div><div class="line">		&#125;);</div><div class="line">	&#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h5 id="陷阱"><a href="#陷阱" class="headerlink" title="陷阱"></a>陷阱</h5><pre><code>无论是通过process对象的uncaughtException事件捕获到全局异常，还是通过子域对象的error事件捕获到了子域异常，在NodeJS官方文档里都强烈建议处理完异常后立即重启程序，而不是让程序继续运行。    
-</code></pre><p>参考书籍：<br>    <a href="http://nqdeng.github.io/7-days-nodejs/" target="_blank" rel="external">七天学会NodeJs</a><br>    <a href="http://nodejs.cn/api/" target="_blank" rel="external">node中文</a><br>代码仓库：<a href="https://github.com/fanerge/7day-NodeJs.git" target="_blank" rel="external">node学习源代码</a></p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;NodeJs基础&quot;&gt;&lt;a href=&quot;#NodeJs基础&quot; class=&quot;headerlink&quot; title=&quot;NodeJs基础&quot;&gt;&lt;/a&gt;NodeJs基础&lt;/h4&gt;&lt;h5 id=&quot;模块&quot;&gt;&lt;a href=&quot;#模块&quot; class=&quot;headerlink&quot; titl
-    
-    </summary>
-    
-      <category term="NodeJS" scheme="https://fanerge.github.io/categories/NodeJS/"/>
-    
-    
-      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
-    
-      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
-    
-      <category term="读书笔记" scheme="https://fanerge.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-    
-      <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>css加强（多形状图像和心跳灯和竖着排的文字和面包屑导航）</title>
-    <link href="https://fanerge.github.io/2017/09/04/css%E5%8A%A0%E5%BC%BA-5/"/>
-    <id>https://fanerge.github.io/2017/09/04/css加强-5/</id>
-    <published>2017-09-04T13:55:45.000Z</published>
-    <updated>2017-09-04T15:21:05.875Z</updated>
-    
-    <content type="html"><![CDATA[<p>在接下来的一段时间学习看云上购买的一本<a href="https://www.kancloud.cn/dennis/javascriptmethod/261472" target="_blank" rel="external">Web开发实战</a>书籍，来提升自己的软实力。<br>本部分为css实战部分。</p>
-<h4 id="多形状图像"><a href="#多形状图像" class="headerlink" title="多形状图像"></a>多形状图像</h4><pre><code>可以实现多形状图像
-border-radius: top right bottom left;
-</code></pre><h4 id="心跳灯"><a href="#心跳灯" class="headerlink" title="心跳灯"></a>心跳灯</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">.heartbeat &#123;</div><div class="line">	width: 100px;</div><div class="line">	height: 100px;</div><div class="line">	background: red;</div><div class="line">	animation: heartbeat .83s ease-in-out infinite;</div><div class="line">&#125;</div><div class="line">@keyframes heartbeat &#123;</div><div class="line">	from &#123;</div><div class="line">		opacity:0.1;</div><div class="line">	&#125;</div><div class="line">	50% &#123;</div><div class="line">		opacity:1;</div><div class="line">	&#125;</div><div class="line">	to &#123;</div><div class="line">		opacity:0.1;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h4 id="竖着排的文字"><a href="#竖着排的文字" class="headerlink" title="竖着排的文字"></a>竖着排的文字</h4><pre><code>writing-mode: horizontal-tb | vertical-lr | vertical-rl;
-    horizontal-tb表示水平方向自上而下的书写方式。
-    vertical-rl表示垂直方向自右向左的书写方式
-    vertical-lr表示垂直方向自左向右的书写方式
-IE
-writing-mode: lr-tb | tb-rl;
-    lr-tb水平方向自左向右的书写方式
-    tb-rl垂直方向自上而下的书写方式。
-</code></pre><h4 id="首字母下沉"><a href="#首字母下沉" class="headerlink" title="首字母下沉"></a>首字母下沉</h4><pre><code>::first-letter伪元素选择器用于选取指定选择器的首字母。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">p::first-letter &#123;</div><div class="line">	color:#c69c6d;</div><div class="line">	float:left;</div><div class="line">	font-size:5em;</div><div class="line">	margin:0 .2em 0 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><blockquote>
-<p>   参考文档</p>
-<ol>
-<li><a href="https://www.kancloud.cn/dennis/javascriptmethod/261473" target="_blank" rel="external">web开发实战</a></li>
-<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/linear-gradient3.    [transform](http://www.runoob.com/cssref/css3-pr-transform.html" target="_blank" rel="external">linear-gradient</a><br><a href="https://github.com/fanerge/web-/tree/master" target="_blank" rel="external">代码仓库</a></li>
-</ol>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在接下来的一段时间学习看云上购买的一本&lt;a href=&quot;https://www.kancloud.cn/dennis/javascriptmethod/261472&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Web开发实战&lt;/a&gt;书籍，来提升自己的软实
-    
-    </summary>
-    
-      <category term="css" scheme="https://fanerge.github.io/categories/css/"/>
-    
-    
-      <category term="css" scheme="https://fanerge.github.io/tags/css/"/>
-    
-      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
-    
-      <category term="读书笔记" scheme="https://fanerge.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>css加强（表单和文本样式和动态边框和上传组件美化）</title>
-    <link href="https://fanerge.github.io/2017/09/04/css%E5%8A%A0%E5%BC%BA-4/"/>
-    <id>https://fanerge.github.io/2017/09/04/css加强-4/</id>
-    <published>2017-09-04T11:31:38.000Z</published>
-    <updated>2017-09-04T13:55:12.989Z</updated>
-    
-    <content type="html"><![CDATA[<p>在接下来的一段时间学习看云上购买的一本<a href="https://www.kancloud.cn/dennis/javascriptmethod/261472" target="_blank" rel="external">Web开发实战</a>书籍，来提升自己的软实力。<br>本部分为css实战部分。</p>
-<h4 id="表单input"><a href="#表单input" class="headerlink" title="表单input"></a>表单input</h4><p>主要添加了过渡下border和验证提示<br><img src="/images/form.png" alt="表单中的input"></p>
-<h5 id="创建模版"><a href="#创建模版" class="headerlink" title="创建模版"></a>创建模版</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&lt;div class=&quot;input-field&quot;&gt;</div><div class="line">	&lt;input id=&quot;last-name&quot; type=&quot;text&quot; placeholder=&quot;name&quot;&gt;&lt;/input&gt;</div><div class="line">	&lt;span&gt;&lt;/span&gt;</div><div class="line">&lt;/div&gt;</div><div class="line">&lt;!--带验证的--&gt;</div><div class="line">&lt;div class=&quot;input-field error input-field-icon&quot;&gt;</div><div class="line">	&lt;input id=&quot;last_name&quot; type=&quot;text&quot; placeholder=&quot;账号&quot;&gt;</div><div class="line">	&lt;span class=&quot;gradient&quot;&gt;&lt;/span&gt;</div><div class="line">	&lt;i class=&quot;ion-android-close&quot;&gt;</div><div class="line">	&lt;/i&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
-
-解释：
-.input-field成为容器层，input和span并列排列。
-让span来充当input的下border，然后在通过为类选择器:focus和兄弟选择器和伪类元素span:after来完成
-</code></pre><h5 id="设置样式"><a href="#设置样式" class="headerlink" title="设置样式"></a>设置样式</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line"> *&#123;</div><div class="line">	box-sizing:border-box;</div><div class="line">&#125;</div><div class="line">.input-field &#123;</div><div class="line">	position: relative;</div><div class="line">	width: 200px;</div><div class="line">	margin: 20px 50px;</div><div class="line">&#125;</div><div class="line"></div><div class="line">.input-field input &#123;</div><div class="line">	background-color: transparent;</div><div class="line">	border: none;</div><div class="line">	border-radius: 0;</div><div class="line">	height: 35px;</div><div class="line">	width: 100%;</div><div class="line">	padding: 0;</div><div class="line">	box-shadow: none;</div><div class="line">	outline: none;</div><div class="line">	transition: all 0.3s;</div><div class="line">&#125;</div><div class="line"></div><div class="line">.input-field input+span &#123;</div><div class="line">	position: absolute;</div><div class="line">	top: 100%;</div><div class="line">	left: 0;</div><div class="line">	display: inline-block;</div><div class="line">	max-width: 100%;</div><div class="line">	z-index: 0;</div><div class="line">	width: 100%;</div><div class="line">	height: 1px;</div><div class="line">	border-bottom: 1px solid #d9d9d9;</div><div class="line">&#125;</div><div class="line"></div><div class="line">.input-field span:after &#123;</div><div class="line">	content: &quot;&quot;;</div><div class="line">	position: absolute;</div><div class="line">	bottom: 0;</div><div class="line">	left: 0;</div><div class="line">	width: 100%;</div><div class="line">	height: 2px;</div><div class="line">	background: #2196f3;</div><div class="line">	transform: scale(0);</div><div class="line">	transition: all .2s ease-out;</div><div class="line">&#125;</div><div class="line">.input-field input:focus+span:after &#123;</div><div class="line">	transform: scale(1);</div><div class="line">&#125;</div><div class="line">.input-field.input-field-icon i&#123;</div><div class="line">	position:absolute;</div><div class="line">	right:0;</div><div class="line">	top:50%;</div><div class="line">	padding:0 5px;</div><div class="line">	font-size:1.5em;</div><div class="line">	-webkit-transform: translate(0, -50%);</div><div class="line">	transform: translate(0, -50%);</div><div class="line">&#125;</div><div class="line">.input-field.input-field-icon input&#123;</div><div class="line">	padding-right:30px;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-这里有个小技巧：要是验证图标垂直居中，达到居中效果。
-top: 50%; 相对于父元素的高度
-transform: translate(0, -50%); 相对于自身元素的高度。
-</code></pre><h4 id="自定义选择文本样式"><a href="#自定义选择文本样式" class="headerlink" title="自定义选择文本样式"></a>自定义选择文本样式</h4><pre><code>使用::selection伪类选择器，我们可以实现与众不同的选择文本样式。
-注意：只能设置背景色和文字颜色，同时不支持渐变色。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">::selection &#123;</div><div class="line">	background: #009a61;</div><div class="line">	color: #fff;</div><div class="line">&#125;</div><div class="line"></div><div class="line">::-moz-selection &#123;</div><div class="line">	background: #009a61;</div><div class="line">	color: #fff;</div><div class="line">&#125;</div><div class="line"></div><div class="line">::-webkit-selection &#123;</div><div class="line">	background: #009a61;</div><div class="line">	color: #fff;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h4 id="动态的边框"><a href="#动态的边框" class="headerlink" title="动态的边框"></a>动态的边框</h4><h5 id="创建模版-1"><a href="#创建模版-1" class="headerlink" title="创建模版"></a>创建模版</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;div class=&quot;dynamic-border dynamic-border-2&quot;&gt;</div><div class="line">	&lt;span&gt;</div><div class="line">	&lt;/span&gt;</div><div class="line">	&lt;img src=&quot;images/girl.jpg&quot; alt=&quot;&quot;&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
-
-整体思路：
-创建一个容器，容器自身两个伪类元素，span又包含两个伪类元素，可以动态生成容器的4个边框（相对+绝对定位）。
-在加上过渡效果就OK了。第二个动态边框只要按不同时间延迟组合就好了。
-</code></pre><h5 id="设置样式-1"><a href="#设置样式-1" class="headerlink" title="设置样式"></a>设置样式</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div></pre></td><td class="code"><pre><div class="line"> *&#123;</div><div class="line">	box-sizing:border-box;</div><div class="line">&#125;</div><div class="line">.dynamic-border &#123;</div><div class="line">	position:relative;</div><div class="line">	width:200px;</div><div class="line">	height:200px;</div><div class="line">	background:gray;</div><div class="line">&#125;</div><div class="line">.dynamic-border:before,</div><div class="line">.dynamic-border:after,</div><div class="line">.dynamic-border span:first-child:before,</div><div class="line">.dynamic-border span:first-child:after &#123;</div><div class="line">	content:&quot;&quot;;</div><div class="line">	position:absolute;</div><div class="line">	background:red;</div><div class="line">	-webkit-transition:all .2s ease;</div><div class="line">	transition:all .2s ease;</div><div class="line">&#125;</div><div class="line">/*上边边框*/</div><div class="line">.dynamic-border:before &#123;</div><div class="line">	width:0; </div><div class="line">	top:-2px;</div><div class="line">	right:0;</div><div class="line">	height:2px;</div><div class="line">&#125;</div><div class="line">/*右边边框*/</div><div class="line">.dynamic-border:after &#123;</div><div class="line">	width:2px;</div><div class="line">	height:0;  </div><div class="line">	right:-2px;</div><div class="line">	bottom:0;</div><div class="line">&#125;</div><div class="line">/*下边边框*/</div><div class="line">.dynamic-border span:first-child:before &#123;</div><div class="line">	width:0;  </div><div class="line">	height:2px;</div><div class="line">	bottom:-2px;</div><div class="line">	left:0;</div><div class="line">&#125;</div><div class="line">/*左边边框*/</div><div class="line">.dynamic-border span:first-child:after &#123;</div><div class="line">	width:2px;</div><div class="line">	height:0;  </div><div class="line">	top:0;</div><div class="line">	left:-2px;</div><div class="line">&#125;</div><div class="line">/*鼠标移动上去时*/</div><div class="line">.dynamic-border:hover:before,</div><div class="line">.dynamic-border:hover span:first-child:before &#123;</div><div class="line">	width:calc(100% + 2px);</div><div class="line">&#125;</div><div class="line">.dynamic-border:hover:after,</div><div class="line">.dynamic-border:hover span:first-child:after &#123;</div><div class="line">	height:calc(100% + 2px);</div><div class="line">&#125;</div><div class="line">/*添加过渡延迟时间*/</div><div class="line">.dynamic-border-1:hover:before,</div><div class="line">.dynamic-border-1:hover span:first-child:before &#123;</div><div class="line">	-webkit-transition-delay:.2s;</div><div class="line">	transition-delay:.2s;</div><div class="line">&#125;</div><div class="line">.dynamic-border-2:hover span:first-child:before &#123;</div><div class="line">	-webkit-transition-delay:.2s;</div><div class="line">	transition-delay:.2s;</div><div class="line">&#125;</div><div class="line">.dynamic-border-2:hover:after &#123;</div><div class="line">	-webkit-transition-delay:.4s;</div><div class="line">	transition-delay:.4s;</div><div class="line">&#125;</div><div class="line">.dynamic-border-2:hover:before &#123;</div><div class="line">	-webkit-transition-delay:.6s;</div><div class="line">	transition-delay:.6s;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h4 id="上传组件美化"><a href="#上传组件美化" class="headerlink" title="上传组件美化"></a>上传组件美化</h4><h5 id="创建模版-2"><a href="#创建模版-2" class="headerlink" title="创建模版"></a>创建模版</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&lt;div class=&quot;file file-input&quot;&gt;</div><div class="line">	&lt;div class=&quot;file-inner&quot;&gt;</div><div class="line">		选择文件</div><div class="line">		&lt;button class=&quot;btn btn-primary file-inner-btn&quot;&gt;</div><div class="line">			文件上传</div><div class="line">			&lt;i class=&quot;ion-ios-cloud-upload-outline&quot;&gt;</div><div class="line">			&lt;/i&gt;</div><div class="line">		&lt;/button&gt;</div><div class="line">	&lt;/div&gt;</div><div class="line">	&lt;input type=&quot;file&quot; /&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
-</code></pre><h5 id="设置CSS样式"><a href="#设置CSS样式" class="headerlink" title="设置CSS样式"></a>设置CSS样式</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">.file &#123;</div><div class="line">	position:relative;</div><div class="line">&#125;</div><div class="line">.file input &#123;</div><div class="line">	position:absolute;</div><div class="line">	top:0;</div><div class="line">	left:0;</div><div class="line">	opacity:0;</div><div class="line">	width:100%;</div><div class="line">	height:100%;</div><div class="line">&#125;</div><div class="line">.file-inner &#123;</div><div class="line">	position:relative;</div><div class="line">	width:250px;</div><div class="line">	height:35px;</div><div class="line">	border:1px solid #d9d9d9;</div><div class="line">	border-radius:5px;</div><div class="line">	padding-left:10px;</div><div class="line">	line-height:35px;</div><div class="line">&#125;</div><div class="line">.file-inner .file-inner-btn &#123;</div><div class="line">	position:absolute;</div><div class="line">	right:0;</div><div class="line">	top:0;</div><div class="line">	height:100%;</div><div class="line">	box-shadow:none;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-解释；
-这里就用了一个技巧，把input设置为opacity: 0;然后在绝对定位并设置宽高100%，这样就会是整个区域都触发file的input默认事件。
-</code></pre><blockquote>
-<p>   参考文档</p>
-<ol>
-<li><a href="https://www.kancloud.cn/dennis/javascriptmethod/261473" target="_blank" rel="external">web开发实战</a></li>
-<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/linear-gradient3.    [transform](http://www.runoob.com/cssref/css3-pr-transform.html" target="_blank" rel="external">linear-gradient</a><br><a href="https://github.com/fanerge/web-/tree/master" target="_blank" rel="external">代码仓库</a></li>
-</ol>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在接下来的一段时间学习看云上购买的一本&lt;a href=&quot;https://www.kancloud.cn/dennis/javascriptmethod/261472&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Web开发实战&lt;/a&gt;书籍，来提升自己的软实
-    
-    </summary>
-    
-      <category term="css" scheme="https://fanerge.github.io/categories/css/"/>
-    
-    
-      <category term="css" scheme="https://fanerge.github.io/tags/css/"/>
-    
-      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
-    
-      <category term="读书笔记" scheme="https://fanerge.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
   </entry>
   

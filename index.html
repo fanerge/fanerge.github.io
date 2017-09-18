@@ -282,6 +282,490 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/18/koa学习-测试/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/18/koa学习-测试/" itemprop="url">
+                  koa学习-测试
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-18T22:21:06+08:00">
+                2017-09-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
+                    <span itemprop="name">NodeJS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/18/koa学习-测试/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/18/koa学习-测试/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>mocha 模块是测试框架<br>chai 模块是用来进行测试结果断言库，比如一个判断 1 + 1 是否等于 2<br>supertest 模块是http请求测试库，用来请求API接口</p>
+<h3 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h3><pre><code>所需测试demo
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">const koa = require(&apos;koa&apos;);</div><div class="line">const app = new koa();</div><div class="line"></div><div class="line">const server = async (ctx, next) =&gt; &#123;</div><div class="line">	let result = &#123;</div><div class="line">		success: true,</div><div class="line">		data: null</div><div class="line">	&#125;;</div><div class="line">	if (ctx.method === &apos;GET&apos;) &#123;</div><div class="line">		if (ctx.url === &apos;/getString.json&apos;) &#123;</div><div class="line">			result.data = &apos;this is string data&apos;;</div><div class="line">		&#125; else if (ctx.url === &apos;/getNumber.json&apos;)&#123;</div><div class="line">			result.data = 123456;    </div><div class="line">		&#125; else &#123;</div><div class="line">			result.success = false;</div><div class="line">		&#125;</div><div class="line">		ctx.body = result;</div><div class="line">		next &amp;&amp; next();</div><div class="line">	&#125; else if (ctx.method === &apos;POST&apos;) &#123;</div><div class="line">		if (ctx.url === &apos;/postData.json&apos;) &#123;</div><div class="line">			result.data = &apos;ok&apos;;</div><div class="line">		&#125; else &#123;</div><div class="line">			result.success = false;</div><div class="line">		&#125;</div><div class="line">		ctx.body = result;</div><div class="line">		next &amp;&amp; next();</div><div class="line">	&#125; else &#123;</div><div class="line">		ctx.body = &apos;hello world&apos;;</div><div class="line">		next &amp;&amp; next();</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">app.use(server);</div><div class="line"></div><div class="line">module.exports = app;</div><div class="line"></div><div class="line">app.listen(3004, () =&gt; &#123;</div><div class="line">	console.log(&apos;[demo] test-unit is starting at port 3004&apos;)</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h3 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">const supertest = require(&apos;supertest&apos;)</div><div class="line">const chai = require(&apos;chai&apos;)</div><div class="line">const app = require(&apos;./../index&apos;)</div><div class="line"></div><div class="line">const expect = chai.expect</div><div class="line">const request = supertest( app.listen() )</div><div class="line"></div><div class="line">// 测试套件/组</div><div class="line">describe( &apos;开始测试demo的GET请求&apos;, ( ) =&gt; &#123;</div><div class="line"></div><div class="line">  // 测试用例</div><div class="line">  it(&apos;测试/getString.json请求&apos;, ( done ) =&gt; &#123;</div><div class="line">	  request</div><div class="line">		.get(&apos;/getString.json&apos;)</div><div class="line">		.expect(200)</div><div class="line">		.end(( err, res ) =&gt; &#123;</div><div class="line">			// 断言判断结果是否为object类型</div><div class="line">			expect(res.body).to.be.an(&apos;object&apos;)</div><div class="line">			expect(res.body.success).to.be.an(&apos;boolean&apos;)</div><div class="line">			expect(res.body.data).to.be.an(&apos;string&apos;)</div><div class="line">			done()</div><div class="line">		&#125;)</div><div class="line">  &#125;)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="https://chenshenhai.github.io/koa2-note/note/request/post-use-middleware.html" target="_blank" rel="external">koa-note</a><br>    <a href="https://www.npmjs.com/package/koa-jsonp" target="_blank" rel="external">koa-jsonp</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/18/koa学习-jsonp实现/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/18/koa学习-jsonp实现/" itemprop="url">
+                  koa学习-jsonp实现
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-18T21:35:36+08:00">
+                2017-09-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
+                    <span itemprop="name">NodeJS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/18/koa学习-jsonp实现/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/18/koa学习-jsonp实现/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="原生koa2实现jsonp"><a href="#原生koa2实现jsonp" class="headerlink" title="原生koa2实现jsonp"></a>原生koa2实现jsonp</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">const koa = require(&apos;koa&apos;);</div><div class="line"></div><div class="line">const app = new koa();</div><div class="line"></div><div class="line">app.use(async (ctx) =&gt; &#123;</div><div class="line">	// 判断是否为jsonp的请求</div><div class="line">	if (ctx.method === &apos;GET&apos; &amp;&amp; ctx.url.split(&apos;?&apos;)[0] === &apos;/getData.jsonp&apos;) &#123;</div><div class="line">		// 获取jsonp的callback</div><div class="line">		let callbackName = ctx.query.callback || &apos;callback&apos;;</div><div class="line">		let returnData = &#123;</div><div class="line">			success: true,</div><div class="line">			data: &#123;</div><div class="line">				text: &apos;this is a jsonp api&apos;,</div><div class="line">				time: new Date().getTime()</div><div class="line">			&#125;</div><div class="line">		&#125; </div><div class="line">		// jsonp的script字符串</div><div class="line">		let jsonpStr = `;$&#123;callbackName&#125;($&#123;JSON.stringify(returnData)&#125;)`;      </div><div class="line">		// 用text/javascript，让请求支持跨域获取</div><div class="line">		ctx.type = &apos;text/javascript&apos;;</div><div class="line">		// 输出jsonp字符串</div><div class="line">		ctx.body = jsonpStr</div><div class="line">	&#125; else &#123;</div><div class="line">		ctx.body = &apos;hello jsonp&apos;;</div><div class="line">	&#125;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">app.listen(3004, () =&gt; &#123;</div><div class="line">	console.log(&apos;[demo] jsonp is starting at port 3004&apos;)</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h3 id="koa-jsonp中间件实现"><a href="#koa-jsonp中间件实现" class="headerlink" title="koa-jsonp中间件实现"></a>koa-jsonp中间件实现</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">const koa = require(&apos;koa&apos;);</div><div class="line">const jsonp = require(&apos;koa-jsonp&apos;);</div><div class="line"></div><div class="line">const app = new koa();</div><div class="line"></div><div class="line">app.use(jsonp());</div><div class="line"></div><div class="line">app.use(async (ctx) =&gt; &#123;</div><div class="line">	let returnData = &#123;</div><div class="line">		success: true,</div><div class="line">		data: &#123;</div><div class="line">			text: &apos;this is a jsonp api&apos;,</div><div class="line">			time: new Date().getTime(),</div><div class="line">		&#125;</div><div class="line">	&#125;;</div><div class="line">	// 直接输出json</div><div class="line">	ctx.body = returnData;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">app.listen(3004, () =&gt; &#123;</div><div class="line">	console.log(&apos;[demo] jsonp is starting at port 3004&apos;)</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="https://chenshenhai.github.io/koa2-note/note/request/post-use-middleware.html" target="_blank" rel="external">koa-note</a><br>    <a href="https://www.npmjs.com/package/koa-jsonp" target="_blank" rel="external">koa-jsonp</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/18/koa学习-数据库mysql/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/18/koa学习-数据库mysql/" itemprop="url">
+                  koa学习-数据库mysql
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-18T19:56:33+08:00">
+                2017-09-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
+                    <span itemprop="name">NodeJS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/18/koa学习-数据库mysql/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/18/koa学习-数据库mysql/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="模块介绍"><a href="#模块介绍" class="headerlink" title="模块介绍"></a>模块介绍</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">const mysql = require(&apos;mysql&apos;);</div><div class="line">// 数据库的配置信息</div><div class="line">const connection = mysql.createConnection(&#123;</div><div class="line">	host: &apos;localhost&apos;,</div><div class="line">	port: 3306,</div><div class="line">	user: &apos;root&apos;,</div><div class="line">	password: &apos;root&apos;,</div><div class="line">	database: &apos;sql&apos;</div><div class="line">&#125;);</div><div class="line">// 连接数据库</div><div class="line">connection.connect();</div><div class="line">// 进行数据库操作</div><div class="line">connection.query(&apos;SELECT * FROM apps&apos;, (err, result) =&gt; &#123;</div><div class="line">	if (err)  throw err;</div><div class="line">	console.log(result);</div><div class="line">&#125;);</div><div class="line">// 关闭连接</div><div class="line">connection.end();</div></pre></td></tr></table></figure>
+</code></pre><h3 id="创建数据连接池"><a href="#创建数据连接池" class="headerlink" title="创建数据连接池"></a>创建数据连接池</h3><pre><code>一般情况下操作数据库是很复杂的读写过程，不只是一个会话，如果直接用会话操作，就需要每次会话都要配置连接参数。
+所以这时候就需要连接池管理会话。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">const mysql = require(&apos;mysql&apos;);</div><div class="line">const pool = mysql.createPool(&#123;</div><div class="line">	host: &apos;localhost&apos;,</div><div class="line">	port: 3306,</div><div class="line">	user: &apos;root&apos;,</div><div class="line">	password: &apos;root&apos;,</div><div class="line">	database: &apos;sql&apos;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">// 在数据池中进行会话操作</div><div class="line">pool.getConnection((err, connection) =&gt; &#123;</div><div class="line">	connection.query(&apos;SELECT * FROM apps&apos;, (err, result) =&gt; &#123;</div><div class="line">		console.log(result);</div><div class="line">		// 连接完成，连接将返回连接池</div><div class="line">		connection.release();</div><div class="line">		if (err) throw err;</div><div class="line">	&#125;)</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h3 id="使用promise和async-await来封装"><a href="#使用promise和async-await来封装" class="headerlink" title="使用promise和async-await来封装"></a>使用promise和async-await来封装</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">// promise.js</div><div class="line">const mysql = require(&apos;mysql&apos;);</div><div class="line">const pool = mysql.createPool(&#123;</div><div class="line">	host     :  &apos;127.0.0.1&apos;,</div><div class="line">	user     :  &apos;root&apos;,</div><div class="line">	password :  &apos;root&apos;,</div><div class="line">	database :  &apos;sql&apos;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">let query = function (sql) &#123;</div><div class="line">	return new Promise((resolve, reject) =&gt; &#123;</div><div class="line">		pool.getConnection((err, connection) =&gt; &#123;</div><div class="line">			if (err) &#123;</div><div class="line">				reject(err);</div><div class="line">			&#125; else &#123;</div><div class="line">				connection.query(sql, (err, rows) =&gt; &#123;</div><div class="line">					if (err) &#123;</div><div class="line">						reject(err)</div><div class="line">					&#125; else &#123;</div><div class="line">						resolve(rows);</div><div class="line">					&#125;</div><div class="line">				connection.release();   </div><div class="line">				&#125;);</div><div class="line">			&#125;</div><div class="line"></div><div class="line">		&#125;);</div><div class="line">	&#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">module.exports = query;</div><div class="line"></div><div class="line">// async.js</div><div class="line">const query = require(&apos;./promise&apos;);</div><div class="line"></div><div class="line">async function getData (sql) &#123;</div><div class="line">	let dataList = await query(sql);</div><div class="line">	console.log(dataList);</div><div class="line">&#125;</div><div class="line"></div><div class="line">getData(&apos;SELECT * FROM sql&apos;);</div></pre></td></tr></table></figure>
+</code></pre><h3 id="建表初始化"><a href="#建表初始化" class="headerlink" title="建表初始化"></a>建表初始化</h3><pre><code>+----------+  遍历sql  +---+ 解析所有sql +---+  执行sql  +------------&gt;
+       |   |  目录下的  |   |  文件脚本  |   |   脚本     |   |
++----------+  sql文件   +---+   内容    +---+           +------------&gt;
+
+[详细代码见]()
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="https://chenshenhai.github.io/koa2-note/note/request/post-use-middleware.html" target="_blank" rel="external">koa-note</a><br>    <a href="https://www.npmjs.com/package/cookies" target="_blank" rel="external">cookies</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/17/koa学习-文件上传/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1580,602 +2064,6 @@ url.format(URL[, options])
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/16/nodejs自带模块-全局变量/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/16/nodejs自带模块-全局变量/" itemprop="url">
-                  全局变量-global
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-16T11:49:36+08:00">
-                2017-09-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
-                    <span itemprop="name">NodeJS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/16/nodejs自带模块-全局变量/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/16/nodejs自带模块-全局变量/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="global-全局变量"><a href="#global-全局变量" class="headerlink" title="global - 全局变量"></a>global - 全局变量</h3><pre><code>global - 全局变量，相当于浏览器环境下的window对象。
-</code></pre><h3 id="Buffer"><a href="#Buffer" class="headerlink" title="Buffer"></a>Buffer</h3><pre><code>作用：处理二进制数据。
-</code></pre><h3 id="dirname"><a href="#dirname" class="headerlink" title="__dirname"></a>__dirname</h3><pre><code>作用：当前模块的文件夹名称。等同于 __filename 的 path.dirname() 的值。
-</code></pre><h3 id="filename"><a href="#filename" class="headerlink" title="__filename"></a>__filename</h3><pre><code>作用：当前模块的文件名称---解析后的绝对路径。
-</code></pre><h3 id="console"><a href="#console" class="headerlink" title="console"></a>console</h3><pre><code>作用：用于打印 stdout 和 stderr。
-</code></pre><h4 id="关于module-exports-与-exports的区别"><a href="#关于module-exports-与-exports的区别" class="headerlink" title="关于module.exports 与 exports的区别"></a>关于module.exports 与 exports的区别</h4><ol>
-<li>module.exports<br>导出：<br>  module.exports= {<pre><code>methodName,
-</code></pre>  };<br>引用：<br>  const {methodName} = require(‘path’);    </li>
-<li>exports<br>导出：<br>  exports.methodName = function () {…};<br>引用：<br>  const {methodName} = require(‘path’);<h3 id="module"><a href="#module" class="headerlink" title="module"></a>module</h3>作用：导出一个对象。<br>module.exports 用于指定一个模块所导出的内容，即可以通过 require() 访问的内容。<h3 id="exports"><a href="#exports" class="headerlink" title="exports"></a>exports</h3>作用：导出一个方法，为module.exports的简写形式。<br>每一个node.js执行文件，都自动创建一个module对象，同时，module对象会创建一个叫exports的属性，初始化的值是 {}<br>Module.exports本身不具备任何属性和方法。如果，Module.exports已经具备一些属性和方法，那么exports收集来的信息将被忽略。<h3 id="require-path"><a href="#require-path" class="headerlink" title="require(path)"></a>require(path)</h3>作用：引入模块。<h3 id="global"><a href="#global" class="headerlink" title="global"></a>global</h3>作用：全局的命名空间对象。<h3 id="process"><a href="#process" class="headerlink" title="process"></a>process</h3>作用：进程对象。<h3 id="setImmediate-callback-…args"><a href="#setImmediate-callback-…args" class="headerlink" title="setImmediate(callback[, …args])"></a>setImmediate(callback[, …args])</h3>作用：创建 Immediate 对象。<h3 id="clearImmediate-immediateObject"><a href="#clearImmediate-immediateObject" class="headerlink" title="clearImmediate(immediateObject)"></a>clearImmediate(immediateObject)</h3>作用：取消一个由 setImmediate() 创建的 Immediate 对象。<h3 id="setInterval-callback-delay-…args"><a href="#setInterval-callback-delay-…args" class="headerlink" title="setInterval(callback, delay[, …args])"></a>setInterval(callback, delay[, …args])</h3>作用：创建 Timeout 对象。<h3 id="clearInterval-timeoutObject"><a href="#clearInterval-timeoutObject" class="headerlink" title="clearInterval(timeoutObject)"></a>clearInterval(timeoutObject)</h3>作用：取消一个由 setInterval() 创建的 Timeout 对象。<h3 id="setTimeout-callback-delay-…args"><a href="#setTimeout-callback-delay-…args" class="headerlink" title="setTimeout(callback, delay[, …args])"></a>setTimeout(callback, delay[, …args])</h3>作用：创建 Timeout 对象。<h3 id="clearTimeout-timeoutObject"><a href="#clearTimeout-timeoutObject" class="headerlink" title="clearTimeout(timeoutObject)"></a>clearTimeout(timeoutObject)</h3>作用：取消一个由 setTimeout() 创建的 Timeout 对象。<blockquote>
-<p>   参考文档：<br><a href="http://nodejs.cn/api/fs.html" target="_blank" rel="external">global参考-api</a></p>
-</blockquote>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/16/nodejs自带模块学习-fs/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/16/nodejs自带模块学习-fs/" itemprop="url">
-                  fs模块-文件
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-16T10:18:38+08:00">
-                2017-09-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
-                    <span itemprop="name">NodeJS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/16/nodejs自带模块学习-fs/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/16/nodejs自带模块学习-fs/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="fs模块-文件系统"><a href="#fs模块-文件系统" class="headerlink" title="fs模块-文件系统"></a>fs模块-文件系统</h3><pre><code>以下方法均有同步和异步版本
-说明：文件 I/O 是对标准 POSIX 函数的简单封装。 通过 require(&apos;fs&apos;) 使用该模块。 所有的方法都有异步和同步的形式。
-异步方法的最后一个参数都是一个回调函数。 传给回调函数的参数取决于具体方法，但回调函数的第一个参数都会保留给异常。 如果操作成功完成，则第一个参数会是 null 或 undefined。
-步方法时，任何异常都会被立即抛出。 可以使用 try/catch 来处理异常，或让异常向上冒泡。
-</code></pre><h3 id="异步的删除文件"><a href="#异步的删除文件" class="headerlink" title="异步的删除文件"></a>异步的删除文件</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">fs.unlink(&apos;tmp/hello&apos;, function (err) &#123;</div><div class="line">	if (err) throw err;</div><div class="line">	console.log(&apos;删除成功&apos;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="同步的删除文件"><a href="#同步的删除文件" class="headerlink" title="同步的删除文件"></a>同步的删除文件</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">try &#123;</div><div class="line">	fs.unlinkSync(&apos;tmp/hello&apos;);</div><div class="line">&#125;catch (e) &#123;</div><div class="line">	console.error(e);</div><div class="line">&#125;</div><div class="line">console.log(&apos;删除成功&apos;);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="fs-contants"><a href="#fs-contants" class="headerlink" title="fs.contants"></a>fs.contants</h3><pre><code>作用：返回一个包含常用文件系统操作的常量的对象。FRWX（可见、读、写、执行）
-</code></pre><h3 id="fs-FSWatcher-类"><a href="#fs-FSWatcher-类" class="headerlink" title="fs.FSWatcher 类"></a>fs.FSWatcher 类</h3><pre><code>作用：从 fs.watch() 返回的对象是该类型。
-方法：change、error、close分别代表监视目录或文件的改变和出错和关闭监视。
-    fs.watch(&apos;./tmp&apos;, (eventType, filename) =&gt; {
-        if (filename) { console.log(filename); }
-    });
-</code></pre><h3 id="fs-ReadStream-类"><a href="#fs-ReadStream-类" class="headerlink" title="fs.ReadStream 类"></a>fs.ReadStream 类</h3><pre><code>作用：ReadStream 是一个可读流。
-属性：
-    readStream.bytesRead - 已读取的字节数。
-    readStream.path - 流正在读取的文件的路径，指定在 fs.createReadStream() 的第一个参数
-方法：open、close分别对应ReadStream文件fs.open()被打开和fs.close()被关闭时触发。
-</code></pre><h3 id="fs-Stats-类"><a href="#fs-Stats-类" class="headerlink" title="fs.Stats 类"></a>fs.Stats 类</h3><pre><code>从 fs.stat()、fs.lstat() 和 fs.fstat() 及其同步版本返回的对象都是该类型。
-stats.isFile()
-stats.isDirectory()
-stats.isBlockDevice()
-stats.isCharacterDevice()
-stats.isSymbolicLink() (仅对 fs.lstat() 有效)
-stats.isFIFO()
-stats.isSocket()
-</code></pre><h3 id="Stat-时间值"><a href="#Stat-时间值" class="headerlink" title="Stat 时间值"></a>Stat 时间值</h3><pre><code>atime &quot;访问时间&quot; - 文件数据最近被访问的时间。
-mtime &quot;修改时间&quot; - 文件数据最近被修改的时间。
-ctime &quot;变化时间&quot; - 文件状态最近更改的时间。
-birthtime &quot;创建时间&quot; - 文件创建的时间。 
-</code></pre><h3 id="fs-WriteStream类"><a href="#fs-WriteStream类" class="headerlink" title="fs.WriteStream类"></a>fs.WriteStream类</h3><pre><code>作用：WriteStream 一个可写流。
-属性：
-    writeStream.bytesWritten - 已写入的字节数。 不包括仍在排队等待写入的数据。
-    writeStream.path - 流正在写入的文件的路径，指定在 fs.createWriteStream() 的第一个参数。
-方法：
-    open() - 当 WriteStream 文件被打开时触发。
-    close() - 当 WriteStream 底层的文件描述符已被使用 fs.close() 方法关闭时触发。
-</code></pre><h3 id="fs-access-path-mode-callback"><a href="#fs-access-path-mode-callback" class="headerlink" title="fs.access(path[, mode], callback);"></a>fs.access(path[, mode], callback);</h3><pre><code>作用：判断用户是否有权限操作给定的目录或者是文件。
-    如果要检查一个文件是否存在且不操作它。
-mode参数的可选项：
-    fs.constants.F_OK - path 文件对调用进程可见（默认）。
-    fs.constants.R_OK - path 文件可被调用进程读取。
-    fs.constants.W_OK - path 文件可被调用进程写入。
-    fs.constants.X_OK - path 文件可被调用进程执行。
-</code></pre><h3 id="fs-accessSync-path-mode"><a href="#fs-accessSync-path-mode" class="headerlink" title="fs.accessSync(path[, mode]);"></a>fs.accessSync(path[, mode]);</h3><pre><code>fs.access() 的同步版本。
-</code></pre><h3 id="fs-appendFile-file-data-options-callback"><a href="#fs-appendFile-file-data-options-callback" class="headerlink" title="fs.appendFile(file, data[, options], callback);"></a>fs.appendFile(file, data[, options], callback);</h3><pre><code>作用：异步地追加数据到一个文件，如果文件不存在则创建文件。
-fs.appendFile(&apos;filename.txt&apos;, &apos;data to append&apos; , (err) =&gt; {
-    if (err) throw err;
-    console.log(&apos;添加成功&apos;);
-});
-</code></pre><h3 id="fs-chmod-path-mode-callback"><a href="#fs-chmod-path-mode-callback" class="headerlink" title="fs.chmod(path, mode, callback);"></a>fs.chmod(path, mode, callback);</h3><pre><code>作用： 更改文件属性（存取模式）(mode)。
-</code></pre><h3 id="fs-chown-path-uid-gid-callback"><a href="#fs-chown-path-uid-gid-callback" class="headerlink" title="fs.chown(path, uid, gid, callback);"></a>fs.chown(path, uid, gid, callback);</h3><pre><code>作用：修改文件目录属主。用户ID，群体身份（共享资源系统使用者的身份）
-</code></pre><h3 id="fs-close-fd-callback"><a href="#fs-close-fd-callback" class="headerlink" title="fs.close(fd, callback);"></a>fs.close(fd, callback);</h3><pre><code>作用：关闭已打开的文件。
-</code></pre><h3 id="fs-createReadStream-path-options"><a href="#fs-createReadStream-path-options" class="headerlink" title="fs.createReadStream(path[, options]);"></a>fs.createReadStream(path[, options]);</h3><pre><code>作用：返回一个新建的ReadStream对象。
-</code></pre><h3 id="fs-createWriteStream-path-options"><a href="#fs-createWriteStream-path-options" class="headerlink" title="fs.createWriteStream(path[, options]);"></a>fs.createWriteStream(path[, options]);</h3><pre><code>作用：返回一个新建的WriteStream对象。
-</code></pre><h3 id="fs-existsSync-path"><a href="#fs-existsSync-path" class="headerlink" title="fs.existsSync(path);"></a>fs.existsSync(path);</h3><pre><code>作用： 判断文件是否存在的同步版，异步已经废弃了。
-</code></pre><h3 id="fs-fchmod-fd-mode-callback"><a href="#fs-fchmod-fd-mode-callback" class="headerlink" title="fs.fchmod(fd, mode, callback);"></a>fs.fchmod(fd, mode, callback);</h3><pre><code>作用：更改文件权限（文件描述符）。
-</code></pre><h3 id="fs-fchown-fd-uid-gid-callback"><a href="#fs-fchown-fd-uid-gid-callback" class="headerlink" title="fs.fchown(fd, uid, gid, callback);"></a>fs.fchown(fd, uid, gid, callback);</h3><pre><code>作用：更改文件所有权(文件描述符)。
-</code></pre><h3 id="fs-fdatasync-fd-callback"><a href="#fs-fdatasync-fd-callback" class="headerlink" title="fs.fdatasync(fd, callback);"></a>fs.fdatasync(fd, callback);</h3><pre><code>作用：刷新数据到磁盘。
-</code></pre><h3 id="fs-fstat-fd-callback"><a href="#fs-fstat-fd-callback" class="headerlink" title="fs.fstat(fd, callback);"></a>fs.fstat(fd, callback);</h3><pre><code>作用：返回文件的详细信息。
-</code></pre><h3 id="fs-fsync-fd-callback"><a href="#fs-fsync-fd-callback" class="headerlink" title="fs.fsync(fd, callback);"></a>fs.fsync(fd, callback);</h3><pre><code>作用：同步缓存数据到磁盘。
-</code></pre><h3 id="fs-ftruncate-fd-len-callback"><a href="#fs-ftruncate-fd-len-callback" class="headerlink" title="fs.ftruncate(fd, len, callback);"></a>fs.ftruncate(fd, len, callback);</h3><pre><code>作用：截取文件内容。
-</code></pre><h3 id="fs-futimes-fd-atime-mtime-callback"><a href="#fs-futimes-fd-atime-mtime-callback" class="headerlink" title="fs.futimes(fd, atime, mtime, callback);"></a>fs.futimes(fd, atime, mtime, callback);</h3><pre><code>作用：更改一个文件所提供的文件描述符引用的文件的时间戳。
-</code></pre><h3 id="fs-lchmod-path-mode-callback"><a href="#fs-lchmod-path-mode-callback" class="headerlink" title="fs.lchmod(path, mode, callback);"></a>fs.lchmod(path, mode, callback);</h3><pre><code>作用：更改文件权限(不解析符号链接)。
-</code></pre><h3 id="fs-lchown-path-uid-gid-callback"><a href="#fs-lchown-path-uid-gid-callback" class="headerlink" title="fs.lchown(path, uid, gid, callback)"></a>fs.lchown(path, uid, gid, callback)</h3><pre><code>作用：更改文件所有权（不解析符号链接）。
-</code></pre><h3 id="fs-link-existingPath-newPath-callback"><a href="#fs-link-existingPath-newPath-callback" class="headerlink" title="fs.link(existingPath, newPath, callback);"></a>fs.link(existingPath, newPath, callback);</h3><pre><code>作用：创建硬链接(只能在本券中)。
-</code></pre><h3 id="fs-lstat-path-callback"><a href="#fs-lstat-path-callback" class="headerlink" title="fs.lstat(path, callback);"></a>fs.lstat(path, callback);</h3><pre><code>作用：获取文件信息(不解析符号链接)。
-</code></pre><h3 id="fs-mkdir-path-mode-callback"><a href="#fs-mkdir-path-mode-callback" class="headerlink" title="fs.mkdir(path[, mode], callback);"></a>fs.mkdir(path[, mode], callback);</h3><pre><code>作用：创建文件目录，如果目录已存在，将抛出异常。
-</code></pre><h3 id="fs-mkdtemp-prefix-options-callback"><a href="#fs-mkdtemp-prefix-options-callback" class="headerlink" title="fs.mkdtemp(prefix[, options], callback);"></a>fs.mkdtemp(prefix[, options], callback);</h3><pre><code>作用：创建临时目录。
-</code></pre><h3 id="fs-open-path-flags-mode-callback"><a href="#fs-open-path-flags-mode-callback" class="headerlink" title="fs.open(path, flags[, mode], callback);"></a>fs.open(path, flags[, mode], callback);</h3><pre><code>作用：打开文件。
-</code></pre><h3 id="fs-read-fd-buffer-offset-length-position-callback"><a href="#fs-read-fd-buffer-offset-length-position-callback" class="headerlink" title="fs.read(fd, buffer, offset, length, position, callback);"></a>fs.read(fd, buffer, offset, length, position, callback);</h3><pre><code>作用：读取文件内容。
-</code></pre><h3 id="fs-readdir-path-options-callback"><a href="#fs-readdir-path-options-callback" class="headerlink" title="fs.readdir(path[, options], callback);"></a>fs.readdir(path[, options], callback);</h3><pre><code>作用：读取文件目录。
-</code></pre><h3 id="fs-readFile-path-options-callback"><a href="#fs-readFile-path-options-callback" class="headerlink" title="fs.readFile(path[, options], callback);"></a>fs.readFile(path[, options], callback);</h3><pre><code>作用：读取文件。
-</code></pre><h3 id="fs-readlink-path-options-callback"><a href="#fs-readlink-path-options-callback" class="headerlink" title="fs.readlink(path[, options], callback);"></a>fs.readlink(path[, options], callback);</h3><pre><code>作用：读取软连接信息。
-</code></pre><h3 id="fs-readSync-fd-buffer-offset-length-position"><a href="#fs-readSync-fd-buffer-offset-length-position" class="headerlink" title="fs.readSync(fd, buffer, offset, length, position);"></a>fs.readSync(fd, buffer, offset, length, position);</h3><pre><code>作用：读取文件内容，返回字节数。
-</code></pre><h3 id="fs-realpath-path-options-callback"><a href="#fs-realpath-path-options-callback" class="headerlink" title="fs.realpath(path[, options], callback);"></a>fs.realpath(path[, options], callback);</h3><pre><code>作用：获取真实路径。
-</code></pre><h3 id="fs-rename-oldPath-newPath-callback"><a href="#fs-rename-oldPath-newPath-callback" class="headerlink" title="fs.rename(oldPath, newPath, callback);"></a>fs.rename(oldPath, newPath, callback);</h3><pre><code>作用：重命名路径。
-</code></pre><h3 id="fs-rmdir-path-callback"><a href="#fs-rmdir-path-callback" class="headerlink" title="fs.rmdir(path, callback);"></a>fs.rmdir(path, callback);</h3><pre><code>作用：删除文件目录。
-</code></pre><h3 id="fs-stat-path-callback"><a href="#fs-stat-path-callback" class="headerlink" title="fs.stat(path, callback);"></a>fs.stat(path, callback);</h3><pre><code>作用：获取文件信息。
-</code></pre><h3 id="fs-symlink-target-path-type-callback"><a href="#fs-symlink-target-path-type-callback" class="headerlink" title="fs.symlink(target, path[, type], callback);"></a>fs.symlink(target, path[, type], callback);</h3><pre><code>作用：创建符号链接。
-</code></pre><h3 id="fs-truncate-path-len-callback"><a href="#fs-truncate-path-len-callback" class="headerlink" title="fs.truncate(path[, len], callback);"></a>fs.truncate(path[, len], callback);</h3><pre><code>作用：文件内容截取操作。
-</code></pre><h3 id="fs-unlink-path-callback"><a href="#fs-unlink-path-callback" class="headerlink" title="fs.unlink(path, callback);"></a>fs.unlink(path, callback);</h3><pre><code>作用：删除文件操作。
-</code></pre><h3 id="fs-unwatchFile-filename-listener"><a href="#fs-unwatchFile-filename-listener" class="headerlink" title="fs.unwatchFile(filename[, listener]);"></a>fs.unwatchFile(filename[, listener]);</h3><pre><code>作用：解除文件监听。
-</code></pre><h3 id="fs-utimes-path-atime-mtime-callback"><a href="#fs-utimes-path-atime-mtime-callback" class="headerlink" title="fs.utimes(path, atime, mtime, callback);"></a>fs.utimes(path, atime, mtime, callback);</h3><pre><code>作用：修改文件时间戳。
-</code></pre><h3 id="fs-watch-filename-options-listener"><a href="#fs-watch-filename-options-listener" class="headerlink" title="fs.watch(filename[, options][, listener]);"></a>fs.watch(filename[, options][, listener]);</h3><pre><code>作用：监控文件。
-</code></pre><h3 id="fs-watchFile-filename-options-listener"><a href="#fs-watchFile-filename-options-listener" class="headerlink" title="fs.watchFile(filename[, options], listener);"></a>fs.watchFile(filename[, options], listener);</h3><pre><code>作用：监控文件。
-</code></pre><h3 id="fs-write-fd-buffer-offset-length-position-callback"><a href="#fs-write-fd-buffer-offset-length-position-callback" class="headerlink" title="fs.write(fd, buffer[, offset[, length[, position]]], callback);"></a>fs.write(fd, buffer[, offset[, length[, position]]], callback);</h3><pre><code>作用：向文件写数据。
-</code></pre><h3 id="fs-writeFile-file-data-options-callback"><a href="#fs-writeFile-file-data-options-callback" class="headerlink" title="fs.writeFile(file, data[, options], callback);"></a>fs.writeFile(file, data[, options], callback);</h3><pre><code>作用：向文件写数据。        
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="http://nodejs.cn/api/fs.html" target="_blank" rel="external">fs参考-api</a><br>    <a href="http://blog.csdn.net/zza000000/article/details/54341943" target="_blank" rel="external">fs模块</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/16/nodejs自带模块学习-util/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/16/nodejs自带模块学习-util/" itemprop="url">
-                  util模块-工具
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-16T10:18:15+08:00">
-                2017-09-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
-                    <span itemprop="name">NodeJS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/16/nodejs自带模块学习-util/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/16/nodejs自带模块学习-util/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="util模块"><a href="#util模块" class="headerlink" title="util模块"></a>util模块</h3><pre><code>说明：util 模块主要用于支持 Node.js 内部 API 的需求。 大部分实用工具也可用于应用程序与模块开发者。
-</code></pre><h3 id="util-callbackify-original"><a href="#util-callbackify-original" class="headerlink" title="util.callbackify(original)"></a>util.callbackify(original)</h3><h3 id="util-debuglog-section"><a href="#util-debuglog-section" class="headerlink" title="util.debuglog(section)"></a>util.debuglog(section)</h3><pre><code>作用：util.debuglog() 方法用于创建一个函数，基于 NODE_DEBUG 环境变量的存在与否有条件地写入调试信息到 stderr。
-    const debuglog = util.debuglog(&apos;foo&apos;);
-    debuglog(&apos;hello from foo [%d]&apos;, 123);
-    若程序的环境运行是带上NODE_DEBUG=foo,则FOO 3245: hello from foo [123]
-    3234是进程id
-</code></pre><h3 id="util-deprecate-function-string"><a href="#util-deprecate-function-string" class="headerlink" title="util.deprecate(function, string)"></a>util.deprecate(function, string)</h3><pre><code>作用：util.deprecate() 方法会包装给定的 function 或类，并标记为废弃的。
-    // 在util模块中
-    exports.puts = util.deprecate(function() {
-      for (let i = 0, len = arguments.length; i &lt; len; ++i) {
-        process.stdout.write(arguments[i] + &apos;\n&apos;);
-      }
-    }, &apos;util.puts: 使用 console.log 代替&apos;);
-</code></pre><h3 id="util-format-format-…args"><a href="#util-format-format-…args" class="headerlink" title="util.format(format[, …args])"></a>util.format(format[, …args])</h3><pre><code>作用：返回一个格式化后的字符串，使用第一个参数作为一个类似 printf 的格式。
-对应的占位符：
-    %s - 字符串
-    %d - 数值
-    %i - Integer
-    %f - Float
-    %j - JSON
-    %o - Object
-    %% - 单个百分号（&apos;%&apos;）。不消耗参数。
-    util.format(&apos;%s:%d&apos;, &apos;fan&apos;, 100); // &apos;fan:100&apos;
-</code></pre><h3 id="util-inherits-constructor-superConstructor"><a href="#util-inherits-constructor-superConstructor" class="headerlink" title="util.inherits(constructor, superConstructor)"></a>util.inherits(constructor, superConstructor)</h3><pre><code>注意，不建议使用 util.inherits()。 请使用 ES6 的 class 和 extends 关键词获得语言层面的继承支持。
-作用：从一个构造函数中继承原型方法到另一个。 constructor 的原型会被设置到一个从 superConstructor 创建的新对象上。
-    util.inherits(MyStream, EventEmitter);
-</code></pre><h3 id="util-inspect-object-options"><a href="#util-inspect-object-options" class="headerlink" title="util.inspect(object[, options])"></a>util.inspect(object[, options])</h3><pre><code>作用：返回 object 的字符串表示，主要用于调试。 附加的 options 可用于改变格式化字符串的某些方面。
-</code></pre><h3 id="自定义-util-inspect-颜色"><a href="#自定义-util-inspect-颜色" class="headerlink" title="自定义 util.inspect 颜色"></a>自定义 util.inspect 颜色</h3><pre><code>作用：可以通过 util.inspect.styles 和 util.inspect.colors 属性全局地自定义 util.inspect 的颜色输出（如果已启用）。
-</code></pre><h3 id="util-inspect-custom"><a href="#util-inspect-custom" class="headerlink" title="util.inspect.custom"></a>util.inspect.custom</h3><pre><code>作用：可被用于声明自定义的查看函数。
-</code></pre><h3 id="util-inspect-defaultOptions"><a href="#util-inspect-defaultOptions" class="headerlink" title="util.inspect.defaultOptions"></a>util.inspect.defaultOptions</h3><pre><code>作用：defaultOptions 值允许对被 util.inspect 使用的默认选项进行自定义。
-</code></pre><h3 id="util-promisify-original"><a href="#util-promisify-original" class="headerlink" title="util.promisify(original)"></a>util.promisify(original)</h3><pre><code>作用：让一个遵循通常的让一个遵循通常的 Node.js 回调风格的函数， 即 (err, value) =&gt; ... 回调函数是最后一个参数, 返回一个返回值是一个 promise 版本的函数。    
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="http://nodejs.cn/api/util.html" target="_blank" rel="external">util参考-api</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2225,7 +2113,7 @@ fs.appendFile(&apos;filename.txt&apos;, &apos;data to append&apos; , (err) =&gt;
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">56</span>
+                <span class="site-state-item-count">59</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
