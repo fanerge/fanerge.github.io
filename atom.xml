@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fanerge.github.io/"/>
-  <updated>2017-09-24T14:43:02.998Z</updated>
+  <updated>2017-09-25T14:58:38.131Z</updated>
   <id>https://fanerge.github.io/</id>
   
   <author>
@@ -14,6 +14,224 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>jsDoc学习</title>
+    <link href="https://fanerge.github.io/2017/09/25/jsDoc%E5%AD%A6%E4%B9%A0-2/"/>
+    <id>https://fanerge.github.io/2017/09/25/jsDoc学习-2/</id>
+    <published>2017-09-25T13:03:22.000Z</published>
+    <updated>2017-09-25T14:58:38.131Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="块标签（Block-Tags）"><a href="#块标签（Block-Tags）" class="headerlink" title="块标签（Block Tags）"></a>块标签（Block Tags）</h2><h3 id="abstract"><a href="#abstract" class="headerlink" title="@abstract"></a>@abstract</h3><pre><code>该成员（一般指父类的方法）必须在继承的子类中实现（或重写）。
+别名：@virtual
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * 奶制品</div><div class="line"> * @constructor</div><div class="line"> */</div><div class="line">function DairyProduct () &#123;&#125;</div><div class="line">/**</div><div class="line"> * 检查奶制品的状态</div><div class="line"> * @abstract</div><div class="line"> * @return &#123;boolean&#125;</div><div class="line"> */</div><div class="line">DairyProduct.prototype.isSolid = function () &#123;</div><div class="line">  throw new Error(&apos;must be implemented by subclass!&apos;);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">/**</div><div class="line"> * 牛奶</div><div class="line"> * @constructor</div><div class="line"> */</div><div class="line">function Milk () &#123;&#125;</div><div class="line">Milk.prototype = new DairyProduct();</div><div class="line">// 这里重写了父类的isSolid方法</div><div class="line">Milk.prototype.isSolid = function () &#123;</div><div class="line">	return false;</div><div class="line">&#125;;</div><div class="line">var dd = new Milk();</div><div class="line">console.log(dd.isSolid()); // false</div></pre></td></tr></table></figure>
+</code></pre><h3 id="access"><a href="#access" class="headerlink" title="@access"></a>@access</h3><pre><code>指定该成员的访问级别（私有 private，公共 public，或保护 protected）
+语法：@access &lt;private|protected|public&gt;
+    @access private 等价于 @private;
+    @access protected 等价于 @protected;
+    @access public 等价于 @public;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @constructor</div><div class="line"> */</div><div class="line">function Thingy () &#123;</div><div class="line">	/** @access private */</div><div class="line">	var foo = 0;</div><div class="line">	/** @access protected */</div><div class="line">	this._bar = 1;</div><div class="line">	/** @access public */</div><div class="line">	this.pez = 2;</div><div class="line">&#125;</div><div class="line">OR</div><div class="line">/**</div><div class="line"> * @constructor</div><div class="line"> */</div><div class="line">function Thingy () &#123;</div><div class="line">	/** @private */</div><div class="line">	var foo = 0;</div><div class="line">	/** @protected */</div><div class="line">	this._bar = 1;</div><div class="line">	/** @public */</div><div class="line">	this.pez = 2;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="alias"><a href="#alias" class="headerlink" title="alias"></a>alias</h3><pre><code>标记成员有一个别名
+语法：@alias &lt;aliasNamepath&gt;
+例如，匿名的构造函数使用@alias。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">Klass(&apos;trackr.CookieManager&apos;,</div><div class="line">	/**</div><div class="line">	 * 匿名函数</div><div class="line">	 * @alias trackr.CookieManager</div><div class="line">	 * @param kv</div><div class="line">	 */</div><div class="line">	function (kv) &#123;</div><div class="line">		/** trackr.CookieManager＃value */</div><div class="line">		this.value = kv;</div><div class="line">	&#125;</div><div class="line">)</div></pre></td></tr></table></figure>
+
+您也可以在一个立即调用的函数表达式（IIFE）中创建的成员中使用@alias标签。
+@alias标签告诉JSDoc，这些成员都暴露在IIFE作用域之外的。
+例如，命名空间的静态方法使用@alias。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">/** @namespace */</div><div class="line">var Apple = &#123;&#125;;</div><div class="line">(function (ns) &#123;</div><div class="line">	/**</div><div class="line">	 * @namespace</div><div class="line">	 * @alias Apple.Core</div><div class="line">	 */</div><div class="line">	var core = &#123;&#125;;</div><div class="line">	/** Documented as Apple.Core.seed */</div><div class="line">	core.speed = function () &#123;&#125;;</div><div class="line">	ns.Core = core;</div><div class="line">&#125;)(Apple);</div></pre></td></tr></table></figure>
+
+对于那些对象字面量中定义的成员，可以使用@alias标签替代的@lends标记。
+例如，对象常量使用@alias。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">// Documenting objectA with @alias</div><div class="line">var objectA = (function() &#123;</div><div class="line">	/**</div><div class="line">	 * Documented as objectA</div><div class="line">	 * @alias objectA</div><div class="line">	 * @namespace</div><div class="line">	 */</div><div class="line">	 /** @lends objectA */</div><div class="line">	var x = &#123;</div><div class="line">		/**</div><div class="line">		 * Documented as objectA.myProperty</div><div class="line">		 * @member</div><div class="line">		 */</div><div class="line">		myProperty: &apos;foo&apos;</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">	return x;</div><div class="line">&#125;)();</div></pre></td></tr></table></figure>
+</code></pre><h3 id="auguments"><a href="#auguments" class="headerlink" title="@auguments"></a>@auguments</h3><pre><code>@augments or@extends标签指明标识符继承自哪个父类，后面需要加父类名。
+你可以使用这个标签来记录基于类和并基于原型的继承。
+别名：@extends
+语法：@auguments &lt;namepath&gt;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * 动物</div><div class="line"> * @constructor</div><div class="line"> */</div><div class="line">function Animal () &#123;</div><div class="line">	this.alive = true;</div><div class="line">&#125;</div><div class="line"></div><div class="line">/**</div><div class="line"> * 鸭子</div><div class="line"> * @constructor</div><div class="line"> * @auguments Animal</div><div class="line"> */</div><div class="line">function Duck () &#123;&#125;</div><div class="line">Duck.prototype = new Animal();</div><div class="line">Duck.prototype.speak = function () &#123;</div><div class="line">	if (this.alive) &#123;</div><div class="line">		alert(&apos;Quack!&apos;);</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line">var d = new Duck();</div><div class="line">d.speak();</div></pre></td></tr></table></figure>
+</code></pre><h3 id="author"><a href="#author" class="headerlink" title="@author"></a>@author</h3><pre><code>@author标签标识一个项目的作者。
+语法：@author &lt;name&gt; [&lt;emailAddress&gt;]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line">* @author fanerge &lt;fanerge@qq.com&gt;</div><div class="line">*/</div><div class="line">function MyClass () &#123;&#125;;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="borrows"><a href="#borrows" class="headerlink" title="@borrows"></a>@borrows</h3><pre><code>@borrows标签允许您将另一个标识符的描述添加到你的当前描述。
+语法：@borrows &lt;that namepath&gt; as &lt;this namepath&gt;
+在这个例子中，&quot;trstr&quot;函数存在文档，但&quot;util.trim&quot;只是使用不同的名称引用相同的功能。
+例如，复制trstr的文档描述给util.trim。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @namespace</div><div class="line"> * @borrows trstr as trim</div><div class="line"> */</div><div class="line">var util = &#123;</div><div class="line">	trim: trstr</div><div class="line">&#125;;</div><div class="line"></div><div class="line">/**</div><div class="line"> * Remove whitespace from around a string.</div><div class="line"> * @param &#123;string&#125; str</div><div class="line"> */</div><div class="line">function trstr(str) &#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="callback"><a href="#callback" class="headerlink" title="@callback"></a>@callback</h3><pre><code>描述一个回调函数。@Callback标签提供回调函数（可传递给其他函数）的描述，包括回调的参数和返回值。
+你可以包涵任何一个你能提供给@method标签。
+语法：@callback &lt;namepath&gt;
+例如,描述一个指定类回调。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @class</div><div class="line"> */</div><div class="line">function Requester() &#123;&#125;</div><div class="line"></div><div class="line">/**</div><div class="line"> * Send a request.</div><div class="line"> * @param &#123;Requester~requestCallback&#125; cb - The callback that handles the response.</div><div class="line"> */</div><div class="line">Requester.prototype.send = function(cb) &#123;</div><div class="line">	// code</div><div class="line">&#125;;</div><div class="line"></div><div class="line">/**</div><div class="line"> * This callback is displayed as part of the Requester class.</div><div class="line"> * @callback Requester~requestCallback</div><div class="line"> * @param &#123;number&#125; responseCode</div><div class="line"> * @param &#123;string&#125; responseMessage</div><div class="line"> */</div></pre></td></tr></table></figure>
+</code></pre><h3 id="class"><a href="#class" class="headerlink" title="@class"></a>@class</h3><pre><code>@class标签标明函数是一个构造器函数，意味着需要使用 new 关键字来返回一个实例，即使用 new 关键字实例化。
+别名：@constructor
+语法：@class [&lt;type&gt; &lt;name&gt;]
+例如，一个函数构建一个Person实例
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * 创建一个人</div><div class="line"> * @class</div><div class="line"> */</div><div class="line">function Person () &#123;&#125;</div><div class="line">var p = new Person();</div></pre></td></tr></table></figure>
+</code></pre><h3 id="classdesc"><a href="#classdesc" class="headerlink" title="@classdesc"></a>@classdesc</h3><pre><code>@classdesc标签用于为类提供一个描述，这样和构造函数的描述区分开来。
+@classdesc标签应该与 @class (或 @constructor)标签结合使用。
+语法：@classdesc &lt;some description&gt;
+如下所示，一个类有两个添加描述的地方，一个适用于函数本身，而另一个一般适用于类。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * This is a description of the MyClass constructor function.</div><div class="line"> * @class</div><div class="line"> * @classdesc This is a description of the MyClass class.</div><div class="line"> */</div><div class="line">function MyClass() &#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="constant"><a href="#constant" class="headerlink" title="@constant"></a>@constant</h3><pre><code>@constant 标签指明这个对象是一个常量。
+语法：@constant [&lt;type&gt; &lt;name&gt;]    
+例如，一个字符串常量表示红色。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">/** @constant</div><div class="line">	@type &#123;string&#125;</div><div class="line">	@default</div><div class="line">*/</div><div class="line">const RED = &apos;FF0000&apos;;</div></pre></td></tr></table></figure>
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="http://www.css88.com/doc/jsdoc/" target="_blank" rel="external">jsDoc文档</a>    </p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;块标签（Block-Tags）&quot;&gt;&lt;a href=&quot;#块标签（Block-Tags）&quot; class=&quot;headerlink&quot; title=&quot;块标签（Block Tags）&quot;&gt;&lt;/a&gt;块标签（Block Tags）&lt;/h2&gt;&lt;h3 id=&quot;abstract&quot;&gt;&lt;a 
+    
+    </summary>
+    
+      <category term="js" scheme="https://fanerge.github.io/categories/js/"/>
+    
+    
+      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>jsDoc学习</title>
+    <link href="https://fanerge.github.io/2017/09/25/jsDoc%E5%AD%A6%E4%B9%A0-1/"/>
+    <id>https://fanerge.github.io/2017/09/25/jsDoc学习-1/</id>
+    <published>2017-09-25T11:51:34.000Z</published>
+    <updated>2017-09-25T13:02:59.778Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="jsDoc-示例"><a href="#jsDoc-示例" class="headerlink" title="jsDoc 示例"></a>jsDoc 示例</h2><h3 id="ES-2015-Classes"><a href="#ES-2015-Classes" class="headerlink" title="ES 2015 Classes"></a>ES 2015 Classes</h3><pre><code>Documenting a simple class（文档化一个简单的类）    
+    演示了如何通过一个构造函数，两个实例方法和一个静态方法文档化一个简单的类
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">class Point &#123;</div><div class="line">	/**</div><div class="line">	 * 构造函数</div><div class="line">	 * @param x</div><div class="line">	 * @param y</div><div class="line">	 */</div><div class="line">	constructor (x, y) &#123;</div><div class="line">		this.x = x;</div><div class="line">		this.y = y;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	/**</div><div class="line">	 * 实例方法</div><div class="line">	 * @returns &#123;*&#125;</div><div class="line">	 */</div><div class="line">	getX () &#123;</div><div class="line">		return this.x;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	/**</div><div class="line">	 * 实例方法</div><div class="line">	 * @returns &#123;*&#125;</div><div class="line">	 */</div><div class="line">	getY () &#123;</div><div class="line">		return this.y;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	/**</div><div class="line">	 * 静态方法</div><div class="line">	 * @param str</div><div class="line">	 */</div><div class="line">	static fromString (str) &#123;</div><div class="line">		// ...</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">var de = new Point(&apos;1&apos;,&apos;2&apos;);</div><div class="line">console.log(de.getX()); // &apos;1&apos;</div></pre></td></tr></table></figure>
+
+Extending classes（扩展类）
+    当您使用 extends关键字来扩展一个现有的类的时候，你还需要告诉JSDoc哪个类是你要扩展的。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line">/** Class representing a point. */</div><div class="line">class Point &#123;</div><div class="line">	/**</div><div class="line">	 * 构造函数</div><div class="line">	 * @param x</div><div class="line">	 * @param y</div><div class="line">	 */</div><div class="line">	constructor (x, y) &#123;</div><div class="line">		this.x = x;</div><div class="line">		this.y = y;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	/**</div><div class="line">	 * 实例方法</div><div class="line">	 * @returns &#123;*&#125;</div><div class="line">	 */</div><div class="line">	getX () &#123;</div><div class="line">		return this.x;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	/**</div><div class="line">	 * 实例方法</div><div class="line">	 * @returns &#123;*&#125;</div><div class="line">	 */</div><div class="line">	getY () &#123;</div><div class="line">		return this.y;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	/**</div><div class="line">	 * 静态方法</div><div class="line">	 * @param str</div><div class="line">	 */</div><div class="line">	static fromString (str) &#123;</div><div class="line">		// ...</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">/** Class representing a point</div><div class="line"> * @extends Point</div><div class="line"> */</div><div class="line">class Dot extends  Point &#123;</div><div class="line">	/**</div><div class="line">	 * 构造函数</div><div class="line">	 * @param x</div><div class="line">	 * @param y</div><div class="line">	 * @param width</div><div class="line">	 */</div><div class="line">	constructor (x, y, width) &#123;</div><div class="line">		super(x,y);</div><div class="line">		this.width = width;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	/**</div><div class="line">	 * 实例方法</div><div class="line">	 * @returns &#123;*&#125;</div><div class="line">	 */</div><div class="line">	getWidth () &#123;</div><div class="line">		return this.width;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">var dd = new Dot(1, 2, 3);</div><div class="line">console.log(dd.getX()); // 1</div></pre></td></tr></table></figure>
+</code></pre><h3 id="ES-2015-Modules"><a href="#ES-2015-Modules" class="headerlink" title="ES 2015 Modules"></a>ES 2015 Modules</h3><pre><code>Module identifiers（模块标识符）
+    当你描述一个 ES 2015 module（模块）时，您将使用@module 标签来描述模块的标识符。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @module my/shirt</div><div class="line"> */</div><div class="line">import * as myShirt from &apos;my/shirt&apos;;</div></pre></td></tr></table></figure>
+
+    当您使用一个 JSDoc namepath（名称路径）从另一个JSDoc注释中引用一个模块，您必须添加前缀module:。
+    例如，如果你想模块my/pants的文档 连接到模块my/shirt，您可以使用@see 标签来描述my/pants。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Pants module.</div><div class="line"> * @module my/pants</div><div class="line"> * @see module:my/shirt</div><div class="line"> */</div></pre></td></tr></table></figure>
+
+    同样，模块中每个成员的namepath （名称路径）将以module: 开始，后面跟模块名字。
+    例如，如果你的my/pants模块输出一个Jeans类，并且Jeans 有一个名为hem的实例方法，
+    那么这个实例方法longname（长名称）是module:my/pants.Jeans#hem。
+Exported values （导出值）
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">/** The name of the module. */</div><div class="line">export const name = &apos;mixer&apos;;</div><div class="line"></div><div class="line">/** The most recent blended color. */</div><div class="line">export var lastColor = null;</div><div class="line"></div><div class="line">/**</div><div class="line"> * Blend two colors together.</div><div class="line"> * @param &#123;string&#125; color1 - The first color, in hexidecimal format.</div><div class="line"> * @param &#123;string&#125; color2 - The second color, in hexidecimal format.</div><div class="line"> * @return &#123;string&#125; The blended color.</div><div class="line"> */</div><div class="line">export function blend(color1, color2) &#123;&#125;</div><div class="line"></div><div class="line">// convert color to array of RGB values (0-255)</div><div class="line">function rgbify(color) &#123;&#125;</div><div class="line"></div><div class="line">export &#123;</div><div class="line">	/**</div><div class="line">	 * Get the red, green, and blue values of a color.</div><div class="line">	 * @function</div><div class="line">	 * @param &#123;string&#125; color - A color, in hexidecimal format.</div><div class="line">	 * @returns &#123;Array.&lt;number&gt;&#125; An array of the red, green, and blue values,</div><div class="line">	 * each ranging from 0 to 255.</div><div class="line">	 */</div><div class="line">	rgbify as toRgb</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="CommonJS-Modules"><a href="#CommonJS-Modules" class="headerlink" title="CommonJS Modules"></a>CommonJS Modules</h3><pre><code>Module identifiers（模块标识符）    
+    例如，如果你想模块my/pants的文档 连接到模块my/shirt，您可以使用@see 标签来描述my/pants。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Pants module.</div><div class="line"> * @module my/pants</div><div class="line"> * @see module:my/shirt</div><div class="line"> */</div></pre></td></tr></table></figure>
+
+Properties of the &apos;exports&apos; object（&apos;exports&apos;对象的属性）
+    例如，方法添加到导出对象。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Shirt module.</div><div class="line"> * @module my/shirt</div><div class="line"> */</div><div class="line"></div><div class="line">/** Button the shirt. */</div><div class="line">exports.button = function() &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div><div class="line"></div><div class="line">/** Unbutton the shirt. */</div><div class="line">exports.unbutton = function() &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+
+Values assigned to local variables （值分配给局部变量）
+    例如，longname（长名称）定义在 @alias 标签中。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Shirt module.</div><div class="line"> * @module my/shirt</div><div class="line"> */</div><div class="line"></div><div class="line">/**</div><div class="line"> * Wash the shirt.</div><div class="line"> * @alias module:my/shirt.wash</div><div class="line"> */</div><div class="line">var wash = exports.wash = function() &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+
+    例如，JSDoc注释放在exports.wash之前。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Shirt module.</div><div class="line"> * @module my/shirt</div><div class="line"> */</div><div class="line"></div><div class="line">var wash =</div><div class="line">/** Wash the shirt. */</div><div class="line">exports.wash = function() &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+
+Values assigned to &apos;module.exports&apos; （值分配给&apos;module.exports&apos;）
+    Object literal assigned to &apos;module.exports&apos;（对象字面量分配给&apos;module.exports&apos;）
+    例如：对象字面量分配给&apos;module.exports&apos;。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Color mixer.</div><div class="line"> * @module color/mixer</div><div class="line"> */</div><div class="line"></div><div class="line">module.exports = &#123;</div><div class="line">	/** Blend two colors together. */</div><div class="line">	blend: function(color1, color2) &#123;</div><div class="line">		// ...</div><div class="line">	&#125;,</div><div class="line"></div><div class="line">	/** Darken a color by the given percentage. */</div><div class="line">	darken: function(color, percent) &#123;</div><div class="line">		// ..</div><div class="line">	&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+
+    例如，通过属性定义，分配给module.exports。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Color mixer.</div><div class="line"> * @module color/mixer</div><div class="line"> */</div><div class="line"></div><div class="line">module.exports = &#123;</div><div class="line">	/** Blend two colors together. */</div><div class="line">	blend: function(color1, color2) &#123;</div><div class="line">		// ...</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">/** Darken a color by the given percentage. */</div><div class="line">module.exports.darken = function(color, percent) &#123;</div><div class="line">	// ..</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+
+    Function assigned to &apos;module.exports&apos;（函数分配给&apos;module.exports&apos;）
+    例如，函数分配给&apos;module.exports&apos;。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Color mixer.</div><div class="line"> * @module color/mixer</div><div class="line"> */</div><div class="line"></div><div class="line">/** Blend two colors together. */</div><div class="line">module.exports = function(color1, color2) &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+
+    例如，构造函数分配给&apos;module.exports&apos;。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Color mixer.</div><div class="line"> * @module color/mixer</div><div class="line"> */</div><div class="line"></div><div class="line">/** Create a color mixer. */</div><div class="line">module.exports = function ColorMixer() &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+
+    String, number, or boolean assigned to &apos;module.exports&apos;（字符串，数字，或布尔值分配给&apos;module.exports&apos;）
+    例如，字符串分配给&apos;module.exports&apos;。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Module representing the word of the day.</div><div class="line"> * @module wotd</div><div class="line"> * @type &#123;string&#125;</div><div class="line"> */</div><div class="line"></div><div class="line">module.exports = &apos;perniciousness&apos;;</div></pre></td></tr></table></figure>
+
+    Values assigned to &apos;module.exports&apos; and local variables （值分配给&apos;module.exports&apos;和局部变量）
+    例如，对象字面量分配给一个局部变量和module.export。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Color mixer.</div><div class="line"> * @exports color/mixer</div><div class="line"> */</div><div class="line">var mixer = module.exports = &#123;</div><div class="line">	/** Blend two colors together. */</div><div class="line">	blend: function(color1, color2) &#123;</div><div class="line">		// ...</div><div class="line">	&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+
+    Properties added to &apos;this&apos;（属性添加到&apos;this&apos;）
+    例如，属性添加到一个模块的&apos;this&apos;对象。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">/** @module bookshelf */</div><div class="line"></div><div class="line">/** @class */</div><div class="line">this.Book = function(title) &#123;</div><div class="line">	/** The title of the book. */</div><div class="line">	this.title = title;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="AMD-Modules"><a href="#AMD-Modules" class="headerlink" title="AMD Modules"></a>AMD Modules</h3><pre><code>Module identifiers（模块标识符）
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Pants module.</div><div class="line"> * @module my/pants</div><div class="line"> * @see module:my/shirt</div><div class="line"> */</div></pre></td></tr></table></figure>
+
+Function that returns an object literal（函数返回一个对象字面量）
+    例如，函数返回一个对象字面量。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">define(&apos;my/shirt&apos;, function() &#123;</div><div class="line">   /**</div><div class="line">	* A module representing a shirt.</div><div class="line">	* @exports my/shirt</div><div class="line">	*/</div><div class="line">	var shirt = &#123;</div><div class="line">		/** The module&apos;s `color` property. */</div><div class="line">		color: &apos;black&apos;,</div><div class="line"></div><div class="line">		/** @constructor */</div><div class="line">		Turtleneck: function(size) &#123;</div><div class="line">			/** The class&apos; `size` property. */</div><div class="line">			this.size = size;</div><div class="line">		&#125;</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">	return shirt;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+
+Function that returns another function（函数返回另一个函数）
+    例如，函数返回另一个函数。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * A module representing a jacket.</div><div class="line"> * @module my/jacket</div><div class="line"> */</div><div class="line">define(&apos;my/jacket&apos;, function() &#123;</div><div class="line">	/**</div><div class="line">	 * @constructor</div><div class="line">	 * @alias module:my/jacket</div><div class="line">	 */</div><div class="line">	var Jacket = function() &#123;</div><div class="line">		// ...</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">	/** Zip up the jacket. */</div><div class="line">	Jacket.prototype.zip = function() &#123;</div><div class="line">		// ...</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">	return Jacket;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+
+Module declared in a return statement （模块声明在return语句中）
+    例如，模块声明在return语句中。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Module representing a shirt.</div><div class="line"> * @module my/shirt</div><div class="line"> */</div><div class="line"></div><div class="line">define(&apos;my/shirt&apos;, function() &#123;</div><div class="line">	// Do setup work here.</div><div class="line"></div><div class="line">	return /** @alias module:my/shirt */ &#123;</div><div class="line">		/** Color. */</div><div class="line">		color: &apos;black&apos;,</div><div class="line">		/** Size. */</div><div class="line">		size: &apos;unisize&apos;</div><div class="line">	&#125;;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+
+Module object passed to a function（模块对象传递给一个函数）
+    例如，模块对象传递给一个函数。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">define(&apos;my/jacket&apos;, function(</div><div class="line">	/**</div><div class="line">	 * Utility functions for jackets.</div><div class="line">	 * @exports my/jacket</div><div class="line">	 */</div><div class="line">	module) &#123;</div><div class="line"></div><div class="line">	/**</div><div class="line">	 * Zip up a jacket.</div><div class="line">	 * @param &#123;Jacket&#125; jacket - The jacket to zip up.</div><div class="line">	 */</div><div class="line">	module.zip = function(jacket) &#123;</div><div class="line">		// ...</div><div class="line">	&#125;;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+
+Multiple modules defined in one file（多模块定义在一个文件中）
+    例如，多模块定义在一个文件中。
+    ```
+    // one module
+    define(&apos;html/utils&apos;, function() {
+        /**
+         * Utility functions to ease working with DOM elements.
+         * @exports html/utils
+         */
+        var utils = {
+            /** Get the value of a property on an element. */
+            getStyleProperty: function(element, propertyName) { }
+        };
+
+        /** Determine if an element is in the document head. */
+        utils.isInHead = function(element) { }
+
+        return utils;
+        }
+    );
+
+    // another module
+    define(&apos;tag&apos;, function() {
+        /** @exports tag */
+        var tag = {
+            /** @class */
+            Tag: function(tagName) {
+                // ...
+            }
+        };
+
+        return tag;
+    });
+    ```        
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="http://www.css88.com/doc/jsdoc/" target="_blank" rel="external">jsDoc文档</a>    </p>
+</blockquote>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;jsDoc-示例&quot;&gt;&lt;a href=&quot;#jsDoc-示例&quot; class=&quot;headerlink&quot; title=&quot;jsDoc 示例&quot;&gt;&lt;/a&gt;jsDoc 示例&lt;/h2&gt;&lt;h3 id=&quot;ES-2015-Classes&quot;&gt;&lt;a href=&quot;#ES-2015-Classe
+    
+    </summary>
+    
+      <category term="js" scheme="https://fanerge.github.io/categories/js/"/>
+    
+    
+      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
+    
+  </entry>
   
   <entry>
     <title>jsDoc学习-入门知识</title>
@@ -1221,277 +1439,6 @@ fs.appendFile(&apos;filename.txt&apos;, &apos;data to append&apos; , (err) =&gt;
       <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
     
       <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>path模块-路径</title>
-    <link href="https://fanerge.github.io/2017/09/16/nodejs%E8%87%AA%E5%B8%A6%E6%A8%A1%E5%9D%97%E5%AD%A6%E4%B9%A0-path/"/>
-    <id>https://fanerge.github.io/2017/09/16/nodejs自带模块学习-path/</id>
-    <published>2017-09-16T02:16:31.000Z</published>
-    <updated>2017-09-16T02:25:40.111Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="path模块-路径"><a href="#path模块-路径" class="headerlink" title="path模块-路径"></a>path模块-路径</h3><pre><code>在不同系统中，路径分隔符显示不同。POSIX 上的 / 与 Windows 上的 \
-说明：path 模块提供了一些工具函数，用于处理文件与目录的路径。
-</code></pre><h3 id="path-sep"><a href="#path-sep" class="headerlink" title="path.sep"></a>path.sep</h3><pre><code>作用：提供了平台特定的路径片段分隔符。
-    windows上是 \
-    POSIX上是 /
-</code></pre><h3 id="path-win32-和-path-posix"><a href="#path-win32-和-path-posix" class="headerlink" title="path.win32 和 path.posix"></a>path.win32 和 path.posix</h3><pre><code>要想在任何操作系统上处理 Windows 文件路径时获得一致的结果，可以使用 path.win32
-    path.win32.basename(&apos;c:\\temp\\myfile.html&apos;); // myfile.html
-要想在任何操作系统上处理 POSIX 文件路径时获得一致的结果，可以使用 path.posix
-    path.posix.basename(&apos;/temp/myfile.html&apos;); // myfile.html
-</code></pre><h3 id="path-delimiter"><a href="#path-delimiter" class="headerlink" title="path.delimiter"></a>path.delimiter</h3><pre><code>作用：提供平台特定的路径分隔符。
-    windows是;
-    POSIX是:
-    process.env.PATH; // &apos;/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin&apos;
-    process.env.PATH.split(path.delimiter); // [&apos;/usr/bin&apos;, &apos;/bin&apos;, &apos;/usr/sbin&apos;, &apos;/sbin&apos;, &apos;/usr/local/bin&apos;]
-</code></pre><h3 id="path-basename-path-ext"><a href="#path-basename-path-ext" class="headerlink" title="path.basename(path[, ext]);"></a>path.basename(path[, ext]);</h3><pre><code>作用：返回一个 path 的最后一部分。
-    path.basename(&apos;/foo/bar/myfile.html&apos;); // &apos;myfile.html&apos;
-    patn.basename(&apos;/foo/bar/myfile.html&apos;, &apos;.html&apos;); // &apos;myfile&apos;
-</code></pre><h3 id="path-dirname-path"><a href="#path-dirname-path" class="headerlink" title="path.dirname(path);"></a>path.dirname(path);</h3><pre><code>作用：返回一个path的目录名。
-    path.dirname(&apos;/foo/bar/myfile&apos;); // foo/bar
-</code></pre><h3 id="path-extname-path"><a href="#path-extname-path" class="headerlink" title="path.extname(path)"></a>path.extname(path)</h3><pre><code>作用：返回 path 的扩展名，即从 path 的最后一部分中的最后一个 .（句号）字符到字符串结束。
-    path.extname(&apos;index.coffee.md&apos;); // &apos;.md&apos;
-</code></pre><h3 id="path-format-pathObject"><a href="#path-format-pathObject" class="headerlink" title="path.format(pathObject);"></a>path.format(pathObject);</h3><pre><code>作用：会从一个对象返回一个路径字符串。 与 path.parse() 相反。
-参数：Object
-    {
-        dir: &apos;&apos;,
-        root: &apos;&apos;,
-        base: &apos;&apos;,
-        name: &apos;&apos;,
-        ext: &apos;&apos;
-    }
-    在windows中
-    path.format({
-        root: &apos;ignored&apos;,
-        dir: &apos;\home\user&apos;,
-        base: &apos;file.txt&apos;
-    });
-    // &apos;\home\user\file.txt&apos;
-</code></pre><h3 id="path-parse-path"><a href="#path-parse-path" class="headerlink" title="path.parse(path);"></a>path.parse(path);</h3><pre><code>作用：返回一个对象，对象的属性表示 path 的元素。
-    path.parse(&apos;/home/user/file.txt&apos;);
-    // {
-        root: &apos;/&apos;,
-        base: &apos;/home/user&apos;,
-        ext: &apos;.txt&apos;.
-        name: &apos;file&apos;
-    }
-</code></pre><h3 id="path-isAbsolute-path"><a href="#path-isAbsolute-path" class="headerlink" title="path.isAbsolute(path);"></a>path.isAbsolute(path);</h3><pre><code>作用：会判定 path 是否为一个绝对路径。
-    path.isAbsolute(&apos;bar\baz&apos;); // true
-</code></pre><h3 id="path-join-…path"><a href="#path-join-…path" class="headerlink" title="path.join([…path]);"></a>path.join([…path]);</h3><pre><code>作用：使用平台特定的分隔符把全部给定的 path 片段连接到一起，并规范化生成的路径。
-    path.join(&apos;/foo&apos;, &apos;bar&apos;, &apos;baz/asdf&apos;, &apos;quux&apos;, &apos;..&apos;); // 返回: &apos;/foo/bar/baz/asdf&apos;
-</code></pre><h3 id="path-normalize-path"><a href="#path-normalize-path" class="headerlink" title="path.normalize(path);"></a>path.normalize(path);</h3><pre><code>作用：规范化给定的 path，并解析 &apos;..&apos; 和 &apos;.&apos; 片段。
-    path.normalize(&apos;/foo/bar/baz/asdf/quux/..&apos;); // &apos;/foo/bar/baz/asdf&apos;
-</code></pre><h3 id="path-relative-from-to"><a href="#path-relative-from-to" class="headerlink" title="path.relative(from, to);"></a>path.relative(from, to);</h3><pre><code>作用：返回从 from 到 to 的相对路径（基于当前工作目录）。
-    path.relative(&apos;/data/orandea/test/aaa&apos;, &apos;/data/orandea/impl/bbb&apos;);
-    // &apos;../../impl/bbb&apos;
-</code></pre><h3 id="path-resolve-…paths"><a href="#path-resolve-…paths" class="headerlink" title="path.resolve([…paths]);"></a>path.resolve([…paths]);</h3><pre><code>作用：把一个路径或路径片段的序列解析为一个绝对路径。
-    path.resolve(&apos;/foo/bar&apos;, &apos;./baz&apos;); // &apos;/foo/bar/baz&apos;
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="http://nodejs.cn/api/path.html" target="_blank" rel="external">path参考-api</a></p>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;path模块-路径&quot;&gt;&lt;a href=&quot;#path模块-路径&quot; class=&quot;headerlink&quot; title=&quot;path模块-路径&quot;&gt;&lt;/a&gt;path模块-路径&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;在不同系统中，路径分隔符显示不同。POSIX 上的 / 与 Wind
-    
-    </summary>
-    
-      <category term="NodeJS" scheme="https://fanerge.github.io/categories/NodeJS/"/>
-    
-    
-      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
-    
-      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
-    
-      <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>sql参考手册</title>
-    <link href="https://fanerge.github.io/2017/09/14/sql%E5%8F%82%E8%80%83%E6%89%8B%E5%86%8C/"/>
-    <id>https://fanerge.github.io/2017/09/14/sql参考手册/</id>
-    <published>2017-09-14T14:21:26.000Z</published>
-    <updated>2017-09-15T14:16:00.432Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="AND-OR"><a href="#AND-OR" class="headerlink" title="AND / OR"></a>AND / OR</h4><pre><code>AND &amp; OR 运算符用于基于一个以上的条件对记录进行过滤。
-语法：SELECT column_name(s) FROM table_name WHERE condition AND|OR condition;
-选择count大于10 且 count小于230
-    SELECT * FROM access_log WHERE count &gt; 10 AND count &lt; 230
-选择count小于10 或 count大于230    
-    SELECT * FROM access_log WHERE count &lt; 10 OR count &gt; 230
-</code></pre><h4 id="ALTER-TABLE"><a href="#ALTER-TABLE" class="headerlink" title="ALTER TABLE"></a>ALTER TABLE</h4><pre><code>ALTER TABLE 语句用于在已有的表中添加、删除或修改列。
-语法：
-    // 添加一列
-    ALTER TABLE table_name  
-    ADD column_name datatype 
-    // 删除一列
-    ALTER TABLE table_name   
-    DROP COLUMN column_name
-    // 更改一列字段类型    
-    ALTER TABLE table_name   
-    MODIFY COLUMN column_name VARCHAR(10)
-    // 更改一列
-    ALTER TABLE table_name   
-    CHANGE COLUMN column_name re_name
-</code></pre><h4 id="AS-alias"><a href="#AS-alias" class="headerlink" title="AS (alias)"></a>AS (alias)</h4><pre><code>SELECT column_name AS column_alias 
-FROM table_name
-OR
-SELECT column_name
-FROM table_name AS table_alias
-对url改名为ii    
-    SELECT url AS ii FROM websites
-</code></pre><h4 id="BETWEEN"><a href="#BETWEEN" class="headerlink" title="BETWEEN"></a>BETWEEN</h4><pre><code>语法：
-    SELECT column_name(s)
-    FROM table_name
-    WHERE column_name
-    BETWEEN value1 AND value2
-选择alexa1到10的所有记录
-    SELECT * FROM websites WHERE alexa BETWEEN 1 AND 10    
-</code></pre><h4 id="CREATE-DATABASE"><a href="#CREATE-DATABASE" class="headerlink" title="CREATE DATABASE"></a>CREATE DATABASE</h4><pre><code>语法：CREATE DATABASE database_name
-创建IIII数据库    
-    CREATE DATABASE IIII    
-</code></pre><h4 id="DROP-DATABASE"><a href="#DROP-DATABASE" class="headerlink" title="DROP DATABASE"></a>DROP DATABASE</h4><pre><code>语法：DROP DATABASE database_name
-删除IIII数据库
-    DROP DATABASE IIII
-</code></pre><h4 id="CREATE-TABLE"><a href="#CREATE-TABLE" class="headerlink" title="CREATE TABLE"></a>CREATE TABLE</h4><pre><code>语法：
-    CREATE TABLE table_name (
-        column_name data_type,
-        column_name data_type,
-        ...
-    )
-创建一个名为 sds 的表，且有字段int    
-    CREATE TABLE sds (id int)
-</code></pre><h4 id="DROP-TABLE"><a href="#DROP-TABLE" class="headerlink" title="DROP TABLE"></a>DROP TABLE</h4><pre><code>语法：DROP TABLE IF EXISTS tabale_name
-如果表sds存在就删除
-    DROP TABLE IF EXISTS sds
-</code></pre><h4 id="CREATE-INDEX"><a href="#CREATE-INDEX" class="headerlink" title="CREATE INDEX"></a>CREATE INDEX</h4><pre><code>创建索引
-语法：
-    CREATE INDEX index_name
-    ON tabale_name (column_name)
-    OR
-    CREATE UNIQUE INDEX index_name
-    ON tabale_name (column_name)
-</code></pre><h4 id="CREATE-VIEW"><a href="#CREATE-VIEW" class="headerlink" title="CREATE VIEW"></a>CREATE VIEW</h4><pre><code>创建视图
-视图是基于 SQL 语句的结果集的可视化的表。
-语法：
-    CREATE VIEW view_name AS
-    SELECT column_name(s)
-    FROM tabale_name
-</code></pre><h4 id="DELETE"><a href="#DELETE" class="headerlink" title="DELETE"></a>DELETE</h4><pre><code>DELETE FROM tabale_name
-WHERE some_column = some_value
-OR
-DELETE FROM tabale_name // 删除整个表
-DELETE * FROM tabale_name
-</code></pre><h4 id="DROP-DATABASE-1"><a href="#DROP-DATABASE-1" class="headerlink" title="DROP DATABASE"></a>DROP DATABASE</h4><pre><code>删除数据库
-DROP DATABASE data_name
-</code></pre><h4 id="DROP-INDEX"><a href="#DROP-INDEX" class="headerlink" title="DROP INDEX"></a>DROP INDEX</h4><pre><code>删除索引
-DROP INDEX index_name
-</code></pre><h4 id="DROP-TABLE-1"><a href="#DROP-TABLE-1" class="headerlink" title="DROP TABLE"></a>DROP TABLE</h4><pre><code>删除表
-DROP TABLE table_name
-</code></pre><h4 id="GROUP-BY"><a href="#GROUP-BY" class="headerlink" title="GROUP BY"></a>GROUP BY</h4><pre><code>合计函数 (比如 SUM) 常常需要添加 GROUP BY 语句。
-SELECT column_name, aggregate_function(column_name)
-FROM table_name
-WHERE column_name operator value1
-GROUP BY column_name
-</code></pre><h4 id="HAVING"><a href="#HAVING" class="headerlink" title="HAVING"></a>HAVING</h4><pre><code>在 SQL 中增加 HAVING 子句原因是，WHERE 关键字无法与合计函数一起使用。    
-SELECT column_name, aggregate_function(column_name)
-FROM tabale_name
-WHERE column_name operator value
-GROUP BY column_name
-HAVING aggregate_function(column_name) operator value
-</code></pre><h4 id="IN"><a href="#IN" class="headerlink" title="IN"></a>IN</h4><pre><code>IN 操作符允许您在 WHERE 子句中规定多个值。
-SELECT column_name(s)
-FROM tabale_name
-WHERE column_name
-IN(value1, value2)
-</code></pre><h4 id="INSERT-INTO"><a href="#INSERT-INTO" class="headerlink" title="INSERT INTO"></a>INSERT INTO</h4><pre><code>插入数据
-INSERT INTO tabale_name
-VALUES(value1, value2, ...value3)
-OR    
-INSERT INTO tabale_name
-(column1, column2, ...column3)
-VALUES(value1, value2, ...value3)
-</code></pre><h4 id="INNER-JOIN"><a href="#INNER-JOIN" class="headerlink" title="INNER JOIN"></a>INNER JOIN</h4><pre><code>在表中存在至少一个匹配时，INNER JOIN 关键字返回行。    
-SELECT column_name(s)
-FROM tabale_name1
-INNER JOIN tabale_name2
-ON tabale_name1.column_name = tabale_name2.column_name
-</code></pre><h4 id="LEFT-JOIN"><a href="#LEFT-JOIN" class="headerlink" title="LEFT JOIN"></a>LEFT JOIN</h4><pre><code>返回左表
-SELECT column_name(s)
-FROM tabale_name1
-LEFT JOIN tabale_name2
-ON tabale_name1.column_name = tabale_name2.column_name
-</code></pre><h4 id="RIGHT-JOIN"><a href="#RIGHT-JOIN" class="headerlink" title="RIGHT JOIN"></a>RIGHT JOIN</h4><pre><code>返回左表
-SELECT column_name(s)
-FROM tabale_name1
-RIGHT JOIN tabale_name2
-ON tabale_name1.column_name = tabale_name2.column_name        
-</code></pre><h4 id="FULL-JOIN"><a href="#FULL-JOIN" class="headerlink" title="FULL JOIN"></a>FULL JOIN</h4><pre><code>只要其中某个表存在匹配，FULL JOIN 关键字就会返回行。    
-SELECT column_name(s)
-FROM tabale_name1
-FULL JOIN tabale_name2
-ON tabale_name1.column_name = tabale_name2.column_name
-</code></pre><h4 id="LIKE"><a href="#LIKE" class="headerlink" title="LIKE"></a>LIKE</h4><pre><code>LIKE 操作符用于在 WHERE 子句中搜索列中的指定模式。    
-SELECT column_name(s)
-FROM tabale_name
-WHERE column_name LIKE pattern
-</code></pre><h4 id="ORDER-BY"><a href="#ORDER-BY" class="headerlink" title="ORDER BY"></a>ORDER BY</h4><pre><code>ORDER BY 语句用于对结果集进行排序。
-SELECT column_name 
-FROM table_name
-ORDER BY column_name[ASC|DESC]
-</code></pre><h4 id="SELECT"><a href="#SELECT" class="headerlink" title="SELECT"></a>SELECT</h4><pre><code>查询
-SELECT column_name(s)
-FROM tabale_name
-</code></pre><h4 id="SELECT-1"><a href="#SELECT-1" class="headerlink" title="SELECT *"></a>SELECT *</h4><pre><code>SELECT *
-FROM tabale_name
-</code></pre><h4 id="SELECT-DISTINCT"><a href="#SELECT-DISTINCT" class="headerlink" title="SELECT DISTINCT"></a>SELECT DISTINCT</h4><pre><code>关键词 DISTINCT 用于返回唯一不同的值。    
-SELECT DISTINCT column_name(s)
-FROM tabale_name
-</code></pre><h4 id="SELECT-INTO"><a href="#SELECT-INTO" class="headerlink" title="SELECT INTO"></a>SELECT INTO</h4><pre><code>SELECT *
-INTO new_table_name [IN externaldatabase]
-FROM old_table_name
-OR
-SELECT column_name(s)
-INTO new_table_name [IN externaldatabase]
-FROM old_table_name
-</code></pre><h4 id="SELECT-TOP"><a href="#SELECT-TOP" class="headerlink" title="SELECT TOP"></a>SELECT TOP</h4><pre><code>SELECT column_name(s)
-FROM table_name
-LIMIT number
-</code></pre><h4 id="TRUNCATE-TABLE"><a href="#TRUNCATE-TABLE" class="headerlink" title="TRUNCATE TABLE"></a>TRUNCATE TABLE</h4><pre><code>TRUNCATE TABLE table_name    
-</code></pre><h4 id="UNION"><a href="#UNION" class="headerlink" title="UNION"></a>UNION</h4><pre><code>SQL UNION 操作符合并两个或多个 SELECT 语句的结果。
-SELECT column_name(s) FROM tabale_name1
-UNION
-SELECT column_name(s) FROM tabale_name2
-</code></pre><h4 id="UNION-ALL"><a href="#UNION-ALL" class="headerlink" title="UNION ALL"></a>UNION ALL</h4><pre><code>SELECT column_name(s) FROM tabale_name1
-UNION ALL
-SELECT column_name(s) FROM tabale_name2
-</code></pre><h4 id="UPDATE"><a href="#UPDATE" class="headerlink" title="UPDATE"></a>UPDATE</h4><pre><code>更新
-UPDATE tabale_name
-SET column1=value, column2=value
-WHERE some_column=some_value
-</code></pre><h4 id="WHERE"><a href="#WHERE" class="headerlink" title="WHERE"></a>WHERE</h4><pre><code>条件
-SELECT column_name(s)
-FROM tabale_name
-WHERE column_name operator value
-</code></pre><blockquote>
-<p>   参考文档<br>    <a href="http://www.runoob.com/sql/sql-quickref.html" target="_blank" rel="external">SQL文档</a></p>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h4 id=&quot;AND-OR&quot;&gt;&lt;a href=&quot;#AND-OR&quot; class=&quot;headerlink&quot; title=&quot;AND / OR&quot;&gt;&lt;/a&gt;AND / OR&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;AND &amp;amp; OR 运算符用于基于一个以上的条件对记录进行过滤。
-语法：SEL
-    
-    </summary>
-    
-      <category term="sql" scheme="https://fanerge.github.io/categories/sql/"/>
-    
-    
-      <category term="数据库" scheme="https://fanerge.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
     
   </entry>
   

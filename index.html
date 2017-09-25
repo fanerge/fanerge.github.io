@@ -282,6 +282,486 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/25/jsDoc学习-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/25/jsDoc学习-2/" itemprop="url">
+                  jsDoc学习
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-25T21:03:22+08:00">
+                2017-09-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/js/" itemprop="url" rel="index">
+                    <span itemprop="name">js</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/25/jsDoc学习-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/25/jsDoc学习-2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="块标签（Block-Tags）"><a href="#块标签（Block-Tags）" class="headerlink" title="块标签（Block Tags）"></a>块标签（Block Tags）</h2><h3 id="abstract"><a href="#abstract" class="headerlink" title="@abstract"></a>@abstract</h3><pre><code>该成员（一般指父类的方法）必须在继承的子类中实现（或重写）。
+别名：@virtual
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * 奶制品</div><div class="line"> * @constructor</div><div class="line"> */</div><div class="line">function DairyProduct () &#123;&#125;</div><div class="line">/**</div><div class="line"> * 检查奶制品的状态</div><div class="line"> * @abstract</div><div class="line"> * @return &#123;boolean&#125;</div><div class="line"> */</div><div class="line">DairyProduct.prototype.isSolid = function () &#123;</div><div class="line">  throw new Error(&apos;must be implemented by subclass!&apos;);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">/**</div><div class="line"> * 牛奶</div><div class="line"> * @constructor</div><div class="line"> */</div><div class="line">function Milk () &#123;&#125;</div><div class="line">Milk.prototype = new DairyProduct();</div><div class="line">// 这里重写了父类的isSolid方法</div><div class="line">Milk.prototype.isSolid = function () &#123;</div><div class="line">	return false;</div><div class="line">&#125;;</div><div class="line">var dd = new Milk();</div><div class="line">console.log(dd.isSolid()); // false</div></pre></td></tr></table></figure>
+</code></pre><h3 id="access"><a href="#access" class="headerlink" title="@access"></a>@access</h3><pre><code>指定该成员的访问级别（私有 private，公共 public，或保护 protected）
+语法：@access &lt;private|protected|public&gt;
+    @access private 等价于 @private;
+    @access protected 等价于 @protected;
+    @access public 等价于 @public;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @constructor</div><div class="line"> */</div><div class="line">function Thingy () &#123;</div><div class="line">	/** @access private */</div><div class="line">	var foo = 0;</div><div class="line">	/** @access protected */</div><div class="line">	this._bar = 1;</div><div class="line">	/** @access public */</div><div class="line">	this.pez = 2;</div><div class="line">&#125;</div><div class="line">OR</div><div class="line">/**</div><div class="line"> * @constructor</div><div class="line"> */</div><div class="line">function Thingy () &#123;</div><div class="line">	/** @private */</div><div class="line">	var foo = 0;</div><div class="line">	/** @protected */</div><div class="line">	this._bar = 1;</div><div class="line">	/** @public */</div><div class="line">	this.pez = 2;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="alias"><a href="#alias" class="headerlink" title="alias"></a>alias</h3><pre><code>标记成员有一个别名
+语法：@alias &lt;aliasNamepath&gt;
+例如，匿名的构造函数使用@alias。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">Klass(&apos;trackr.CookieManager&apos;,</div><div class="line">	/**</div><div class="line">	 * 匿名函数</div><div class="line">	 * @alias trackr.CookieManager</div><div class="line">	 * @param kv</div><div class="line">	 */</div><div class="line">	function (kv) &#123;</div><div class="line">		/** trackr.CookieManager＃value */</div><div class="line">		this.value = kv;</div><div class="line">	&#125;</div><div class="line">)</div></pre></td></tr></table></figure>
+
+您也可以在一个立即调用的函数表达式（IIFE）中创建的成员中使用@alias标签。
+@alias标签告诉JSDoc，这些成员都暴露在IIFE作用域之外的。
+例如，命名空间的静态方法使用@alias。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">/** @namespace */</div><div class="line">var Apple = &#123;&#125;;</div><div class="line">(function (ns) &#123;</div><div class="line">	/**</div><div class="line">	 * @namespace</div><div class="line">	 * @alias Apple.Core</div><div class="line">	 */</div><div class="line">	var core = &#123;&#125;;</div><div class="line">	/** Documented as Apple.Core.seed */</div><div class="line">	core.speed = function () &#123;&#125;;</div><div class="line">	ns.Core = core;</div><div class="line">&#125;)(Apple);</div></pre></td></tr></table></figure>
+
+对于那些对象字面量中定义的成员，可以使用@alias标签替代的@lends标记。
+例如，对象常量使用@alias。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">// Documenting objectA with @alias</div><div class="line">var objectA = (function() &#123;</div><div class="line">	/**</div><div class="line">	 * Documented as objectA</div><div class="line">	 * @alias objectA</div><div class="line">	 * @namespace</div><div class="line">	 */</div><div class="line">	 /** @lends objectA */</div><div class="line">	var x = &#123;</div><div class="line">		/**</div><div class="line">		 * Documented as objectA.myProperty</div><div class="line">		 * @member</div><div class="line">		 */</div><div class="line">		myProperty: &apos;foo&apos;</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">	return x;</div><div class="line">&#125;)();</div></pre></td></tr></table></figure>
+</code></pre><h3 id="auguments"><a href="#auguments" class="headerlink" title="@auguments"></a>@auguments</h3><pre><code>@augments or@extends标签指明标识符继承自哪个父类，后面需要加父类名。
+你可以使用这个标签来记录基于类和并基于原型的继承。
+别名：@extends
+语法：@auguments &lt;namepath&gt;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * 动物</div><div class="line"> * @constructor</div><div class="line"> */</div><div class="line">function Animal () &#123;</div><div class="line">	this.alive = true;</div><div class="line">&#125;</div><div class="line"></div><div class="line">/**</div><div class="line"> * 鸭子</div><div class="line"> * @constructor</div><div class="line"> * @auguments Animal</div><div class="line"> */</div><div class="line">function Duck () &#123;&#125;</div><div class="line">Duck.prototype = new Animal();</div><div class="line">Duck.prototype.speak = function () &#123;</div><div class="line">	if (this.alive) &#123;</div><div class="line">		alert(&apos;Quack!&apos;);</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line">var d = new Duck();</div><div class="line">d.speak();</div></pre></td></tr></table></figure>
+</code></pre><h3 id="author"><a href="#author" class="headerlink" title="@author"></a>@author</h3><pre><code>@author标签标识一个项目的作者。
+语法：@author &lt;name&gt; [&lt;emailAddress&gt;]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line">* @author fanerge &lt;fanerge@qq.com&gt;</div><div class="line">*/</div><div class="line">function MyClass () &#123;&#125;;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="borrows"><a href="#borrows" class="headerlink" title="@borrows"></a>@borrows</h3><pre><code>@borrows标签允许您将另一个标识符的描述添加到你的当前描述。
+语法：@borrows &lt;that namepath&gt; as &lt;this namepath&gt;
+在这个例子中，&quot;trstr&quot;函数存在文档，但&quot;util.trim&quot;只是使用不同的名称引用相同的功能。
+例如，复制trstr的文档描述给util.trim。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @namespace</div><div class="line"> * @borrows trstr as trim</div><div class="line"> */</div><div class="line">var util = &#123;</div><div class="line">	trim: trstr</div><div class="line">&#125;;</div><div class="line"></div><div class="line">/**</div><div class="line"> * Remove whitespace from around a string.</div><div class="line"> * @param &#123;string&#125; str</div><div class="line"> */</div><div class="line">function trstr(str) &#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="callback"><a href="#callback" class="headerlink" title="@callback"></a>@callback</h3><pre><code>描述一个回调函数。@Callback标签提供回调函数（可传递给其他函数）的描述，包括回调的参数和返回值。
+你可以包涵任何一个你能提供给@method标签。
+语法：@callback &lt;namepath&gt;
+例如,描述一个指定类回调。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @class</div><div class="line"> */</div><div class="line">function Requester() &#123;&#125;</div><div class="line"></div><div class="line">/**</div><div class="line"> * Send a request.</div><div class="line"> * @param &#123;Requester~requestCallback&#125; cb - The callback that handles the response.</div><div class="line"> */</div><div class="line">Requester.prototype.send = function(cb) &#123;</div><div class="line">	// code</div><div class="line">&#125;;</div><div class="line"></div><div class="line">/**</div><div class="line"> * This callback is displayed as part of the Requester class.</div><div class="line"> * @callback Requester~requestCallback</div><div class="line"> * @param &#123;number&#125; responseCode</div><div class="line"> * @param &#123;string&#125; responseMessage</div><div class="line"> */</div></pre></td></tr></table></figure>
+</code></pre><h3 id="class"><a href="#class" class="headerlink" title="@class"></a>@class</h3><pre><code>@class标签标明函数是一个构造器函数，意味着需要使用 new 关键字来返回一个实例，即使用 new 关键字实例化。
+别名：@constructor
+语法：@class [&lt;type&gt; &lt;name&gt;]
+例如，一个函数构建一个Person实例
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * 创建一个人</div><div class="line"> * @class</div><div class="line"> */</div><div class="line">function Person () &#123;&#125;</div><div class="line">var p = new Person();</div></pre></td></tr></table></figure>
+</code></pre><h3 id="classdesc"><a href="#classdesc" class="headerlink" title="@classdesc"></a>@classdesc</h3><pre><code>@classdesc标签用于为类提供一个描述，这样和构造函数的描述区分开来。
+@classdesc标签应该与 @class (或 @constructor)标签结合使用。
+语法：@classdesc &lt;some description&gt;
+如下所示，一个类有两个添加描述的地方，一个适用于函数本身，而另一个一般适用于类。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * This is a description of the MyClass constructor function.</div><div class="line"> * @class</div><div class="line"> * @classdesc This is a description of the MyClass class.</div><div class="line"> */</div><div class="line">function MyClass() &#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="constant"><a href="#constant" class="headerlink" title="@constant"></a>@constant</h3><pre><code>@constant 标签指明这个对象是一个常量。
+语法：@constant [&lt;type&gt; &lt;name&gt;]    
+例如，一个字符串常量表示红色。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">/** @constant</div><div class="line">	@type &#123;string&#125;</div><div class="line">	@default</div><div class="line">*/</div><div class="line">const RED = &apos;FF0000&apos;;</div></pre></td></tr></table></figure>
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="http://www.css88.com/doc/jsdoc/" target="_blank" rel="external">jsDoc文档</a>    </p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/25/jsDoc学习-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/25/jsDoc学习-1/" itemprop="url">
+                  jsDoc学习
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-25T19:51:34+08:00">
+                2017-09-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/js/" itemprop="url" rel="index">
+                    <span itemprop="name">js</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/25/jsDoc学习-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/25/jsDoc学习-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="jsDoc-示例"><a href="#jsDoc-示例" class="headerlink" title="jsDoc 示例"></a>jsDoc 示例</h2><h3 id="ES-2015-Classes"><a href="#ES-2015-Classes" class="headerlink" title="ES 2015 Classes"></a>ES 2015 Classes</h3><pre><code>Documenting a simple class（文档化一个简单的类）    
+    演示了如何通过一个构造函数，两个实例方法和一个静态方法文档化一个简单的类
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">class Point &#123;</div><div class="line">	/**</div><div class="line">	 * 构造函数</div><div class="line">	 * @param x</div><div class="line">	 * @param y</div><div class="line">	 */</div><div class="line">	constructor (x, y) &#123;</div><div class="line">		this.x = x;</div><div class="line">		this.y = y;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	/**</div><div class="line">	 * 实例方法</div><div class="line">	 * @returns &#123;*&#125;</div><div class="line">	 */</div><div class="line">	getX () &#123;</div><div class="line">		return this.x;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	/**</div><div class="line">	 * 实例方法</div><div class="line">	 * @returns &#123;*&#125;</div><div class="line">	 */</div><div class="line">	getY () &#123;</div><div class="line">		return this.y;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	/**</div><div class="line">	 * 静态方法</div><div class="line">	 * @param str</div><div class="line">	 */</div><div class="line">	static fromString (str) &#123;</div><div class="line">		// ...</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">var de = new Point(&apos;1&apos;,&apos;2&apos;);</div><div class="line">console.log(de.getX()); // &apos;1&apos;</div></pre></td></tr></table></figure>
+
+Extending classes（扩展类）
+    当您使用 extends关键字来扩展一个现有的类的时候，你还需要告诉JSDoc哪个类是你要扩展的。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line">/** Class representing a point. */</div><div class="line">class Point &#123;</div><div class="line">	/**</div><div class="line">	 * 构造函数</div><div class="line">	 * @param x</div><div class="line">	 * @param y</div><div class="line">	 */</div><div class="line">	constructor (x, y) &#123;</div><div class="line">		this.x = x;</div><div class="line">		this.y = y;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	/**</div><div class="line">	 * 实例方法</div><div class="line">	 * @returns &#123;*&#125;</div><div class="line">	 */</div><div class="line">	getX () &#123;</div><div class="line">		return this.x;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	/**</div><div class="line">	 * 实例方法</div><div class="line">	 * @returns &#123;*&#125;</div><div class="line">	 */</div><div class="line">	getY () &#123;</div><div class="line">		return this.y;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	/**</div><div class="line">	 * 静态方法</div><div class="line">	 * @param str</div><div class="line">	 */</div><div class="line">	static fromString (str) &#123;</div><div class="line">		// ...</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">/** Class representing a point</div><div class="line"> * @extends Point</div><div class="line"> */</div><div class="line">class Dot extends  Point &#123;</div><div class="line">	/**</div><div class="line">	 * 构造函数</div><div class="line">	 * @param x</div><div class="line">	 * @param y</div><div class="line">	 * @param width</div><div class="line">	 */</div><div class="line">	constructor (x, y, width) &#123;</div><div class="line">		super(x,y);</div><div class="line">		this.width = width;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	/**</div><div class="line">	 * 实例方法</div><div class="line">	 * @returns &#123;*&#125;</div><div class="line">	 */</div><div class="line">	getWidth () &#123;</div><div class="line">		return this.width;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">var dd = new Dot(1, 2, 3);</div><div class="line">console.log(dd.getX()); // 1</div></pre></td></tr></table></figure>
+</code></pre><h3 id="ES-2015-Modules"><a href="#ES-2015-Modules" class="headerlink" title="ES 2015 Modules"></a>ES 2015 Modules</h3><pre><code>Module identifiers（模块标识符）
+    当你描述一个 ES 2015 module（模块）时，您将使用@module 标签来描述模块的标识符。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @module my/shirt</div><div class="line"> */</div><div class="line">import * as myShirt from &apos;my/shirt&apos;;</div></pre></td></tr></table></figure>
+
+    当您使用一个 JSDoc namepath（名称路径）从另一个JSDoc注释中引用一个模块，您必须添加前缀module:。
+    例如，如果你想模块my/pants的文档 连接到模块my/shirt，您可以使用@see 标签来描述my/pants。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Pants module.</div><div class="line"> * @module my/pants</div><div class="line"> * @see module:my/shirt</div><div class="line"> */</div></pre></td></tr></table></figure>
+
+    同样，模块中每个成员的namepath （名称路径）将以module: 开始，后面跟模块名字。
+    例如，如果你的my/pants模块输出一个Jeans类，并且Jeans 有一个名为hem的实例方法，
+    那么这个实例方法longname（长名称）是module:my/pants.Jeans#hem。
+Exported values （导出值）
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">/** The name of the module. */</div><div class="line">export const name = &apos;mixer&apos;;</div><div class="line"></div><div class="line">/** The most recent blended color. */</div><div class="line">export var lastColor = null;</div><div class="line"></div><div class="line">/**</div><div class="line"> * Blend two colors together.</div><div class="line"> * @param &#123;string&#125; color1 - The first color, in hexidecimal format.</div><div class="line"> * @param &#123;string&#125; color2 - The second color, in hexidecimal format.</div><div class="line"> * @return &#123;string&#125; The blended color.</div><div class="line"> */</div><div class="line">export function blend(color1, color2) &#123;&#125;</div><div class="line"></div><div class="line">// convert color to array of RGB values (0-255)</div><div class="line">function rgbify(color) &#123;&#125;</div><div class="line"></div><div class="line">export &#123;</div><div class="line">	/**</div><div class="line">	 * Get the red, green, and blue values of a color.</div><div class="line">	 * @function</div><div class="line">	 * @param &#123;string&#125; color - A color, in hexidecimal format.</div><div class="line">	 * @returns &#123;Array.&lt;number&gt;&#125; An array of the red, green, and blue values,</div><div class="line">	 * each ranging from 0 to 255.</div><div class="line">	 */</div><div class="line">	rgbify as toRgb</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="CommonJS-Modules"><a href="#CommonJS-Modules" class="headerlink" title="CommonJS Modules"></a>CommonJS Modules</h3><pre><code>Module identifiers（模块标识符）    
+    例如，如果你想模块my/pants的文档 连接到模块my/shirt，您可以使用@see 标签来描述my/pants。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Pants module.</div><div class="line"> * @module my/pants</div><div class="line"> * @see module:my/shirt</div><div class="line"> */</div></pre></td></tr></table></figure>
+
+Properties of the &apos;exports&apos; object（&apos;exports&apos;对象的属性）
+    例如，方法添加到导出对象。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Shirt module.</div><div class="line"> * @module my/shirt</div><div class="line"> */</div><div class="line"></div><div class="line">/** Button the shirt. */</div><div class="line">exports.button = function() &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div><div class="line"></div><div class="line">/** Unbutton the shirt. */</div><div class="line">exports.unbutton = function() &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+
+Values assigned to local variables （值分配给局部变量）
+    例如，longname（长名称）定义在 @alias 标签中。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Shirt module.</div><div class="line"> * @module my/shirt</div><div class="line"> */</div><div class="line"></div><div class="line">/**</div><div class="line"> * Wash the shirt.</div><div class="line"> * @alias module:my/shirt.wash</div><div class="line"> */</div><div class="line">var wash = exports.wash = function() &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+
+    例如，JSDoc注释放在exports.wash之前。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Shirt module.</div><div class="line"> * @module my/shirt</div><div class="line"> */</div><div class="line"></div><div class="line">var wash =</div><div class="line">/** Wash the shirt. */</div><div class="line">exports.wash = function() &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+
+Values assigned to &apos;module.exports&apos; （值分配给&apos;module.exports&apos;）
+    Object literal assigned to &apos;module.exports&apos;（对象字面量分配给&apos;module.exports&apos;）
+    例如：对象字面量分配给&apos;module.exports&apos;。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Color mixer.</div><div class="line"> * @module color/mixer</div><div class="line"> */</div><div class="line"></div><div class="line">module.exports = &#123;</div><div class="line">	/** Blend two colors together. */</div><div class="line">	blend: function(color1, color2) &#123;</div><div class="line">		// ...</div><div class="line">	&#125;,</div><div class="line"></div><div class="line">	/** Darken a color by the given percentage. */</div><div class="line">	darken: function(color, percent) &#123;</div><div class="line">		// ..</div><div class="line">	&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+
+    例如，通过属性定义，分配给module.exports。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Color mixer.</div><div class="line"> * @module color/mixer</div><div class="line"> */</div><div class="line"></div><div class="line">module.exports = &#123;</div><div class="line">	/** Blend two colors together. */</div><div class="line">	blend: function(color1, color2) &#123;</div><div class="line">		// ...</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">/** Darken a color by the given percentage. */</div><div class="line">module.exports.darken = function(color, percent) &#123;</div><div class="line">	// ..</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+
+    Function assigned to &apos;module.exports&apos;（函数分配给&apos;module.exports&apos;）
+    例如，函数分配给&apos;module.exports&apos;。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Color mixer.</div><div class="line"> * @module color/mixer</div><div class="line"> */</div><div class="line"></div><div class="line">/** Blend two colors together. */</div><div class="line">module.exports = function(color1, color2) &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+
+    例如，构造函数分配给&apos;module.exports&apos;。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Color mixer.</div><div class="line"> * @module color/mixer</div><div class="line"> */</div><div class="line"></div><div class="line">/** Create a color mixer. */</div><div class="line">module.exports = function ColorMixer() &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+
+    String, number, or boolean assigned to &apos;module.exports&apos;（字符串，数字，或布尔值分配给&apos;module.exports&apos;）
+    例如，字符串分配给&apos;module.exports&apos;。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Module representing the word of the day.</div><div class="line"> * @module wotd</div><div class="line"> * @type &#123;string&#125;</div><div class="line"> */</div><div class="line"></div><div class="line">module.exports = &apos;perniciousness&apos;;</div></pre></td></tr></table></figure>
+
+    Values assigned to &apos;module.exports&apos; and local variables （值分配给&apos;module.exports&apos;和局部变量）
+    例如，对象字面量分配给一个局部变量和module.export。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Color mixer.</div><div class="line"> * @exports color/mixer</div><div class="line"> */</div><div class="line">var mixer = module.exports = &#123;</div><div class="line">	/** Blend two colors together. */</div><div class="line">	blend: function(color1, color2) &#123;</div><div class="line">		// ...</div><div class="line">	&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+
+    Properties added to &apos;this&apos;（属性添加到&apos;this&apos;）
+    例如，属性添加到一个模块的&apos;this&apos;对象。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">/** @module bookshelf */</div><div class="line"></div><div class="line">/** @class */</div><div class="line">this.Book = function(title) &#123;</div><div class="line">	/** The title of the book. */</div><div class="line">	this.title = title;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="AMD-Modules"><a href="#AMD-Modules" class="headerlink" title="AMD Modules"></a>AMD Modules</h3><pre><code>Module identifiers（模块标识符）
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Pants module.</div><div class="line"> * @module my/pants</div><div class="line"> * @see module:my/shirt</div><div class="line"> */</div></pre></td></tr></table></figure>
+
+Function that returns an object literal（函数返回一个对象字面量）
+    例如，函数返回一个对象字面量。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">define(&apos;my/shirt&apos;, function() &#123;</div><div class="line">   /**</div><div class="line">	* A module representing a shirt.</div><div class="line">	* @exports my/shirt</div><div class="line">	*/</div><div class="line">	var shirt = &#123;</div><div class="line">		/** The module&apos;s `color` property. */</div><div class="line">		color: &apos;black&apos;,</div><div class="line"></div><div class="line">		/** @constructor */</div><div class="line">		Turtleneck: function(size) &#123;</div><div class="line">			/** The class&apos; `size` property. */</div><div class="line">			this.size = size;</div><div class="line">		&#125;</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">	return shirt;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+
+Function that returns another function（函数返回另一个函数）
+    例如，函数返回另一个函数。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * A module representing a jacket.</div><div class="line"> * @module my/jacket</div><div class="line"> */</div><div class="line">define(&apos;my/jacket&apos;, function() &#123;</div><div class="line">	/**</div><div class="line">	 * @constructor</div><div class="line">	 * @alias module:my/jacket</div><div class="line">	 */</div><div class="line">	var Jacket = function() &#123;</div><div class="line">		// ...</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">	/** Zip up the jacket. */</div><div class="line">	Jacket.prototype.zip = function() &#123;</div><div class="line">		// ...</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">	return Jacket;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+
+Module declared in a return statement （模块声明在return语句中）
+    例如，模块声明在return语句中。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Module representing a shirt.</div><div class="line"> * @module my/shirt</div><div class="line"> */</div><div class="line"></div><div class="line">define(&apos;my/shirt&apos;, function() &#123;</div><div class="line">	// Do setup work here.</div><div class="line"></div><div class="line">	return /** @alias module:my/shirt */ &#123;</div><div class="line">		/** Color. */</div><div class="line">		color: &apos;black&apos;,</div><div class="line">		/** Size. */</div><div class="line">		size: &apos;unisize&apos;</div><div class="line">	&#125;;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+
+Module object passed to a function（模块对象传递给一个函数）
+    例如，模块对象传递给一个函数。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">define(&apos;my/jacket&apos;, function(</div><div class="line">	/**</div><div class="line">	 * Utility functions for jackets.</div><div class="line">	 * @exports my/jacket</div><div class="line">	 */</div><div class="line">	module) &#123;</div><div class="line"></div><div class="line">	/**</div><div class="line">	 * Zip up a jacket.</div><div class="line">	 * @param &#123;Jacket&#125; jacket - The jacket to zip up.</div><div class="line">	 */</div><div class="line">	module.zip = function(jacket) &#123;</div><div class="line">		// ...</div><div class="line">	&#125;;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+
+Multiple modules defined in one file（多模块定义在一个文件中）
+    例如，多模块定义在一个文件中。
+    ```
+    // one module
+    define(&apos;html/utils&apos;, function() {
+        /**
+         * Utility functions to ease working with DOM elements.
+         * @exports html/utils
+         */
+        var utils = {
+            /** Get the value of a property on an element. */
+            getStyleProperty: function(element, propertyName) { }
+        };
+
+        /** Determine if an element is in the document head. */
+        utils.isInHead = function(element) { }
+
+        return utils;
+        }
+    );
+
+    // another module
+    define(&apos;tag&apos;, function() {
+        /** @exports tag */
+        var tag = {
+            /** @class */
+            Tag: function(tagName) {
+                // ...
+            }
+        };
+
+        return tag;
+    });
+    ```        
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="http://www.css88.com/doc/jsdoc/" target="_blank" rel="external">jsDoc文档</a>    </p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/24/jsDoc学习/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1844,330 +2324,6 @@ index.js
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/17/koa学习-文件上传/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/17/koa学习-文件上传/" itemprop="url">
-                  koa学习-文件上传
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-17T20:20:14+08:00">
-                2017-09-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
-                    <span itemprop="name">NodeJS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/17/koa学习-文件上传/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/17/koa学习-文件上传/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="busboy模块"><a href="#busboy模块" class="headerlink" title="busboy模块"></a>busboy模块</h3><pre><code>模块是用来解析POST请求，node原生req中的文件流。
-busboy 是用来解析出请求中文件流。
-</code></pre><h3 id="封装上传文件到写入服务的方法"><a href="#封装上传文件到写入服务的方法" class="headerlink" title="封装上传文件到写入服务的方法"></a>封装上传文件到写入服务的方法</h3><pre><code>创建上传模块upload.js
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div></pre></td><td class="code"><pre><div class="line">const inspect = require(&apos;util&apos;).inspect;</div><div class="line">const path = require(&apos;path&apos;);</div><div class="line">const os = require(&apos;os&apos;);</div><div class="line">const fs = require(&apos;fs&apos;);</div><div class="line">const Busboy = require(&apos;busboy&apos;);</div><div class="line"></div><div class="line">/*</div><div class="line">* 同步创建文件目录</div><div class="line">* @param &#123;string&#125; dirname 目录绝对地址</div><div class="line">* @return &#123;boolean&#125; 创建目录结果</div><div class="line">*/</div><div class="line">function mkdirsSync (dirname) &#123;</div><div class="line">	if (fs.existsSync(dirname)) &#123;</div><div class="line">		return true;</div><div class="line">	&#125; else &#123;</div><div class="line">		if (mkdirsSync(path.dirname(dirname))) &#123;</div><div class="line">			fs.mkdirSync(dirname);</div><div class="line">			return true;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">/*</div><div class="line">* 获取上传文件的后缀名</div><div class="line">* @param &#123;string&#125; fileName 获取上传文件的后缀名</div><div class="line">* @return &#123;string&#125; 文件后缀名</div><div class="line">*/</div><div class="line">function getSuffixName (fileName) &#123;</div><div class="line">	/*let nameList = fileName.split(&apos;.&apos;);</div><div class="line">	return nameList[nameList.length-1]*/</div><div class="line">	return path.extname(fileName);</div><div class="line">&#125;</div><div class="line"></div><div class="line">/*</div><div class="line">* 上传文件</div><div class="line">* @param &#123;object&#125; ctx koa上下文</div><div class="line">* @param &#123;object&#125; options 文件上传参数 fileType文件类型， path文件存放路径</div><div class="line">* @return &#123;promise&#125;</div><div class="line">*/</div><div class="line">function uploadFile (ctx, options) &#123;</div><div class="line">	let req = ctx.req;</div><div class="line">	let res = ctx.res;</div><div class="line">	let busboy = new Busboy(&#123;headers: req.headers&#125;);</div><div class="line"></div><div class="line">	// 获取类型</div><div class="line">	let fileType = options.fileType || &apos;common&apos;;</div><div class="line">	let filePath = path.join(options.path, fileType);</div><div class="line">	let mkdirResult = mkdirsSync(filePath);</div><div class="line"></div><div class="line">	return new Promise((resolve, reject) =&gt; &#123;</div><div class="line">		console.log(&apos;文件上传中...&apos;);</div><div class="line">		let result = &#123;</div><div class="line">			success: false,</div><div class="line">			formData: &#123;&#125;,</div><div class="line">		&#125;;</div><div class="line"></div><div class="line">		// 解析请求文件事件</div><div class="line">		busboy.on(&apos;file&apos;, function(fieldname, file, filename, encoding, mimetype) &#123;</div><div class="line">		  let fileName = Math.random().toString(16).substr(2) + &apos;.&apos; + getSuffixName(filename)</div><div class="line">		  let _uploadFilePath = path.join( filePath, fileName )</div><div class="line">		  let saveTo = path.join(_uploadFilePath)</div><div class="line"></div><div class="line">		  // 文件保存到制定路径</div><div class="line">		  file.pipe(fs.createWriteStream(saveTo))</div><div class="line"></div><div class="line">		  // 文件写入事件结束</div><div class="line">		  file.on(&apos;end&apos;, function() &#123;</div><div class="line">			result.success = true</div><div class="line">			result.message = &apos;文件上传成功&apos;</div><div class="line"></div><div class="line">			console.log(&apos;文件上传成功！&apos;)</div><div class="line">			resolve(result)</div><div class="line">		  &#125;)</div><div class="line">		&#125;)</div><div class="line"></div><div class="line">		// 解析表单中其他字段信息</div><div class="line">		busboy.on(&apos;field&apos;, function(fieldname, val, fieldnameTruncated, valTruncated, encoding, mimetype) &#123;</div><div class="line">		  console.log(&apos;表单字段数据 [&apos; + fieldname + &apos;]: value: &apos; + inspect(val));</div><div class="line">		  result.formData[fieldname] = inspect(val);</div><div class="line">		&#125;);</div><div class="line"></div><div class="line">		// 解析结束事件</div><div class="line">		busboy.on(&apos;finish&apos;, function( ) &#123;</div><div class="line">		  console.log(&apos;文件上结束&apos;)</div><div class="line">		  resolve(result)</div><div class="line">		&#125;)</div><div class="line"></div><div class="line">		// 解析错误事件</div><div class="line">		busboy.on(&apos;error&apos;, function(err) &#123;</div><div class="line">		  console.log(&apos;文件上出错&apos;)</div><div class="line">		  reject(result)</div><div class="line">		&#125;)</div><div class="line"></div><div class="line">		req.pipe(busboy)</div><div class="line"></div><div class="line">	&#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">module.exports =  &#123;</div><div class="line">  uploadFile</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-入口文件
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">const Koa = require(&apos;koa&apos;)</div><div class="line">const path = require(&apos;path&apos;)</div><div class="line">const app = new Koa()</div><div class="line">// const bodyParser = require(&apos;koa-bodyparser&apos;)</div><div class="line"></div><div class="line">const &#123; uploadFile &#125; = require(&apos;./util/upload&apos;)</div><div class="line"></div><div class="line">// app.use(bodyParser())</div><div class="line"></div><div class="line">app.use( async ( ctx ) =&gt; &#123;</div><div class="line"></div><div class="line">  if ( ctx.url === &apos;/&apos; &amp;&amp; ctx.method === &apos;GET&apos; ) &#123;</div><div class="line">	// 当GET请求时候返回表单页面</div><div class="line">	let html = `</div><div class="line">	  &lt;h1&gt;koa2 upload demo&lt;/h1&gt;</div><div class="line">	  &lt;form method=&quot;POST&quot; action=&quot;/upload.json&quot; enctype=&quot;multipart/form-data&quot;&gt;</div><div class="line">		&lt;p&gt;file upload&lt;/p&gt;</div><div class="line">		&lt;span&gt;picName:&lt;/span&gt;&lt;input name=&quot;picName&quot; type=&quot;text&quot; /&gt;&lt;br/&gt;</div><div class="line">		&lt;input name=&quot;file&quot; type=&quot;file&quot; /&gt;&lt;br/&gt;&lt;br/&gt;</div><div class="line">		&lt;button type=&quot;submit&quot;&gt;submit&lt;/button&gt;</div><div class="line">	  &lt;/form&gt;</div><div class="line">	`</div><div class="line">	ctx.body = html</div><div class="line"></div><div class="line">  &#125; else if ( ctx.url === &apos;/upload.json&apos; &amp;&amp; ctx.method === &apos;POST&apos; ) &#123;</div><div class="line">	// 上传文件请求处理</div><div class="line">	let result = &#123; success: false &#125;</div><div class="line">	let serverFilePath = path.join( __dirname, &apos;upload-files&apos; )</div><div class="line"></div><div class="line">	// 上传文件事件</div><div class="line">	result = await uploadFile( ctx, &#123;</div><div class="line">	  fileType: &apos;album&apos;, // common or album</div><div class="line">	  path: serverFilePath</div><div class="line">	&#125;)</div><div class="line"></div><div class="line">	ctx.body = result</div><div class="line">  &#125; else &#123;</div><div class="line">	// 其他请求显示404</div><div class="line">	ctx.body = &apos;&lt;h1&gt;404！！！ o(╯□╰)o&lt;/h1&gt;&apos;</div><div class="line">  &#125;</div><div class="line">&#125;)</div><div class="line"></div><div class="line">app.listen(3004, () =&gt; &#123;</div><div class="line">  console.log(&apos;[demo] upload-simple is starting at port 3000&apos;)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="https://chenshenhai.github.io/koa2-note/note/request/post-use-middleware.html" target="_blank" rel="external">koa-note</a><br>    <a href="https://www.npmjs.com/package/cookies" target="_blank" rel="external">cookies</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/17/koa学习-模版引擎/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/17/koa学习-模版引擎/" itemprop="url">
-                  koa学习-模版引擎
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-17T17:29:05+08:00">
-                2017-09-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
-                    <span itemprop="name">NodeJS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/17/koa学习-模版引擎/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/17/koa学习-模版引擎/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="koa2加载模板引擎"><a href="#koa2加载模板引擎" class="headerlink" title="koa2加载模板引擎"></a>koa2加载模板引擎</h3><pre><code>koa-views - 为koa模版渲染中间件
-ejs - 模版引擎
-关键代码：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">const views = require(&apos;koa-views&apos;)</div><div class="line">const path = require(&apos;path&apos;)</div><div class="line">app.use(views(path.join(__dirname, &apos;./view&apos;), &#123;</div><div class="line">	extension: &apos;ejs&apos;</div><div class="line">&#125;));</div><div class="line"></div><div class="line">app.use(async (ctx) =&gt; &#123;</div><div class="line">	if (ctx.url === &apos;/&apos;) &#123;</div><div class="line">	   let title = &apos;hello koa2&apos;;</div><div class="line">		await ctx.render(&apos;index&apos;, &#123;</div><div class="line">			title,</div><div class="line">		&#125;);     </div><div class="line">	&#125; else &#123;</div><div class="line">		let title = &apos;other&apos;;</div><div class="line">		await ctx.render(&apos;index&apos;, &#123;</div><div class="line">			title,</div><div class="line">		&#125;);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="ejs模板引擎"><a href="#ejs模板引擎" class="headerlink" title="ejs模板引擎"></a>ejs模板引擎</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">	</div></pre></td></tr></table></figure>
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="https://chenshenhai.github.io/koa2-note/note/request/post-use-middleware.html" target="_blank" rel="external">koa-note</a><br>    <a href="https://www.npmjs.com/package/koa-views" target="_blank" rel="external">koa-views</a><br>    <a href="https://www.npmjs.com/package/ejs" target="_blank" rel="external">ejs</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2217,7 +2373,7 @@ ejs - 模版引擎
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">64</span>
+                <span class="site-state-item-count">66</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
