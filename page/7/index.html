@@ -282,6 +282,181 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/07/25/js函数式编程-读书笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/25/js函数式编程-读书笔记/" itemprop="url">
+                  js函数式编程-javascript函数式编程的简介
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-25T21:11:13+08:00">
+                2017-07-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
+                    <span itemprop="name">函数式编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/25/js函数式编程-读书笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/07/25/js函数式编程-读书笔记/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸<strong>函数式编程</strong>。<br><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
+<h3 id="javascript函数式编程的简介"><a href="#javascript函数式编程的简介" class="headerlink" title="javascript函数式编程的简介"></a>javascript函数式编程的简介</h3><h4 id="javascript案列"><a href="#javascript案列" class="headerlink" title="javascript案列"></a>javascript案列</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">javascript函数式编程初试</div><div class="line">function splt (fn)　&#123;</div><div class="line">	return function (array) &#123;</div><div class="line">		return fn.apply(null, array)</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">// example</div><div class="line">var addArrayElements = splt(function (x, y) &#123;</div><div class="line">	return x + y;</div><div class="line">&#125;)</div><div class="line">console.log(addArrayElements([1,2])) // 3</div><div class="line"></div><div class="line">function unsplat (fun) &#123;</div><div class="line">	return function () &#123;</div><div class="line">		return fun.call(null, _.toArray(arguments))</div><div class="line">	&#125;;</div><div class="line">&#125;</div><div class="line">let joinElments = unsplat(function (array) &#123;</div><div class="line">	return array.join(&apos; &apos;)</div><div class="line">&#125;)</div><div class="line">// example</div><div class="line">console.log(joinElments(&apos;@&apos;, &apos;$&apos;, &apos;*&apos;)) // @ $ *</div></pre></td></tr></table></figure>
+</code></pre><h4 id="开始函数式编程"><a href="#开始函数式编程" class="headerlink" title="开始函数式编程"></a>开始函数式编程</h4><pre><code>直白的定义：函数式编程通过使用函数来将值转换成抽象单元，接着用于构建软件系统。
+以函数为抽象单元
+例子：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">function parseAge (age) &#123;</div><div class="line">	if (!_.isString(age)) &#123;</div><div class="line">		throw new Error(&apos;expecting a string&apos;);</div><div class="line">	&#125;</div><div class="line">	let a;</div><div class="line">	console.log(&apos;attempting to parse an age&apos;)</div><div class="line">	a = parseInt(age, 10);</div><div class="line">	if (_.isNaN(a)) &#123;</div><div class="line">		console.log([&quot;could not parse age:&quot;, age].join(&apos; &apos;));</div><div class="line">		a = 0;</div><div class="line">	&#125;</div><div class="line">	return a;</div><div class="line">&#125;</div><div class="line">// example</div><div class="line">console.log(parseAge(34)) // throw Error</div><div class="line"></div><div class="line">// 如果我们想修改输出错误、信息和警告呈现的方式，较好的</div><div class="line">方式是将错误、信息和警告的概念抽象成不同的函数</div><div class="line">function fail(thing) &#123;</div><div class="line">	throw new Error(thing);</div><div class="line">&#125;</div><div class="line">function warn(thing) &#123;</div><div class="line">	console.log([&apos;WARNING:&apos;, thing].join(&apos; &apos;));</div><div class="line">&#125;</div><div class="line">function note(thing) &#123;</div><div class="line">	console.log([&apos;NOTE:&apos;, thing].join(&apos; &apos;));</div><div class="line">&#125;</div><div class="line"></div><div class="line">function parseAge (age) &#123;</div><div class="line">	if (!_.isString(age)) &#123;</div><div class="line">		fail(&apos;Expecting a string&apos;);</div><div class="line">	&#125;</div><div class="line">	let a;</div><div class="line">	note(&apos;Attempting to parse an age&apos;)</div><div class="line">	a = parseInt(age, 10);</div><div class="line">	if (_.isNaN(a)) &#123;</div><div class="line">		warn([&apos;Could not parse age:&apos;, age].join(&apos; &apos;));</div><div class="line">		a = 0;</div><div class="line">	&#125;</div><div class="line">	return a;</div><div class="line">&#125;</div><div class="line">// example</div><div class="line">console.log(parseAge(&apos;df&apos;)) // throw Error</div></pre></td></tr></table></figure>
+
+封装和隐藏（闭包）
+以函数为行为单位
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">function nativeNth(a, index) &#123;</div><div class="line">	return a[index];</div><div class="line">&#125;</div><div class="line">var letters = [&apos;a&apos;, &apos;b&apos;];</div><div class="line">// example</div><div class="line">console.log(nativeNth(letters, 0)) // a</div><div class="line"></div><div class="line">// </div><div class="line">function nth(a, index) &#123;</div><div class="line">	if (!_.isNumber(index)) &#123;</div><div class="line">		fail(&apos;Expected a number as the index&apos;);</div><div class="line">	&#125;</div><div class="line">	if (!isIndexed(a)) &#123;</div><div class="line">		fail(&apos;Not supported on non-indexed type&apos;);</div><div class="line">	&#125;</div><div class="line">	if ((index &lt; 0) || (index &gt; a.length -1)) &#123;</div><div class="line">		fail(&apos;Index value is out of bounds&apos;);</div><div class="line">	&#125;</div><div class="line">	return a[index];</div><div class="line">&#125;</div><div class="line"></div><div class="line">var letters = [&apos;1&apos;, &apos;2&apos;]</div><div class="line">console.log(nth(letters, 1))</div></pre></td></tr></table></figure>
+
+数据抽象
+    Javascript的对象原型模型是一个丰富且基础的数据方案。
+函数式javascript初试
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// existy 定义事物的存在（js中null和undefined表示不存在）</div><div class="line">function existy(x) &#123; return x != null &#125;</div><div class="line">// example</div><div class="line">existy(null) // false</div><div class="line"></div><div class="line">truthy 用来判断一个对象是否应该被认为是true的同义词</div><div class="line">// js的原始真类型</div><div class="line">function truthy(x) &#123;</div><div class="line">	return (x !== false) &amp;&amp; existy(x)</div><div class="line">&#125;</div><div class="line">console.log(truthy(&apos;&apos;)) // true</div></pre></td></tr></table></figure>
+</code></pre><h4 id="Underscore示例"><a href="#Underscore示例" class="headerlink" title="Underscore示例"></a>Underscore示例</h4><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><pre><code>一种用于构建Javascript应用程序的技术称为“函数式编程”        
+    1.确定抽象，并为其构建函数。
+    2.利用已有的函数来构建更为复杂的抽象。
+    3.通过将现有的函数传给其他的函数来构建更加复杂的抽象。
+</code></pre><blockquote>
+<p>   书籍【javascript函数式编程】</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/07/24/js函数式编程-6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1907,7 +2082,7 @@ compose(id, f) === compose(f, id) === f;
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">69</span>
+                <span class="site-state-item-count">70</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
