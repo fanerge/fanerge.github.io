@@ -1,0 +1,876 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="js,读书笔记,服务端," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="余真帆的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="最近在研究node.js,正赶上国庆长假，回趟老家。在网上找了一本电子书籍《深入浅出Node.js》，利用这个假期学习一下。 Node.js 基础知识chrome 与 Node 工作原理chrome：HTML + JavaScript + WebKit + V8 &amp;gt;&amp;gt; 中间层 &amp;gt;&amp;gt; 网卡 + 硬盘 + 显卡 + ... Node：JavaScript + V8 &amp;gt;&amp;g">
+<meta name="keywords" content="js,读书笔记,服务端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入浅出Node.js-读书笔记">
+<meta property="og:url" content="https://fanerge.github.io/2017/10/09/深入浅出Node-js-读书笔记/index.html">
+<meta property="og:site_name" content="余真帆的博客">
+<meta property="og:description" content="最近在研究node.js,正赶上国庆长假，回趟老家。在网上找了一本电子书籍《深入浅出Node.js》，利用这个假期学习一下。 Node.js 基础知识chrome 与 Node 工作原理chrome：HTML + JavaScript + WebKit + V8 &amp;gt;&amp;gt; 中间层 &amp;gt;&amp;gt; 网卡 + 硬盘 + 显卡 + ... Node：JavaScript + V8 &amp;gt;&amp;g">
+<meta property="og:updated_time" content="2017-10-09T15:15:42.993Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入浅出Node.js-读书笔记">
+<meta name="twitter:description" content="最近在研究node.js,正赶上国庆长假，回趟老家。在网上找了一本电子书籍《深入浅出Node.js》，利用这个假期学习一下。 Node.js 基础知识chrome 与 Node 工作原理chrome：HTML + JavaScript + WebKit + V8 &amp;gt;&amp;gt; 中间层 &amp;gt;&amp;gt; 网卡 + 硬盘 + 显卡 + ... Node：JavaScript + V8 &amp;gt;&amp;g">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://fanerge.github.io/2017/10/09/深入浅出Node-js-读书笔记/"/>
+
+
+
+
+
+  <title> 深入浅出Node.js-读书笔记 | 余真帆的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?947609e8bcc46de32a1dca9cc56cd8a1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">余真帆的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/09/深入浅出Node-js-读书笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                深入浅出Node.js-读书笔记
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-09T20:09:51+08:00">
+                2017-10-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
+                    <span itemprop="name">NodeJS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/09/深入浅出Node-js-读书笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/09/深入浅出Node-js-读书笔记/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近在研究node.js,正赶上国庆长假，回趟老家。在网上找了一本电子书籍《深入浅出Node.js》，利用这个假期学习一下。</p>
+<h2 id="Node-js-基础知识"><a href="#Node-js-基础知识" class="headerlink" title="Node.js 基础知识"></a>Node.js 基础知识</h2><h3 id="chrome-与-Node-工作原理"><a href="#chrome-与-Node-工作原理" class="headerlink" title="chrome 与 Node 工作原理"></a>chrome 与 Node 工作原理</h3><pre><code>chrome：HTML + JavaScript + WebKit + V8 &gt;&gt; 中间层 &gt;&gt; 网卡 + 硬盘 + 显卡 + ...
+Node：JavaScript + V8 &gt;&gt; 中间层（libuv）&gt;&gt; 网卡 + 硬盘 + 显卡 + ...
+说明：libuv 是 Node 的新跨平台抽象层，用于抽象 Windows 的 IOCP 及 Unix 的 libev。
+    作者打算在这个库的包含所有平台的差异性。
+</code></pre><h3 id="异步I-O"><a href="#异步I-O" class="headerlink" title="异步I/O"></a>异步I/O</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$.get(&apos;url&apos;, (data) =&gt; &#123;</div><div class="line">	console.log(data);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+
+异步是并行的基础。
+单线程，不适合大量计算占用 CPU 导致无法继续调用异步I/O。
+</code></pre><h2 id="模块机制"><a href="#模块机制" class="headerlink" title="模块机制"></a>模块机制</h2><h3 id="CommonJS-规范"><a href="#CommonJS-规范" class="headerlink" title="CommonJS 规范"></a>CommonJS 规范</h3><pre><code>模块引用：
+    var math = require(&apos;math&apos;);    
+模块定义：
+    exports.add = () =&gt; {
+        var a = 1,
+            b = 3;
+        return a + b;
+    }
+exports 是 module 的属性。
+Node 引入模块的步骤：
+    路径分析
+    文件定位
+    编译执行
+</code></pre><h3 id="核心模块"><a href="#核心模块" class="headerlink" title="核心模块"></a>核心模块</h3><pre><code>文件模块 &gt;&gt; 核心模块（JavaScript） &gt;&gt; 内建模块（C/C++）
+</code></pre><h2 id="异步I-O-1"><a href="#异步I-O-1" class="headerlink" title="异步I/O"></a>异步I/O</h2><h3 id="Node-的异步I-O"><a href="#Node-的异步I-O" class="headerlink" title="Node 的异步I/O"></a>Node 的异步I/O</h3><pre><code>Node 自身的执行模型 -- 事件循环。
+单线程、事件循环、观察者和I/O线程池
+</code></pre><h3 id="非I-O的异步API"><a href="#非I-O的异步API" class="headerlink" title="非I/O的异步API"></a>非I/O的异步API</h3><pre><code>定时器：setTimeout()\setInterval()
+process.nextTick()
+    在事件循环的下一次循环中调用 callback 回调函数。
+    效果是将一个函数推迟到代码书写的下一个同步方法执行完毕时或异步方法的事件回调函数开始执行时；
+    与setTimeout(fn, 0) 函数的功能类似，但它的效率高多了。
+setImmediate()
+    nextTick()的回调函数执行的优先级要高于setImmediate();    
+    process.nextTick()属于idle观察者,setImmediate()属于check观察者.在每一轮循环检查中,idle观察者先于I/O观察者,
+    I/O观察者先于check观察者.
+</code></pre><h2 id="异步编程"><a href="#异步编程" class="headerlink" title="异步编程"></a>异步编程</h2><h3 id="函数式编程"><a href="#函数式编程" class="headerlink" title="函数式编程"></a>函数式编程</h3><pre><code>高阶函数：以函数作为参数或返回值。
+偏函数用法：通过指定部分参数来产生一个新的定制函数的形式就是偏函数。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">const isType = function (type)&#123;</div><div class="line">	return function (obj) &#123;</div><div class="line">		return Object.prototype.toString.call(obj) == &apos;[object &apos; + type + &apos;]&apos;;</div><div class="line">	&#125;; </div><div class="line">&#125;</div><div class="line">var isString = isType(&apos;String&apos;);</div></pre></td></tr></table></figure>
+</code></pre><h3 id="异步编程解决方案"><a href="#异步编程解决方案" class="headerlink" title="异步编程解决方案"></a>异步编程解决方案</h3><pre><code>事件发布/订阅模式（事件绑定）
+promise
+generator
+async-await
+</code></pre><h3 id="并发方案"><a href="#并发方案" class="headerlink" title="并发方案"></a>并发方案</h3><pre><code>eventproxy
+[async](https://github.com/caolan/async)
+</code></pre><h2 id="内存控制"><a href="#内存控制" class="headerlink" title="内存控制"></a>内存控制</h2><h2 id="理解Buffer"><a href="#理解Buffer" class="headerlink" title="理解Buffer"></a>理解Buffer</h2><pre><code>Buffer 是一个像Array的对象，但它主要用于操作字节。
+Buffer 对象
+    var buf = new Buffer(&apos;string&apos;, &apos;utf-8&apos;);
+</code></pre><h3 id="Buffer-的转换"><a href="#Buffer-的转换" class="headerlink" title="Buffer 的转换"></a>Buffer 的转换</h3><pre><code>    支持的字符串编码类型：
+    ASCII\UTF-8\UTF-16LE/UCS-2\Base64\Binary\Hex
+字符串转 Buffer    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var buf = new Buffer(str, [encoding]);</div><div class="line">buf.write(string, [offset], [length], [encoding]);</div></pre></td></tr></table></figure>
+
+Buffer 转字符串
+buf.toString([encoding], [start], [end]);
+</code></pre><h2 id="网络编程"><a href="#网络编程" class="headerlink" title="网络编程"></a>网络编程</h2><pre><code>TCP 和 UDP 属于网络传输层协议，HTTP 属于应用层协议。
+</code></pre><h3 id="TCP（传输控制协议）"><a href="#TCP（传输控制协议）" class="headerlink" title="TCP（传输控制协议）"></a>TCP（传输控制协议）</h3><pre><code>创建TCP 服务器端 net 模块
+TCP 服务的事件
+</code></pre><h3 id="构建UDP-服务（用户数据包协议）"><a href="#构建UDP-服务（用户数据包协议）" class="headerlink" title="构建UDP 服务（用户数据包协议）"></a>构建UDP 服务（用户数据包协议）</h3><pre><code>创建UDP套接字 dgram模块
+创建UDP 服务器端
+创建UDP 客户端
+UDP 套接字事件
+</code></pre><h3 id="构建HTTP-服务"><a href="#构建HTTP-服务" class="headerlink" title="构建HTTP 服务"></a>构建HTTP 服务</h3><pre><code>HTTP 超文本传输协议。
+http 模块
+HTTP 客户端
+</code></pre><h3 id="构建WebSocket-服务"><a href="#构建WebSocket-服务" class="headerlink" title="构建WebSocket 服务"></a>构建WebSocket 服务</h3><pre><code>以前的方案：Comet（彗星）技术细节为：长轮询（long-polling）或iframe流（streaming）。
+长轮询原理：客户端向服务器断发送请求，服务端只在超时或有数据响应时断开连接（res.end()），
+    客户端在接收到数据或者超时后重新发送请求。
+iframe流原理：iframe 是很早就存在的一种 HTML 标记， 通过在 HTML 页面里嵌入一个隐蔵帧，
+    然后将这个隐蔵帧的 SRC 属性设为对一个长连接的请求，服务器端就能源源不断地往客户端输入数据。
+    通过iframe里的内容进行长时间的请求，当需要传输内容时通过调用父页面js方法来实现页面展示，以此达到comet所需要的效果。
+WebSocket原理：WebSocket是一种在单个TCP连接上进行全双工通讯的协议。
+    WebSocket使得客户端和服务器之间的数据交换变得更加简单，允许服务端主动向客户端推送数据。在WebSocket API中，
+    浏览器和服务器只需要完成一次握手，两者之间就直接可以创建持久性的连接，并进行双向数据传输。
+</code></pre><h3 id="网络服务与安全"><a href="#网络服务与安全" class="headerlink" title="网络服务与安全"></a>网络服务与安全</h3><pre><code>Node在网络安全上提供了3个模块
+</code></pre><ol>
+<li>crypto – 主要用于加密和解密，SHA1、MD5。</li>
+<li>tls – 类似于net模块，它是建立在TLS/SSL加密的TCP连接上。</li>
+<li>https – 类似于http模块，他它是建立于安全的连接之上。<br>TLS/SSL<br>TLS/SSL是一个公钥/私钥的结构，它是一个非对称的结构。<br>每个服务器断和客户端都有自己的公私钥。<br>公钥要来加密要传输的数据，私钥用来解密接收到的数据。<br>Node在底层采用的是openssl实现TLS/SSL。<br>数字证书：CA（Certificate Authority，数字证书认证中心）<br>HTTPS服务<br>HTTPS服务就是工作在TLS/SSL上的HTTP。<blockquote>
+<p>参考文档<br><a href="https://www.baidu.com/s?ie=utf8&amp;oe=utf8&amp;wd=%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAnode&amp;tn=98010089_dg&amp;ch=1" target="_blank" rel="external">朴灵-深入浅出Node</a></p>
+</blockquote>
+</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/js/" rel="tag"># js</a>
+          
+            <a href="/tags/读书笔记/" rel="tag"># 读书笔记</a>
+          
+            <a href="/tags/服务端/" rel="tag"># 服务端</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/28/koa学习-总结/" rel="next" title="koa学习-总结">
+                <i class="fa fa-chevron-left"></i> koa学习-总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="余真帆-fanerge" />
+          <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">72</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Node-js-基础知识"><span class="nav-number">1.</span> <span class="nav-text">Node.js 基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#chrome-与-Node-工作原理"><span class="nav-number">1.1.</span> <span class="nav-text">chrome 与 Node 工作原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异步I-O"><span class="nav-number">1.2.</span> <span class="nav-text">异步I/O</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模块机制"><span class="nav-number">2.</span> <span class="nav-text">模块机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CommonJS-规范"><span class="nav-number">2.1.</span> <span class="nav-text">CommonJS 规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#核心模块"><span class="nav-number">2.2.</span> <span class="nav-text">核心模块</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异步I-O-1"><span class="nav-number">3.</span> <span class="nav-text">异步I/O</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Node-的异步I-O"><span class="nav-number">3.1.</span> <span class="nav-text">Node 的异步I/O</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非I-O的异步API"><span class="nav-number">3.2.</span> <span class="nav-text">非I/O的异步API</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异步编程"><span class="nav-number">4.</span> <span class="nav-text">异步编程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#函数式编程"><span class="nav-number">4.1.</span> <span class="nav-text">函数式编程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异步编程解决方案"><span class="nav-number">4.2.</span> <span class="nav-text">异步编程解决方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并发方案"><span class="nav-number">4.3.</span> <span class="nav-text">并发方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存控制"><span class="nav-number">5.</span> <span class="nav-text">内存控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#理解Buffer"><span class="nav-number">6.</span> <span class="nav-text">理解Buffer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Buffer-的转换"><span class="nav-number">6.1.</span> <span class="nav-text">Buffer 的转换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络编程"><span class="nav-number">7.</span> <span class="nav-text">网络编程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP（传输控制协议）"><span class="nav-number">7.1.</span> <span class="nav-text">TCP（传输控制协议）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构建UDP-服务（用户数据包协议）"><span class="nav-number">7.2.</span> <span class="nav-text">构建UDP 服务（用户数据包协议）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构建HTTP-服务"><span class="nav-number">7.3.</span> <span class="nav-text">构建HTTP 服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#构建WebSocket-服务"><span class="nav-number">7.4.</span> <span class="nav-text">构建WebSocket 服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络服务与安全"><span class="nav-number">7.5.</span> <span class="nav-text">网络服务与安全</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fanerge.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://fanerge.github.io/2017/10/09/深入浅出Node-js-读书笔记/';
+          this.page.identifier = '2017/10/09/深入浅出Node-js-读书笔记/';
+          this.page.title = '深入浅出Node.js-读书笔记';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fanerge.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+</body>
+</html>

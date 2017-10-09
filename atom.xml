@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fanerge.github.io/"/>
-  <updated>2017-09-29T14:11:44.189Z</updated>
+  <updated>2017-10-09T15:15:42.993Z</updated>
   <id>https://fanerge.github.io/</id>
   
   <author>
@@ -14,6 +14,114 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>深入浅出Node.js-读书笔记</title>
+    <link href="https://fanerge.github.io/2017/10/09/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BANode-js-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    <id>https://fanerge.github.io/2017/10/09/深入浅出Node-js-读书笔记/</id>
+    <published>2017-10-09T12:09:51.000Z</published>
+    <updated>2017-10-09T15:15:42.993Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近在研究node.js,正赶上国庆长假，回趟老家。在网上找了一本电子书籍《深入浅出Node.js》，利用这个假期学习一下。</p>
+<h2 id="Node-js-基础知识"><a href="#Node-js-基础知识" class="headerlink" title="Node.js 基础知识"></a>Node.js 基础知识</h2><h3 id="chrome-与-Node-工作原理"><a href="#chrome-与-Node-工作原理" class="headerlink" title="chrome 与 Node 工作原理"></a>chrome 与 Node 工作原理</h3><pre><code>chrome：HTML + JavaScript + WebKit + V8 &gt;&gt; 中间层 &gt;&gt; 网卡 + 硬盘 + 显卡 + ...
+Node：JavaScript + V8 &gt;&gt; 中间层（libuv）&gt;&gt; 网卡 + 硬盘 + 显卡 + ...
+说明：libuv 是 Node 的新跨平台抽象层，用于抽象 Windows 的 IOCP 及 Unix 的 libev。
+    作者打算在这个库的包含所有平台的差异性。
+</code></pre><h3 id="异步I-O"><a href="#异步I-O" class="headerlink" title="异步I/O"></a>异步I/O</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$.get(&apos;url&apos;, (data) =&gt; &#123;</div><div class="line">	console.log(data);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+
+异步是并行的基础。
+单线程，不适合大量计算占用 CPU 导致无法继续调用异步I/O。
+</code></pre><h2 id="模块机制"><a href="#模块机制" class="headerlink" title="模块机制"></a>模块机制</h2><h3 id="CommonJS-规范"><a href="#CommonJS-规范" class="headerlink" title="CommonJS 规范"></a>CommonJS 规范</h3><pre><code>模块引用：
+    var math = require(&apos;math&apos;);    
+模块定义：
+    exports.add = () =&gt; {
+        var a = 1,
+            b = 3;
+        return a + b;
+    }
+exports 是 module 的属性。
+Node 引入模块的步骤：
+    路径分析
+    文件定位
+    编译执行
+</code></pre><h3 id="核心模块"><a href="#核心模块" class="headerlink" title="核心模块"></a>核心模块</h3><pre><code>文件模块 &gt;&gt; 核心模块（JavaScript） &gt;&gt; 内建模块（C/C++）
+</code></pre><h2 id="异步I-O-1"><a href="#异步I-O-1" class="headerlink" title="异步I/O"></a>异步I/O</h2><h3 id="Node-的异步I-O"><a href="#Node-的异步I-O" class="headerlink" title="Node 的异步I/O"></a>Node 的异步I/O</h3><pre><code>Node 自身的执行模型 -- 事件循环。
+单线程、事件循环、观察者和I/O线程池
+</code></pre><h3 id="非I-O的异步API"><a href="#非I-O的异步API" class="headerlink" title="非I/O的异步API"></a>非I/O的异步API</h3><pre><code>定时器：setTimeout()\setInterval()
+process.nextTick()
+    在事件循环的下一次循环中调用 callback 回调函数。
+    效果是将一个函数推迟到代码书写的下一个同步方法执行完毕时或异步方法的事件回调函数开始执行时；
+    与setTimeout(fn, 0) 函数的功能类似，但它的效率高多了。
+setImmediate()
+    nextTick()的回调函数执行的优先级要高于setImmediate();    
+    process.nextTick()属于idle观察者,setImmediate()属于check观察者.在每一轮循环检查中,idle观察者先于I/O观察者,
+    I/O观察者先于check观察者.
+</code></pre><h2 id="异步编程"><a href="#异步编程" class="headerlink" title="异步编程"></a>异步编程</h2><h3 id="函数式编程"><a href="#函数式编程" class="headerlink" title="函数式编程"></a>函数式编程</h3><pre><code>高阶函数：以函数作为参数或返回值。
+偏函数用法：通过指定部分参数来产生一个新的定制函数的形式就是偏函数。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">const isType = function (type)&#123;</div><div class="line">	return function (obj) &#123;</div><div class="line">		return Object.prototype.toString.call(obj) == &apos;[object &apos; + type + &apos;]&apos;;</div><div class="line">	&#125;; </div><div class="line">&#125;</div><div class="line">var isString = isType(&apos;String&apos;);</div></pre></td></tr></table></figure>
+</code></pre><h3 id="异步编程解决方案"><a href="#异步编程解决方案" class="headerlink" title="异步编程解决方案"></a>异步编程解决方案</h3><pre><code>事件发布/订阅模式（事件绑定）
+promise
+generator
+async-await
+</code></pre><h3 id="并发方案"><a href="#并发方案" class="headerlink" title="并发方案"></a>并发方案</h3><pre><code>eventproxy
+[async](https://github.com/caolan/async)
+</code></pre><h2 id="内存控制"><a href="#内存控制" class="headerlink" title="内存控制"></a>内存控制</h2><h2 id="理解Buffer"><a href="#理解Buffer" class="headerlink" title="理解Buffer"></a>理解Buffer</h2><pre><code>Buffer 是一个像Array的对象，但它主要用于操作字节。
+Buffer 对象
+    var buf = new Buffer(&apos;string&apos;, &apos;utf-8&apos;);
+</code></pre><h3 id="Buffer-的转换"><a href="#Buffer-的转换" class="headerlink" title="Buffer 的转换"></a>Buffer 的转换</h3><pre><code>    支持的字符串编码类型：
+    ASCII\UTF-8\UTF-16LE/UCS-2\Base64\Binary\Hex
+字符串转 Buffer    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var buf = new Buffer(str, [encoding]);</div><div class="line">buf.write(string, [offset], [length], [encoding]);</div></pre></td></tr></table></figure>
+
+Buffer 转字符串
+buf.toString([encoding], [start], [end]);
+</code></pre><h2 id="网络编程"><a href="#网络编程" class="headerlink" title="网络编程"></a>网络编程</h2><pre><code>TCP 和 UDP 属于网络传输层协议，HTTP 属于应用层协议。
+</code></pre><h3 id="TCP（传输控制协议）"><a href="#TCP（传输控制协议）" class="headerlink" title="TCP（传输控制协议）"></a>TCP（传输控制协议）</h3><pre><code>创建TCP 服务器端 net 模块
+TCP 服务的事件
+</code></pre><h3 id="构建UDP-服务（用户数据包协议）"><a href="#构建UDP-服务（用户数据包协议）" class="headerlink" title="构建UDP 服务（用户数据包协议）"></a>构建UDP 服务（用户数据包协议）</h3><pre><code>创建UDP套接字 dgram模块
+创建UDP 服务器端
+创建UDP 客户端
+UDP 套接字事件
+</code></pre><h3 id="构建HTTP-服务"><a href="#构建HTTP-服务" class="headerlink" title="构建HTTP 服务"></a>构建HTTP 服务</h3><pre><code>HTTP 超文本传输协议。
+http 模块
+HTTP 客户端
+</code></pre><h3 id="构建WebSocket-服务"><a href="#构建WebSocket-服务" class="headerlink" title="构建WebSocket 服务"></a>构建WebSocket 服务</h3><pre><code>以前的方案：Comet（彗星）技术细节为：长轮询（long-polling）或iframe流（streaming）。
+长轮询原理：客户端向服务器断发送请求，服务端只在超时或有数据响应时断开连接（res.end()），
+    客户端在接收到数据或者超时后重新发送请求。
+iframe流原理：iframe 是很早就存在的一种 HTML 标记， 通过在 HTML 页面里嵌入一个隐蔵帧，
+    然后将这个隐蔵帧的 SRC 属性设为对一个长连接的请求，服务器端就能源源不断地往客户端输入数据。
+    通过iframe里的内容进行长时间的请求，当需要传输内容时通过调用父页面js方法来实现页面展示，以此达到comet所需要的效果。
+WebSocket原理：WebSocket是一种在单个TCP连接上进行全双工通讯的协议。
+    WebSocket使得客户端和服务器之间的数据交换变得更加简单，允许服务端主动向客户端推送数据。在WebSocket API中，
+    浏览器和服务器只需要完成一次握手，两者之间就直接可以创建持久性的连接，并进行双向数据传输。
+</code></pre><h3 id="网络服务与安全"><a href="#网络服务与安全" class="headerlink" title="网络服务与安全"></a>网络服务与安全</h3><pre><code>Node在网络安全上提供了3个模块
+</code></pre><ol>
+<li>crypto – 主要用于加密和解密，SHA1、MD5。</li>
+<li>tls – 类似于net模块，它是建立在TLS/SSL加密的TCP连接上。</li>
+<li>https – 类似于http模块，他它是建立于安全的连接之上。<br>TLS/SSL<br>TLS/SSL是一个公钥/私钥的结构，它是一个非对称的结构。<br>每个服务器断和客户端都有自己的公私钥。<br>公钥要来加密要传输的数据，私钥用来解密接收到的数据。<br>Node在底层采用的是openssl实现TLS/SSL。<br>数字证书：CA（Certificate Authority，数字证书认证中心）<br>HTTPS服务<br>HTTPS服务就是工作在TLS/SSL上的HTTP。<blockquote>
+<p>参考文档<br><a href="https://www.baidu.com/s?ie=utf8&amp;oe=utf8&amp;wd=%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAnode&amp;tn=98010089_dg&amp;ch=1" target="_blank" rel="external">朴灵-深入浅出Node</a></p>
+</blockquote>
+</li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近在研究node.js,正赶上国庆长假，回趟老家。在网上找了一本电子书籍《深入浅出Node.js》，利用这个假期学习一下。&lt;/p&gt;
+&lt;h2 id=&quot;Node-js-基础知识&quot;&gt;&lt;a href=&quot;#Node-js-基础知识&quot; class=&quot;headerlink&quot; title
+    
+    </summary>
+    
+      <category term="NodeJS" scheme="https://fanerge.github.io/categories/NodeJS/"/>
+    
+    
+      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
+    
+      <category term="读书笔记" scheme="https://fanerge.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
+    
+  </entry>
   
   <entry>
     <title>koa学习-总结</title>
@@ -260,9 +368,9 @@ app.use(koaBody({ multipart: true }));
       <category term="NodeJS" scheme="https://fanerge.github.io/categories/NodeJS/"/>
     
     
-      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
-    
       <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
+    
+      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
     
       <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
     
@@ -1395,9 +1503,9 @@ maps, 相当于 JavaScript 的 object，(key1: value1, key2: value2)
       <category term="NodeJS" scheme="https://fanerge.github.io/categories/NodeJS/"/>
     
     
-      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
-    
       <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
+    
+      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
     
       <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
     
@@ -1435,9 +1543,9 @@ index.js
       <category term="NodeJS" scheme="https://fanerge.github.io/categories/NodeJS/"/>
     
     
-      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
-    
       <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
+    
+      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
     
       <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
     
@@ -1471,9 +1579,9 @@ index.js
       <category term="NodeJS" scheme="https://fanerge.github.io/categories/NodeJS/"/>
     
     
-      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
-    
       <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
+    
+      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
     
       <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
     
@@ -1504,9 +1612,9 @@ index.js
       <category term="NodeJS" scheme="https://fanerge.github.io/categories/NodeJS/"/>
     
     
-      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
-    
       <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
+    
+      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
     
       <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
     
@@ -1545,9 +1653,9 @@ index.js
       <category term="NodeJS" scheme="https://fanerge.github.io/categories/NodeJS/"/>
     
     
-      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
-    
       <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
+    
+      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
     
       <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
     
@@ -1584,9 +1692,9 @@ busboy 是
       <category term="NodeJS" scheme="https://fanerge.github.io/categories/NodeJS/"/>
     
     
-      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
-    
       <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
+    
+      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
     
       <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
     
@@ -1621,9 +1729,9 @@ ejs -
       <category term="NodeJS" scheme="https://fanerge.github.io/categories/NodeJS/"/>
     
     
-      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
-    
       <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
+    
+      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
     
       <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
     
@@ -1664,9 +1772,9 @@ app.use(static(path.join(__dirname, staticPath)));
       <category term="NodeJS" scheme="https://fanerge.github.io/categories/NodeJS/"/>
     
     
-      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
-    
       <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
+    
+      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
     
       <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
     
@@ -1718,66 +1826,9 @@ post.js关键代码
       <category term="NodeJS" scheme="https://fanerge.github.io/categories/NodeJS/"/>
     
     
-      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
-    
       <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
     
-      <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
-    
-      <category term="koa" scheme="https://fanerge.github.io/tags/koa/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>koa学习-中间件和路由</title>
-    <link href="https://fanerge.github.io/2017/09/16/koa%E5%AD%A6%E4%B9%A0-%E4%B8%AD%E9%97%B4%E4%BB%B6%E5%92%8C%E8%B7%AF%E7%94%B1/"/>
-    <id>https://fanerge.github.io/2017/09/16/koa学习-中间件和路由/</id>
-    <published>2017-09-16T13:24:00.000Z</published>
-    <updated>2017-09-28T12:23:42.502Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="koa中间件的制作和使用"><a href="#koa中间件的制作和使用" class="headerlink" title="koa中间件的制作和使用"></a>koa中间件的制作和使用</h2><h3 id="koa模版"><a href="#koa模版" class="headerlink" title="koa模版"></a>koa模版</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var koa = require(&apos;koa&apos;);</div><div class="line">const app = new koa();</div><div class="line">// 中间件</div><div class="line">app.use(async (ctx) =&gt; &#123;</div><div class="line">	ctx.body = &apos;hello koa2&apos;;</div><div class="line">&#125;);</div><div class="line">app.listen(3000);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="async-await"><a href="#async-await" class="headerlink" title="async/await"></a>async/await</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">function getSyncTime () &#123;</div><div class="line">	return new Promise((resolve, reject) =&gt; &#123;</div><div class="line">		try &#123;</div><div class="line">			let startTime = new Date().getTime();</div><div class="line">			setTimeout(() =&gt; &#123;</div><div class="line">				let endTime = new Date().getTime();</div><div class="line">				let data = endTime - startTime;</div><div class="line">				resolve(data);</div><div class="line">			&#125;, 500);</div><div class="line">		&#125; catch (e) &#123;</div><div class="line">			reject(e);</div><div class="line">		&#125;</div><div class="line">	&#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">async function getSyncData () &#123;</div><div class="line">	let time = await getSyncTime();</div><div class="line">	let data = `endTime - startTime = $&#123;time&#125;`;</div><div class="line">	console.log(data);</div><div class="line">&#125;</div><div class="line">getSyncData();</div></pre></td></tr></table></figure>
-</code></pre><h3 id="koa2简析结构"><a href="#koa2简析结构" class="headerlink" title="koa2简析结构"></a>koa2简析结构</h3><pre><code>源码文件：
-├── lib
-│   ├── application.js
-│   ├── context.js
-│   ├── request.js
-│   └── response.js
-└── package.json
-文件说明：
-application.js 是整个koa2 的入口文件，封装了context，request，response，以及最核心的中间件处理流程。
-context.js 处理应用上下文，里面直接封装部分request.js和response.js的方法
-request.js 处理http请求
-response.js 处理http响应
-</code></pre><h3 id="koa中间件开发和使用"><a href="#koa中间件开发和使用" class="headerlink" title="koa中间件开发和使用"></a>koa中间件开发和使用</h3><pre><code>以日志中间件为例
-middleware/logger-async.js
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">function log (ctx) &#123;</div><div class="line">	console.log(`请求方法：$&#123;ctx.method&#125;, host：$&#123;ctx.header.host&#125;, url：$&#123;ctx.url&#125;`);</div><div class="line">&#125;</div><div class="line"></div><div class="line">module.exports = function () &#123;</div><div class="line">	return async function (ctx, next)&#123;</div><div class="line">		log(ctx);</div><div class="line">		await next();</div><div class="line">	&#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-
-使用该中间件logger
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">const loggerAsync  = require(&apos;./middleware/logger-async&apos;);</div><div class="line">// 使用日志中间件</div><div class="line">app.use(loggerAsync());</div></pre></td></tr></table></figure>
-</code></pre><h2 id="koa路由中间件"><a href="#koa路由中间件" class="headerlink" title="koa路由中间件"></a>koa路由中间件</h2><h3 id="koa2原生路由实现"><a href="#koa2原生路由实现" class="headerlink" title="koa2原生路由实现"></a>koa2原生路由实现</h3><pre><code>获取url：ctx.request.url
-后端路由：根据前端get请求的url地址，后端返回对应的view页面达到。
-</code></pre><h3 id="koa-router中间件"><a href="#koa-router中间件" class="headerlink" title="koa-router中间件"></a>koa-router中间件</h3><pre><code>安装koa-router中间件
-    npm install --save koa-router
-使用koa-router
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">// 子路由1</div><div class="line">let home = new Router();</div><div class="line">home.get(&apos;/&apos;, async (ctx) =&gt; &#123;</div><div class="line">	let html = `</div><div class="line">		&lt;ul&gt;</div><div class="line">			&lt;li&gt;&lt;a href=&quot;/&quot;&gt;/&lt;/a&gt;&lt;/li&gt;</div><div class="line">			&lt;li&gt;&lt;a href=&quot;/page&quot;&gt;/page&lt;/a&gt;&lt;/li&gt;</div><div class="line">			&lt;li&gt;&lt;a href=&quot;/page/helloword&quot;&gt;/page/helloword&lt;/a&gt;&lt;/li&gt;</div><div class="line">			&lt;li&gt;&lt;a href=&quot;/page/chengdu&quot;&gt;/page/chengdu&lt;/a&gt;&lt;/li&gt;</div><div class="line">			&lt;li&gt;&lt;a href=&quot;/page/ss&quot;&gt;not found&lt;/a&gt;&lt;/li&gt;</div><div class="line">		&lt;/ul&gt;</div><div class="line">	`;</div><div class="line">	ctx.body = html;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">// 子路由2</div><div class="line">let page = new Router();</div><div class="line">page.get(&apos;/&apos;, async (ctx) =&gt; &#123;</div><div class="line">	ctx.body = &apos;page主页&apos;;</div><div class="line">&#125;)</div><div class="line">.get(&apos;/chengdu&apos;, async (ctx) =&gt; &#123;</div><div class="line">	ctx.body = &apos;欢迎来到成都&apos;;</div><div class="line">&#125;)</div><div class="line">.get(&apos;/helloword&apos;, (ctx) =&gt; &#123;</div><div class="line">	ctx.body = &apos;helloword page&apos;;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">// 子路由3-Not found</div><div class="line">let notFound = new Router();</div><div class="line">notFound.get(&apos;*&apos;, async (ctx) =&gt; &#123;</div><div class="line">	ctx.body = &apos;没有找到！&apos;;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">// 装载所有的子路由</div><div class="line">let router = new Router();</div><div class="line">router.use(&apos;/&apos;, home.routes(), home.allowedMethods());</div><div class="line">router.use(&apos;/page&apos;, page.routes(), page.allowedMethods());</div><div class="line">router.use(&apos;*&apos;, notFound.routes(), notFound.allowedMethods());</div><div class="line"></div><div class="line">// 加载路由中间件</div><div class="line">app.use(router.routes())</div><div class="line">.use(router.allowedMethods());</div></pre></td></tr></table></figure>
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="https://chenshenhai.github.io/koa2-note/note/request/get.html" target="_blank" rel="external">koa2-note</a><br>    <a href="https://www.npmjs.com/package/koa-router" target="_blank" rel="external">koa-router官方文档</a></p>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;koa中间件的制作和使用&quot;&gt;&lt;a href=&quot;#koa中间件的制作和使用&quot; class=&quot;headerlink&quot; title=&quot;koa中间件的制作和使用&quot;&gt;&lt;/a&gt;koa中间件的制作和使用&lt;/h2&gt;&lt;h3 id=&quot;koa模版&quot;&gt;&lt;a href=&quot;#koa模版&quot; c
-    
-    </summary>
-    
-      <category term="NodeJS" scheme="https://fanerge.github.io/categories/NodeJS/"/>
-    
-    
       <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
-    
-      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
     
       <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
     
