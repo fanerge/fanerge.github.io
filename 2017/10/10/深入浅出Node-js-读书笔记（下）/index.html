@@ -1,0 +1,1007 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="js,读书笔记,服务端," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="余真帆的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="构建Web应用基础功能常见的需求：  请求方法的判断（保存在报文）常见的方法有：GET(查看)\POST(更新)\DELETE(删除)\PUT(新建)\CONNECT\HEAD通过req.method 来判断 URL的路径解析（保存在报文）http://localhost:8080/a.html通过req.url 来查找 URL中查询字符串解析（保存在报文）?foo=bar&amp;amp;baz=val">
+<meta name="keywords" content="js,读书笔记,服务端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入浅出Node.js-读书比较">
+<meta property="og:url" content="https://fanerge.github.io/2017/10/10/深入浅出Node-js-读书笔记（下）/index.html">
+<meta property="og:site_name" content="余真帆的博客">
+<meta property="og:description" content="构建Web应用基础功能常见的需求：  请求方法的判断（保存在报文）常见的方法有：GET(查看)\POST(更新)\DELETE(删除)\PUT(新建)\CONNECT\HEAD通过req.method 来判断 URL的路径解析（保存在报文）http://localhost:8080/a.html通过req.url 来查找 URL中查询字符串解析（保存在报文）?foo=bar&amp;amp;baz=val">
+<meta property="og:updated_time" content="2017-10-12T12:55:31.054Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入浅出Node.js-读书比较">
+<meta name="twitter:description" content="构建Web应用基础功能常见的需求：  请求方法的判断（保存在报文）常见的方法有：GET(查看)\POST(更新)\DELETE(删除)\PUT(新建)\CONNECT\HEAD通过req.method 来判断 URL的路径解析（保存在报文）http://localhost:8080/a.html通过req.url 来查找 URL中查询字符串解析（保存在报文）?foo=bar&amp;amp;baz=val">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://fanerge.github.io/2017/10/10/深入浅出Node-js-读书笔记（下）/"/>
+
+
+
+
+
+  <title> 深入浅出Node.js-读书比较 | 余真帆的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?947609e8bcc46de32a1dca9cc56cd8a1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+	<a href="https://github.com/fanerge/"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">余真帆的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/10/深入浅出Node-js-读书笔记（下）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                深入浅出Node.js-读书比较
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-10T20:17:16+08:00">
+                2017-10-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
+                    <span itemprop="name">NodeJS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/10/深入浅出Node-js-读书笔记（下）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/10/深入浅出Node-js-读书笔记（下）/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  3,401
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  13
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="构建Web应用"><a href="#构建Web应用" class="headerlink" title="构建Web应用"></a>构建Web应用</h2><h3 id="基础功能"><a href="#基础功能" class="headerlink" title="基础功能"></a>基础功能</h3><pre><code>常见的需求：
+</code></pre><ol>
+<li>请求方法的判断（保存在报文）<br>常见的方法有：GET(查看)\POST(更新)\DELETE(删除)\PUT(新建)\CONNECT\HEAD<br>通过req.method 来判断</li>
+<li>URL的路径解析（保存在报文）<br><a href="http://localhost:8080/a.html" target="_blank" rel="external">http://localhost:8080/a.html</a><br>通过req.url 来查找</li>
+<li>URL中查询字符串解析（保存在报文）<br>?foo=bar&amp;baz=val<br>使用Node提供的querystring 模块处理</li>
+<li>Cookie的解析（保存在报文）<br>网站为了辨别用户身份而储存在用户本地终端（Client Side）上的数据（通常经过加密）。<br>http 为无状态协议。<br>数据保存在客户端。</li>
+<li>Session（会话）的需求（保存在报文）<br>数据保存在服务器端。<br>1.基于Cookie 来实现用户和数据的映射。<br>  原理：在客户端只保存口令，发送请求是通过该口令再去查找对应的数据<br>2.通过查询字符串来实现浏览器端和服务器端数据的对应。<br>  不推荐使用，风险大。<br>两种存储方式：<br>1.内存<br>2.数据工具<br>  Redis是一个支持网络、基于内存、可选持久性的键值对存储数据库。</li>
+<li>Basic认证（保存在报文）<br>当客户端与服务端进行请求时，允许通过用户名和密码实现的一种身份认证方式。</li>
+<li>数据上传<br>思路：先判断数据的格式，再通过对应的解析方法解析。<br>1.表单数据的解析<br>先判断req.headers[‘content-type’] === ‘application/x-www-formurlencoded’<br>  querystring.parse(req.rawBody);<br>2.其他格式<br>  json – application/json<br>  xml – application/xml</li>
+<li><p>任意格式文件的上传处理<br>此时需要<form action="/upload" method="post" enctype="multipart/form-data"></form></p>
+</li>
+<li><p>缓存<br>YSlow中提出的缓存规则：<br>1.添加Expires 和 Cache-Control 到报文头中。<br>2.配置ETags。<br>3.让Ajax 可缓存。<br>数据上传与安全<br>1.内存限制（提交数据占用了所有内存）<br>  限制上传内容的大小，一旦超过限制，停止接收数据，并响应400状态码。<br>  通过流式解析，将数据导向到磁盘中，Node只保留文件路径等小数据。<br>2.CSRF<br>  Cross-Site Request Forgery（跨站点请求伪造）</p>
+<h3 id="路由解析"><a href="#路由解析" class="headerlink" title="路由解析"></a>路由解析</h3><p>文件路径型<br>  静态文件：URL 的路径与网站目录的路径一致，无须转换。<br>  动态文件：在 MVC 模式流行起来之前，根据文件路径执行动态脚本也是基本的路由方式，</p>
+<pre><code>它的处理原理是Web服务器根据URL路径找到对应的文件，如/index.asp或/index.php。
+</code></pre><p>MVC<br>  MVC 模型的主要思想是将业务逻辑按职责分离。</p>
+<pre><code>控制器（Controller），一组行为的集合。
+模型（Model），数据相关的操作和封装。
+视图（View），视图的渲染。
+1.路由解析，根据URL寻找到对应的控制器和行为。
+2.行为调用相关的模型，进行数据操作。
+3.数据操作结束后，调用视图和相关数据进行页面渲染，输出到客户端。
+</code></pre><p>  路由映射<br>  1.手工映射</p>
+<pre><code>正则匹配
+参数解析
+</code></pre><p>  2.自然映射<br>RESTful<br>  REST Representational State Transfer （表现层状态转化）<br>  POST /user/fanerge 修改用户信息<br>  DELETE /user/fanerge 删除用户<br>  PUT /user/fanerge 新建用户<br>  GET /user/fanerge 查询用户信息<br>  请求方法    </p>
+<h3 id="中间件"><a href="#中间件" class="headerlink" title="中间件"></a>中间件</h3><p>作用：middleware 来简化和隔离这些基础设施与业务逻辑之间的细节，使开发者更加关注在业务的开发。<br><a href="/images/middleware.png">中间件工作原理</a><br>中间件设计格式（connect的设计）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var querystring = function (req, res, next) &#123;</div><div class="line">	// TODO</div><div class="line">	next();</div><div class="line">&#125;</div><div class="line">```	</div><div class="line">使用中间件（串联多个中间件）</div></pre></td></tr></table></figure>
+<p>app.use(‘/user/:username’, querystring, cookie, session, function (req, res) {<br>  // 这里处理具体的业务逻辑<br>});</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div></pre></td><td class="code"><pre><div class="line">	异常处理</div><div class="line">		同步异常 -- try &#123;&#125; catch (err) &#123;throw err&#125; </div><div class="line">		异步异常</div><div class="line">			需要把异常传递出来</div><div class="line">			domain 模块	</div><div class="line">###	页面渲染</div><div class="line">	内容响应</div><div class="line">		Content-Encoding: gzip</div><div class="line">		Content-Length: 21170</div><div class="line">		Content-Type: text/javascript; charset=utf-8</div><div class="line">		MIME : Multipurpose Internet Mail Extensions	</div><div class="line">		附件下载：有些MIME类的资源不需要在客户端中打开它，只需要弹出并下载它即可。</div><div class="line">			Content-Disposition: inline(查看)/attachment(附件下载);</div><div class="line">			例如：Content-Disposition: attachment; filename=&apos;filename.ext&apos;; // 下载附件并为其命名</div><div class="line">		响应JSON</div><div class="line">		响应跳转	</div><div class="line">	视图渲染</div><div class="line">	模板</div><div class="line">		如EJS、Pug等</div><div class="line">		模板引擎</div><div class="line">			语法分解。</div><div class="line">			处理表达式。</div><div class="line">			生成待执行的语句。</div><div class="line">			与数据一起执行，生成最终字符串。</div><div class="line">		with的应用	</div><div class="line">			模板安全 XSS 解决方案 转义用户的输入</div><div class="line">		模板逻辑</div><div class="line">		集成文件系统	</div><div class="line">		子模板	</div><div class="line">		布局视图	</div><div class="line">		模板性能</div><div class="line">	Bigpipe</div><div class="line">		BigPipe是一个重新设计的基础动态网页服务体系。</div><div class="line">		前端加载技术，它的提出主要是为了解决重数据页面的加载问题。</div><div class="line">		Bigpipe 的解决思路则是将页面分割成多个部分（pagelet），</div><div class="line">		先向用户输出没有数据（框架），将每个部分逐步输出到前端，</div><div class="line">		再最终渲染填充框架，完成整个网页的渲染。</div><div class="line">		这个过程中需要前端js的参与，它负责将后续输出的数据渲染到页面上。</div><div class="line">		1.页面布局框架（无数据的）。</div><div class="line">		2.后端持续性的数据输出。</div><div class="line">		3.前端渲染。</div><div class="line">			bigpipe.ready() -- 以一个key注册一个事件。</div><div class="line">			bigpipe.set() -- 触发一个事件，进行页面渲染。</div><div class="line">##	玩转进程</div><div class="line">###	多进程架构</div><div class="line">	child_process 模块</div><div class="line">	创建子进程</div><div class="line">		1.spawn(): 启动一个子进程来执行命令。</div><div class="line">		2.exec(): 启动一个子进程来执行命令，与spawn()不同的是其接口不同，</div><div class="line">		它有一个回调函数获知子进程的状况。</div><div class="line">		3.execFile(): 启动一个子进程来执行可执行文件。</div><div class="line">		4.fork(): 与spawn()类似，不同点在于它创建Node的子进程只需指定要执行的Javascript文件模块即可。</div><div class="line">		spawn()与exec()、execFile()不同的是，后两者创建时可以指定timeout属性设置超时时间，</div><div class="line">		一旦创建的进程运行超过设定的时间将会被杀死。</div><div class="line">		exec()与execFile()不同的是，exec()适合执行已有的命令，execFile()适合执行文件。</div><div class="line">	进程间通信</div><div class="line">		message事件 绑定发送事件</div><div class="line">		send()方法 触发发送消息</div><div class="line">	句柄传递</div><div class="line">		child_process.send(message, [sendHandle]);</div><div class="line">		句柄是一种可以用来标识资源的引用，它的内部包含了指向对象的文件描述符。</div><div class="line">		比如句柄可以用来标识一个服务器端socket对象、客户端socket对象、UDP套接字、一个管道等。</div><div class="line">###	集群稳定之路</div><div class="line">	进程事件</div><div class="line">		message</div><div class="line">		error</div><div class="line">		exit</div><div class="line">		close</div><div class="line">		disconnect</div><div class="line">	自动重启</div><div class="line">		自杀信号</div><div class="line">		负载均衡（轮叫调度）	</div><div class="line">			由主进程接受链接，将其依次分发给工作进程。</div><div class="line">			cluster 模块</div><div class="line">		状态共享</div><div class="line">			第三方数据存储 通过轮询</div><div class="line">			主动通知 当数据更新时，主动通知子进程。</div><div class="line">###	Cluster 模块</div><div class="line">		解决多核CPU的利用率问题。</div><div class="line">		Cluster 工作原理</div><div class="line">			该模块是 child_process 和 net 模块的组合应用。</div><div class="line">		Cluster 事件</div><div class="line">			fork</div><div class="line">			online</div><div class="line">			listening</div><div class="line">			disconnect</div><div class="line">			exit</div><div class="line">			setup</div><div class="line">##	测试</div><div class="line">	测试驱动开发</div><div class="line">###	单元测试</div><div class="line">	测试代码编写的原则</div><div class="line">	1.单一职责</div><div class="line">	2.接口抽象</div><div class="line">	3.层次分离</div><div class="line">	单元测试介绍</div><div class="line">	1.断言</div><div class="line">		assert 模块</div><div class="line">		单元测试中用来保证最小单元是否正常的检测方法。</div><div class="line">		用于检查程序在运行时是否满足期望。</div><div class="line">		ok(): 判断结果是否为真。</div><div class="line">		equal(): 判断实际值余期望值是否相等。</div><div class="line">		notEqual(): 判断实际值与期望值是否不相等。</div><div class="line">		deepEqual(): 判断实际值余期望值是否深度相等（对象和数组的元素是否相等）。</div><div class="line">		notDeepEqual(): 判断实际值与期望值是否不深度相等。</div><div class="line">		strictEqual(): 判断实际值与期望值是否严格相等（===）。</div><div class="line">		notStrictEqual(): 判断实际值与期望值是否不严格相等（!==）。</div><div class="line">		throws(): 判断代码块是否抛出异常。</div><div class="line">		doesNotThrow(): 判断代码块是否没有抛出异常。</div><div class="line">		ifError(): 判断实际值是否为一个假值（null、undefined、0、&apos;&apos;、false），若实际值为真值，将抛出异常。</div><div class="line">	2.测试框架</div><div class="line">		用于管理测试用例和生成测试报告。</div><div class="line">		mocha 模块</div><div class="line">		测试风格</div><div class="line">			TDD 测试驱动开发</div><div class="line">			BDD 行为驱动开发</div><div class="line">		测试报告</div><div class="line">			mocha --reporters</div><div class="line">		测试代码的文件组织</div><div class="line">		测试用例</div><div class="line">		异步测试</div><div class="line">		测试覆盖率</div><div class="line">		mock 或者 muk</div><div class="line">		私有方法的测试</div><div class="line">			var lib = rewire(&apos;../lib/index.js&apos;); // 需要测试方法所在的文件</div><div class="line">			var litmit = lib.__get__(&apos;limit&apos;); // 需要测试的方法</div><div class="line">	3.工程化与自动化	</div><div class="line">		工程化 -- Makefile</div><div class="line">		持续集成 -- travis-ci</div><div class="line">##	性能测试</div><div class="line">	负载测试、压力测试和基准测试。</div><div class="line">	基准测试：（对基本的方法如Array.protoryp.map 和 for循环的比较）</div><div class="line">		benchmark 模块</div><div class="line">	压力测试：（网络接口进行压力测试）</div><div class="line">		常用的工具：ab、siege、http_load</div><div class="line">	基准测试驱动开发</div><div class="line">		1.写基准测试</div><div class="line">		2.写/改代码</div><div class="line">		3.收集数据</div><div class="line">		4.找出问题</div><div class="line">		5.回到第（2）步</div><div class="line">	测试数据余业务数据的转换</div><div class="line">		PV访问量（Page View），即页面访问量，每打开一次页面PV计数+1，刷新页面也是。</div><div class="line">		UV访问数（Unique Visitor）指独立访客访问数，一台电脑终端为一个访客。</div><div class="line">		TPS 是每秒内的事务数，比如执行了dml操作，那么相应的tps会增加；</div><div class="line">		QPS 是指每秒内查询次数，比如执行了select操作，相应的qps会增加。</div><div class="line">		QPS = PV/H (H为访问量集中的时间单位小时)。</div><div class="line">##	产品化</div><div class="line">	包括：工程化、架构、容灾备份、部署和运维。</div><div class="line">###	项目工程化</div><div class="line">	1.目录结构</div><div class="line">		Web框架：Express、Koa、Egg</div><div class="line">	2.构建工具</div><div class="line">		合并静态文件、压缩文件大小、打包应用、编译模块。</div><div class="line">		Makefile </div><div class="line">			一个工程中的源文件不计其数，其按类型、功能、模块分别放在若干个目录中，</div><div class="line">			makefile定义了一系列的规则来指定，哪些文件需要先编译，哪些文件需要后编译，</div><div class="line">			哪些文件需要重新编译，甚至于进行更复杂的功能操作，</div><div class="line">			因为 makefile就像一个Shell脚本一样，其中也可以执行操作系统的命令。</div><div class="line">		Grunt</div><div class="line">	3.编码规范</div><div class="line">		JSLint JSHint ESLint</div><div class="line">	4.代码审查</div><div class="line">###	部署流程</div><div class="line">	部署环境</div><div class="line">	部署操作	</div><div class="line">###	性能</div><div class="line">	动静分离</div><div class="line">		静态请求用 Nginx 和 CDN 来保存</div><div class="line">	启用缓存</div><div class="line">		Redis 和 Memcached</div><div class="line">	多进程架构	</div><div class="line">		读写分离</div><div class="line">###	日志</div><div class="line">	访问日志</div><div class="line">	异常日志</div><div class="line">	日志与数据库</div><div class="line">	分割日志</div><div class="line">###	监控报警</div><div class="line">	业务逻辑型监控 和 硬件型监控</div><div class="line">	监控	</div><div class="line">		日志监控</div><div class="line">		响应时间</div><div class="line">		进程监控</div><div class="line">		磁盘监控</div><div class="line">		内存监控</div><div class="line">		CPU占用监控</div><div class="line">		CPU load监控</div><div class="line">		I/O负载</div><div class="line">		网络监控</div><div class="line">		应用状态监控</div><div class="line">		DNS 监控 -- 免费DNS监控服务 DNSPod</div><div class="line">		报警的实现</div><div class="line">			邮件报警 -- nodemailer 模块</div><div class="line">			短信或电话报警 </div><div class="line">		</div><div class="line">	监控系统的稳定性</div><div class="line">###	稳定性	</div><div class="line">		多机器</div><div class="line">		多机房</div><div class="line">		容灾备份</div><div class="line">###	异构共存</div><div class="line">##	调试Node</div><div class="line">	Debugger</div><div class="line">		1.在代码中插入 debugger</div><div class="line">		2.运行 node debug demo.js</div><div class="line">	Node Inspector</div><div class="line">		1.安装 npm install -g node-inspector</div><div class="line">		2.错误堆栈</div><div class="line">##	Node 编码规范</div><div class="line">###	编码规范</div><div class="line">	1.空格与格式 -- 采用2个空格缩进，而不是tab缩进。</div><div class="line">	2.变量声明 -- 每个变量声明都应该带var。</div><div class="line">	3.空格 -- 操作符前后加空格，如+、-、*、%、/、=等</div><div class="line">	4.单双引号的问题 -- 只在html标签的属性中使用双引号，其余使用单引号。</div><div class="line">		但在JSON中，严格的规范是要求使用字符串使用双引号，内容中出现双引号时需要转义。</div><div class="line">	5.大括号的位置 -- 不需要另起一行</div><div class="line">	6.逗号 -- 若逗号不在行结尾，前面需要一个空格。</div><div class="line">	7.分号 -- 给表达式结尾添加分号。	</div><div class="line">###	命名规范</div><div class="line">	1.变量命名 -- 小驼峰式命名。</div><div class="line">	2.方法命名 -- 小驼峰式命名，尽量采用动词或判断词汇。</div></pre></td></tr></table></figure>
+<p>  var getUser = () =&gt; {};<br>  var isAdmin = () =&gt; {};</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">3.类命名（构造函数和Class） -- 大驼峰式命名。</div><div class="line">4.常量命名 -- 全大写字母和下划线。</div></pre></td></tr></table></figure>
+<pre><code>var PINK_COLOR = &apos;pink&apos;;
+</code></pre>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">5.文件命名 -- 全小写字母和下划线。</div></pre></td></tr></table></figure>
+<p>  child_process.js // 普通文件<br>  _linklist.js // 私有文件</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">	6.包名 -- 不要包含 js 或 node 的字样，它们是重复的。</div><div class="line">###	比较操作</div><div class="line">	1.使用 === 替代 ==</div><div class="line">	2.当遇到 0、undefined、null、false、&apos;&apos;假值时，不需要使用 === 或 ==。	</div><div class="line">###	字面量	</div><div class="line">	尽量使用 &#123;&#125;、[]，不要使用 new Object() 和 new Array()	</div><div class="line">###	作用域</div><div class="line">	1.慎用with</div></pre></td></tr></table></figure>
+<p>with (obj) {<br>  foo = bar;<br>}<br>// 出现4中结果：obj.foo = obj.bar; obj.foo = bar; foo = obj.bar; foo = bar;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">	2.慎用eval()</div><div class="line">###	数组与对象</div><div class="line">	1.字面量格式 -- 结尾用逗号分隔，若分行，一行只能一个元素。</div><div class="line">	2.for in 循环 -- 只能对对象使用，不能对数组使用。</div><div class="line">		for in语句以任意顺序遍历一个对象的可枚举属性（包括原型上的属性）。</div><div class="line">	3.不要把数组当对象使用	</div><div class="line">###	异步</div><div class="line">	1.异步回调函数的第一个参数应该是错误指示	</div><div class="line">	2.执行传入的回调函数	</div><div class="line">###	类与模块	</div><div class="line">	1.类继承（Node推荐的类继承方式）</div></pre></td></tr></table></figure>
+<p>function Socket (options) {<br>  stream.Stream.call(this);<br>}<br>util.inherits(Socket, stream.Stream);</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">2.导出 -- 所有供外部调用的方法或变量均需要挂载在exports变量上。</div><div class="line">	当需要将文件当做一个类导出时，需要通过如下方式挂载。</div></pre></td></tr></table></figure>
+<p>module.exports = Class;<br>```</p>
+<h3 id="注解规范"><a href="#注解规范" class="headerlink" title="注解规范"></a>注解规范</h3><p>采用 JSDoc</p>
+<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><p>1.冲突的解决原则 – 入乡随俗<br>2.给编辑器设置检测工具<br>3.版本控制中的hook<br>4.持续集成</p>
+<h2 id="搭建局域NPM仓库"><a href="#搭建局域NPM仓库" class="headerlink" title="搭建局域NPM仓库"></a>搭建局域NPM仓库</h2><blockquote>
+<p>参考文档<br><a href="https://www.baidu.com/s?ie=utf8&amp;oe=utf8&amp;wd=%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAnode&amp;tn=98010089_dg&amp;ch=1" target="_blank" rel="external">朴灵-深入浅出Node</a></p>
+</blockquote>
+</li>
+</ol>
+
+      
+    </div>
+	<div>
+	  
+		
+
+	  
+	</div>
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+	<div>
+	  
+		<div>
+    
+        <div style="text-align:center;color: #aaa;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>fanerge在此感谢您的阅读-------------</div>
+    
+</div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/js/" rel="tag"><i class="fa fa-tag"></i> js</a>
+          
+            <a href="/tags/读书笔记/" rel="tag"><i class="fa fa-tag"></i> 读书笔记</a>
+          
+            <a href="/tags/服务端/" rel="tag"><i class="fa fa-tag"></i> 服务端</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/10/深入浅出Node-js-读书比较/" rel="next" title="深入浅出Node.js-读书比较">
+                <i class="fa fa-chevron-left"></i> 深入浅出Node.js-读书比较
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/12/js代码规范/" rel="prev" title="js代码规范">
+                js代码规范 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="余真帆-fanerge" />
+          <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">76</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/fanerge/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="twitter" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="weibo" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金">
+                  
+                    <i class="fa fa-fw fa-spinner"></i>
+                  
+                  掘金
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#构建Web应用"><span class="nav-number">1.</span> <span class="nav-text">构建Web应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基础功能"><span class="nav-number">1.1.</span> <span class="nav-text">基础功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#路由解析"><span class="nav-number">1.2.</span> <span class="nav-text">路由解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中间件"><span class="nav-number">1.3.</span> <span class="nav-text">中间件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注解规范"><span class="nav-number">1.4.</span> <span class="nav-text">注解规范</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最佳实践"><span class="nav-number">2.</span> <span class="nav-text">最佳实践</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搭建局域NPM仓库"><span class="nav-number">3.</span> <span class="nav-text">搭建局域NPM仓库</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+</div>
+
+
+
+<div class="powered-by">
+	<i class="fa fa-user-md"></i>
+	<span id="busuanzi_container_site_pv">
+		本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+</div>
+
+<!--<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>-->
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共100.1k字</span>
+</div>
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fanerge.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://fanerge.github.io/2017/10/10/深入浅出Node-js-读书笔记（下）/';
+          this.page.identifier = '2017/10/10/深入浅出Node-js-读书笔记（下）/';
+          this.page.title = '深入浅出Node.js-读书比较';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fanerge.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+    <script type="text/javascript" src="/live2d/script.js"></script>
+    <canvas id="live2dcanvas" width="150" height="300" class="live2d"></canvas>
+    <style>
+      #live2dcanvas {
+        position: fixed;
+        right: 0px;
+        z-index: 999;
+        pointer-events: none;
+        bottom: -30px;
+      }
+    </style>
+    <script>loadlive2d("live2dcanvas" ,"/live2d/assets/nito/nietzche.model.json",0.5)</script>
+  
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
