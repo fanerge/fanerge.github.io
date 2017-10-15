@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fanerge.github.io/"/>
-  <updated>2017-10-15T09:58:46.809Z</updated>
+  <updated>2017-10-15T13:53:17.664Z</updated>
   <id>https://fanerge.github.io/</id>
   
   <author>
@@ -15,6 +15,58 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>js设计模式-代理模式</title>
+    <link href="https://fanerge.github.io/2017/10/15/js%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/"/>
+    <id>https://fanerge.github.io/2017/10/15/js设计模式-代理模式/</id>
+    <published>2017-10-15T12:24:36.000Z</published>
+    <updated>2017-10-15T13:53:17.664Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="代理模式"><a href="#代理模式" class="headerlink" title="代理模式"></a>代理模式</h1><pre><code>定义：为一个对象提供一个代用品或占位符，以便控制对它的访问。    代理对象和本体对象实现了同样的接口，并且会把任何方法调用传递给本体对象；举例：    图片预加载、图片懒加载、    合并HTTP请求（代理收集一定时间内的所有HTTP请求，然后一次性发给服务器）、    惰性加载（通过代理处理和收集一些基本操作，然后仅在真正需要本体的时候才加载本体）、    缓存代理（缓存请求结果、计算结果）</code></pre><h1 id="缓存代理"><a href="#缓存代理" class="headerlink" title="缓存代理"></a>缓存代理</h1><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">// 先实现具体的两个算法</div><div class="line">const mult = function() &#123;</div><div class="line">let a = 1;</div><div class="line">for (let i = 0; i &lt; arguments.length; i++) &#123;</div><div class="line">a *= arguments[i];</div><div class="line">&#125;</div><div class="line">return a;</div><div class="line">&#125;;</div><div class="line">const plus = function() &#123;</div><div class="line">let a = 0;</div><div class="line">for (let i = 0; i &lt; arguments.length; i++) &#123;</div><div class="line">a += arguments[i];</div><div class="line">&#125;</div><div class="line">return a;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">// 创建缓存代理</div><div class="line">const createProxyFactory = function(fn) &#123;</div><div class="line">let cache = &#123;&#125;; // 保存计算的结果</div><div class="line">// 使用闭包在内存中保留对cache的引用</div><div class="line">return function() &#123;</div><div class="line">let args = Array.from(arguments).join(&apos;,&apos;); // 将所有参数转化为字符串作为缓存的 key</div><div class="line">if (args in cache) &#123;</div><div class="line">return cache[args];</div><div class="line">&#125; else &#123;</div><div class="line">return cache[args] = fn.apply(this, arguments);</div><div class="line">&#125;</div><div class="line">&#125;;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">// 使用代理对象</div><div class="line">const proxyMult = createProxyFactory(mult);</div><div class="line">const proxyPlus = createProxyFactory(plus);</div><div class="line">console.log(proxyMult(1,2,3,4)); // 24</div><div class="line">console.log(proxyPlus(1,2,3,4)); // 10</div></pre></td></tr></table></figure>说明：这里每次进行同类的计算时（乘法和加法两类），先判断缓存对象cache中是否存在该参数连接成的字符串作为key的属性。如果有，则直接从cache中读取，否则就进行计算并保存其结果。</code></pre><h1 id="虚拟代理"><a href="#虚拟代理" class="headerlink" title="虚拟代理"></a>虚拟代理</h1><pre><code>虚拟代理：某一个花销很大的操作，可以通过虚拟代理的方式延迟到这种需要它的时候才去创建例：使用虚拟代理实现图片懒加载下面以虚拟代理来说明：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">// 本体对象</div><div class="line">const imgFunc = (function() &#123;</div><div class="line">const imgNode = document.createElement(&apos;img&apos;);</div><div class="line">document.body.appendChild(imgNode);</div><div class="line">return &#123;</div><div class="line">setSrc(src)&#123;</div><div class="line">imgNode.src = src;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;)();</div><div class="line"></div><div class="line">// 代理对象</div><div class="line">const proxyImage = (function() &#123;</div><div class="line">const img = new Image();</div><div class="line">img.onload = function() &#123;</div><div class="line">imgFunc.setSrc(this.src);</div><div class="line">&#125;;</div><div class="line">return &#123;</div><div class="line">setSrc(src)&#123;</div><div class="line">imgFunc.setSrc(&apos;./loading.gif&apos;);</div><div class="line">img.src = src;</div><div class="line">&#125;</div><div class="line">&#125;;</div><div class="line">&#125;)();</div><div class="line"></div><div class="line">// 使用代理对象</div><div class="line">proxyImage.setSrc(&apos;./reality.png&apos;);</div></pre></td></tr></table></figure>说明：图片懒加载的方式：先通过一张loading图占位，然后通过异步的方式加载图片，等图片加载好了再把完成的图片加载到img标签里面。这里讲述一下代理对象做了那些事：    1.创建了一个 Image 对象，并为其绑定了 onload 事件。    2.将 imgNode 先设置为 &apos;./loading.gif&apos; 加载的菊花图。    3.当 Image 对象加载完真实的图片，也就是上文的 &apos;./reality.png&apos; ,将 imgNode 设置为 &apos;./reality.png&apos;。 </code></pre><blockquote><p>   参考文档：<br>    <a href="http://www.cnblogs.com/shamoguying1140/p/3169206.html" target="_blank" rel="external">js设计模式（9）—代理模式</a><br>    <a href="https://juejin.im/post/59df4f74f265da430f311909" target="_blank" rel="external">JavaScript设计模式</a><br>    <a href="http://blog.csdn.net/hi_xiexialing/article/details/54605065" target="_blank" rel="external"> js用高阶函数动态创建缓存代理</a></p><p>   参考文档：<br>    <a href="http://www.cnblogs.com/tugenhua0707/p/4722696.html" target="_blank" rel="external">理解javascript中的策略模式</a></p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;代理模式&quot;&gt;&lt;a href=&quot;#代理模式&quot; class=&quot;headerlink&quot; title=&quot;代理模式&quot;&gt;&lt;/a&gt;代理模式&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;定义：为一个对象提供一个代用品或占位符，以便控制对它的访问。
+    代理对象和本体对象实现了同样的接口，并
+      
+    
+    </summary>
+    
+      <category term="设计模式" scheme="https://fanerge.github.io/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+    
+      <category term="设计模式" scheme="https://fanerge.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>js设计模式-策略模式</title>
+    <link href="https://fanerge.github.io/2017/10/15/js%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F/"/>
+    <id>https://fanerge.github.io/2017/10/15/js设计模式-策略模式/</id>
+    <published>2017-10-15T11:11:08.000Z</published>
+    <updated>2017-10-15T12:23:32.060Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="策略模式"><a href="#策略模式" class="headerlink" title="策略模式"></a>策略模式</h1><pre><code>定义：定义一系列的算法，把它们一个个封装起来，并且使它们可以相互替换。举例：表单效验（是否为空、长度、手机号、邮箱等等）    计算年终奖（工资、效绩）下面以年终将做说明：比如公司的年终奖是根据员工的工资和绩效来考核的，绩效为A的人，年终奖为工资的4倍，绩效为B的人，年终奖为工资的3倍，绩效为C的人，年终奖为工资的2倍；<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">// 一组策略类封装具体的算法</div><div class="line">const Bouns = &#123;</div><div class="line">A (salary)&#123;</div><div class="line">return salary * 4;</div><div class="line">&#125;,</div><div class="line">B (salary)&#123;</div><div class="line">return salary * 3;</div><div class="line">&#125;,</div><div class="line">C (salary)&#123;</div><div class="line">return salary * 2;</div><div class="line">&#125;</div><div class="line">&#125;;</div><div class="line">Object.freeze(Bouns);</div><div class="line"></div><div class="line">/*</div><div class="line">* 计算年终奖 环境类Context</div><div class="line">* @param &#123;String&#125; A 效绩等级</div><div class="line">* @param &#123;Number&#125; 10000 每月工资</div><div class="line">* @returns &#123;Number&#125; 40000 年终奖</div><div class="line">*/</div><div class="line">const calculateBouns = function (type, salary)&#123;</div><div class="line">return Bouns[type](salary);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">// 测试年终奖计算方式</div><div class="line">const demo1 = calculateBouns(&apos;A&apos;, 10000);</div><div class="line">const demo2 = calculateBouns(&apos;B&apos;, 80000);</div><div class="line">console.log(demo1, demo2); // 40000, 240000</div></pre></td></tr></table></figure>说明：策略模式指的是 定义一系列的算法，把它们一个个封装起来，将不变的部分和变化的部分隔开，实际就是将算法的使用和实现分离出来；算法的使用方式是不变的，都是根据某个算法取得计算后的奖金数，而算法的实现是根据绩效对应不同的绩效规则；一个基于策略模式的程序至少由2部分组成，第一个部分是一组策略类，策略类封装了具体的算法，并负责具体的计算过程。第二个部分是环境类Context，该Context接收客户端的请求，随后把请求委托给某一个策略类。复合开放-封闭原则，可变的部分为策略类（一组算法），不变的部分为执行具体算法的方式。</code></pre><h1 id="表单验证"><a href="#表单验证" class="headerlink" title="表单验证"></a>表单验证</h1><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div></pre></td><td class="code"><pre><div class="line">// 这里我们实现一组策略类封装具体的验证规则</div><div class="line">const strategy = &#123;</div><div class="line">// 是否为空</div><div class="line">isNotEmpty (value, errorMsg)&#123;</div><div class="line">if (value === &apos;&apos;) &#123;</div><div class="line">return errorMsg;</div><div class="line">&#125;</div><div class="line">&#125;,</div><div class="line">// 最小长度</div><div class="line">minLength (value, errorMsg, length)&#123;</div><div class="line">if (value.length &lt; length) &#123;</div><div class="line">return errorMsg;</div><div class="line">&#125;</div><div class="line">&#125;,</div><div class="line">// 手机号码格式</div><div class="line">mobileFormat (value,errorMsg)&#123;</div><div class="line">if(!/(^1[3|5|8][0-9]&#123;9&#125;$)/.test(value)) &#123;</div><div class="line">return errorMsg;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;;</div><div class="line">Object.freeze(strategy);</div><div class="line"></div><div class="line">var Validator = function()&#123;</div><div class="line">this.cache = [];  // 保存效验规则</div><div class="line">&#125;;</div><div class="line">Validator.prototype.add = function(dom,rules) &#123;</div><div class="line">var self = this;</div><div class="line">for(var i = 0, rule; rule = rules[i++]; )&#123;</div><div class="line">(function(rule)&#123;</div><div class="line">var strategyAry = rule.strategy.split(&quot;:&quot;);</div><div class="line">var errorMsg = rule.errorMsg;</div><div class="line">self.cache.push(function()&#123;</div><div class="line">var strategy = strategyAry.shift();</div><div class="line">strategyAry.unshift(dom.value);</div><div class="line">strategyAry.push(errorMsg);</div><div class="line">return strategys[strategy].apply(dom,strategyAry);</div><div class="line">&#125;);</div><div class="line">&#125;)(rule);</div><div class="line">&#125;</div><div class="line">&#125;;</div><div class="line">Validator.prototype.start = function()&#123;</div><div class="line">for(var i = 0, validatorFunc; validatorFunc = this.cache[i++]; ) &#123;</div><div class="line">var msg = validatorFunc(); // 开始效验 并取得效验后的返回信息</div><div class="line">if(msg) &#123;</div><div class="line">return msg;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;;</div><div class="line">// 代码调用</div><div class="line">var registerForm = document.getElementById(&quot;registerForm&quot;);</div><div class="line">var validateFunc = function()&#123;</div><div class="line">var validator = new Validator(); // 创建一个Validator对象</div><div class="line">/* 添加一些效验规则 */</div><div class="line">validator.add(registerForm.userName,[</div><div class="line">&#123;strategy: &apos;isNotEmpty&apos;,errorMsg:&apos;用户名不能为空&apos;&#125;,</div><div class="line">&#123;strategy: &apos;minLength:6&apos;,errorMsg:&apos;用户名长度不能小于6位&apos;&#125;</div><div class="line">]);</div><div class="line">validator.add(registerForm.password,[</div><div class="line">&#123;strategy: &apos;minLength:6&apos;,errorMsg:&apos;密码长度不能小于6位&apos;&#125;,</div><div class="line">]);</div><div class="line">validator.add(registerForm.phoneNumber,[</div><div class="line">&#123;strategy: &apos;mobileFormat&apos;,errorMsg:&apos;手机号格式不正确&apos;&#125;,</div><div class="line">]);</div><div class="line">var errorMsg = validator.start(); // 获得效验结果</div><div class="line">return errorMsg; // 返回效验结果</div><div class="line">&#125;;</div><div class="line">// 点击确定提交</div><div class="line">registerForm.onsubmit = function()&#123;</div><div class="line">var errorMsg = validateFunc();</div><div class="line">if(errorMsg)&#123;</div><div class="line">alert(errorMsg);</div><div class="line">return false;</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>说明：此处代码来源于--腾讯.曾探的《javascript设计模式》，这能很好的说明策略模式的用途。</code></pre><blockquote><p>   参考文档：<br>    <a href="http://www.cnblogs.com/tugenhua0707/p/4722696.html" target="_blank" rel="external">理解javascript中的策略模式</a></p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;策略模式&quot;&gt;&lt;a href=&quot;#策略模式&quot; class=&quot;headerlink&quot; title=&quot;策略模式&quot;&gt;&lt;/a&gt;策略模式&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;定义：定义一系列的算法，把它们一个个封装起来，并且使它们可以相互替换。
+举例：表单效验（是否为空、长度、手机
+      
+    
+    </summary>
+    
+      <category term="设计模式" scheme="https://fanerge.github.io/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+    
+      <category term="设计模式" scheme="https://fanerge.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+  </entry>
   
   <entry>
     <title>js设计模式-单例模式</title>
@@ -171,9 +223,9 @@
     
       <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
     
-      <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
-    
       <category term="读书笔记" scheme="https://fanerge.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
     
   </entry>
   
@@ -227,9 +279,9 @@
     
       <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
     
-      <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
-    
       <category term="读书笔记" scheme="https://fanerge.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
     
   </entry>
   
@@ -256,9 +308,9 @@
     
       <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
     
-      <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
-    
       <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
+    
+      <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
     
       <category term="koa" scheme="https://fanerge.github.io/tags/koa/"/>
     
@@ -510,72 +562,6 @@
       <category term="Sass" scheme="https://fanerge.github.io/tags/Sass/"/>
     
       <category term="web" scheme="https://fanerge.github.io/tags/web/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>koa学习-搭建项目</title>
-    <link href="https://fanerge.github.io/2017/09/19/koa%E5%AD%A6%E4%B9%A0-%E6%90%AD%E5%BB%BA%E9%A1%B9%E7%9B%AE/"/>
-    <id>https://fanerge.github.io/2017/09/19/koa学习-搭建项目/</id>
-    <published>2017-09-19T11:41:00.000Z</published>
-    <updated>2017-09-19T11:48:39.084Z</updated>
-    
-    <content type="html"><![CDATA[<blockquote><p>   参考文档：<br>    <a href="https://chenshenhai.github.io/koa2-note/note/request/post-use-middleware.html" target="_blank" rel="external">koa-note</a><br>    <a href="https://www.npmjs.com/package/cookies" target="_blank" rel="external">cookies</a></p></blockquote>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;blockquote&gt;
-&lt;p&gt;   参考文档：&lt;br&gt;    &lt;a href=&quot;https://chenshenhai.github.io/koa2-note/note/request/post-use-middleware.html&quot; target=&quot;_blank&quot; rel=
-      
-    
-    </summary>
-    
-      <category term="NodeJS" scheme="https://fanerge.github.io/categories/NodeJS/"/>
-    
-    
-      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
-    
-      <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
-    
-      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
-    
-      <category term="koa" scheme="https://fanerge.github.io/tags/koa/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>koa学习-debug</title>
-    <link href="https://fanerge.github.io/2017/09/19/koa%E5%AD%A6%E4%B9%A0-debug/"/>
-    <id>https://fanerge.github.io/2017/09/19/koa学习-debug/</id>
-    <published>2017-09-19T11:38:51.000Z</published>
-    <updated>2017-09-19T11:47:58.814Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><pre><code>node环境 8.x +chrome 60+index.js<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">const Koa = require(&apos;koa&apos;)</div><div class="line">const app = new Koa()</div><div class="line"></div><div class="line">app.use( async ( ctx ) =&gt; &#123;</div><div class="line">  ctx.body = &apos;hello koa2&apos;</div><div class="line">&#125;)</div><div class="line"></div><div class="line">app.listen(3000, () =&gt; &#123;</div><div class="line">  console.log(&apos;[demo] start-quick is starting at port 3000&apos;)</div><div class="line">&#125;)</div></pre></td></tr></table></figure></code></pre><h3 id="进行调试"><a href="#进行调试" class="headerlink" title="进行调试"></a>进行调试</h3><pre><code>node --inspect index.js在控制台上点击node调试，会弹出新窗口，此时就可以进入调试--如打断点。</code></pre><blockquote><p>   参考文档：<br>        <a href="https://chenshenhai.github.io/koa2-note/note/debug/info.html" target="_blank" rel="external">debug</a></p></blockquote>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;环境&quot;&gt;&lt;a href=&quot;#环境&quot; class=&quot;headerlink&quot; title=&quot;环境&quot;&gt;&lt;/a&gt;环境&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;node环境 8.x +
-chrome 60+
-index.js
-&lt;figure class=&quot;highlight plai
-      
-    
-    </summary>
-    
-      <category term="NodeJS" scheme="https://fanerge.github.io/categories/NodeJS/"/>
-    
-    
-      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
-    
-      <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
-    
-      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
-    
-      <category term="koa" scheme="https://fanerge.github.io/tags/koa/"/>
     
   </entry>
   
