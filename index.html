@@ -306,6 +306,433 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/16/js设计模式-装饰者模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/16/js设计模式-装饰者模式/" itemprop="url">
+                  js设计模式-装饰者模式
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-16T22:42:20+08:00">
+                2017-10-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/16/js设计模式-装饰者模式/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/16/js设计模式-装饰者模式/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  734
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  3
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="装饰者模式"><a href="#装饰者模式" class="headerlink" title="装饰者模式"></a>装饰者模式</h1><pre><code>定义：装饰者(decorator)模式能够在不改变对象自身的基础上，在程序运行期间给对象动态的添加职责。
+    装饰者用于通过重载方法的形式添加新功能，该模式可以在被装饰者前面或者后面加上自己的行为以达到特定的目的。
+    与继承相比，装饰者是一种更轻便灵活的做法。
+</code></pre><p><img src="http://oxpnrlb4j.bkt.clouddn.com/%E8%A3%85%E9%A5%B0%E8%80%85%E5%8C%85%E8%A3%85%E6%B5%81%E7%A8%8B.png" alt="图解装饰者模式"><br>普通对象被装饰者包裹起来，就形成了装饰者模式。<br>    举例：<br>        雷霆战机（吃道具的例子）</p>
+<h1 id="雷霆战机（吃道具的例子）"><a href="#雷霆战机（吃道具的例子）" class="headerlink" title="雷霆战机（吃道具的例子）"></a>雷霆战机（吃道具的例子）</h1><pre><code>介绍：现在我们假设正在开发一个小游戏--雷霆战机， 
+    最开始我们使用最渣的飞机，只能发射普通子弹；
+    吃一颗星，可以发射普通子弹和发射散弹 ；
+    再吃一颗，可以发射普通子弹和散弹和跟踪导弹。
+// 一级飞机    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var plane = &#123;</div><div class="line">	fire: function()&#123;</div><div class="line">		console.log(&apos;发射普通子弹&apos;);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">plane.fire(); // &apos;发射普通子弹&apos;</div></pre></td></tr></table></figure>
+
+// 二级飞机    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var fire1 = plane.fire;</div><div class="line">var shot = function() &#123;</div><div class="line">	console.log(&apos;发射散弹&apos;);</div><div class="line">&#125;;</div><div class="line">plane.fire = function () &#123;</div><div class="line">	fire1();</div><div class="line">	shot();</div><div class="line">&#125;;</div><div class="line">plane.fire(); // &apos;发射普通子弹&apos; &apos;发射散弹&apos;</div></pre></td></tr></table></figure>
+
+// 三级飞机
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var fire2 = plane.fire;</div><div class="line">var track = function() &#123;</div><div class="line">	console.log(&apos;发射跟踪导弹&apos;);</div><div class="line">&#125;;</div><div class="line">plane.fire = function () &#123;</div><div class="line">	fire2();</div><div class="line">	shot();</div><div class="line">&#125;;</div><div class="line">plane.fire(); // &apos;发射普通子弹&apos; &apos;发射散弹&apos; &apos;发射跟踪导弹&apos;</div></pre></td></tr></table></figure>
+</code></pre><p><img src="http://oxpnrlb4j.bkt.clouddn.com/%E8%A3%85%E9%A5%B0%E8%80%85%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B.png" alt="装饰者执行过程"><br>    说明：这样给对象动态的增加职责的方式就没有改变对象自身，<br>        一个对象放入另一个对象就形成了一条装饰链（一个聚合对象），<br>        而上面的shot和track也就是装饰者、装饰函数 ，<br>        当函数执行时，会把请求转给链中的下一个对象。</p>
+<h1 id="在-FUNCTION-原型上封装通用的装饰函数"><a href="#在-FUNCTION-原型上封装通用的装饰函数" class="headerlink" title="在 FUNCTION 原型上封装通用的装饰函数"></a>在 FUNCTION 原型上封装通用的装饰函数</h1><pre><code>// 在原函数之前执行    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Function.prototype.before=function(beforefn) &#123;</div><div class="line">	var _this = this;                               // 保存旧函数的引用</div><div class="line">	return function() &#123;                           // 返回包含旧函数和新函数的“代理”函数</div><div class="line">		beforefn.apply(this,arguments);            // 执行新函数,且保证this不被劫持,新函数接受的参数						   </div><div class="line">		return _this.apply(this,arguments);        // 也会被原封不动的传入旧函数,新函数在旧函数之前执行</div><div class="line">	&#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+
+// 在原函数之后执行    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">Function.prototype.after = function(afterfn) &#123;</div><div class="line">	var _this = this;</div><div class="line">	return function() &#123;</div><div class="line">		var ret = _this.apply(this,arguments);</div><div class="line">		afterfn.apply(this,arguments);</div><div class="line">		return ret;</div><div class="line">	&#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+</code></pre><h1 id="封装成单独函数（不污染原型）"><a href="#封装成单独函数（不污染原型）" class="headerlink" title="封装成单独函数（不污染原型）"></a>封装成单独函数（不污染原型）</h1><pre><code>// 在原函数之前执行
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var before = function(fn, before) &#123;</div><div class="line">	return function() &#123;</div><div class="line">		before.apply(this, arguments);</div><div class="line">		return fn.apply(this, arguments);</div><div class="line">	&#125;;</div><div class="line">&#125;;	</div><div class="line"></div><div class="line">// 使用</div><div class="line">before(func1, func2);</div></pre></td></tr></table></figure>
+
+// 在原函数之后执行
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">var after = function(fn, after) &#123;</div><div class="line">	return function() &#123;</div><div class="line">		var ret = fn.apply(this,arguments);</div><div class="line">		after.apply(this,arguments);</div><div class="line">		return ret;</div><div class="line">	&#125;;</div><div class="line">&#125;;	</div><div class="line"></div><div class="line">// 使用</div><div class="line">after(func1, func2);</div></pre></td></tr></table></figure>
+
+注意：代码来源于--腾讯.曾探《JavaScript设计模式与开发实践》，但能很好的说明装饰者模式在js实际项目中的应用。
+上面封装的函数可以直接在项目中使用。
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="http://blog.csdn.net/yisuowushinian/article/details/51934008" target="_blank" rel="external">JavaScript设计模式—-装饰者模式</a><br>    <a href="http://www.cnblogs.com/TomXu/archive/2012/02/24/2353434.html" target="_blank" rel="external">深入理解JavaScript系列（29）：设计模式之装饰者模式</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/16/js设计模式-中介者模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/16/js设计模式-中介者模式/" itemprop="url">
+                  js设计模式-中介者模式
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-16T22:41:28+08:00">
+                2017-10-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/16/js设计模式-中介者模式/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/16/js设计模式-中介者模式/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  866
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  4
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="中介者模式"><a href="#中介者模式" class="headerlink" title="中介者模式"></a>中介者模式</h1><pre><code>定义：中介者模式的作用就是解除对象与对象之间的紧耦合关系。增加一个中介者对象后，
+所有的相关对象都通过中介者对象来通信，而不是互相引用，所以当一个对象发生改变时，
+只需要通知中介者对象即可。中介者使各对象之间耦合松散，而且可以独立地改变它们之间的交互。
+中介者模式使网状的多对多关系变成了相对简单的一对多关系。
+举例：
+    手机购买页面（颜色、数量、内存、价格）
+    MVC模式（控制层便是位于表现层与模型层之间的中介者。）
+</code></pre><h1 id="MVC-模式"><a href="#MVC-模式" class="headerlink" title="MVC 模式"></a>MVC 模式</h1><pre><code>我们应该很熟悉 MVC 三层模型实体模型（Model）、视图表现层（View）还有控制层（Control/Mediator）。    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">/** 模擬 Model, View, Controller */</div><div class="line">var M = &#123;&#125;, V = &#123;&#125;, C = &#123;&#125;;</div><div class="line"></div><div class="line">/** Model 負責存放資料 */</div><div class="line">M.data = &quot;hello world&quot;;</div><div class="line"></div><div class="line">/** View 負責將資料輸出到螢幕上 */</div><div class="line">V.render = (M) =&gt; &#123; alert(M.data); &#125;</div><div class="line"></div><div class="line">/** Controller 作為一個 M 和 V 的橋樑 */</div><div class="line">C.handleOnload = () =&gt; &#123; V.render(M); &#125;</div><div class="line"></div><div class="line">/** 在網頁讀取的時候呼叫 Controller */</div><div class="line">window.onload = C.handleOnload;</div></pre></td></tr></table></figure>
+
+MVC 模式中的Control/Mediator 层，就是本设计模式的中介者 (它必须拿到 View 和 Model 的引用)。
+</code></pre><h1 id="手机购买页面"><a href="#手机购买页面" class="headerlink" title="手机购买页面"></a>手机购买页面</h1><h2 id="HTML-部分"><a href="#HTML-部分" class="headerlink" title="HTML 部分"></a>HTML 部分</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">&lt;body&gt;</div><div class="line">	选择颜色: </div><div class="line">	&lt;select id=&quot;colorSelect&quot;&gt;</div><div class="line">		&lt;option value=&quot;&quot;&gt;请选择&lt;/option&gt;</div><div class="line">		&lt;option value=&quot;red&quot;&gt;红色&lt;/option&gt;</div><div class="line">		&lt;option value=&quot;blue&quot;&gt;蓝色&lt;/option&gt;</div><div class="line">	&lt;/select&gt;</div><div class="line">	选择内存: </div><div class="line">	&lt;select id=&quot;memorySelect&quot;&gt;</div><div class="line">		&lt;option value=&quot;&quot;&gt;请选择&lt;/option&gt;</div><div class="line">		&lt;option value=&quot;32G&quot;&gt;32G&lt;/option&gt;</div><div class="line">		&lt;option value=&quot;16G&quot;&gt;16G&lt;/option&gt;</div><div class="line">	&lt;/select&gt;</div><div class="line">	输入购买数量: &lt;input type=&quot;text&quot; id=&quot;numberInput&quot;/&gt;&lt;br/&gt;</div><div class="line">	&lt;!--输入部分结束--&gt;</div><div class="line">	</div><div class="line">	您选择了颜色: &lt;div id=&quot;colorInfo&quot;&gt;&lt;/div&gt;&lt;br/&gt;</div><div class="line">	您选择了内存: &lt;div id=&quot;memoryInfo&quot;&gt;&lt;/div&gt;&lt;br/&gt;</div><div class="line">	您输入了数量: &lt;div id=&quot;numberInfo&quot;&gt;&lt;/div&gt;&lt;br/&gt;</div><div class="line">	&lt;button id=&quot;nextBtn&quot; disabled=&quot;true&quot;&gt;请选择手机颜色和购买数量&lt;/button&gt;</div><div class="line">&lt;body&gt;</div></pre></td></tr></table></figure>
+</code></pre><h2 id="JS部分"><a href="#JS部分" class="headerlink" title="JS部分"></a>JS部分</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line">// 各种手机库存（通常来自于后端，这里前端进行模拟）</div><div class="line">var goods = &#123; </div><div class="line">	&quot;red|32G&quot;: 3,</div><div class="line">	&quot;red|16G&quot;: 0,</div><div class="line">	&quot;blue|32G&quot;: 1,</div><div class="line">	&quot;blue|16G&quot;: 6</div><div class="line">&#125;;</div><div class="line"></div><div class="line">// 中介者</div><div class="line">var mediator = (function()&#123;</div><div class="line">	// 获得所有节点的引用，以便对其进行操作（中介者必许获得对其他对象的引用）</div><div class="line">	var colorSelect = document.getElementById( &apos;colorSelect&apos; ),</div><div class="line">		memorySelect = document.getElementById( &apos;memorySelect&apos; ),</div><div class="line">		numberInput = document.getElementById( &apos;numberInput&apos; ),</div><div class="line">		colorInfo = document.getElementById( &apos;colorInfo&apos; ),</div><div class="line">		memoryInfo = document.getElementById( &apos;memoryInfo&apos; ),</div><div class="line">		numberInfo = document.getElementById( &apos;numberInfo&apos; ),</div><div class="line">		nextBtn = document.getElementById( &apos;nextBtn&apos; );</div><div class="line">	return &#123;</div><div class="line">		changed( obj )&#123;</div><div class="line">			var color = colorSelect.value, // 颜色</div><div class="line">				memory = memorySelect.value,// 内存</div><div class="line">				number = numberInput.value, // 数量</div><div class="line">				stock = goods[ color + &apos;|&apos; + memory ]; // 颜色和内存对应的手机库存数量</div><div class="line">			if ( obj === colorSelect )&#123; // 如果改变的是选择颜色下拉框</div><div class="line">				colorInfo.innerHTML = color;</div><div class="line">			&#125;else if ( obj === memorySelect )&#123;</div><div class="line">				memoryInfo.innerHTML = memory;</div><div class="line">			&#125;else if ( obj === numberInput )&#123;</div><div class="line">				numberInfo.innerHTML = number;</div><div class="line">			&#125;</div><div class="line">			if ( !color )&#123;</div><div class="line">				nextBtn.disabled = true;</div><div class="line">				nextBtn.innerHTML = &apos;请选择手机颜色&apos;;</div><div class="line">				return;</div><div class="line">			&#125;</div><div class="line">			if ( !memory )&#123;</div><div class="line">				nextBtn.disabled = true;</div><div class="line">				nextBtn.innerHTML = &apos;请选择内存大小&apos;;</div><div class="line">				return;</div><div class="line">			&#125;</div><div class="line">			if ( ( ( number - 0 ) | 0 ) !== number - 0 )&#123; // 输入购买数量是否为正整数</div><div class="line">				nextBtn.disabled = true;</div><div class="line">				nextBtn.innerHTML = &apos;请输入正确的购买数量&apos;;</div><div class="line">				return;</div><div class="line">			&#125;</div><div class="line">			nextBtn.disabled = false;</div><div class="line">			nextBtn.innerHTML = &apos;放入购物车&apos;;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;)();</div><div class="line"></div><div class="line">// 与中介者联系起来，事件函数</div><div class="line">colorSelect.onchange = function()&#123;</div><div class="line">	mediator.changed( this );</div><div class="line">&#125;;</div><div class="line">memorySelect.onchange = function()&#123;</div><div class="line">	mediator.changed( this );</div><div class="line">&#125;;</div><div class="line">numberInput.oninput = function()&#123;</div><div class="line">	mediator.changed( this );</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+
+注意：代码来源于--腾讯.曾探《JavaScript设计模式与开发实践》，但能很好的说明中介者模式在js实际项目中的应用。
+说明：这里共有手机颜色、手机内存、手机数量的选择和展示共6个对象，和一个中介者对象。
+    中介者必须获得这6个对象的应用，当每个对象发生变化时都需要通知中介者，中介者再来执行具体操作。
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="http://blog.csdn.net/linhongyong/article/details/53439723" target="_blank" rel="external">js之中介模式</a><br>    <a href="https://zh.wikipedia.org/wiki/MVC" target="_blank" rel="external">wiki-MVC</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/15/js设计模式-代理模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2416,489 +2843,6 @@ Node Inspector
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/10/Object的扩展、密密封、冻结/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/10/10/Object的扩展、密密封、冻结/" itemprop="url">
-                  Object的扩展、密密封、冻结
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-10T19:56:38+08:00">
-                2017-10-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/js/" itemprop="url" rel="index">
-                    <span itemprop="name">js</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/10/Object的扩展、密密封、冻结/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/10/Object的扩展、密密封、冻结/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  816
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  3
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="扩展特性"><a href="#扩展特性" class="headerlink" title="扩展特性"></a>扩展特性</h2><pre><code>Object.isExtensible(obj)
-    判断一个对象是可扩展(是否能有新的属性添加到它)。
-Object.preventExtensions(obj)
-    可以对对象的属性进行修改和删除，不能向自身添加属性但可以向其原型添加属性。
-示例：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">// Object.create(proto[, propertiesObject]);</div><div class="line">var obj = &#123;</div><div class="line">	a: 1,</div><div class="line">	b: 2</div><div class="line">&#125;;</div><div class="line">console.log(Object.isExtensible(obj)); // true</div><div class="line">Object.preventExtensions(obj);</div><div class="line">console.log(Object.isExtensible(obj)); // false</div><div class="line">// obj.a = 3; // 可以修改原有属性</div><div class="line">// delete obj.a; // 可以删除原有属性</div><div class="line">// obj.c = 3; // 不能自身添加属性		</div><div class="line">console.log(obj);</div></pre></td></tr></table></figure>
-</code></pre><h2 id="密封特性"><a href="#密封特性" class="headerlink" title="密封特性"></a>密封特性</h2><pre><code>Object.isSealed()
-    判断一个对象是密封的。
-Object.seal()
-    密封对象是指那些不能添加新的属性，不能删除已有属性，以及不能修改已有属性的可枚举性、可配置性、可写性，但可能可以修改已有属性的值的对象。
-    属性不可配置的效果就是属性变的不可删除，以及一个数据属性不能被重新定义成为访问器属性。
-    将所有现有的属性标记为不可配置。现在的属性的值仍然可以改变,只要它们是可写的。
-示例：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">var obj = &#123;</div><div class="line">  prop: function() &#123;&#125;,</div><div class="line">  foo: &apos;bar&apos;</div><div class="line">&#125;;</div><div class="line">var o = Object.seal(obj);</div><div class="line">console.log(o === obj); // true</div><div class="line">Object.isSealed(obj); // === true</div><div class="line"></div><div class="line">obj.foo = &apos;quux&apos;; // 可以改变属性</div><div class="line"></div><div class="line">// 不能改变属性访问器，会抛出错误</div><div class="line">Object.defineProperty(obj, &apos;foo&apos;, &#123;</div><div class="line">  get: function() &#123; return &apos;g&apos;; &#125;</div><div class="line">&#125;); // throws a TypeError</div><div class="line"></div><div class="line">// 不能添加新属性</div><div class="line">obj.quaxxor = &apos;the friendly duck&apos;;</div><div class="line"></div><div class="line">// 不能删除原有属性</div><div class="line">delete obj.foo;</div><div class="line"></div><div class="line">// 可以更改属性，只要它是可写的</div><div class="line">Object.defineProperty(obj, &apos;foo&apos;, &#123;</div><div class="line">  value: &apos;eit&apos;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h2 id="冻结特性"><a href="#冻结特性" class="headerlink" title="冻结特性"></a>冻结特性</h2><pre><code>Object.isFrozen()
-Object.freeze()
-    防止新的属性被添加到它;防止现有的属性被移除;
-    和防止现有的属性,或他们的可数性,可配置性,或可写性,被改变了,它还可以防止原型被改变了。
-    该方法返回对象处于冻结状态。
-示例：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">var obj = &#123;</div><div class="line">  prop: function() &#123;&#125;,</div><div class="line">  foo: &apos;bar&apos;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">// 返回已被冻结的对象</div><div class="line">var o = Object.freeze(obj);</div><div class="line"></div><div class="line">// o === obj; // true</div><div class="line">Object.isFrozen(obj); // === true</div><div class="line"></div><div class="line">// 改变原有属性失败</div><div class="line">obj.foo = &apos;quux&apos;; // silently does nothing</div><div class="line">// 添加属性失败</div><div class="line">obj.quaxxor = &apos;the friendly duck&apos;;</div><div class="line">// 删除原有属性失败</div><div class="line">delete obj.foo; // throws a TypeError</div><div class="line">console.log(obj);</div><div class="line"></div><div class="line">// 重新配置原有属性失败</div><div class="line">Object.defineProperty(obj, &apos;ohai&apos;, &#123; value: 17 &#125;);</div><div class="line">Object.defineProperty(obj, &apos;foo&apos;, &#123; value: &apos;eit&apos; &#125;);</div><div class="line"></div><div class="line">// 向原型中添加属性失败</div><div class="line">Object.setPrototypeOf(obj, &#123; x: 20 &#125;)</div><div class="line">obj.__proto__ = &#123; x: 20 &#125;</div></pre></td></tr></table></figure>
-</code></pre><h2 id="浅冻结与深冻结"><a href="#浅冻结与深冻结" class="headerlink" title="浅冻结与深冻结"></a>浅冻结与深冻结</h2><pre><code>如该方法 MDN 的描述所述，倘若一个对象的属性是一个对象，
-那么对这个外部对象进行冻结，内部对象的属性是依旧可以改变的，这就叫浅冻结，
-若把外部对象冻结的同时把其所有内部对象甚至是内部的内部无限延伸的对象属性也冻结了，这就叫深冻结。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">(function () &#123;</div><div class="line">	obj = &#123;</div><div class="line">		internal :&#123;&#125;</div><div class="line">	&#125;;</div><div class="line">	Object.freeze(obj);//浅冻结</div><div class="line">	obj.internal.a = &quot;aValue&quot;;</div><div class="line">	console.log(obj.internal.a);//&quot;aValue&quot;</div><div class="line"></div><div class="line">	//想让一个对象变得完全冻结,冻结所有对象中的对象,可以使用下面的函数.</div><div class="line">	function deepFreeze(o)&#123;</div><div class="line">		var prop,propKey;</div><div class="line">		Object.freeze(o);//首先冻结第一层对象</div><div class="line">		for(propKey in o)&#123;</div><div class="line">			prop = o[propKey];</div><div class="line">			if(!o.hasOwnProperty(propKey) || !(typeof prop === &quot;object&quot;) || Object.isFrozen(prop))&#123;</div><div class="line">				continue;</div><div class="line">			&#125;</div><div class="line">			deepFreeze(prop);//递归</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">		</div><div class="line">	deepFreeze(obj);</div><div class="line">	obj.internal.b = &quot;bValue&quot;;//静默失败</div><div class="line">	console.log(obj.internal.b);//undefined</div><div class="line">&#125;)();</div></pre></td></tr></table></figure>
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="https://segmentfault.com/a/1190000003894119" target="_blank" rel="external">浅谈 JS 对象之扩展、密封及冻结三大特性</a><br>    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/preventExtensions" target="_blank" rel="external">MDN</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/09/深入浅出Node-js-读书笔记（上）/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/10/09/深入浅出Node-js-读书笔记（上）/" itemprop="url">
-                  深入浅出Node.js-读书笔记
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-09T20:09:51+08:00">
-                2017-10-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
-                    <span itemprop="name">NodeJS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/09/深入浅出Node-js-读书笔记（上）/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/09/深入浅出Node-js-读书笔记（上）/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  1,254
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  5
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近在研究node.js,正赶上国庆长假，回趟老家。在网上找了一本电子书籍《深入浅出Node.js》，利用这个假期学习一下。</p>
-<h2 id="Node-js-基础知识"><a href="#Node-js-基础知识" class="headerlink" title="Node.js 基础知识"></a>Node.js 基础知识</h2><h3 id="chrome-与-Node-工作原理"><a href="#chrome-与-Node-工作原理" class="headerlink" title="chrome 与 Node 工作原理"></a>chrome 与 Node 工作原理</h3><pre><code>chrome：HTML + JavaScript + WebKit + V8 &gt;&gt; 中间层 &gt;&gt; 网卡 + 硬盘 + 显卡 + ...
-Node：JavaScript + V8 &gt;&gt; 中间层（libuv）&gt;&gt; 网卡 + 硬盘 + 显卡 + ...
-说明：libuv 是 Node 的新跨平台抽象层，用于抽象 Windows 的 IOCP 及 Unix 的 libev。
-    作者打算在这个库的包含所有平台的差异性。
-</code></pre><h3 id="异步I-O"><a href="#异步I-O" class="headerlink" title="异步I/O"></a>异步I/O</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$.get(&apos;url&apos;, (data) =&gt; &#123;</div><div class="line">	console.log(data);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-
-异步是并行的基础。
-单线程，不适合大量计算占用 CPU 导致无法继续调用异步I/O。
-</code></pre><h2 id="模块机制"><a href="#模块机制" class="headerlink" title="模块机制"></a>模块机制</h2><h3 id="CommonJS-规范"><a href="#CommonJS-规范" class="headerlink" title="CommonJS 规范"></a>CommonJS 规范</h3><pre><code>模块引用：
-    var math = require(&apos;math&apos;);    
-模块定义：
-    exports.add = () =&gt; {
-        var a = 1,
-            b = 3;
-        return a + b;
-    }
-exports 是 module 的属性。
-Node 引入模块的步骤：
-    路径分析
-    文件定位
-    编译执行
-</code></pre><h3 id="核心模块"><a href="#核心模块" class="headerlink" title="核心模块"></a>核心模块</h3><pre><code>文件模块 &gt;&gt; 核心模块（JavaScript） &gt;&gt; 内建模块（C/C++）
-</code></pre><h2 id="异步I-O-1"><a href="#异步I-O-1" class="headerlink" title="异步I/O"></a>异步I/O</h2><h3 id="Node-的异步I-O"><a href="#Node-的异步I-O" class="headerlink" title="Node 的异步I/O"></a>Node 的异步I/O</h3><pre><code>Node 自身的执行模型 -- 事件循环。
-单线程、事件循环、观察者和I/O线程池
-</code></pre><h3 id="非I-O的异步API"><a href="#非I-O的异步API" class="headerlink" title="非I/O的异步API"></a>非I/O的异步API</h3><pre><code>定时器：setTimeout()\setInterval()
-process.nextTick()
-    在事件循环的下一次循环中调用 callback 回调函数。
-    效果是将一个函数推迟到代码书写的下一个同步方法执行完毕时或异步方法的事件回调函数开始执行时；
-    与setTimeout(fn, 0) 函数的功能类似，但它的效率高多了。
-setImmediate()
-    nextTick()的回调函数执行的优先级要高于setImmediate();    
-    process.nextTick()属于idle观察者,setImmediate()属于check观察者.在每一轮循环检查中,idle观察者先于I/O观察者,
-    I/O观察者先于check观察者.
-</code></pre><h2 id="异步编程"><a href="#异步编程" class="headerlink" title="异步编程"></a>异步编程</h2><h3 id="函数式编程"><a href="#函数式编程" class="headerlink" title="函数式编程"></a>函数式编程</h3><pre><code>高阶函数：以函数作为参数或返回值。
-偏函数用法：通过指定部分参数来产生一个新的定制函数的形式就是偏函数。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">const isType = function (type)&#123;</div><div class="line">	return function (obj) &#123;</div><div class="line">		return Object.prototype.toString.call(obj) == &apos;[object &apos; + type + &apos;]&apos;;</div><div class="line">	&#125;; </div><div class="line">&#125;</div><div class="line">var isString = isType(&apos;String&apos;);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="异步编程解决方案"><a href="#异步编程解决方案" class="headerlink" title="异步编程解决方案"></a>异步编程解决方案</h3><pre><code>事件发布/订阅模式（事件绑定）
-promise
-generator
-async-await
-</code></pre><h3 id="并发方案"><a href="#并发方案" class="headerlink" title="并发方案"></a>并发方案</h3><pre><code>eventproxy
-[async](https://github.com/caolan/async)
-</code></pre><h2 id="内存控制"><a href="#内存控制" class="headerlink" title="内存控制"></a>内存控制</h2><h2 id="理解Buffer"><a href="#理解Buffer" class="headerlink" title="理解Buffer"></a>理解Buffer</h2><pre><code>Buffer 是一个像Array的对象，但它主要用于操作字节。
-Buffer 对象
-    var buf = new Buffer(&apos;string&apos;, &apos;utf-8&apos;);
-</code></pre><h3 id="Buffer-的转换"><a href="#Buffer-的转换" class="headerlink" title="Buffer 的转换"></a>Buffer 的转换</h3><pre><code>    支持的字符串编码类型：
-    ASCII\UTF-8\UTF-16LE/UCS-2\Base64\Binary\Hex
-字符串转 Buffer    
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var buf = new Buffer(str, [encoding]);</div><div class="line">buf.write(string, [offset], [length], [encoding]);</div></pre></td></tr></table></figure>
-
-Buffer 转字符串
-buf.toString([encoding], [start], [end]);
-</code></pre><h2 id="网络编程"><a href="#网络编程" class="headerlink" title="网络编程"></a>网络编程</h2><pre><code>TCP 和 UDP 属于网络传输层协议，HTTP 属于应用层协议。
-</code></pre><h3 id="TCP（传输控制协议）"><a href="#TCP（传输控制协议）" class="headerlink" title="TCP（传输控制协议）"></a>TCP（传输控制协议）</h3><pre><code>创建TCP 服务器端 net 模块
-TCP 服务的事件
-</code></pre><h3 id="构建UDP-服务（用户数据包协议）"><a href="#构建UDP-服务（用户数据包协议）" class="headerlink" title="构建UDP 服务（用户数据包协议）"></a>构建UDP 服务（用户数据包协议）</h3><pre><code>创建UDP套接字 dgram模块
-创建UDP 服务器端
-创建UDP 客户端
-UDP 套接字事件
-</code></pre><h3 id="构建HTTP-服务"><a href="#构建HTTP-服务" class="headerlink" title="构建HTTP 服务"></a>构建HTTP 服务</h3><pre><code>HTTP 超文本传输协议。
-http 模块
-HTTP 客户端
-</code></pre><h3 id="构建WebSocket-服务"><a href="#构建WebSocket-服务" class="headerlink" title="构建WebSocket 服务"></a>构建WebSocket 服务</h3><pre><code>以前的方案：Comet（彗星）技术细节为：长轮询（long-polling）或iframe流（streaming）。
-长轮询原理：客户端向服务器断发送请求，服务端只在超时或有数据响应时断开连接（res.end()），
-    客户端在接收到数据或者超时后重新发送请求。
-iframe流原理：iframe 是很早就存在的一种 HTML 标记， 通过在 HTML 页面里嵌入一个隐蔵帧，
-    然后将这个隐蔵帧的 SRC 属性设为对一个长连接的请求，服务器端就能源源不断地往客户端输入数据。
-    通过iframe里的内容进行长时间的请求，当需要传输内容时通过调用父页面js方法来实现页面展示，以此达到comet所需要的效果。
-WebSocket原理：WebSocket是一种在单个TCP连接上进行全双工通讯的协议。
-    WebSocket使得客户端和服务器之间的数据交换变得更加简单，允许服务端主动向客户端推送数据。在WebSocket API中，
-    浏览器和服务器只需要完成一次握手，两者之间就直接可以创建持久性的连接，并进行双向数据传输。
-</code></pre><h3 id="网络服务与安全"><a href="#网络服务与安全" class="headerlink" title="网络服务与安全"></a>网络服务与安全</h3><pre><code>Node在网络安全上提供了3个模块
-</code></pre><ol>
-<li>crypto – 主要用于加密和解密，SHA1、MD5。</li>
-<li>tls – 类似于net模块，它是建立在TLS/SSL加密的TCP连接上。</li>
-<li>https – 类似于http模块，他它是建立于安全的连接之上。<br>TLS/SSL<br>TLS/SSL是一个公钥/私钥的结构，它是一个非对称的结构。<br>每个服务器断和客户端都有自己的公私钥。<br>公钥要来加密要传输的数据，私钥用来解密接收到的数据。<br>Node在底层采用的是openssl实现TLS/SSL。<br>数字证书：CA（Certificate Authority，数字证书认证中心）<br>HTTPS服务<br>HTTPS服务就是工作在TLS/SSL上的HTTP。<blockquote>
-<p>参考文档<br><a href="https://www.baidu.com/s?ie=utf8&amp;oe=utf8&amp;wd=%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAnode&amp;tn=98010089_dg&amp;ch=1" target="_blank" rel="external">朴灵-深入浅出Node</a></p>
-</blockquote>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2948,7 +2892,7 @@ WebSocket原理：WebSocket是一种在单个TCP连接上进行全双工通讯�
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">81</span>
+                <span class="site-state-item-count">83</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -3087,7 +3031,7 @@ WebSocket原理：WebSocket是一种在单个TCP连接上进行全双工通讯�
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共104.0k字</span>
+  <span class="post-count">博客全站共105.6k字</span>
 </div>
         
 
