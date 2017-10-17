@@ -306,6 +306,398 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/17/koa学习-文件上传/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/17/koa学习-文件上传/" itemprop="url">
+                  koa学习-文件上传
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-17T20:20:14+08:00">
+                2017-09-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
+                    <span itemprop="name">NodeJS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/17/koa学习-文件上传/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/17/koa学习-文件上传/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  608
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  3
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="busboy模块"><a href="#busboy模块" class="headerlink" title="busboy模块"></a>busboy模块</h3><pre><code>模块是用来解析POST请求，node原生req中的文件流。
+busboy 是用来解析出请求中文件流。
+</code></pre><h3 id="封装上传文件到写入服务的方法"><a href="#封装上传文件到写入服务的方法" class="headerlink" title="封装上传文件到写入服务的方法"></a>封装上传文件到写入服务的方法</h3><pre><code>创建上传模块upload.js
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div></pre></td><td class="code"><pre><div class="line">const inspect = require(&apos;util&apos;).inspect;</div><div class="line">const path = require(&apos;path&apos;);</div><div class="line">const os = require(&apos;os&apos;);</div><div class="line">const fs = require(&apos;fs&apos;);</div><div class="line">const Busboy = require(&apos;busboy&apos;);</div><div class="line"></div><div class="line">/*</div><div class="line">* 同步创建文件目录</div><div class="line">* @param &#123;string&#125; dirname 目录绝对地址</div><div class="line">* @return &#123;boolean&#125; 创建目录结果</div><div class="line">*/</div><div class="line">function mkdirsSync (dirname) &#123;</div><div class="line">	if (fs.existsSync(dirname)) &#123;</div><div class="line">		return true;</div><div class="line">	&#125; else &#123;</div><div class="line">		if (mkdirsSync(path.dirname(dirname))) &#123;</div><div class="line">			fs.mkdirSync(dirname);</div><div class="line">			return true;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">/*</div><div class="line">* 获取上传文件的后缀名</div><div class="line">* @param &#123;string&#125; fileName 获取上传文件的后缀名</div><div class="line">* @return &#123;string&#125; 文件后缀名</div><div class="line">*/</div><div class="line">function getSuffixName (fileName) &#123;</div><div class="line">	/*let nameList = fileName.split(&apos;.&apos;);</div><div class="line">	return nameList[nameList.length-1]*/</div><div class="line">	return path.extname(fileName);</div><div class="line">&#125;</div><div class="line"></div><div class="line">/*</div><div class="line">* 上传文件</div><div class="line">* @param &#123;object&#125; ctx koa上下文</div><div class="line">* @param &#123;object&#125; options 文件上传参数 fileType文件类型， path文件存放路径</div><div class="line">* @return &#123;promise&#125;</div><div class="line">*/</div><div class="line">function uploadFile (ctx, options) &#123;</div><div class="line">	let req = ctx.req;</div><div class="line">	let res = ctx.res;</div><div class="line">	let busboy = new Busboy(&#123;headers: req.headers&#125;);</div><div class="line"></div><div class="line">	// 获取类型</div><div class="line">	let fileType = options.fileType || &apos;common&apos;;</div><div class="line">	let filePath = path.join(options.path, fileType);</div><div class="line">	let mkdirResult = mkdirsSync(filePath);</div><div class="line"></div><div class="line">	return new Promise((resolve, reject) =&gt; &#123;</div><div class="line">		console.log(&apos;文件上传中...&apos;);</div><div class="line">		let result = &#123;</div><div class="line">			success: false,</div><div class="line">			formData: &#123;&#125;,</div><div class="line">		&#125;;</div><div class="line"></div><div class="line">		// 解析请求文件事件</div><div class="line">		busboy.on(&apos;file&apos;, function(fieldname, file, filename, encoding, mimetype) &#123;</div><div class="line">		  let fileName = Math.random().toString(16).substr(2) + &apos;.&apos; + getSuffixName(filename)</div><div class="line">		  let _uploadFilePath = path.join( filePath, fileName )</div><div class="line">		  let saveTo = path.join(_uploadFilePath)</div><div class="line"></div><div class="line">		  // 文件保存到制定路径</div><div class="line">		  file.pipe(fs.createWriteStream(saveTo))</div><div class="line"></div><div class="line">		  // 文件写入事件结束</div><div class="line">		  file.on(&apos;end&apos;, function() &#123;</div><div class="line">			result.success = true</div><div class="line">			result.message = &apos;文件上传成功&apos;</div><div class="line"></div><div class="line">			console.log(&apos;文件上传成功！&apos;)</div><div class="line">			resolve(result)</div><div class="line">		  &#125;)</div><div class="line">		&#125;)</div><div class="line"></div><div class="line">		// 解析表单中其他字段信息</div><div class="line">		busboy.on(&apos;field&apos;, function(fieldname, val, fieldnameTruncated, valTruncated, encoding, mimetype) &#123;</div><div class="line">		  console.log(&apos;表单字段数据 [&apos; + fieldname + &apos;]: value: &apos; + inspect(val));</div><div class="line">		  result.formData[fieldname] = inspect(val);</div><div class="line">		&#125;);</div><div class="line"></div><div class="line">		// 解析结束事件</div><div class="line">		busboy.on(&apos;finish&apos;, function( ) &#123;</div><div class="line">		  console.log(&apos;文件上结束&apos;)</div><div class="line">		  resolve(result)</div><div class="line">		&#125;)</div><div class="line"></div><div class="line">		// 解析错误事件</div><div class="line">		busboy.on(&apos;error&apos;, function(err) &#123;</div><div class="line">		  console.log(&apos;文件上出错&apos;)</div><div class="line">		  reject(result)</div><div class="line">		&#125;)</div><div class="line"></div><div class="line">		req.pipe(busboy)</div><div class="line"></div><div class="line">	&#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">module.exports =  &#123;</div><div class="line">  uploadFile</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+入口文件
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">const Koa = require(&apos;koa&apos;)</div><div class="line">const path = require(&apos;path&apos;)</div><div class="line">const app = new Koa()</div><div class="line">// const bodyParser = require(&apos;koa-bodyparser&apos;)</div><div class="line"></div><div class="line">const &#123; uploadFile &#125; = require(&apos;./util/upload&apos;)</div><div class="line"></div><div class="line">// app.use(bodyParser())</div><div class="line"></div><div class="line">app.use( async ( ctx ) =&gt; &#123;</div><div class="line"></div><div class="line">  if ( ctx.url === &apos;/&apos; &amp;&amp; ctx.method === &apos;GET&apos; ) &#123;</div><div class="line">	// 当GET请求时候返回表单页面</div><div class="line">	let html = `</div><div class="line">	  &lt;h1&gt;koa2 upload demo&lt;/h1&gt;</div><div class="line">	  &lt;form method=&quot;POST&quot; action=&quot;/upload.json&quot; enctype=&quot;multipart/form-data&quot;&gt;</div><div class="line">		&lt;p&gt;file upload&lt;/p&gt;</div><div class="line">		&lt;span&gt;picName:&lt;/span&gt;&lt;input name=&quot;picName&quot; type=&quot;text&quot; /&gt;&lt;br/&gt;</div><div class="line">		&lt;input name=&quot;file&quot; type=&quot;file&quot; /&gt;&lt;br/&gt;&lt;br/&gt;</div><div class="line">		&lt;button type=&quot;submit&quot;&gt;submit&lt;/button&gt;</div><div class="line">	  &lt;/form&gt;</div><div class="line">	`</div><div class="line">	ctx.body = html</div><div class="line"></div><div class="line">  &#125; else if ( ctx.url === &apos;/upload.json&apos; &amp;&amp; ctx.method === &apos;POST&apos; ) &#123;</div><div class="line">	// 上传文件请求处理</div><div class="line">	let result = &#123; success: false &#125;</div><div class="line">	let serverFilePath = path.join( __dirname, &apos;upload-files&apos; )</div><div class="line"></div><div class="line">	// 上传文件事件</div><div class="line">	result = await uploadFile( ctx, &#123;</div><div class="line">	  fileType: &apos;album&apos;, // common or album</div><div class="line">	  path: serverFilePath</div><div class="line">	&#125;)</div><div class="line"></div><div class="line">	ctx.body = result</div><div class="line">  &#125; else &#123;</div><div class="line">	// 其他请求显示404</div><div class="line">	ctx.body = &apos;&lt;h1&gt;404！！！ o(╯□╰)o&lt;/h1&gt;&apos;</div><div class="line">  &#125;</div><div class="line">&#125;)</div><div class="line"></div><div class="line">app.listen(3004, () =&gt; &#123;</div><div class="line">  console.log(&apos;[demo] upload-simple is starting at port 3000&apos;)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="https://chenshenhai.github.io/koa2-note/note/request/post-use-middleware.html" target="_blank" rel="external">koa-note</a><br>    <a href="https://www.npmjs.com/package/cookies" target="_blank" rel="external">cookies</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/17/koa学习-模版引擎/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/17/koa学习-模版引擎/" itemprop="url">
+                  koa学习-模版引擎
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-17T17:29:05+08:00">
+                2017-09-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
+                    <span itemprop="name">NodeJS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/17/koa学习-模版引擎/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/17/koa学习-模版引擎/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  86
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  1
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="koa2加载模板引擎"><a href="#koa2加载模板引擎" class="headerlink" title="koa2加载模板引擎"></a>koa2加载模板引擎</h3><pre><code>koa-views - 为koa模版渲染中间件
+ejs - 模版引擎
+关键代码：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">const views = require(&apos;koa-views&apos;)</div><div class="line">const path = require(&apos;path&apos;)</div><div class="line">app.use(views(path.join(__dirname, &apos;./view&apos;), &#123;</div><div class="line">	extension: &apos;ejs&apos;</div><div class="line">&#125;));</div><div class="line"></div><div class="line">app.use(async (ctx) =&gt; &#123;</div><div class="line">	if (ctx.url === &apos;/&apos;) &#123;</div><div class="line">	   let title = &apos;hello koa2&apos;;</div><div class="line">		await ctx.render(&apos;index&apos;, &#123;</div><div class="line">			title,</div><div class="line">		&#125;);     </div><div class="line">	&#125; else &#123;</div><div class="line">		let title = &apos;other&apos;;</div><div class="line">		await ctx.render(&apos;index&apos;, &#123;</div><div class="line">			title,</div><div class="line">		&#125;);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h3 id="ejs模板引擎"><a href="#ejs模板引擎" class="headerlink" title="ejs模板引擎"></a>ejs模板引擎</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">	</div></pre></td></tr></table></figure>
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="https://chenshenhai.github.io/koa2-note/note/request/post-use-middleware.html" target="_blank" rel="external">koa-note</a><br>    <a href="https://www.npmjs.com/package/koa-views" target="_blank" rel="external">koa-views</a><br>    <a href="https://www.npmjs.com/package/ejs" target="_blank" rel="external">ejs</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/17/koa学习-静态资源加载/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2147,602 +2539,6 @@ fs.appendFile(&apos;filename.txt&apos;, &apos;data to append&apos; , (err) =&gt;
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/16/nodejs自带模块学习-path/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/16/nodejs自带模块学习-path/" itemprop="url">
-                  path模块-路径
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-16T10:16:31+08:00">
-                2017-09-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
-                    <span itemprop="name">NodeJS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/16/nodejs自带模块学习-path/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/16/nodejs自带模块学习-path/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  575
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  3
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="path模块-路径"><a href="#path模块-路径" class="headerlink" title="path模块-路径"></a>path模块-路径</h3><pre><code>在不同系统中，路径分隔符显示不同。POSIX 上的 / 与 Windows 上的 \
-说明：path 模块提供了一些工具函数，用于处理文件与目录的路径。
-</code></pre><h3 id="path-sep"><a href="#path-sep" class="headerlink" title="path.sep"></a>path.sep</h3><pre><code>作用：提供了平台特定的路径片段分隔符。
-    windows上是 \
-    POSIX上是 /
-</code></pre><h3 id="path-win32-和-path-posix"><a href="#path-win32-和-path-posix" class="headerlink" title="path.win32 和 path.posix"></a>path.win32 和 path.posix</h3><pre><code>要想在任何操作系统上处理 Windows 文件路径时获得一致的结果，可以使用 path.win32
-    path.win32.basename(&apos;c:\\temp\\myfile.html&apos;); // myfile.html
-要想在任何操作系统上处理 POSIX 文件路径时获得一致的结果，可以使用 path.posix
-    path.posix.basename(&apos;/temp/myfile.html&apos;); // myfile.html
-</code></pre><h3 id="path-delimiter"><a href="#path-delimiter" class="headerlink" title="path.delimiter"></a>path.delimiter</h3><pre><code>作用：提供平台特定的路径分隔符。
-    windows是;
-    POSIX是:
-    process.env.PATH; // &apos;/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin&apos;
-    process.env.PATH.split(path.delimiter); // [&apos;/usr/bin&apos;, &apos;/bin&apos;, &apos;/usr/sbin&apos;, &apos;/sbin&apos;, &apos;/usr/local/bin&apos;]
-</code></pre><h3 id="path-basename-path-ext"><a href="#path-basename-path-ext" class="headerlink" title="path.basename(path[, ext]);"></a>path.basename(path[, ext]);</h3><pre><code>作用：返回一个 path 的最后一部分。
-    path.basename(&apos;/foo/bar/myfile.html&apos;); // &apos;myfile.html&apos;
-    patn.basename(&apos;/foo/bar/myfile.html&apos;, &apos;.html&apos;); // &apos;myfile&apos;
-</code></pre><h3 id="path-dirname-path"><a href="#path-dirname-path" class="headerlink" title="path.dirname(path);"></a>path.dirname(path);</h3><pre><code>作用：返回一个path的目录名。
-    path.dirname(&apos;/foo/bar/myfile&apos;); // foo/bar
-</code></pre><h3 id="path-extname-path"><a href="#path-extname-path" class="headerlink" title="path.extname(path)"></a>path.extname(path)</h3><pre><code>作用：返回 path 的扩展名，即从 path 的最后一部分中的最后一个 .（句号）字符到字符串结束。
-    path.extname(&apos;index.coffee.md&apos;); // &apos;.md&apos;
-</code></pre><h3 id="path-format-pathObject"><a href="#path-format-pathObject" class="headerlink" title="path.format(pathObject);"></a>path.format(pathObject);</h3><pre><code>作用：会从一个对象返回一个路径字符串。 与 path.parse() 相反。
-参数：Object
-    {
-        dir: &apos;&apos;,
-        root: &apos;&apos;,
-        base: &apos;&apos;,
-        name: &apos;&apos;,
-        ext: &apos;&apos;
-    }
-    在windows中
-    path.format({
-        root: &apos;ignored&apos;,
-        dir: &apos;\home\user&apos;,
-        base: &apos;file.txt&apos;
-    });
-    // &apos;\home\user\file.txt&apos;
-</code></pre><h3 id="path-parse-path"><a href="#path-parse-path" class="headerlink" title="path.parse(path);"></a>path.parse(path);</h3><pre><code>作用：返回一个对象，对象的属性表示 path 的元素。
-    path.parse(&apos;/home/user/file.txt&apos;);
-    // {
-        root: &apos;/&apos;,
-        base: &apos;/home/user&apos;,
-        ext: &apos;.txt&apos;.
-        name: &apos;file&apos;
-    }
-</code></pre><h3 id="path-isAbsolute-path"><a href="#path-isAbsolute-path" class="headerlink" title="path.isAbsolute(path);"></a>path.isAbsolute(path);</h3><pre><code>作用：会判定 path 是否为一个绝对路径。
-    path.isAbsolute(&apos;bar\baz&apos;); // true
-</code></pre><h3 id="path-join-…path"><a href="#path-join-…path" class="headerlink" title="path.join([…path]);"></a>path.join([…path]);</h3><pre><code>作用：使用平台特定的分隔符把全部给定的 path 片段连接到一起，并规范化生成的路径。
-    path.join(&apos;/foo&apos;, &apos;bar&apos;, &apos;baz/asdf&apos;, &apos;quux&apos;, &apos;..&apos;); // 返回: &apos;/foo/bar/baz/asdf&apos;
-</code></pre><h3 id="path-normalize-path"><a href="#path-normalize-path" class="headerlink" title="path.normalize(path);"></a>path.normalize(path);</h3><pre><code>作用：规范化给定的 path，并解析 &apos;..&apos; 和 &apos;.&apos; 片段。
-    path.normalize(&apos;/foo/bar/baz/asdf/quux/..&apos;); // &apos;/foo/bar/baz/asdf&apos;
-</code></pre><h3 id="path-relative-from-to"><a href="#path-relative-from-to" class="headerlink" title="path.relative(from, to);"></a>path.relative(from, to);</h3><pre><code>作用：返回从 from 到 to 的相对路径（基于当前工作目录）。
-    path.relative(&apos;/data/orandea/test/aaa&apos;, &apos;/data/orandea/impl/bbb&apos;);
-    // &apos;../../impl/bbb&apos;
-</code></pre><h3 id="path-resolve-…paths"><a href="#path-resolve-…paths" class="headerlink" title="path.resolve([…paths]);"></a>path.resolve([…paths]);</h3><pre><code>作用：把一个路径或路径片段的序列解析为一个绝对路径。
-    path.resolve(&apos;/foo/bar&apos;, &apos;./baz&apos;); // &apos;/foo/bar/baz&apos;
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="http://nodejs.cn/api/path.html" target="_blank" rel="external">path参考-api</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/14/sql参考手册/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/14/sql参考手册/" itemprop="url">
-                  sql参考手册
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-14T22:21:26+08:00">
-                2017-09-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/sql/" itemprop="url" rel="index">
-                    <span itemprop="name">sql</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/14/sql参考手册/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/14/sql参考手册/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  826
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  4
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="AND-OR"><a href="#AND-OR" class="headerlink" title="AND / OR"></a>AND / OR</h4><pre><code>AND &amp; OR 运算符用于基于一个以上的条件对记录进行过滤。
-语法：SELECT column_name(s) FROM table_name WHERE condition AND|OR condition;
-选择count大于10 且 count小于230
-    SELECT * FROM access_log WHERE count &gt; 10 AND count &lt; 230
-选择count小于10 或 count大于230    
-    SELECT * FROM access_log WHERE count &lt; 10 OR count &gt; 230
-</code></pre><h4 id="ALTER-TABLE"><a href="#ALTER-TABLE" class="headerlink" title="ALTER TABLE"></a>ALTER TABLE</h4><pre><code>ALTER TABLE 语句用于在已有的表中添加、删除或修改列。
-语法：
-    // 添加一列
-    ALTER TABLE table_name  
-    ADD column_name datatype 
-    // 删除一列
-    ALTER TABLE table_name   
-    DROP COLUMN column_name
-    // 更改一列字段类型    
-    ALTER TABLE table_name   
-    MODIFY COLUMN column_name VARCHAR(10)
-    // 更改一列
-    ALTER TABLE table_name   
-    CHANGE COLUMN column_name re_name
-</code></pre><h4 id="AS-alias"><a href="#AS-alias" class="headerlink" title="AS (alias)"></a>AS (alias)</h4><pre><code>SELECT column_name AS column_alias 
-FROM table_name
-OR
-SELECT column_name
-FROM table_name AS table_alias
-对url改名为ii    
-    SELECT url AS ii FROM websites
-</code></pre><h4 id="BETWEEN"><a href="#BETWEEN" class="headerlink" title="BETWEEN"></a>BETWEEN</h4><pre><code>语法：
-    SELECT column_name(s)
-    FROM table_name
-    WHERE column_name
-    BETWEEN value1 AND value2
-选择alexa1到10的所有记录
-    SELECT * FROM websites WHERE alexa BETWEEN 1 AND 10    
-</code></pre><h4 id="CREATE-DATABASE"><a href="#CREATE-DATABASE" class="headerlink" title="CREATE DATABASE"></a>CREATE DATABASE</h4><pre><code>语法：CREATE DATABASE database_name
-创建IIII数据库    
-    CREATE DATABASE IIII    
-</code></pre><h4 id="DROP-DATABASE"><a href="#DROP-DATABASE" class="headerlink" title="DROP DATABASE"></a>DROP DATABASE</h4><pre><code>语法：DROP DATABASE database_name
-删除IIII数据库
-    DROP DATABASE IIII
-</code></pre><h4 id="CREATE-TABLE"><a href="#CREATE-TABLE" class="headerlink" title="CREATE TABLE"></a>CREATE TABLE</h4><pre><code>语法：
-    CREATE TABLE table_name (
-        column_name data_type,
-        column_name data_type,
-        ...
-    )
-创建一个名为 sds 的表，且有字段int    
-    CREATE TABLE sds (id int)
-</code></pre><h4 id="DROP-TABLE"><a href="#DROP-TABLE" class="headerlink" title="DROP TABLE"></a>DROP TABLE</h4><pre><code>语法：DROP TABLE IF EXISTS tabale_name
-如果表sds存在就删除
-    DROP TABLE IF EXISTS sds
-</code></pre><h4 id="CREATE-INDEX"><a href="#CREATE-INDEX" class="headerlink" title="CREATE INDEX"></a>CREATE INDEX</h4><pre><code>创建索引
-语法：
-    CREATE INDEX index_name
-    ON tabale_name (column_name)
-    OR
-    CREATE UNIQUE INDEX index_name
-    ON tabale_name (column_name)
-</code></pre><h4 id="CREATE-VIEW"><a href="#CREATE-VIEW" class="headerlink" title="CREATE VIEW"></a>CREATE VIEW</h4><pre><code>创建视图
-视图是基于 SQL 语句的结果集的可视化的表。
-语法：
-    CREATE VIEW view_name AS
-    SELECT column_name(s)
-    FROM tabale_name
-</code></pre><h4 id="DELETE"><a href="#DELETE" class="headerlink" title="DELETE"></a>DELETE</h4><pre><code>DELETE FROM tabale_name
-WHERE some_column = some_value
-OR
-DELETE FROM tabale_name // 删除整个表
-DELETE * FROM tabale_name
-</code></pre><h4 id="DROP-DATABASE-1"><a href="#DROP-DATABASE-1" class="headerlink" title="DROP DATABASE"></a>DROP DATABASE</h4><pre><code>删除数据库
-DROP DATABASE data_name
-</code></pre><h4 id="DROP-INDEX"><a href="#DROP-INDEX" class="headerlink" title="DROP INDEX"></a>DROP INDEX</h4><pre><code>删除索引
-DROP INDEX index_name
-</code></pre><h4 id="DROP-TABLE-1"><a href="#DROP-TABLE-1" class="headerlink" title="DROP TABLE"></a>DROP TABLE</h4><pre><code>删除表
-DROP TABLE table_name
-</code></pre><h4 id="GROUP-BY"><a href="#GROUP-BY" class="headerlink" title="GROUP BY"></a>GROUP BY</h4><pre><code>合计函数 (比如 SUM) 常常需要添加 GROUP BY 语句。
-SELECT column_name, aggregate_function(column_name)
-FROM table_name
-WHERE column_name operator value1
-GROUP BY column_name
-</code></pre><h4 id="HAVING"><a href="#HAVING" class="headerlink" title="HAVING"></a>HAVING</h4><pre><code>在 SQL 中增加 HAVING 子句原因是，WHERE 关键字无法与合计函数一起使用。    
-SELECT column_name, aggregate_function(column_name)
-FROM tabale_name
-WHERE column_name operator value
-GROUP BY column_name
-HAVING aggregate_function(column_name) operator value
-</code></pre><h4 id="IN"><a href="#IN" class="headerlink" title="IN"></a>IN</h4><pre><code>IN 操作符允许您在 WHERE 子句中规定多个值。
-SELECT column_name(s)
-FROM tabale_name
-WHERE column_name
-IN(value1, value2)
-</code></pre><h4 id="INSERT-INTO"><a href="#INSERT-INTO" class="headerlink" title="INSERT INTO"></a>INSERT INTO</h4><pre><code>插入数据
-INSERT INTO tabale_name
-VALUES(value1, value2, ...value3)
-OR    
-INSERT INTO tabale_name
-(column1, column2, ...column3)
-VALUES(value1, value2, ...value3)
-</code></pre><h4 id="INNER-JOIN"><a href="#INNER-JOIN" class="headerlink" title="INNER JOIN"></a>INNER JOIN</h4><pre><code>在表中存在至少一个匹配时，INNER JOIN 关键字返回行。    
-SELECT column_name(s)
-FROM tabale_name1
-INNER JOIN tabale_name2
-ON tabale_name1.column_name = tabale_name2.column_name
-</code></pre><h4 id="LEFT-JOIN"><a href="#LEFT-JOIN" class="headerlink" title="LEFT JOIN"></a>LEFT JOIN</h4><pre><code>返回左表
-SELECT column_name(s)
-FROM tabale_name1
-LEFT JOIN tabale_name2
-ON tabale_name1.column_name = tabale_name2.column_name
-</code></pre><h4 id="RIGHT-JOIN"><a href="#RIGHT-JOIN" class="headerlink" title="RIGHT JOIN"></a>RIGHT JOIN</h4><pre><code>返回左表
-SELECT column_name(s)
-FROM tabale_name1
-RIGHT JOIN tabale_name2
-ON tabale_name1.column_name = tabale_name2.column_name        
-</code></pre><h4 id="FULL-JOIN"><a href="#FULL-JOIN" class="headerlink" title="FULL JOIN"></a>FULL JOIN</h4><pre><code>只要其中某个表存在匹配，FULL JOIN 关键字就会返回行。    
-SELECT column_name(s)
-FROM tabale_name1
-FULL JOIN tabale_name2
-ON tabale_name1.column_name = tabale_name2.column_name
-</code></pre><h4 id="LIKE"><a href="#LIKE" class="headerlink" title="LIKE"></a>LIKE</h4><pre><code>LIKE 操作符用于在 WHERE 子句中搜索列中的指定模式。    
-SELECT column_name(s)
-FROM tabale_name
-WHERE column_name LIKE pattern
-</code></pre><h4 id="ORDER-BY"><a href="#ORDER-BY" class="headerlink" title="ORDER BY"></a>ORDER BY</h4><pre><code>ORDER BY 语句用于对结果集进行排序。
-SELECT column_name 
-FROM table_name
-ORDER BY column_name[ASC|DESC]
-</code></pre><h4 id="SELECT"><a href="#SELECT" class="headerlink" title="SELECT"></a>SELECT</h4><pre><code>查询
-SELECT column_name(s)
-FROM tabale_name
-</code></pre><h4 id="SELECT-1"><a href="#SELECT-1" class="headerlink" title="SELECT *"></a>SELECT *</h4><pre><code>SELECT *
-FROM tabale_name
-</code></pre><h4 id="SELECT-DISTINCT"><a href="#SELECT-DISTINCT" class="headerlink" title="SELECT DISTINCT"></a>SELECT DISTINCT</h4><pre><code>关键词 DISTINCT 用于返回唯一不同的值。    
-SELECT DISTINCT column_name(s)
-FROM tabale_name
-</code></pre><h4 id="SELECT-INTO"><a href="#SELECT-INTO" class="headerlink" title="SELECT INTO"></a>SELECT INTO</h4><pre><code>SELECT *
-INTO new_table_name [IN externaldatabase]
-FROM old_table_name
-OR
-SELECT column_name(s)
-INTO new_table_name [IN externaldatabase]
-FROM old_table_name
-</code></pre><h4 id="SELECT-TOP"><a href="#SELECT-TOP" class="headerlink" title="SELECT TOP"></a>SELECT TOP</h4><pre><code>SELECT column_name(s)
-FROM table_name
-LIMIT number
-</code></pre><h4 id="TRUNCATE-TABLE"><a href="#TRUNCATE-TABLE" class="headerlink" title="TRUNCATE TABLE"></a>TRUNCATE TABLE</h4><pre><code>TRUNCATE TABLE table_name    
-</code></pre><h4 id="UNION"><a href="#UNION" class="headerlink" title="UNION"></a>UNION</h4><pre><code>SQL UNION 操作符合并两个或多个 SELECT 语句的结果。
-SELECT column_name(s) FROM tabale_name1
-UNION
-SELECT column_name(s) FROM tabale_name2
-</code></pre><h4 id="UNION-ALL"><a href="#UNION-ALL" class="headerlink" title="UNION ALL"></a>UNION ALL</h4><pre><code>SELECT column_name(s) FROM tabale_name1
-UNION ALL
-SELECT column_name(s) FROM tabale_name2
-</code></pre><h4 id="UPDATE"><a href="#UPDATE" class="headerlink" title="UPDATE"></a>UPDATE</h4><pre><code>更新
-UPDATE tabale_name
-SET column1=value, column2=value
-WHERE some_column=some_value
-</code></pre><h4 id="WHERE"><a href="#WHERE" class="headerlink" title="WHERE"></a>WHERE</h4><pre><code>条件
-SELECT column_name(s)
-FROM tabale_name
-WHERE column_name operator value
-</code></pre><blockquote>
-<p>   参考文档<br>    <a href="http://www.runoob.com/sql/sql-quickref.html" target="_blank" rel="external">SQL文档</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2792,7 +2588,7 @@ WHERE column_name operator value
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">84</span>
+                <span class="site-state-item-count">86</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2931,7 +2727,7 @@ WHERE column_name operator value
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共106.8k字</span>
+  <span class="post-count">博客全站共107.8k字</span>
 </div>
         
 
