@@ -306,6 +306,225 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/18/vue组件开发方法总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/18/vue组件开发方法总结/" itemprop="url">
+                  vue组件开发方法总结
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T19:29:37+08:00">
+                2017-10-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/vue/" itemprop="url" rel="index">
+                    <span itemprop="name">vue</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/18/vue组件开发方法总结/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/18/vue组件开发方法总结/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  595
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  3
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><em>VUE 组件的三种开发方式</em><br><strong>    开发组件大致分为3个步骤： 组件声明-组件注册（全局和局部）-组件使用</strong></p>
+<h1 id="使用-script-标签"><a href="#使用-script-标签" class="headerlink" title="使用 script 标签"></a>使用 script 标签</h1><pre><code>1.组件声明
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 注意：使用&lt;script&gt;标签时，type指定为text/x-template，意在告诉浏览器这不是一段js脚本，浏览器在解析HTML文档时会忽略&lt;script&gt;标签内定义的内容。--&gt;	</div><div class="line">&lt;!-- type 和 id 必须要填写 --&gt;</div><div class="line">&lt;script type=&quot;text/x-template&quot; id=&quot;myComponent&quot;&gt;</div><div class="line">	&lt;!--只能有一个根节点，下面两种方式同样遵循--&gt;</div><div class="line">       &lt;div class=&quot;root&quot;&gt;</div><div class="line">		&lt;p&gt;我是p1&lt;/p&gt;</div><div class="line">		&lt;p&gt;我是p2&lt;/p&gt;</div><div class="line">	&lt;/div&gt;</div><div class="line">   &lt;/script&gt;</div></pre></td></tr></table></figure>
+
+2.组件注册（分为全局注册和局部注册）
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">全局注册：需要确保在根实例初始化之前注册，这样才能使组件在任意实例中都可以使用。</div><div class="line">	Vue.component(&apos;my-component&apos;,MyComponent);//此句一定要放在new Vue(&#123;...&#125;);之前</div><div class="line">局部注册：限定了组件只能在被注册的组件中使用，而无法在其他组件中使用。</div><div class="line">//全局注册组件</div><div class="line">Vue.component(&apos;my-component&apos;,&#123;</div><div class="line">	template: &apos;#myComponent&apos;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+
+3.组件使用
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;div id=&quot;app&quot;&gt;</div><div class="line">       &lt;my-component&gt;&lt;/my-component&gt;</div><div class="line">   &lt;/div&gt;</div></pre></td></tr></table></figure>
+
+本例全部代码
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">	&lt;body&gt;</div><div class="line">		&lt;div id=&quot;app&quot;&gt;</div><div class="line">			&lt;!--3.组件使用--&gt;</div><div class="line">			&lt;my-component&gt;&lt;/my-component&gt;</div><div class="line">		&lt;/div&gt;</div><div class="line">		</div><div class="line">		&lt;!--1.组件声明--&gt;</div><div class="line">		&lt;script type=&quot;text/x-template&quot; id=&quot;myComponent&quot;&gt;</div><div class="line">			&lt;div&gt;This is a component!&lt;/div&gt;</div><div class="line">		&lt;/script&gt;</div><div class="line">	&lt;/body&gt;</div><div class="line">	&lt;script src=&quot;js/vue.js&quot;&gt;&lt;/script&gt;</div><div class="line">	&lt;script&gt;</div><div class="line">		&lt;!--2.组件注册--&gt;</div><div class="line">		Vue.component(&apos;my-component&apos;,&#123;</div><div class="line">			template: &apos;#myComponent&apos;</div><div class="line">		&#125;);</div><div class="line"></div><div class="line">		new Vue(&#123;</div><div class="line">			el: &apos;#app&apos;</div><div class="line">		&#125;);</div><div class="line">	&lt;/script&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
+</code></pre><h1 id="使用-template-标签"><a href="#使用-template-标签" class="headerlink" title="使用 template 标签"></a>使用 template 标签</h1><pre><code>1.组件声明
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;template id=&quot;myComponent&quot;&gt;</div><div class="line">       &lt;div&gt;This is a component!&lt;/div&gt;</div><div class="line">   &lt;/template&gt;</div></pre></td></tr></table></figure>
+
+2.组件注册
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Vue.component(&apos;my-component&apos;,&#123;</div><div class="line">	template: &apos;#myComponent&apos;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+
+3.使用组件
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;div id=&quot;app&quot;&gt;</div><div class="line">       &lt;my-component&gt;&lt;/my-component&gt;</div><div class="line">   &lt;/div&gt;</div></pre></td></tr></table></figure>
+
+本例全部代码
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">	&lt;body&gt;</div><div class="line">		&lt;div id=&quot;app&quot;&gt;</div><div class="line">			&lt;!--3.组件使用--&gt;</div><div class="line">			&lt;my-component&gt;&lt;/my-component&gt;</div><div class="line">		&lt;/div&gt;</div><div class="line">		</div><div class="line">		&lt;!--1.组件声明--&gt;</div><div class="line">		&lt;template id=&quot;myComponent&quot;&gt;</div><div class="line">			&lt;div&gt;This is a component!&lt;/div&gt;</div><div class="line">		&lt;/template&gt;</div><div class="line">	&lt;/body&gt;</div><div class="line">	&lt;script src=&quot;js/vue.js&quot;&gt;&lt;/script&gt;</div><div class="line">	&lt;script&gt;</div><div class="line">		&lt;!--2.组件注册--&gt;</div><div class="line">		Vue.component(&apos;my-component&apos;,&#123;</div><div class="line">			template: &apos;#myComponent&apos;</div><div class="line">		&#125;);</div><div class="line"></div><div class="line">		new Vue(&#123;</div><div class="line">			el: &apos;#app&apos;</div><div class="line">		&#125;);</div><div class="line"></div><div class="line">	&lt;/script&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
+</code></pre><h1 id="单文件组件"><a href="#单文件组件" class="headerlink" title="单文件组件"></a>单文件组件</h1><pre><code>注：这种方法常用在vue单页应用中。
+1.创建组件（hello.vue）
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">&lt;template&gt;</div><div class="line">  &lt;div class=&quot;hello&quot;&gt;</div><div class="line">	&lt;h1&gt;&#123;&#123; msg &#125;&#125;&lt;/h1&gt;</div><div class="line">  &lt;/div&gt;</div><div class="line">&lt;/template&gt;</div><div class="line"></div><div class="line">&lt;script&gt;</div><div class="line">export default &#123;</div><div class="line">  name: &apos;hello&apos;,</div><div class="line">  data () &#123;</div><div class="line">	return &#123;</div><div class="line">	  msg: &apos;欢迎！&apos;</div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
+
+父组件代码（app.vue，这里app.vue为hello.vue的父组件）
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 展示模板 --&gt;</div><div class="line">&lt;template&gt;</div><div class="line">  &lt;div id=&quot;app&quot;&gt;</div><div class="line">	&lt;!-- 3.使用组件 --&gt;</div><div class="line">	&lt;hello&gt;&lt;/hello&gt;</div><div class="line">  &lt;/div&gt;</div><div class="line">&lt;/template&gt;</div><div class="line"></div><div class="line">&lt;script&gt;</div><div class="line">// 导入组件</div><div class="line">import Hello from &apos;./components/hello&apos;</div><div class="line"></div><div class="line">export default &#123;</div><div class="line">  name: &apos;app&apos;,</div><div class="line">  // 2.这里进行组件局部注册</div><div class="line">  components: &#123;</div><div class="line">	Hello</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="https://cn.vuejs.org/" target="_blank" rel="external">vue官网</a><br>    <a href="http://blog.csdn.net/u012123026/article/details/72460470" target="_blank" rel="external">vue组件的3种书写形式</a><br>    <a href="http://blog.csdn.net/u013910340/article/details/72763418" target="_blank" rel="external">vue.js中组件的创建和使用方法</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/17/vue组件通信的方式总结/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2189,217 +2408,6 @@ MVC 模式中的Control/Mediator 层，就是本设计模式的中介者 (它必
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/14/OSI七层与TCP-IP五层网络架构/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/10/14/OSI七层与TCP-IP五层网络架构/" itemprop="url">
-                  OSI七层与TCP/IP五层网络架构
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-14T20:04:20+08:00">
-                2017-10-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/通信协议/" itemprop="url" rel="index">
-                    <span itemprop="name">通信协议</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/14/OSI七层与TCP-IP五层网络架构/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/14/OSI七层与TCP-IP五层网络架构/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  1,501
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  5
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>还记得大学时学习了通信相关的底层知识，只是当时并没有特别在意，<br>从参加工作一直做的WEB前端开发，对这方面知识也不是太需要。<br>但是为了自己更好的发展，需要了解一些底层的东西重新拾起通信相关的知识。</p>
-<h1 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h1><ol>
-<li>OSI：开放系统互连参考模型 (Open System Interconnect 简称OSI）。</li>
-<li>TCP：TCP（Transmission Control Protocol 传输控制协议）是一种面向连接的、可靠的、基于字节流的传输层通信协议。</li>
-<li>IP：网络之间互连的协议（IP）是Internet Protocol的外语缩写，中文缩写为“网协”。</li>
-<li>HTTP：超文本传输协议（HTTP，HyperText Transfer Protocol)是互联网上应用最为广泛的一种网络协议。</li>
-<li>HTTPS：HTTPS（全称：Hyper Text Transfer Protocol over Secure Socket Layer），是以安全为目标的HTTP通道，简单讲是HTTP的安全版。</li>
-</ol>
-<h1 id="OSI七层模型"><a href="#OSI七层模型" class="headerlink" title="OSI七层模型"></a>OSI七层模型</h1><pre><code>OSI七层结构--每层的解释
-</code></pre><p><img src="http://oxpnrlb4j.bkt.clouddn.com/osi%E7%BB%93%E6%9E%84%E8%A7%A3%E6%9E%90.jpg" alt="OSI七层结构"><br>    OSI七层结构–每层结构的功能<br><img src="http://oxpnrlb4j.bkt.clouddn.com/osi%E5%90%84%E5%B1%82%E7%9A%84%E4%BD%9C%E7%94%A8.png" alt="OSI七层结构"></p>
-<h1 id="TCP-IP五层模型"><a href="#TCP-IP五层模型" class="headerlink" title="TCP/IP五层模型"></a>TCP/IP五层模型</h1><pre><code>OSI七层模型与TCP/IP五层模型的关系
-</code></pre><p><img src="http://oxpnrlb4j.bkt.clouddn.com/tcp%E5%92%8Cip%E7%BB%93%E6%9E%84%E8%A7%A3%E6%9E%90.png" alt="TCP/IP五层模型"><br>    OSI七层模型–每层的设备<br><img src="http://oxpnrlb4j.bkt.clouddn.com/tcp%E5%92%8Cip%E8%AE%BE%E5%A4%87.jpg" alt="各层对应的设备"></p>
-<h1 id="对各层的详细说明"><a href="#对各层的详细说明" class="headerlink" title="对各层的详细说明"></a>对各层的详细说明</h1><ol>
-<li>第一层是物理层（PhysicalLayer)，<br>规定通信设备的机械的、电气的、功能的和过程的特性，用以建立、维护和拆除物理链路连接。<br>具体地讲，机械 特性规定了网络连接时所需接插件的规格尺寸、引脚数量和排列情况等；<br>电气特性规定了在物理连接上传输bit流时线路上信号电平的大小、阻抗匹配、传输速率 距离限制等；<br>功能特性是指对各个信号先分配确切的信号含义，即定义了DTE和DCE之间各个线路的功能；<br>规程特性定义了利用信号线进行bit流传输的一组 操作规程，是指在物理连接的建立、维护、交换信息是，DTE和DCE双放在各电路上的动作系列。<br>在这一层，数据的单位称为比特（bit）。属于物理层定义的典型规范代表包括：EIA/TIA RS-232、EIA/TIA RS-449、V.35、RJ-45等。</li>
-<li>第二层是数据链路层<br>在物理层提供比特流服务的基础上，建立相邻结点之间的数据链路，通过差错控制提供数据帧（Frame）在信道上无差错的传输，<br>并进行各电路上的动作系列。数据链路层在不可靠的物理介质上提供可靠的传输。<br>该层的作用包括：物理地址寻址、数据的成帧、流量控制、数据的检错、重发等。<br>在这一层，数据的单位称为帧（frame）。数据链路层协议的代表包括：SDLC、HDLC、PPP、STP、帧中继等。</li>
-<li>第三层是网络层<br>在计算机网络中进行通信的两个计算机之间可能会经过很多个数据链路，也可能还要经过很多通信子网。<br>网络层的任务就是选择合适的网间路由和交换结点， 确保数据及时传送。<br>网络层将数据链路层提供的帧组成数据包，包中封装有网络层包头，其中含有逻辑地址信息- -源站点和目的站点地址的网络地址。<br>如果你在谈论一个IP地址，那么你是在处理第3层的问题，这是“数据包”问题，而不是第2层的“帧”。<br>IP是第3层问题的一部分，此外还有一些路由协议和地 址解析协议（ARP）。有关路由的一切事情都在这第3层处理。<br>地址解析和路由是3层的重要目的。网络层还可以实现拥塞控制、网际互连等功能。在这一层，数据的单位称为数据包（packet）。<br>网络层协议的代表包括：IP、IPX、RIP、OSPF等。</li>
-<li>第四层是处理信息的传输层<br>第4层的数据单元也称作数据包（packets）。但是，当你谈论TCP等具体的协议时又有特殊的叫法，<br>TCP的数据单元称为段 （segments）而UDP协议的数据单元称为“数据报（datagrams）”。<br>这个层负责获取全部信息，因此，它必须跟踪数据单元碎片、乱序到达的 数据包和其它在传输过程中可能发生的危险。<br>第4层为上层提供端到端（最终用户到最终用户）的透明的、可靠的数据传输服务。<br>所为透明的传输是指在通信过程中 传输层对上层屏蔽了通信传输系统的具体细节。<br>传输层协议的代表包括：TCP、UDP、SPX等。</li>
-<li>第五层是会话层<br>这一层也可以称为会晤层或对话层，在会话层及以上的高层次中，数据传送的单位不再另外命名，<br>而是统称为报文。会话层不参与具体的传输，它提供包括访问验证和会话管理在内的建立和维护应用之间通信的机制。<br>如服务器验证用户登录便是由会话层完成的。</li>
-<li>第六层是表示层<br>这一层主要解决拥护信息的语法表示问题。它将欲交换的数据从适合于某一用户的抽象语法，<br>转换为适合于OSI系统内部使用的传送语法。即提供格式化的表示和转换数据服务。<br>数据的压缩和解压缩， 加密和解密等工作都由表示层负责。</li>
-<li>第七层应用层<br>应用层为操作系统或网络应用程序提供访问网络服务的接口。<br>应用层协议的代表包括：Telnet、FTP、HTTP、SNMP等。</li>
-</ol>
-<blockquote>
-<p>   参考文档<br>    <a href="https://www.2cto.com/net/201310/252965.html" target="_blank" rel="external">OSI七层与TCP/IP五层网络架构详解</a><br>    <a href="http://www.cnblogs.com/qishui/p/5428938.html" target="_blank" rel="external">OSI七层模型与TCP/IP五层模型</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2449,7 +2457,7 @@ MVC 模式中的Control/Mediator 层，就是本设计模式的中介者 (它必
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">86</span>
+                <span class="site-state-item-count">87</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2588,7 +2596,7 @@ MVC 模式中的Control/Mediator 层，就是本设计模式的中介者 (它必
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共107.8k字</span>
+  <span class="post-count">博客全站共108.4k字</span>
 </div>
         
 
