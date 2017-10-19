@@ -306,6 +306,215 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/15/js设计模式-策略模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/15/js设计模式-策略模式/" itemprop="url">
+                  js设计模式-策略模式
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-15T19:11:08+08:00">
+                2017-10-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/15/js设计模式-策略模式/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/15/js设计模式-策略模式/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  810
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  3
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="策略模式"><a href="#策略模式" class="headerlink" title="策略模式"></a>策略模式</h1><pre><code>定义：定义一系列的算法，把它们一个个封装起来，并且使它们可以相互替换。
+举例：表单效验（是否为空、长度、手机号、邮箱等等）
+    计算年终奖（工资、效绩）
+下面以年终将做说明：
+比如公司的年终奖是根据员工的工资和绩效来考核的，绩效为A的人，年终奖为工资的4倍，
+绩效为B的人，年终奖为工资的3倍，绩效为C的人，年终奖为工资的2倍；
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">// 一组策略类封装具体的算法</div><div class="line">const Bouns = &#123;</div><div class="line">	A (salary)&#123;</div><div class="line">		return salary * 4;</div><div class="line">	&#125;,</div><div class="line">	B (salary)&#123;</div><div class="line">		return salary * 3;</div><div class="line">	&#125;,</div><div class="line">	C (salary)&#123;</div><div class="line">		return salary * 2;</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line">Object.freeze(Bouns);</div><div class="line"></div><div class="line">/*</div><div class="line">* 计算年终奖 环境类Context</div><div class="line">* @param &#123;String&#125; A 效绩等级</div><div class="line">* @param &#123;Number&#125; 10000 每月工资</div><div class="line">* @returns &#123;Number&#125; 40000 年终奖</div><div class="line">*/</div><div class="line">const calculateBouns = function (type, salary)&#123;</div><div class="line">	return Bouns[type](salary);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">// 测试年终奖计算方式</div><div class="line">const demo1 = calculateBouns(&apos;A&apos;, 10000);</div><div class="line">const demo2 = calculateBouns(&apos;B&apos;, 80000);</div><div class="line">console.log(demo1, demo2); // 40000, 240000</div></pre></td></tr></table></figure>
+
+说明：
+策略模式指的是 定义一系列的算法，把它们一个个封装起来，将不变的部分和变化的部分隔开，
+实际就是将算法的使用和实现分离出来；算法的使用方式是不变的，都是根据某个算法取得计算后的奖金数，
+而算法的实现是根据绩效对应不同的绩效规则；
+一个基于策略模式的程序至少由2部分组成，第一个部分是一组策略类，策略类封装了具体的算法，
+并负责具体的计算过程。第二个部分是环境类Context，该Context接收客户端的请求，
+随后把请求委托给某一个策略类。
+复合开放-封闭原则，可变的部分为策略类（一组算法），不变的部分为执行具体算法的方式。
+</code></pre><h1 id="表单验证"><a href="#表单验证" class="headerlink" title="表单验证"></a>表单验证</h1><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div></pre></td><td class="code"><pre><div class="line">// 这里我们实现一组策略类封装具体的验证规则</div><div class="line">const strategy = &#123;</div><div class="line">	// 是否为空</div><div class="line">	isNotEmpty (value, errorMsg)&#123;</div><div class="line">		if (value === &apos;&apos;) &#123;</div><div class="line">			return errorMsg;</div><div class="line">		&#125;</div><div class="line">	&#125;,</div><div class="line">	// 最小长度</div><div class="line">	minLength (value, errorMsg, length)&#123;</div><div class="line">		if (value.length &lt; length) &#123;</div><div class="line">			return errorMsg;</div><div class="line">		&#125;</div><div class="line">	&#125;,</div><div class="line">	// 手机号码格式</div><div class="line">	mobileFormat (value,errorMsg)&#123;</div><div class="line">		if(!/(^1[3|5|8][0-9]&#123;9&#125;$)/.test(value)) &#123;</div><div class="line">			return errorMsg;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line">Object.freeze(strategy);</div><div class="line"></div><div class="line">var Validator = function()&#123;</div><div class="line">	this.cache = [];  // 保存效验规则</div><div class="line">&#125;;</div><div class="line">Validator.prototype.add = function(dom,rules) &#123;</div><div class="line">	var self = this;</div><div class="line">	for(var i = 0, rule; rule = rules[i++]; )&#123;</div><div class="line">		(function(rule)&#123;</div><div class="line">			var strategyAry = rule.strategy.split(&quot;:&quot;);</div><div class="line">			var errorMsg = rule.errorMsg;</div><div class="line">			self.cache.push(function()&#123;</div><div class="line">				var strategy = strategyAry.shift();</div><div class="line">				strategyAry.unshift(dom.value);</div><div class="line">				strategyAry.push(errorMsg);</div><div class="line">				return strategys[strategy].apply(dom,strategyAry);</div><div class="line">			&#125;);</div><div class="line">		&#125;)(rule);</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line">Validator.prototype.start = function()&#123;</div><div class="line">	for(var i = 0, validatorFunc; validatorFunc = this.cache[i++]; ) &#123;</div><div class="line">	var msg = validatorFunc(); // 开始效验 并取得效验后的返回信息</div><div class="line">	if(msg) &#123;</div><div class="line">		return msg;</div><div class="line">	&#125;</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line">// 代码调用</div><div class="line">var registerForm = document.getElementById(&quot;registerForm&quot;);</div><div class="line">var validateFunc = function()&#123;</div><div class="line">	var validator = new Validator(); // 创建一个Validator对象</div><div class="line">	/* 添加一些效验规则 */</div><div class="line">	validator.add(registerForm.userName,[</div><div class="line">		&#123;strategy: &apos;isNotEmpty&apos;,errorMsg:&apos;用户名不能为空&apos;&#125;,</div><div class="line">		&#123;strategy: &apos;minLength:6&apos;,errorMsg:&apos;用户名长度不能小于6位&apos;&#125;</div><div class="line">	]);</div><div class="line">	validator.add(registerForm.password,[</div><div class="line">		&#123;strategy: &apos;minLength:6&apos;,errorMsg:&apos;密码长度不能小于6位&apos;&#125;,</div><div class="line">	]);</div><div class="line">	validator.add(registerForm.phoneNumber,[</div><div class="line">		&#123;strategy: &apos;mobileFormat&apos;,errorMsg:&apos;手机号格式不正确&apos;&#125;,</div><div class="line">	]);</div><div class="line">	var errorMsg = validator.start(); // 获得效验结果</div><div class="line">	return errorMsg; // 返回效验结果</div><div class="line">&#125;;</div><div class="line">// 点击确定提交</div><div class="line">registerForm.onsubmit = function()&#123;</div><div class="line">	var errorMsg = validateFunc();</div><div class="line">	if(errorMsg)&#123;</div><div class="line">		alert(errorMsg);</div><div class="line">		return false;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+说明：此处代码来源于--腾讯.曾探的《javascript设计模式》，这能很好的说明策略模式的用途。
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="http://www.cnblogs.com/tugenhua0707/p/4722696.html" target="_blank" rel="external">理解javascript中的策略模式</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/15/js设计模式-单例模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2892,289 +3101,6 @@ app.use(koaBody({ multipart: true }));
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/27/jsDoc学习-5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/27/jsDoc学习-5/" itemprop="url">
-                  jsDoc学习-标签总结
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-27T22:46:04+08:00">
-                2017-09-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/代码规范/" itemprop="url" rel="index">
-                    <span itemprop="name">代码规范</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/27/jsDoc学习-5/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/27/jsDoc学习-5/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  1,105
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  4
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="类和构造函数"><a href="#类和构造函数" class="headerlink" title="类和构造函数"></a>类和构造函数</h2><pre><code>@class -- 此函数旨在需要使用”new”关键字调用（构造函数）或ES6中class。
-    @constructor
-@classdesc -- 使用的后面的蚊子来描述整个类。
-@abstract -- 这个成员必须在继承的子类中重写。
-    @virtual
-@static -- 记录一个静态成员。
-@access -- 指定该成员的访问级别（私有private、保护protected、公共public）。
-    @access private 等价于 @private
-    @access protected 等价于 @protected
-    @access public 等价于 @public
-@alias -- 标记成员有一个别名。
-@extends -- 指名这个子类继承至哪个父类，后面需要加父类名。
-    @augments
-@instance -- 记录一个实例成员。
-@interface -- 这是别人可以实现的一个接口。
-</code></pre><h2 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h2><pre><code>@borrows -- 这个对象使用另一个对象的某些东西。
-@lends -- 将一个字面量对象的所有属性标记为某个标识符（类或模块）的成员。
-@mixes -- 此对象混入了另一个对象中的所有成员。
-@mixin -- 记录一个mixin（混入）对象。
-@name  -- 记录一个对象的名称。
-@namespace -- 记录一个命名空间对象。
-@property -- 记录一个对象的属性。
-    @prop
-@typedef -- 记录一个自定义的类型。
-@type -- 记录一个对象的类型。
-@variation -- 区分具有相同名称的不同的对象。
-</code></pre><h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><pre><code>@callback -- 描述一个回调函数。
-@function -- 描述一个函数或方法。
-    @func
-    @method
-@returns -- 记录一个函数的返回值。
-    @return
-@this -- this关键字的指向。
-</code></pre><h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><pre><code>@author -- 指定项目的作者。
-@constant -- 记录一个对象作为一个常量。
-    @const
-@default -- 记录默认值。
-    @defaultvalue
-@copyright -- 描述一些版权信息。
-@since -- 该方法添加于该版本，建议使用。
-@deprecated -- 该方法已弃用，不建议使用。
-@description -- 描述一个标识。
-    @desc
-@enum -- 描述一个相关属性的集合。
-@example -- 提供一个如何使用描述项的例子。
-@external -- 标识一个外部的类，命名空间，或模块。
-@file -- 描述一个文件。
-    @fileoverview
-    @overview
-@global -- 记录一个全局对象。
-@ignore -- 忽略文档中的一个标识。
-@implements -- 这个表示实现一个接口。
-@inheritdoc -- 指明这个标识应继承其父类的文档。
-@inner -- 描述一个内部对象。
-@kind -- 表示的类型。
-@license -- 表示你的代码采用何种软件许可协议。
-@member -- 记录一个成员。
-    @var
-@memberof -- 标明这个标识属于哪个父级标识。
-@override -- 指明一个标识符覆盖其父类同名的标识符。
-@param -- 记录传递给一个函数的参数。
-    @arg 
-    @argument
-@readonly -- 标记为只读的。
-@see -- 更多详细参阅其他一些文档。
-@summary -- 完整描述的一个简写版本。
-@throws -- 说明可能会被抛出什么样的错误。
-@todo -- 记录一个将要完成的任务。
-@tutorial -- 插入一个连接到包含教程文件。
-@version -- 记录版本信息。
-</code></pre><h2 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h2><pre><code>@event -- 描述一个事件。
-@listens -- 列出一个标识的监听事件。
-@fires -- 描述事件这个方法可能会触发。
-    @emits
-</code></pre><h2 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h2><pre><code>@exports -- 表示一个由javascript模块导出的成员。
-@module -- 记录一个javascript模块。
-@requires -- 这个文件需要一个javascript模块。
-</code></pre><h2 id="内联标签"><a href="#内联标签" class="headerlink" title="内联标签"></a>内联标签</h2><pre><code>@link -- 连接到文档中的另一个项目。
-    @linkcode
-    @linkplain
-@tutorial -- 链接到一个教程。
-</code></pre><h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
-<li>安装jsdoc3<br>npm install -g jsdoc</li>
-<li>在cmd 中 (此时会在test.js的同级目录产出out目录，存放生成的API文档)<br>jsdoc test.js<br>  默认配置情况下out目录中产出：<pre><code>fonts、scripts、styles目录顾名思义。
-index.html -- API文档首页
-global.html -- 全局的（成员和方法）
-index.js.html -- 源代码页面
-</code></pre></li>
-<li><p>相关配置<br>启用jsdoc有两种方式：命令行参数 和 conf.json配置<br>JSDoc命令行参数<br>  JSDoc命令行几个常用参数有以下几个：<br>  -c, –configure 指定configuration file<br>  -d, –destination 指定输出路径，默认./out<br>  -e, –encoding 设定encoding，默认utf8<br>  -p, –private 将private注释输出到文档，默认不输出<br>  -P, –package 指定package.json file<br>  -r, –recurse 查询子目录<br>  -t, –template 指定输出文档template<br>  -u, –tutorials 指定教程路径，默认无<br>  例如：jsdoc -T –match tag –verbose<br>JSDoc配置文件<br>  默认的配置文件：conf.json.EXAMPLE</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">	&quot;tags&quot;: &#123;</div><div class="line">		&quot;allowUnknownTags&quot;: true, // 允许使用自定义tag</div><div class="line">		&quot;dictionaries&quot;: [&quot;jsdoc&quot;,&quot;closure&quot;] // 定义tag集</div><div class="line">	&#125;,</div><div class="line">	&quot;source&quot;: &#123;</div><div class="line">		&quot;includePattern&quot;: &quot;.+\\.js(doc)?$&quot;, // 将以.js, .jsdoc结尾的文件作为源文件</div><div class="line">		&quot;excludePattern&quot;: &quot;(^|\\/|\\\\)_&quot; // 忽略以_开头的文件夹及文件</div><div class="line">	&#125;,</div><div class="line">	&quot;plugins&quot;: [],</div><div class="line">	&quot;templates&quot;: &#123;</div><div class="line">		&quot;cleverLinks&quot;: false,</div><div class="line">		&quot;monospaceLinks&quot;: false</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>  例如：jsdoc -c /path/to/conf.json</p>
-</li>
-</ol>
-<blockquote>
-<p>   参考文档：<br>    <a href="http://www.css88.com/doc/jsdoc/inline-tags.html" target="_blank" rel="external">jsdoc</a><br>    <a href="https://github.com/jsdoc3/jsdoc" target="_blank" rel="external">jsdoc3</a><br>    <a href="http://www.moodpo.com/archives/jsdoc3-tutorial.html" target="_blank" rel="external">使用 JSDoc 3 自动生成 JavaScript API 文档</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -3224,7 +3150,7 @@ index.js.html -- 源代码页面
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">89</span>
+                <span class="site-state-item-count">90</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -3350,7 +3276,7 @@ index.js.html -- 源代码页面
 	</span>
 </div>
 
-<!--<div class="powered-by">
+<div class="powered-by">
   由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
 </div>
 
@@ -3359,11 +3285,11 @@ index.js.html -- 源代码页面
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
     NexT.Mist
   </a>
-</div>-->
+</div>
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共112.2k字</span>
+  <span class="post-count">博客全站共112.8k字</span>
 </div>
         
 

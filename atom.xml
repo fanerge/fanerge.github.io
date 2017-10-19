@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fanerge.github.io/"/>
-  <updated>2017-10-18T14:37:59.396Z</updated>
+  <updated>2017-10-19T14:27:26.141Z</updated>
   <id>https://fanerge.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>css实现水平和垂直居中方案总结</title>
+    <link href="https://fanerge.github.io/2017/10/19/css%E5%AE%9E%E7%8E%B0%E6%B0%B4%E5%B9%B3%E5%92%8C%E5%9E%82%E7%9B%B4%E5%B1%85%E4%B8%AD%E6%96%B9%E6%A1%88%E6%80%BB%E7%BB%93/"/>
+    <id>https://fanerge.github.io/2017/10/19/css实现水平和垂直居中方案总结/</id>
+    <published>2017-10-19T14:20:48.000Z</published>
+    <updated>2017-10-19T14:27:26.141Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="已知宽高元素水平和垂直居中"><a href="#已知宽高元素水平和垂直居中" class="headerlink" title="已知宽高元素水平和垂直居中"></a>已知宽高元素水平和垂直居中</h1><h2 id="position-absolute、top和left50-和margin-height-2px-0-0-width-2px"><a href="#position-absolute、top和left50-和margin-height-2px-0-0-width-2px" class="headerlink" title="position:absolute、top和left50%和margin:-height/2px 0 0 -width/2px;"></a>position:absolute、top和left50%和margin:-height/2px 0 0 -width/2px;</h2><h3 id="html-代码"><a href="#html-代码" class="headerlink" title="html 代码"></a>html 代码</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;div class=&quot;container&quot;&gt;</div><div class="line"> 123</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure></code></pre><h3 id="css-代码"><a href="#css-代码" class="headerlink" title="css 代码"></a>css 代码</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">.container &#123;</div><div class="line">   position:absolute;</div><div class="line">   top:50%;</div><div class="line">   left:50%;</div><div class="line">   margin:-25px 0 0 -50px;</div><div class="line">   width: 100px;</div><div class="line">   height: 50px;</div><div class="line">   font-size: 40px;</div><div class="line">   color: #fff;</div><div class="line">   background-color: rgba(0,0,0,.8)</div><div class="line"> &#125;</div></pre></td></tr></table></figure></code></pre><h2 id="position-fixed、top和right和bottom和left0和margin-auto"><a href="#position-fixed、top和right和bottom和left0和margin-auto" class="headerlink" title="position:fixed、top和right和bottom和left0和margin:auto;"></a>position:fixed、top和right和bottom和left0和margin:auto;</h2><h3 id="html-代码-1"><a href="#html-代码-1" class="headerlink" title="html 代码"></a>html 代码</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;div class=&quot;container&quot;&gt;</div><div class="line"> 123</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure></code></pre><h3 id="css代码"><a href="#css代码" class="headerlink" title="css代码"></a>css代码</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">.container &#123;</div><div class="line">   position:fixed;</div><div class="line">   top:0;</div><div class="line">   right:0;</div><div class="line">   bottom:0;</div><div class="line">   left:0;</div><div class="line">   margin:auto;</div><div class="line">   width: 100px;</div><div class="line">   height: 50px;</div><div class="line">   font-size: 40px;</div><div class="line">   color: #fff;</div><div class="line">   background-color: rgba(0,0,0,.8)</div><div class="line"> &#125;</div></pre></td></tr></table></figure></code></pre><h1 id="未知宽高元素水平和垂直居中"><a href="#未知宽高元素水平和垂直居中" class="headerlink" title="未知宽高元素水平和垂直居中"></a>未知宽高元素水平和垂直居中</h1><pre><code>总结一些常用的不定高宽元素居中的方式，以备使用。以下代码均不考虑兼容性，如需使用，请自行处理浏览器兼容性。</code></pre><h2 id="display-为-table-布局（父容器为display-table-子元素为display-table-cell-）"><a href="#display-为-table-布局（父容器为display-table-子元素为display-table-cell-）" class="headerlink" title="display 为 table 布局（父容器为display: table; 子元素为display: table-cell;）"></a>display 为 table 布局（父容器为display: table; 子元素为display: table-cell;）</h2><h3 id="html-代码-2"><a href="#html-代码-2" class="headerlink" title="html 代码"></a>html 代码</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;div id=&quot;container&quot;&gt;  </div><div class="line">     &lt;span id=&quot;inner&quot;&gt;  </div><div class="line">      123123</div><div class="line">     &lt;/span&gt;  </div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure></code></pre><h3 id="css-代码-1"><a href="#css-代码-1" class="headerlink" title="css 代码"></a>css 代码</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">#container&#123;  </div><div class="line">display: table;  </div><div class="line">padding: 60% 30%;</div><div class="line">width: 100vw;</div><div class="line">height: 100vh;</div><div class="line">text-align: center;  </div><div class="line">&#125;  </div><div class="line">#inner&#123;  </div><div class="line">display: table-cell;  </div><div class="line">vertical-align: middle; </div><div class="line">font-size: 40px;</div><div class="line">color: #fff;</div><div class="line">background-color: rgba(0, 0, 0, .8); </div><div class="line">&#125;</div></pre></td></tr></table></figure>PS：水平居中一般采用两种方式:    1.块级元素：定宽 + margin:0 auto;（由于是不定宽高，所以这里不适用）；    2.行内元素：作用于父级元素 text-algin：center；（可以内联化，视情况而定）    垂直方向居中：    使用display:table-cell;vertical-algin:middle;</code></pre><h2 id="flex-布局实现"><a href="#flex-布局实现" class="headerlink" title="flex 布局实现"></a>flex 布局实现</h2><pre><code>注意：flex 方法兼容 IE10及以上版本</code></pre><h3 id="html-代码-3"><a href="#html-代码-3" class="headerlink" title="html 代码"></a>html 代码</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;div class=&quot;container&quot;&gt;</div><div class="line">&lt;span class=&quot;toast&quot;&gt;上传成功&lt;/span&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure></code></pre><h3 id="css-代码-2"><a href="#css-代码-2" class="headerlink" title="css 代码"></a>css 代码</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">/*父容器*/</div><div class="line">.container &#123;</div><div class="line">position: fixed;</div><div class="line">width: 100vw;</div><div class="line">height: 100vh;</div><div class="line">display: flex;</div><div class="line">justify-content: center;</div><div class="line">align-items: center;</div><div class="line">&#125; </div><div class="line">/*子项目*/</div><div class="line">.toast &#123;</div><div class="line">padding: 20px;</div><div class="line">font-size: 40px;</div><div class="line">color: #fff;</div><div class="line">background-color: rgba(0, 0, 0, .8);</div><div class="line">&#125;</div></pre></td></tr></table></figure>PS：display: flex; // 为父容器使用 flex 布局    justify-content: center; // 决定子项目在主轴的对齐方式    align-items: center; // 决定子项目在交叉轴轴的对齐方式</code></pre><h2 id="position-transform-方法实现"><a href="#position-transform-方法实现" class="headerlink" title="position + transform 方法实现"></a>position + transform 方法实现</h2><pre><code>注意：flex 方法兼容 IE9及以上版本</code></pre><h3 id="html-代码-4"><a href="#html-代码-4" class="headerlink" title="html 代码"></a>html 代码</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;span class=&quot;toast&quot;&gt;上传成功&lt;/span&gt;</div></pre></td></tr></table></figure></code></pre><h3 id="css-代码-3"><a href="#css-代码-3" class="headerlink" title="css 代码"></a>css 代码</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">.toast &#123;</div><div class="line">position: fixed;</div><div class="line">top: 50%; // 50vh</div><div class="line">left: 50%; // 50vw</div><div class="line">transform: translate(-50%, -50%);</div><div class="line">padding: 20px;</div><div class="line">font-size: 40px;</div><div class="line">color: #fff;</div><div class="line">background-color: rgba(0, 0, 0, .8);</div><div class="line">&#125;</div></pre></td></tr></table></figure>PS：对于position: fixed; 之后的 top和left都为50%，这个50%为浏览器窗口宽高的50%，    对于transform中translate(-50%, -50%)，这个50%为自身元素的宽高的50%。    或许上面改写成top: 50vh; left: 50vw; 更容易理解。</code></pre><blockquote><p>   参考文档：<br>    <a href="http://www.tangshuang.net/3197.html" target="_blank" rel="external">不定元素宽高用css实现内容水平和垂直都居中</a><br>    <a href="http://jcao54.iteye.com/blog/2256953" target="_blank" rel="external">不定宽高div水平垂直居中</a><br>    <a href="http://www.runoob.com/w3cnote/flex-grammar.html" target="_blank" rel="external">flex 布局</a><br>    <a href="https://juejin.im/post/586b94e5ac502e12d62d4ab6" target="_blank" rel="external">滴滴出行-再谈自适应垂直居中</a></p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;已知宽高元素水平和垂直居中&quot;&gt;&lt;a href=&quot;#已知宽高元素水平和垂直居中&quot; class=&quot;headerlink&quot; title=&quot;已知宽高元素水平和垂直居中&quot;&gt;&lt;/a&gt;已知宽高元素水平和垂直居中&lt;/h1&gt;&lt;h2 id=&quot;position-absolute、top
+      
+    
+    </summary>
+    
+      <category term="css" scheme="https://fanerge.github.io/categories/css/"/>
+    
+    
+      <category term="css" scheme="https://fanerge.github.io/tags/css/"/>
+    
+  </entry>
   
   <entry>
     <title>vue官网-全局与实例解读</title>
@@ -432,11 +457,11 @@
       <category term="NodeJS" scheme="https://fanerge.github.io/categories/NodeJS/"/>
     
     
+      <category term="读书笔记" scheme="https://fanerge.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
       <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
     
       <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
-    
-      <category term="读书笔记" scheme="https://fanerge.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
   </entry>
   
@@ -488,11 +513,11 @@
       <category term="NodeJS" scheme="https://fanerge.github.io/categories/NodeJS/"/>
     
     
+      <category term="读书笔记" scheme="https://fanerge.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
       <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
     
       <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
-    
-      <category term="读书笔记" scheme="https://fanerge.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
   </entry>
   
@@ -517,40 +542,13 @@
       <category term="NodeJS" scheme="https://fanerge.github.io/categories/NodeJS/"/>
     
     
+      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
+    
       <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
     
       <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
     
-      <category term="web开发" scheme="https://fanerge.github.io/tags/web%E5%BC%80%E5%8F%91/"/>
-    
       <category term="koa" scheme="https://fanerge.github.io/tags/koa/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>jsDoc学习-标签总结</title>
-    <link href="https://fanerge.github.io/2017/09/27/jsDoc%E5%AD%A6%E4%B9%A0-5/"/>
-    <id>https://fanerge.github.io/2017/09/27/jsDoc学习-5/</id>
-    <published>2017-09-27T14:46:04.000Z</published>
-    <updated>2017-10-12T13:02:24.473Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="类和构造函数"><a href="#类和构造函数" class="headerlink" title="类和构造函数"></a>类和构造函数</h2><pre><code>@class -- 此函数旨在需要使用”new”关键字调用（构造函数）或ES6中class。    @constructor@classdesc -- 使用的后面的蚊子来描述整个类。@abstract -- 这个成员必须在继承的子类中重写。    @virtual@static -- 记录一个静态成员。@access -- 指定该成员的访问级别（私有private、保护protected、公共public）。    @access private 等价于 @private    @access protected 等价于 @protected    @access public 等价于 @public@alias -- 标记成员有一个别名。@extends -- 指名这个子类继承至哪个父类，后面需要加父类名。    @augments@instance -- 记录一个实例成员。@interface -- 这是别人可以实现的一个接口。</code></pre><h2 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h2><pre><code>@borrows -- 这个对象使用另一个对象的某些东西。@lends -- 将一个字面量对象的所有属性标记为某个标识符（类或模块）的成员。@mixes -- 此对象混入了另一个对象中的所有成员。@mixin -- 记录一个mixin（混入）对象。@name  -- 记录一个对象的名称。@namespace -- 记录一个命名空间对象。@property -- 记录一个对象的属性。    @prop@typedef -- 记录一个自定义的类型。@type -- 记录一个对象的类型。@variation -- 区分具有相同名称的不同的对象。</code></pre><h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><pre><code>@callback -- 描述一个回调函数。@function -- 描述一个函数或方法。    @func    @method@returns -- 记录一个函数的返回值。    @return@this -- this关键字的指向。</code></pre><h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><pre><code>@author -- 指定项目的作者。@constant -- 记录一个对象作为一个常量。    @const@default -- 记录默认值。    @defaultvalue@copyright -- 描述一些版权信息。@since -- 该方法添加于该版本，建议使用。@deprecated -- 该方法已弃用，不建议使用。@description -- 描述一个标识。    @desc@enum -- 描述一个相关属性的集合。@example -- 提供一个如何使用描述项的例子。@external -- 标识一个外部的类，命名空间，或模块。@file -- 描述一个文件。    @fileoverview    @overview@global -- 记录一个全局对象。@ignore -- 忽略文档中的一个标识。@implements -- 这个表示实现一个接口。@inheritdoc -- 指明这个标识应继承其父类的文档。@inner -- 描述一个内部对象。@kind -- 表示的类型。@license -- 表示你的代码采用何种软件许可协议。@member -- 记录一个成员。    @var@memberof -- 标明这个标识属于哪个父级标识。@override -- 指明一个标识符覆盖其父类同名的标识符。@param -- 记录传递给一个函数的参数。    @arg     @argument@readonly -- 标记为只读的。@see -- 更多详细参阅其他一些文档。@summary -- 完整描述的一个简写版本。@throws -- 说明可能会被抛出什么样的错误。@todo -- 记录一个将要完成的任务。@tutorial -- 插入一个连接到包含教程文件。@version -- 记录版本信息。</code></pre><h2 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h2><pre><code>@event -- 描述一个事件。@listens -- 列出一个标识的监听事件。@fires -- 描述事件这个方法可能会触发。    @emits</code></pre><h2 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h2><pre><code>@exports -- 表示一个由javascript模块导出的成员。@module -- 记录一个javascript模块。@requires -- 这个文件需要一个javascript模块。</code></pre><h2 id="内联标签"><a href="#内联标签" class="headerlink" title="内联标签"></a>内联标签</h2><pre><code>@link -- 连接到文档中的另一个项目。    @linkcode    @linkplain@tutorial -- 链接到一个教程。</code></pre><h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol><li>安装jsdoc3<br>npm install -g jsdoc</li><li>在cmd 中 (此时会在test.js的同级目录产出out目录，存放生成的API文档)<br>jsdoc test.js<br>  默认配置情况下out目录中产出：<pre><code>fonts、scripts、styles目录顾名思义。index.html -- API文档首页global.html -- 全局的（成员和方法）index.js.html -- 源代码页面</code></pre></li><li><p>相关配置<br>启用jsdoc有两种方式：命令行参数 和 conf.json配置<br>JSDoc命令行参数<br>  JSDoc命令行几个常用参数有以下几个：<br>  -c, –configure 指定configuration file<br>  -d, –destination 指定输出路径，默认./out<br>  -e, –encoding 设定encoding，默认utf8<br>  -p, –private 将private注释输出到文档，默认不输出<br>  -P, –package 指定package.json file<br>  -r, –recurse 查询子目录<br>  -t, –template 指定输出文档template<br>  -u, –tutorials 指定教程路径，默认无<br>  例如：jsdoc -T –match tag –verbose<br>JSDoc配置文件<br>  默认的配置文件：conf.json.EXAMPLE</p>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">&quot;tags&quot;: &#123;</div><div class="line">&quot;allowUnknownTags&quot;: true, // 允许使用自定义tag</div><div class="line">&quot;dictionaries&quot;: [&quot;jsdoc&quot;,&quot;closure&quot;] // 定义tag集</div><div class="line">&#125;,</div><div class="line">&quot;source&quot;: &#123;</div><div class="line">&quot;includePattern&quot;: &quot;.+\\.js(doc)?$&quot;, // 将以.js, .jsdoc结尾的文件作为源文件</div><div class="line">&quot;excludePattern&quot;: &quot;(^|\\/|\\\\)_&quot; // 忽略以_开头的文件夹及文件</div><div class="line">&#125;,</div><div class="line">&quot;plugins&quot;: [],</div><div class="line">&quot;templates&quot;: &#123;</div><div class="line">&quot;cleverLinks&quot;: false,</div><div class="line">&quot;monospaceLinks&quot;: false</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure><p>  例如：jsdoc -c /path/to/conf.json</p></li></ol><blockquote><p>   参考文档：<br>    <a href="http://www.css88.com/doc/jsdoc/inline-tags.html" target="_blank" rel="external">jsdoc</a><br>    <a href="https://github.com/jsdoc3/jsdoc" target="_blank" rel="external">jsdoc3</a><br>    <a href="http://www.moodpo.com/archives/jsdoc3-tutorial.html" target="_blank" rel="external">使用 JSDoc 3 自动生成 JavaScript API 文档</a></p></blockquote>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;类和构造函数&quot;&gt;&lt;a href=&quot;#类和构造函数&quot; class=&quot;headerlink&quot; title=&quot;类和构造函数&quot;&gt;&lt;/a&gt;类和构造函数&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;@class -- 此函数旨在需要使用”new”关键字调用（构造函数）或ES6中class。
-      
-    
-    </summary>
-    
-      <category term="代码规范" scheme="https://fanerge.github.io/categories/%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/"/>
-    
-    
-      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
-    
-      <category term="代码规范" scheme="https://fanerge.github.io/tags/%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/"/>
     
   </entry>
   
