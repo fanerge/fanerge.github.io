@@ -1,0 +1,1151 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="vue," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="余真帆的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="组件名为多个单词组件名应该始终是多个单词的，根组件 App 除外。 1234567Vue.component(&amp;apos;todo-item&amp;apos;, &amp;#123; //  自动将组件的 name 设置为 todo-item  // ...&amp;#125;)export default &amp;#123;  name: &amp;apos;TodoItem&amp;apos;, // 最佳实践为组件带上 name 调试">
+<meta name="keywords" content="vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue开发规范">
+<meta property="og:url" content="https://fanerge.github.io/2017/10/20/vue开发规范/index.html">
+<meta property="og:site_name" content="余真帆的博客">
+<meta property="og:description" content="组件名为多个单词组件名应该始终是多个单词的，根组件 App 除外。 1234567Vue.component(&amp;apos;todo-item&amp;apos;, &amp;#123; //  自动将组件的 name 设置为 todo-item  // ...&amp;#125;)export default &amp;#123;  name: &amp;apos;TodoItem&amp;apos;, // 最佳实践为组件带上 name 调试">
+<meta property="og:updated_time" content="2017-10-20T13:49:02.628Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="vue开发规范">
+<meta name="twitter:description" content="组件名为多个单词组件名应该始终是多个单词的，根组件 App 除外。 1234567Vue.component(&amp;apos;todo-item&amp;apos;, &amp;#123; //  自动将组件的 name 设置为 todo-item  // ...&amp;#125;)export default &amp;#123;  name: &amp;apos;TodoItem&amp;apos;, // 最佳实践为组件带上 name 调试">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://fanerge.github.io/2017/10/20/vue开发规范/"/>
+
+
+
+
+
+  <title> vue开发规范 | 余真帆的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?947609e8bcc46de32a1dca9cc56cd8a1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+	<a href="https://github.com/fanerge/"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">余真帆的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/20/vue开发规范/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                vue开发规范
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-20T21:44:22+08:00">
+                2017-10-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/vue/" itemprop="url" rel="index">
+                    <span itemprop="name">vue</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/20/vue开发规范/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/20/vue开发规范/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,770
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  7
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="组件名为多个单词"><a href="#组件名为多个单词" class="headerlink" title="组件名为多个单词"></a>组件名为多个单词</h2><pre><code>组件名应该始终是多个单词的，根组件 App 除外。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Vue.component(&apos;todo-item&apos;, &#123; //  自动将组件的 name 设置为 todo-item</div><div class="line">  // ...</div><div class="line">&#125;)</div><div class="line">export default &#123;</div><div class="line">  name: &apos;TodoItem&apos;, // 最佳实践为组件带上 name 调试有好处 </div><div class="line">  // ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h2 id="组件数据"><a href="#组件数据" class="headerlink" title="组件数据"></a>组件数据</h2><pre><code>组件的 data 必须是一个函数。
+每次返回一个新的纯对象。
+</code></pre><h2 id="Prop定义"><a href="#Prop定义" class="headerlink" title="Prop定义"></a>Prop定义</h2><pre><code>Prop 定义应该尽量详细（至少为其指定 type ）。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">props: &#123;</div><div class="line">  status: &#123;</div><div class="line">	type: String,</div><div class="line">	required: true,</div><div class="line">	validator: function (value) &#123;</div><div class="line">	  return [</div><div class="line">		&apos;syncing&apos;,</div><div class="line">		&apos;synced&apos;,</div><div class="line">		&apos;version-conflict&apos;,</div><div class="line">		&apos;error&apos;</div><div class="line">	  ].indexOf(value) !== -1</div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h2 id="为-v-for-设置键值"><a href="#为-v-for-设置键值" class="headerlink" title="为 v-for 设置键值"></a>为 v-for 设置键值</h2><pre><code>总是用 key 配合 v-for。
+</code></pre><h2 id="为组件样式设置作用域"><a href="#为组件样式设置作用域" class="headerlink" title="为组件样式设置作用域"></a>为组件样式设置作用域</h2><pre><code>下面对于单文件组件。
+对于应用来说，顶级 App 组件和布局组件中的样式可以是全局的，
+但是其它所有组件都应该是有作用域的（3种方式）。
+</code></pre><ol>
+<li>scoped <style scoped></style>    </li>
+<li><p>css Modules</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;button :class=&quot;[$style.button]&quot;&gt;X&lt;/button&gt;</div><div class="line">&lt;style module&gt;</div><div class="line">.button &#123;</div><div class="line">  border: none;</div><div class="line">  border-radius: 2px;</div><div class="line">&#125;</div><div class="line">.buttonClose &#123;</div><div class="line">  background-color: red;</div><div class="line">&#125;</div><div class="line">&lt;/style&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p>BEM 约定</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;button class=&quot;c-Button c-Button--close&quot;&gt;X&lt;/button&gt;</div><div class="line">&lt;style&gt;</div><div class="line">.c-Button &#123;</div><div class="line">  border: none;</div><div class="line">  border-radius: 2px;</div><div class="line">&#125;</div><div class="line">&lt;/style&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p>私有属性名 必要<br>在插件、混入等扩展中始终为自定义的私有属性使用 $_ 前缀。<br>并附带一个命名空间以回避和其它作者的冲突 (比如 $<em>yourPluginName</em>)。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">var myGreatMixin = &#123;</div><div class="line">  // ...</div><div class="line">  methods: &#123;</div><div class="line">	$_myGreatMixin_update: function () &#123;</div><div class="line">	  // ...</div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="组件文件"><a href="#组件文件" class="headerlink" title="组件文件"></a>组件文件</h2><pre><code>只要有能够拼接文件的构建系统，就把每个组件单独分成文件。
+components/
+|- TodoList.vue
+|- TodoItem.vue
+</code></pre><h2 id="单文件组件文件的大小写（大驼峰）"><a href="#单文件组件文件的大小写（大驼峰）" class="headerlink" title="单文件组件文件的大小写（大驼峰）"></a>单文件组件文件的大小写（大驼峰）</h2><pre><code>单文件组件的文件名应该要么始终是单词大写开头 (PascalCase)，要么始终是横线连接 (kebab-case)。
+</code></pre><h2 id="基础组件名"><a href="#基础组件名" class="headerlink" title="基础组件名"></a>基础组件名</h2><pre><code>应用特定样式和约定的基础组件 (也就是展示类的、无逻辑的或无状态的组件) 应该全部以一个特定的前缀开头，
+比如 Base、App 或 V。
+components/
+|- BaseButton.vue
+|- BaseTable.vue
+|- BaseIcon.vue
+</code></pre><h2 id="单例组件名"><a href="#单例组件名" class="headerlink" title="单例组件名"></a>单例组件名</h2><pre><code>只应该拥有单个活跃实例的组件应该以 The 前缀命名，以示其唯一性。
+components/
+|- TheHeading.vue
+|- TheSidebar.vue
+</code></pre><h2 id="紧密耦合的组件名"><a href="#紧密耦合的组件名" class="headerlink" title="紧密耦合的组件名"></a>紧密耦合的组件名</h2><pre><code>和父组件紧密耦合的子组件应该以父组件名作为前缀命名。
+components/
+|- TodoList.vue
+|- TodoListItem.vue
+|- TodoListItemButton.vue
+</code></pre><h2 id="组件名中的单词顺序"><a href="#组件名中的单词顺序" class="headerlink" title="组件名中的单词顺序"></a>组件名中的单词顺序</h2><pre><code>组件名应该以高级别的 (通常是一般化描述的) 单词开头，以描述性的修饰词结尾。
+components/
+|- SearchButtonClear.vue
+|- SearchButtonRun.vue
+|- SearchInputQuery.vue
+|- SearchInputExcludeGlob.vue
+|- SettingsCheckboxTerms.vue
+|- SettingsCheckboxLaunchOnStartup.vue
+</code></pre><h2 id="自闭合组件"><a href="#自闭合组件" class="headerlink" title="自闭合组件"></a>自闭合组件</h2><pre><code>在单文件组件、字符串模板和 JSX 中没有内容的组件应该是自闭合的——但在 DOM 模板里永远不要这样做。    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 在单文件组件、字符串模板和 JSX 中 --&gt;</div><div class="line">&lt;MyComponent/&gt;</div><div class="line">&lt;!-- 在 DOM 模板中 --&gt;</div><div class="line">&lt;my-component&gt;&lt;/my-component&gt;</div></pre></td></tr></table></figure>
+</code></pre><h2 id="模板中的组件名大小写"><a href="#模板中的组件名大小写" class="headerlink" title="模板中的组件名大小写"></a>模板中的组件名大小写</h2><pre><code>对于绝大多数项目来说，在单文件组件和字符串模板中组件名应该总是 PascalCase 的——但是在 DOM 模板中总是 kebab-case 的。
+&lt;!-- 在所有地方 --&gt;
+&lt;my-component&gt;&lt;/my-component&gt;
+</code></pre><h2 id="JS-JSX-中的组件名大小写"><a href="#JS-JSX-中的组件名大小写" class="headerlink" title="JS/JSX 中的组件名大小写"></a>JS/JSX 中的组件名大小写</h2><pre><code>JS/JSX 中的组件名应该始终是 PascalCase 的，尽管在较为简单的应用中只使用 Vue.component 进行全局组件注册时，
+可以使用 kebab-case 字符串。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">Vue.component(&apos;MyComponent&apos;, &#123;</div><div class="line">  // ...</div><div class="line">&#125;)</div><div class="line">Vue.component(&apos;my-component&apos;, &#123;</div><div class="line">  // ...</div><div class="line">&#125;)</div><div class="line">import MyComponent from &apos;./MyComponent.vue&apos;</div><div class="line">export default &#123;</div><div class="line">  name: &apos;MyComponent&apos;,</div><div class="line">  // ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h2 id="完整单词的组件名"><a href="#完整单词的组件名" class="headerlink" title="完整单词的组件名"></a>完整单词的组件名</h2><pre><code>组件名应该倾向于完整单词而不是缩写。
+components/
+|- StudentDashboardSettings.vue 学生面板设置
+|- UserProfileOptions.vue
+</code></pre><h2 id="Prop-名大小写"><a href="#Prop-名大小写" class="headerlink" title="Prop 名大小写"></a>Prop 名大小写</h2><pre><code>在声明 prop 的时候，其命名应该始终使用 camelCase，而在模板和 JSX 中应该始终使用 kebab-case。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">props: &#123;</div><div class="line">  greetingText: String</div><div class="line">&#125;</div><div class="line">// 在 html 中</div><div class="line">&lt;WelcomeMessage greeting-text=&quot;hi&quot;/&gt;</div></pre></td></tr></table></figure>
+</code></pre><h2 id="多个特性的元素"><a href="#多个特性的元素" class="headerlink" title="多个特性的元素"></a>多个特性的元素</h2><pre><code>多个特性的元素应该分多行撰写，每个特性一行。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;img</div><div class="line">  src=&quot;https://vuejs.org/images/logo.png&quot;</div><div class="line">  alt=&quot;Vue Logo&quot;</div><div class="line">&gt;</div></pre></td></tr></table></figure>
+</code></pre><h2 id="模板中简单的表达式"><a href="#模板中简单的表达式" class="headerlink" title="模板中简单的表达式"></a>模板中简单的表达式</h2><pre><code>组件模板应该只包含简单的表达式，复杂的表达式则应该重构为计算属性或方法。
+</code></pre><h2 id="简单的计算属性"><a href="#简单的计算属性" class="headerlink" title="简单的计算属性"></a>简单的计算属性</h2><pre><code>应该把复杂计算属性分割为尽可能多的更简单的属性。
+</code></pre><h2 id="带引号的特性值（双引号）"><a href="#带引号的特性值（双引号）" class="headerlink" title="带引号的特性值（双引号）"></a>带引号的特性值（双引号）</h2><pre><code>非空 HTML 特性值应该始终带引号 (单引号或双引号，选你 JS 里不用的那个)。
+</code></pre><h2 id="指令缩写"><a href="#指令缩写" class="headerlink" title="指令缩写"></a>指令缩写</h2><pre><code>指令缩写 (用 : 表示 v-bind: 和用 @ 表示 v-on:) 应该要么都用要么都不用。
+</code></pre><h2 id="组件-实例的选项的顺序"><a href="#组件-实例的选项的顺序" class="headerlink" title="组件/实例的选项的顺序"></a>组件/实例的选项的顺序</h2><pre><code>组件/实例的选项应该有统一的顺序。
+副作用 (触发组件外的影响)
+    el
+全局感知 (要求组件以外的知识)
+    name
+    parent
+组件类型 (更改组件的类型)
+    functional
+模板修改器 (改变模板的编译方式)
+    delimiters
+    comments
+模板依赖 (模板内使用的资源)
+    components
+    directives
+    filters
+组合 (向选项里合并属性)
+    extends
+    mixins
+接口 (组件的接口)
+    inheritAttrs
+    model
+    props/propsData
+本地状态 (本地的响应式属性)
+    data
+    computed
+事件 (通过响应式事件触发的回调)
+    watch
+生命周期钩子 (按照它们被调用的顺序)
+非响应式的属性 (不依赖响应系统的实例属性)
+    methods
+渲染 (组件输出的声明式描述)
+    template/render
+    renderError
+</code></pre><h2 id="元素特性的顺序"><a href="#元素特性的顺序" class="headerlink" title="元素特性的顺序"></a>元素特性的顺序</h2><pre><code>元素 (包括组件) 的特性应该有统一的顺序。    
+定义 (提供组件的选项)
+    is
+列表渲染 (创建多个变化的相同元素)
+    v-for
+条件渲染 (元素是否渲染/显示)
+    v-if
+    v-else-if
+    v-else
+    v-show
+    v-cloak
+渲染方式 (改变元素的渲染方式)
+    v-pre
+    v-once
+全局感知 (需要超越组件的知识)
+    id
+唯一的特性 (需要唯一值的特性)
+    ref
+    key
+    slot
+双向绑定 (把绑定和事件结合起来)
+    v-model
+其它特性 (所有普通的绑定或未绑定的特性)
+事件 (组件事件监听器)
+    v-on
+内容 (复写元素的内容)
+    v-html
+    v-text
+</code></pre><h2 id="组件-实例选项中的空行"><a href="#组件-实例选项中的空行" class="headerlink" title="组件/实例选项中的空行"></a>组件/实例选项中的空行</h2><pre><code>你可能想在多个属性之间增加一个空行，特别是在这些选项一屏放不下，
+需要滚动才能都看到的时候。
+</code></pre><h2 id="单文件组件的顶级元素的顺序"><a href="#单文件组件的顶级元素的顺序" class="headerlink" title="单文件组件的顶级元素的顺序"></a>单文件组件的顶级元素的顺序</h2><pre><code>单文件组件应该总是让 template、script 和 style 标签的顺序保持一致。
+且 &lt;style&gt; 要放在最后，因为另外两个标签至少要有一个。
+&lt;template&gt;...&lt;/template&gt;
+&lt;script&gt;/* ... */&lt;/script&gt;
+&lt;style&gt;/* ... */&lt;/style&gt;
+</code></pre><h2 id="没有在-v-if-v-if-else-v-else-中使用-key-谨慎使用"><a href="#没有在-v-if-v-if-else-v-else-中使用-key-谨慎使用" class="headerlink" title="没有在 v-if/v-if-else/v-else 中使用 key 谨慎使用"></a>没有在 v-if/v-if-else/v-else 中使用 key 谨慎使用</h2><pre><code>如果一组 v-if + v-else 的元素类型相同，最好使用 key (比如两个 &lt;div&gt; 元素)。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;div v-if=&quot;error&quot; key=&quot;search-status&quot;&gt;</div><div class="line">  错误：&#123;&#123; error &#125;&#125;</div><div class="line">&lt;/div&gt;</div><div class="line">&lt;div v-else key=&quot;search-results&quot;&gt;</div><div class="line">  &#123;&#123; results &#125;&#125;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
+</code></pre><h2 id="scoped-中的元素选择器-谨慎使用"><a href="#scoped-中的元素选择器-谨慎使用" class="headerlink" title="scoped 中的元素选择器 谨慎使用"></a>scoped 中的元素选择器 谨慎使用</h2><pre><code>元素选择器应该避免在 scoped 中出现。
+</code></pre><h2 id="隐性的父子组件通信-谨慎使用"><a href="#隐性的父子组件通信-谨慎使用" class="headerlink" title="隐性的父子组件通信 谨慎使用"></a>隐性的父子组件通信 谨慎使用</h2><pre><code>应该优先通过 prop 和事件进行父子组件之间的通信，而不是 this.$parent 或改变 prop。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Vue.component(&apos;TodoItem&apos;, &#123;</div><div class="line">  props: &#123;</div><div class="line">	todo: &#123;</div><div class="line">	  type: Object,</div><div class="line">	  required: true</div><div class="line">	&#125;</div><div class="line">  &#125;,</div><div class="line">  template: `</div><div class="line">	&lt;input</div><div class="line">	  :value=&quot;todo.text&quot;</div><div class="line">	  @input=&quot;$emit(&apos;input&apos;, $event.target.value)&quot;</div><div class="line">	&gt;</div><div class="line">  `</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+</code></pre><h2 id="非-Flux-的全局状态管理-谨慎使用"><a href="#非-Flux-的全局状态管理-谨慎使用" class="headerlink" title="非 Flux 的全局状态管理 谨慎使用"></a>非 Flux 的全局状态管理 谨慎使用</h2><pre><code>应该优先通过 Vuex 管理全局状态，而不是通过 this.$root 或一个全局事件总线。
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="https://cn.vuejs.org/v2/style-guide" target="_blank" rel="external">vue代码指南</a></p>
+</blockquote>
+
+      
+    </div>
+	<div>
+	  
+		
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+  <p><span>本文标题:</span><a href="/2017/10/20/vue开发规范/">vue开发规范</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 余真帆-fanerge 的个人博客">余真帆-fanerge</a></p>
+  <p><span>发布时间:</span>2017年10月20日 - 21:10</p>
+  <p><span>最后更新:</span>2017年10月20日 - 21:10</p>
+  <p><span>原始链接:</span><a href="/2017/10/20/vue开发规范/" title="vue开发规范">https://fanerge.github.io/2017/10/20/vue开发规范/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://fanerge.github.io/2017/10/20/vue开发规范/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+
+	  
+	</div>
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+	<div>
+	  
+		<div>
+    
+        <div style="text-align:center;color: #aaa;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>fanerge在此感谢您的阅读-------------</div>
+    
+</div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/vue/" rel="tag"><i class="fa fa-tag"></i> vue</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/19/css实现水平和垂直居中方案总结/" rel="next" title="css实现水平和垂直居中方案总结">
+                <i class="fa fa-chevron-left"></i> css实现水平和垂直居中方案总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="余真帆-fanerge" />
+          <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">91</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/fanerge/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="twitter" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="weibo" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金">
+                  
+                    <i class="fa fa-fw fa-spinner"></i>
+                  
+                  掘金
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#组件名为多个单词"><span class="nav-number">1.</span> <span class="nav-text">组件名为多个单词</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组件数据"><span class="nav-number">2.</span> <span class="nav-text">组件数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Prop定义"><span class="nav-number">3.</span> <span class="nav-text">Prop定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为-v-for-设置键值"><span class="nav-number">4.</span> <span class="nav-text">为 v-for 设置键值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为组件样式设置作用域"><span class="nav-number">5.</span> <span class="nav-text">为组件样式设置作用域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组件文件"><span class="nav-number">6.</span> <span class="nav-text">组件文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单文件组件文件的大小写（大驼峰）"><span class="nav-number">7.</span> <span class="nav-text">单文件组件文件的大小写（大驼峰）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基础组件名"><span class="nav-number">8.</span> <span class="nav-text">基础组件名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单例组件名"><span class="nav-number">9.</span> <span class="nav-text">单例组件名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#紧密耦合的组件名"><span class="nav-number">10.</span> <span class="nav-text">紧密耦合的组件名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组件名中的单词顺序"><span class="nav-number">11.</span> <span class="nav-text">组件名中的单词顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自闭合组件"><span class="nav-number">12.</span> <span class="nav-text">自闭合组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模板中的组件名大小写"><span class="nav-number">13.</span> <span class="nav-text">模板中的组件名大小写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JS-JSX-中的组件名大小写"><span class="nav-number">14.</span> <span class="nav-text">JS/JSX 中的组件名大小写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#完整单词的组件名"><span class="nav-number">15.</span> <span class="nav-text">完整单词的组件名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Prop-名大小写"><span class="nav-number">16.</span> <span class="nav-text">Prop 名大小写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多个特性的元素"><span class="nav-number">17.</span> <span class="nav-text">多个特性的元素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模板中简单的表达式"><span class="nav-number">18.</span> <span class="nav-text">模板中简单的表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单的计算属性"><span class="nav-number">19.</span> <span class="nav-text">简单的计算属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#带引号的特性值（双引号）"><span class="nav-number">20.</span> <span class="nav-text">带引号的特性值（双引号）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指令缩写"><span class="nav-number">21.</span> <span class="nav-text">指令缩写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组件-实例的选项的顺序"><span class="nav-number">22.</span> <span class="nav-text">组件/实例的选项的顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#元素特性的顺序"><span class="nav-number">23.</span> <span class="nav-text">元素特性的顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组件-实例选项中的空行"><span class="nav-number">24.</span> <span class="nav-text">组件/实例选项中的空行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单文件组件的顶级元素的顺序"><span class="nav-number">25.</span> <span class="nav-text">单文件组件的顶级元素的顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#没有在-v-if-v-if-else-v-else-中使用-key-谨慎使用"><span class="nav-number">26.</span> <span class="nav-text">没有在 v-if/v-if-else/v-else 中使用 key 谨慎使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#scoped-中的元素选择器-谨慎使用"><span class="nav-number">27.</span> <span class="nav-text">scoped 中的元素选择器 谨慎使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#隐性的父子组件通信-谨慎使用"><span class="nav-number">28.</span> <span class="nav-text">隐性的父子组件通信 谨慎使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非-Flux-的全局状态管理-谨慎使用"><span class="nav-number">29.</span> <span class="nav-text">非 Flux 的全局状态管理 谨慎使用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+</div>
+
+
+
+<div class="powered-by">
+	<i class="fa fa-user-md"></i>
+	<span id="busuanzi_container_site_pv">
+		本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共114.6k字</span>
+</div>
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fanerge.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://fanerge.github.io/2017/10/20/vue开发规范/';
+          this.page.identifier = '2017/10/20/vue开发规范/';
+          this.page.title = 'vue开发规范';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fanerge.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+    <script type="text/javascript" src="/live2d/script.js"></script>
+    <canvas id="live2dcanvas" width="150" height="300" class="live2d"></canvas>
+    <style>
+      #live2dcanvas {
+        position: fixed;
+        right: 0px;
+        z-index: 999;
+        pointer-events: none;
+        bottom: -30px;
+      }
+    </style>
+    <script>loadlive2d("live2dcanvas" ,"/live2d/assets/nito/nietzche.model.json",0.5)</script>
+  
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>

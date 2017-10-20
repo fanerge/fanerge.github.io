@@ -306,6 +306,218 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/15/js设计模式-代理模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/15/js设计模式-代理模式/" itemprop="url">
+                  js设计模式-代理模式
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-15T20:24:36+08:00">
+                2017-10-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/15/js设计模式-代理模式/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/15/js设计模式-代理模式/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  692
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  3
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="代理模式"><a href="#代理模式" class="headerlink" title="代理模式"></a>代理模式</h1><pre><code>定义：为一个对象提供一个代用品或占位符，以便控制对它的访问。
+    代理对象和本体对象实现了同样的接口，并且会把任何方法调用传递给本体对象；
+举例：
+    图片预加载、图片懒加载、
+    合并HTTP请求（代理收集一定时间内的所有HTTP请求，然后一次性发给服务器）、
+    惰性加载（通过代理处理和收集一些基本操作，然后仅在真正需要本体的时候才加载本体）、
+    缓存代理（缓存请求结果、计算结果）
+</code></pre><h1 id="缓存代理"><a href="#缓存代理" class="headerlink" title="缓存代理"></a>缓存代理</h1><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">// 先实现具体的两个算法</div><div class="line">const mult = function() &#123;</div><div class="line">	let a = 1;</div><div class="line">	for (let i = 0; i &lt; arguments.length; i++) &#123;</div><div class="line">		a *= arguments[i];</div><div class="line">	&#125;</div><div class="line">	return a;</div><div class="line">&#125;;</div><div class="line">const plus = function() &#123;</div><div class="line">	let a = 0;</div><div class="line">	for (let i = 0; i &lt; arguments.length; i++) &#123;</div><div class="line">		a += arguments[i];</div><div class="line">	&#125;</div><div class="line">	return a;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">// 创建缓存代理</div><div class="line">const createProxyFactory = function(fn) &#123;</div><div class="line">	let cache = &#123;&#125;; // 保存计算的结果</div><div class="line">	// 使用闭包在内存中保留对cache的引用</div><div class="line">	return function() &#123;</div><div class="line">		let args = Array.from(arguments).join(&apos;,&apos;); // 将所有参数转化为字符串作为缓存的 key</div><div class="line">		if (args in cache) &#123;</div><div class="line">			return cache[args];</div><div class="line">		&#125; else &#123;</div><div class="line">			return cache[args] = fn.apply(this, arguments);</div><div class="line">		&#125;</div><div class="line">	&#125;;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">// 使用代理对象</div><div class="line">const proxyMult = createProxyFactory(mult);</div><div class="line">const proxyPlus = createProxyFactory(plus);</div><div class="line">console.log(proxyMult(1,2,3,4)); // 24</div><div class="line">console.log(proxyPlus(1,2,3,4)); // 10</div></pre></td></tr></table></figure>
+
+说明：这里每次进行同类的计算时（乘法和加法两类），先判断缓存对象cache中是否存在该参数连接成的字符串作为key的属性。
+如果有，则直接从cache中读取，否则就进行计算并保存其结果。
+</code></pre><h1 id="虚拟代理"><a href="#虚拟代理" class="headerlink" title="虚拟代理"></a>虚拟代理</h1><pre><code>虚拟代理：某一个花销很大的操作，可以通过虚拟代理的方式延迟到这种需要它的时候才去创建
+例：使用虚拟代理实现图片懒加载
+下面以虚拟代理来说明：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">// 本体对象</div><div class="line">const imgFunc = (function() &#123;</div><div class="line">	const imgNode = document.createElement(&apos;img&apos;);</div><div class="line">	document.body.appendChild(imgNode);</div><div class="line">	return &#123;</div><div class="line">		setSrc(src)&#123;</div><div class="line">			imgNode.src = src;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;)();</div><div class="line"></div><div class="line">// 代理对象</div><div class="line">const proxyImage = (function() &#123;</div><div class="line">	const img = new Image();</div><div class="line">	img.onload = function() &#123;</div><div class="line">		imgFunc.setSrc(this.src);</div><div class="line">	&#125;;</div><div class="line">	return &#123;</div><div class="line">		setSrc(src)&#123;</div><div class="line">			imgFunc.setSrc(&apos;./loading.gif&apos;);</div><div class="line">			img.src = src;</div><div class="line">		&#125;</div><div class="line">	&#125;;</div><div class="line">&#125;)();</div><div class="line"></div><div class="line">// 使用代理对象</div><div class="line">proxyImage.setSrc(&apos;./reality.png&apos;);</div></pre></td></tr></table></figure>
+
+说明：图片懒加载的方式：先通过一张loading图占位，然后通过异步的方式加载图片，等图片加载好了再把完成的图片加载到img标签里面。
+这里讲述一下代理对象做了那些事：
+    1.创建了一个 Image 对象，并为其绑定了 onload 事件。
+    2.将 imgNode 先设置为 &apos;./loading.gif&apos; 加载的菊花图。
+    3.当 Image 对象加载完真实的图片，也就是上文的 &apos;./reality.png&apos; ,将 imgNode 设置为 &apos;./reality.png&apos;。 
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="http://www.cnblogs.com/shamoguying1140/p/3169206.html" target="_blank" rel="external">js设计模式（9）—代理模式</a><br>    <a href="https://juejin.im/post/59df4f74f265da430f311909" target="_blank" rel="external">JavaScript设计模式</a><br>    <a href="http://blog.csdn.net/hi_xiexialing/article/details/54605065" target="_blank" rel="external"> js用高阶函数动态创建缓存代理</a></p>
+<p>   参考文档：<br>    <a href="http://www.cnblogs.com/tugenhua0707/p/4722696.html" target="_blank" rel="external">理解javascript中的策略模式</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/15/js设计模式-策略模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2687,425 +2899,11 @@ WebSocket原理：WebSocket是一种在单个TCP连接上进行全双工通讯�
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/28/koa学习-总结/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/28/koa学习-总结/" itemprop="url">
-                  koa学习-总结
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-28T20:22:32+08:00">
-                2017-09-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
-                    <span itemprop="name">NodeJS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/28/koa学习-总结/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/28/koa学习-总结/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  1,610
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  8
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="一个koa示例"><a href="#一个koa示例" class="headerlink" title="一个koa示例"></a>一个koa示例</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">const koa = require(&apos;koa&apos;);</div><div class="line">const app = new koa();</div><div class="line"></div><div class="line">// 使用中间件</div><div class="line">app.use(); // @param function</div><div class="line">// 监听端口，开启服务</div><div class="line">app.listen(1314, () =&gt; &#123;</div><div class="line">	console.log(&apos;success&apos;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h2 id="Context-对象"><a href="#Context-对象" class="headerlink" title="Context 对象"></a>Context 对象</h2><pre><code>Koa 提供一个 Context 对象，表示一次对话的上下文（包括 HTTP 请求和 HTTP 回复）。
-koa 通过 ctx.request.accepts 设置期望返回的类型内容，默认为 text/plain。        
-koa 通过 ctx.response.type 指定返回类型。
-示例：常用的格式xml、json、html、text等。
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">	app.use((ctx) =&gt; &#123;</div><div class="line">		if (ctx.request.accepts(&apos;xml&apos;)) &#123;</div><div class="line">			ctx.response.type = &apos;xml&apos;;</div><div class="line">			ctx.response.body = &apos;&lt;data&gt;我是xml&lt;/data&gt;&apos;;</div><div class="line">		&#125; else &#123;</div><div class="line">			ctx.response.type = &apos;text&apos;;</div><div class="line">			ctx.response.body = &apos;我是text&apos;;</div><div class="line">		&#125;</div><div class="line">	&#125;);</div><div class="line">	```	</div><div class="line">示例：实际开发（网页模板）</div><div class="line">	直接返回template.html</div></pre></td></tr></table></figure>
-
-    app.use(ctx =&gt; {
-      ctx.response.type = &apos;html&apos;;
-      ctx.response.body = fs.createReadStream(&apos;./views/template.html&apos;);
-    });
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">##	路由</div><div class="line">	通过ctx.request.path可以获取用户请求的路径，由此实现简单的路由。</div><div class="line">###	原生路由</div></pre></td></tr></table></figure>
-
-    const main = ctx =&gt; {
-        ctx.response.type = &apos;html&apos;;
-      if (ctx.request.path === &apos;/&apos;) {
-        ctx.response.body = &apos;&lt;a href=&quot;/&quot;&gt;Index Page&lt;/a&gt;&apos;;
-      } else if (ctx.request.path === &apos;/get&apos;) {
-        ctx.response.body = &apos;&lt;a href=&quot;/&quot;&gt;Get Page&lt;/a&gt;&apos;;
-      } else {
-        ctx.response.body = &apos;&lt;a href=&quot;/&quot;&gt;other Page&lt;/a&gt;&apos;;
-      }
-    };
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">###	koa-route 模块</div></pre></td></tr></table></figure>
-
-const Koa = require(&apos;koa&apos;);
-const route = require(&apos;koa-route&apos;);
-const app = new Koa();
-
-const about = ctx =&gt; {
-    ctx.response.type = &apos;html&apos;;
-    ctx.response.body = &apos;&lt;p&gt;about page&lt;/p&gt;&apos;
-};
-
-const user = ctx =&gt; {
-    ctx.response.type = &apos;html&apos;;
-    ctx.response.body = &apos;&lt;p&gt;user page&lt;/p&gt;&apos;
-};
-
-const main = ctx =&gt; {
-    ctx.response.type = &apos;html&apos;;
-    ctx.response.body = &apos;hello world&apos;
-};
-
-app.use(route.get(&apos;/&apos;, main)); // 主页
-app.use(route.get(&apos;/about&apos;, about)); // about页面
-app.use(route.get(&apos;/user&apos;, user)); // user页面
-
-// app.use(main);
-app.listen(3000);
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">##	静态资源 和 重定向</div><div class="line">###	静态资源</div><div class="line">	如果网站提供静态资源（图片、字体、样式表、脚本......）。</div><div class="line">	koa-static 模块封装了这部分的请求。</div><div class="line">	示例：请求本地12.js</div></pre></td></tr></table></figure>
-
-const Koa = require(&apos;koa&apos;);
-const app = new Koa();
-const path = require(&apos;path&apos;);
-const serve = require(&apos;koa-static&apos;);
-
-const main = serve(path.join(__dirname));
-
-app.use(main);
-app.listen(3000);
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">	说明：__dirname 表示 node.js 执行环境路径。</div><div class="line">	请求资源： http://127.0.0.1:3000/12.js</div><div class="line">###	重定向</div><div class="line">	有些场合，服务器需要重定向（redirect）访问请求。</div><div class="line">	比如，用户登陆以后，将他重定向到登陆前的页面。</div><div class="line">	ctx.response.redirect()方法可以发出一个302跳转，将用户导向另一个路由。</div></pre></td></tr></table></figure>
-
-const redirect = ctx =&gt; {
-  ctx.response.redirect(&apos;/&apos;);
-};
-
-const main = ctx =&gt; {
-  ctx.response.body = &apos;Hello World&apos;;
-};
-
-app.use(route.get(&apos;/&apos;, main));
-app.use(route.get(&apos;/redirect&apos;, redirect)); // 当请求路径为 /redirect 时，执行 redirect 方法，进行重定向
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">	访问 http://127.0.0.1:3000/redirect ，浏览器会将用户导向根路由。</div><div class="line">##	中间件</div><div class="line">###	设计中间件</div><div class="line">	Koa 的最大特色，也是最重要的一个设计，就是中间件（middleware）。</div><div class="line">	示例：自己设计一个logger中间件。</div></pre></td></tr></table></figure>
-
-/**
-* 定义日志中间件 logger
-* @param ctx {object} 上下文对象 
-* @param next {function} 下一个中间件执行权
-*/
-const logger = (ctx, next) =&gt; {
-    console.log(`${Date.now()} ${ctx.request.method} ${ctx.request.url}`);
-    next(); // 只要调用next函数，就可以把执行权转交给下一个中间件。
-};
-// 使用中间件
-app.use(logger);
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">###	中间件特性</div><div class="line">	多个中间件会形成一个栈结构（middle stack），以&quot;先进后出&quot;（first-in-last-out）的顺序执行。</div></pre></td></tr></table></figure>
-
-const one = (ctx, next) =&gt; {
-  console.log(&apos;&gt;&gt; one&apos;);
-  next();
-  console.log(&apos;&lt;&lt; one&apos;);
-}
-
-const two = (ctx, next) =&gt; {
-  console.log(&apos;&gt;&gt; two&apos;);
-  next(); 
-  console.log(&apos;&lt;&lt; two&apos;);
-}
-
-const three = (ctx, next) =&gt; {
-  console.log(&apos;&gt;&gt; three&apos;);
-  next();
-  console.log(&apos;&lt;&lt; three&apos;);
-}
-
-app.use(one);
-app.use(two);
-app.use(three);
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">	输出：</div><div class="line">	&gt;&gt; one   // one中间件进栈</div><div class="line">	&gt;&gt; two   // two中间件进栈</div><div class="line">	&gt;&gt; three // three中间件进栈</div><div class="line">	&lt;&lt; three // three中间件 出栈</div><div class="line">	&lt;&lt; two   // two中间件 出栈</div><div class="line">	&lt;&lt; one	 // one中间件 出栈	</div><div class="line">###	异步中间件</div><div class="line">	如果有异步操作（比如读取数据库），中间件就必须写成 async 函数。</div><div class="line">	实例：异步 main 中间件</div></pre></td></tr></table></figure>
-
-const fs = require(&apos;fs.promised&apos;);
-
-const main = async function (ctx, next) {
-  ctx.response.type = &apos;html&apos;;
-  ctx.response.body = await fs.readFile(&apos;./demos/template.html&apos;, &apos;utf8&apos;);
-};
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	fs.readFile是一个异步操作，必须写成异步中间件。</div><div class="line">###	koa-compose模块可以将多个中间件合成为一个。</div><div class="line">	示例：合并 logger 和 main 中间件。</div></pre></td></tr></table></figure>
-
-const compose = require(&apos;koa-compose&apos;);
-
-const middlewares = compose([logger, main]);
-app.use(middlewares);
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">##	错误处理</div><div class="line">	如果代码运行过程中发生错误，我们需要把错误信息返回给用户。</div><div class="line">###	500错误</div><div class="line">	HTTP 协定约定这时要返回500状态码。</div><div class="line">	Koa 提供了ctx.throw()方法，用来抛出错误，ctx.throw(500)就是抛出500错误。</div></pre></td></tr></table></figure>
-
-const main = ctx =&gt; {
-    ctx.throw(500);
-};
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">###	404错误</div><div class="line">	如果将ctx.response.status设置成404，就相当于ctx.throw(404)，返回404错误。</div></pre></td></tr></table></figure>
-
-const main = ctx =&gt; {
-  ctx.response.status = 404; // ctx.throw(404);
-  ctx.response.body = &apos;Page Not Found&apos;;
-};
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">###	处理错误的中间件	</div><div class="line">	为了方便处理错误，最好使用try...catch将其捕获。</div><div class="line">	但是，为每个中间件都写try...catch太麻烦，我们可以让最外层的中间件，负责所有中间件的错误处理。</div></pre></td></tr></table></figure>
-
-// 最外层中间件
-const handler = async (ctx, next) =&gt; {
-  try {
-    await next();
-  } catch (err) {
-    ctx.response.status = err.statusCode || err.status || 500;
-    ctx.response.body = {
-      message: err.message
-    };
-  }
-};
-// 内层中间件
-const main = ctx =&gt; {
-  ctx.throw(404);
-};
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">###	error 事件的监听</div><div class="line">	运行过程中一旦出错，Koa 会触发一个error事件。</div><div class="line">	监听这个事件，也可以处理错误。</div></pre></td></tr></table></figure>
-
-const main = ctx =&gt; {
-    ctx.throw(500); // 直接触发错误
-};
-// 监听错误
-app.on(&apos;error&apos;, (err, ctx) =&gt; {
-    console.error(&apos;server error&apos;, err);
-});
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">###	释放 error 事件	</div><div class="line">	需要注意的是，如果错误被try...catch捕获，就不会触发error事件。</div><div class="line">	这时，必须调用ctx.app.emit()，手动释放error事件，才能让监听函数生效。</div></pre></td></tr></table></figure>
-
-const handler = async (ctx, next) =&gt; {
-    try {
-        await next();
-    } catch (err) {
-        ctx.response.status = err.statusCode || err.status || 500;
-        ctx.response.type = &apos;html&apos;;
-        ctx.response.body = &apos;&lt;p&gt;Something wrong, please contact administrator.&lt;/p&gt;&apos;;
-        ctx.app.emit(&apos;error&apos;, err, ctx);
-    }
-};
-
-const main = ctx =&gt; {
-    ctx.throw(500);
-};
-
-app.on(&apos;error&apos;, function(err) {
-    console.log(&apos;logging error &apos;, err.message);
-    console.log(err);
-});
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">	main函数抛出错误，被handler函数捕获。</div><div class="line">	catch代码块里面使用ctx.app.emit()手动释放error事件，才能让监听函数监听到。</div><div class="line">##	Web App 的功能</div><div class="line">###	Cookies</div><div class="line">	ctx.cookies 用来读写 Cookie。</div></pre></td></tr></table></figure>
-
-const main = function(ctx) {
-    const n = Number(ctx.cookies.get(&apos;view&apos;) || 0) + 1;
-    ctx.cookies.set(&apos;view&apos;, n);
-    ctx.response.body = n + &apos; views&apos;;
-}
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">###	表单</div><div class="line">	Web 应用离不开处理表单。</div><div class="line">	表单就是 POST 方法发送到服务器的键值对。</div><div class="line">	koa-body模块可以用来从 POST 请求的数据体里面提取键值对。</div></pre></td></tr></table></figure>
-
-const koaBody = require(&apos;koa-body&apos;);
-
-const main = async function (ctx) {
-    const body = ctx.request.body;
-    if (!body.name) ctx.throw(400, &apos;.name required&apos;);
-    ctx.body = { name: body.name };
-};
-
-app.use(koaBody());
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">###	文件上传</div><div class="line">	koa-body模块还可以用来处理文件上传。</div></pre></td></tr></table></figure>
-
-const os = require(&apos;os&apos;);
-const path = require(&apos;path&apos;);
-const koaBody = require(&apos;koa-body&apos;);
-
-const main = async function(ctx) {
-    const tmpdir = os.tmpdir();
-    const filePaths = [];
-    const files = ctx.request.body.files || {};
-
-    for (let key in files) {
-        const file = files[key];
-        const filePath = path.join(tmpdir, file.name);
-        const reader = fs.createReadStream(file.path);
-        const writer = fs.createWriteStream(filePath);
-        reader.pipe(writer);
-        filePaths.push(filePath);
-    }
-
-    ctx.body = filePaths;
-};
-
-app.use(koaBody({ multipart: true }));
-```
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="http://www.ruanyifeng.com/blog/2017/08/koa.html" target="_blank" rel="external">阮一峰老师的koa教程</a><br>    <a href="https://www.npmjs.com/package/koa-router" target="_blank" rel="external">koa-router官方文档</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -3150,7 +2948,7 @@ app.use(koaBody({ multipart: true }));
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">90</span>
+                <span class="site-state-item-count">91</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -3289,7 +3087,7 @@ app.use(koaBody({ multipart: true }));
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共112.8k字</span>
+  <span class="post-count">博客全站共114.6k字</span>
 </div>
         
 
