@@ -306,6 +306,229 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/21/js设计模式-迭代器模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/21/js设计模式-迭代器模式/" itemprop="url">
+                  js设计模式-迭代器模式
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-21T13:15:11+08:00">
+                2017-10-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/21/js设计模式-迭代器模式/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/21/js设计模式-迭代器模式/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  882
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  4
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="迭代器模式介绍"><a href="#迭代器模式介绍" class="headerlink" title="迭代器模式介绍"></a>迭代器模式介绍</h1><pre><code>定义：迭代器模式是指提供一种方法顺序访问一个聚合对象中的各个元素，而又不需要暴露该对象的内部表示。
+使用的好处：迭代器模式可以把迭代的过程从业务逻辑中分离出来，在使用迭代器模式之后，即使不关心对象的内部构造，也可以按顺序访问其中的每个元素。
+先看一个 jquery 迭代器
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$.each(array, function (i, n) &#123;</div><div class="line">	console.log(`当前为第$&#123;i&#125;项，值为$&#123;n&#125;`);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h1 id="封装迭代器"><a href="#封装迭代器" class="headerlink" title="封装迭代器"></a>封装迭代器</h1><h2 id="内部迭代器"><a href="#内部迭代器" class="headerlink" title="内部迭代器"></a>内部迭代器</h2><pre><code>定义：迭代函数内部已经定义好了迭代原则，它完全接手整个迭代过程，外部只需要一次初始调用。    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">const each = function(array, callback) &#123;</div><div class="line">	for (let i = 0, len = array.length; i &lt; len; i++) &#123;</div><div class="line">		callback.call(array[i], array[i], i); </div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line">// 注意：这里设计each函数时参考了[].forEach函数，callback第一个参数为 value，第二个参数为 index。</div></pre></td></tr></table></figure>
+
+使用内部迭代器：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">each([1,2,3,4], function (val, ind) &#123;</div><div class="line">	console.log( val + &quot; - &quot; + ind ); // 输出数组值和下标</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+
+说明：现在 ES5 已经实现了内部迭代器 [].foreEach(callback(currentValue, index, array)[, this]); 
+详细的使用说明请参考[MDN-Array.prototype.forEach()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach)
+</code></pre><h2 id="外部迭代器"><a href="#外部迭代器" class="headerlink" title="外部迭代器"></a>外部迭代器</h2><pre><code>定义：外部迭代器必须显式地请求迭代下一个元素，外部迭代器增加了一些调用的复杂度，
+    但相对的也增强了迭代器的灵活性，我们可以手工控制迭代的过程或者顺序。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">2 var Iterator = function (obj) &#123;</div><div class="line">	var current = 0;</div><div class="line"></div><div class="line">	var next = function()&#123;</div><div class="line">		current += 1;</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">	var isDone = function()&#123;</div><div class="line">		return current &gt;= obj.length;</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">	var getCurrItem = function()&#123;</div><div class="line">		return obj[ current ];</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">	return &#123;</div><div class="line">		next: next,</div><div class="line">		isDone: isDone,</div><div class="line">		getCurrItem: getCurrItem</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+使用：判断两个数组是不是相等
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">var compare = function( iterator1, iterator2 )&#123;</div><div class="line">	while( iterator1.isDone() &amp;&amp; iterator2.isDone() )&#123;</div><div class="line">		if( iterator1.getCurrItem() !== iterator2.getCurrItem() )&#123;</div><div class="line">			throw new Error( &quot;iterator1 和 iterator2不相等&quot; );</div><div class="line">		&#125;</div><div class="line">		iterator1.next();</div><div class="line">		iterator2.next();</div><div class="line">	&#125;</div><div class="line">	console.log( &quot;iterator1 和 iterator2相等&quot; );</div><div class="line">&#125;;</div><div class="line"></div><div class="line">var iterator1 = Iterator( [1,2,3,4] );</div><div class="line">var iterator2 = Iterator( [1,2,3,4] );</div><div class="line"></div><div class="line">compare(iterator1,iterator2);</div></pre></td></tr></table></figure>
+</code></pre><h2 id="中止迭代器"><a href="#中止迭代器" class="headerlink" title="中止迭代器"></a>中止迭代器</h2><pre><code>定义：在迭代过程，通过判断是否退出迭代器。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">var each = function( arry, callback )&#123;</div><div class="line">	for( var i = 0, l = arry.length; i &lt; l; i++ )&#123;</div><div class="line">		// callback 的执行结果返回false，提前中止迭代</div><div class="line">		if( callback( arry[i], i ) === false )&#123;</div><div class="line">			break;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+
+使用：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">each( [1,2,3,4,5], function ( n, i ) &#123;</div><div class="line">	if( n&gt;3 )&#123; // n 大于3的时候中止循环</div><div class="line">		return false;</div><div class="line">	&#125;</div><div class="line">	console.log(n); // 输出 1 2 3</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h1 id="迭代器应用示例"><a href="#迭代器应用示例" class="headerlink" title="迭代器应用示例"></a>迭代器应用示例</h1><pre><code>需求：根据不同的浏览器获取相应的上传组件对象，将不同的上传对象封装到各自的函数里; 
+如果函数可用，则返回该对象，否则返回false，提示迭代器继续向下迭代。
+定义上传组件方法：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">// 将不同的上传对象封装到各自的函数里; 如果函数可用，则返回该对象，否则返回false，提示迭代器继续</div><div class="line">var getActiveUploadObj = function()&#123;</div><div class="line">	try&#123;</div><div class="line">		return new ActiceXObject( &quot;TXFTNActiveX.FTNUpload&quot; ); // IE 上传控件</div><div class="line">	&#125;catch(e)&#123;</div><div class="line">		return false;</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line">var getFlashUploadObj = function()&#123;</div><div class="line">	if( supportFlash() )&#123;</div><div class="line">		var str = &quot;&lt;object type=&apos;application/x-shockwave-flash&apos;&gt;&lt;/object&gt;&quot;;</div><div class="line">		return $( str).appendTo( $(&quot;body&quot;) );</div><div class="line">	&#125;</div><div class="line">	return false;</div><div class="line">&#125;;</div><div class="line">var getFormUpl0adObj = function()&#123;</div><div class="line">	var str = &quot;&lt;input type=&apos;file&apos; type=&apos;file&apos; class=&apos;ui-file&apos; /&gt;&quot;; // 表单上传</div><div class="line">	return $( str).appendTo( $(&quot;body&quot;) );</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+
+实现迭代器：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">//迭代器代码</div><div class="line">var iteratorUploadObj = function()&#123;</div><div class="line">	for( var i = 0, fn; fn = arguments[ i++ ]; )&#123;</div><div class="line">		var uploadObj = fn();</div><div class="line">		if( uploadObj !== false )&#123;</div><div class="line">			return uploadObj;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">var uploadObj = iteratorUploadObj( getActiveUploadObj, getFlashUploadObj, getFormUpl0adObj );</div></pre></td></tr></table></figure>
+
+PS：这里说明一下，如果前面的上传方案可以使用就使用，否则就使用后面的上传方案。
+    可以用于浏览器降级处理
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="http://www.alloyteam.com/2012/10/commonly-javascript-design-patterns-iterator-mode/" target="_blank" rel="external">【Javascript设计模式12】-迭代器模式</a><br>    <a href="http://www.cnblogs.com/Medeor/p/5017879.html" target="_blank" rel="external">JavaScript设计模式 - 迭代器模式</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/21/js设计模式-适配器模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2498,226 +2721,6 @@ vuex有四个核心概念，其中state和getters主要是用于数据的存储�
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/16/js设计模式-装饰者模式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/10/16/js设计模式-装饰者模式/" itemprop="url">
-                  js设计模式-装饰者模式
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-16T22:42:20+08:00">
-                2017-10-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">设计模式</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/16/js设计模式-装饰者模式/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/16/js设计模式-装饰者模式/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  734
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  3
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="装饰者模式"><a href="#装饰者模式" class="headerlink" title="装饰者模式"></a>装饰者模式</h1><pre><code>定义：装饰者(decorator)模式能够在不改变对象自身的基础上，在程序运行期间给对象动态的添加职责。
-    装饰者用于通过重载方法的形式添加新功能，该模式可以在被装饰者前面或者后面加上自己的行为以达到特定的目的。
-    与继承相比，装饰者是一种更轻便灵活的做法。
-</code></pre><p><img src="http://oxpnrlb4j.bkt.clouddn.com/%E8%A3%85%E9%A5%B0%E8%80%85%E5%8C%85%E8%A3%85%E6%B5%81%E7%A8%8B.png" alt="图解装饰者模式"><br>普通对象被装饰者包裹起来，就形成了装饰者模式。<br>    举例：<br>        雷霆战机（吃道具的例子）</p>
-<h1 id="雷霆战机（吃道具的例子）"><a href="#雷霆战机（吃道具的例子）" class="headerlink" title="雷霆战机（吃道具的例子）"></a>雷霆战机（吃道具的例子）</h1><pre><code>介绍：现在我们假设正在开发一个小游戏--雷霆战机， 
-    最开始我们使用最渣的飞机，只能发射普通子弹；
-    吃一颗星，可以发射普通子弹和发射散弹 ；
-    再吃一颗，可以发射普通子弹和散弹和跟踪导弹。
-// 一级飞机    
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var plane = &#123;</div><div class="line">	fire: function()&#123;</div><div class="line">		console.log(&apos;发射普通子弹&apos;);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">plane.fire(); // &apos;发射普通子弹&apos;</div></pre></td></tr></table></figure>
-
-// 二级飞机    
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var fire1 = plane.fire;</div><div class="line">var shot = function() &#123;</div><div class="line">	console.log(&apos;发射散弹&apos;);</div><div class="line">&#125;;</div><div class="line">plane.fire = function () &#123;</div><div class="line">	fire1();</div><div class="line">	shot();</div><div class="line">&#125;;</div><div class="line">plane.fire(); // &apos;发射普通子弹&apos; &apos;发射散弹&apos;</div></pre></td></tr></table></figure>
-
-// 三级飞机
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var fire2 = plane.fire;</div><div class="line">var track = function() &#123;</div><div class="line">	console.log(&apos;发射跟踪导弹&apos;);</div><div class="line">&#125;;</div><div class="line">plane.fire = function () &#123;</div><div class="line">	fire2();</div><div class="line">	shot();</div><div class="line">&#125;;</div><div class="line">plane.fire(); // &apos;发射普通子弹&apos; &apos;发射散弹&apos; &apos;发射跟踪导弹&apos;</div></pre></td></tr></table></figure>
-</code></pre><p><img src="http://oxpnrlb4j.bkt.clouddn.com/%E8%A3%85%E9%A5%B0%E8%80%85%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B.png" alt="装饰者执行过程"><br>    说明：这样给对象动态的增加职责的方式就没有改变对象自身，<br>        一个对象放入另一个对象就形成了一条装饰链（一个聚合对象），<br>        而上面的shot和track也就是装饰者、装饰函数 ，<br>        当函数执行时，会把请求转给链中的下一个对象。</p>
-<h1 id="在-FUNCTION-原型上封装通用的装饰函数"><a href="#在-FUNCTION-原型上封装通用的装饰函数" class="headerlink" title="在 FUNCTION 原型上封装通用的装饰函数"></a>在 FUNCTION 原型上封装通用的装饰函数</h1><pre><code>// 在原函数之前执行    
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Function.prototype.before=function(beforefn) &#123;</div><div class="line">	var _this = this;                               // 保存旧函数的引用</div><div class="line">	return function() &#123;                           // 返回包含旧函数和新函数的“代理”函数</div><div class="line">		beforefn.apply(this,arguments);            // 执行新函数,且保证this不被劫持,新函数接受的参数						   </div><div class="line">		return _this.apply(this,arguments);        // 也会被原封不动的传入旧函数,新函数在旧函数之前执行</div><div class="line">	&#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-
-// 在原函数之后执行    
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">Function.prototype.after = function(afterfn) &#123;</div><div class="line">	var _this = this;</div><div class="line">	return function() &#123;</div><div class="line">		var ret = _this.apply(this,arguments);</div><div class="line">		afterfn.apply(this,arguments);</div><div class="line">		return ret;</div><div class="line">	&#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-</code></pre><h1 id="封装成单独函数（不污染原型）"><a href="#封装成单独函数（不污染原型）" class="headerlink" title="封装成单独函数（不污染原型）"></a>封装成单独函数（不污染原型）</h1><pre><code>// 在原函数之前执行
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var before = function(fn, before) &#123;</div><div class="line">	return function() &#123;</div><div class="line">		before.apply(this, arguments);</div><div class="line">		return fn.apply(this, arguments);</div><div class="line">	&#125;;</div><div class="line">&#125;;	</div><div class="line"></div><div class="line">// 使用</div><div class="line">before(func1, func2);</div></pre></td></tr></table></figure>
-
-// 在原函数之后执行
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">var after = function(fn, after) &#123;</div><div class="line">	return function() &#123;</div><div class="line">		var ret = fn.apply(this,arguments);</div><div class="line">		after.apply(this,arguments);</div><div class="line">		return ret;</div><div class="line">	&#125;;</div><div class="line">&#125;;	</div><div class="line"></div><div class="line">// 使用</div><div class="line">after(func1, func2);</div></pre></td></tr></table></figure>
-
-注意：代码来源于--腾讯.曾探《JavaScript设计模式与开发实践》，但能很好的说明装饰者模式在js实际项目中的应用。
-上面封装的函数可以直接在项目中使用。
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="http://blog.csdn.net/yisuowushinian/article/details/51934008" target="_blank" rel="external">JavaScript设计模式—-装饰者模式</a><br>    <a href="http://www.cnblogs.com/TomXu/archive/2012/02/24/2353434.html" target="_blank" rel="external">深入理解JavaScript系列（29）：设计模式之装饰者模式</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2767,7 +2770,7 @@ vuex有四个核心概念，其中state和getters主要是用于数据的存储�
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">92</span>
+                <span class="site-state-item-count">93</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2906,7 +2909,7 @@ vuex有四个核心概念，其中state和getters主要是用于数据的存储�
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共115.6k字</span>
+  <span class="post-count">博客全站共116.5k字</span>
 </div>
         
 

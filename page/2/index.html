@@ -306,6 +306,226 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/16/js设计模式-装饰者模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/16/js设计模式-装饰者模式/" itemprop="url">
+                  js设计模式-装饰者模式
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-16T22:42:20+08:00">
+                2017-10-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/16/js设计模式-装饰者模式/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/16/js设计模式-装饰者模式/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  734
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  3
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="装饰者模式"><a href="#装饰者模式" class="headerlink" title="装饰者模式"></a>装饰者模式</h1><pre><code>定义：装饰者(decorator)模式能够在不改变对象自身的基础上，在程序运行期间给对象动态的添加职责。
+    装饰者用于通过重载方法的形式添加新功能，该模式可以在被装饰者前面或者后面加上自己的行为以达到特定的目的。
+    与继承相比，装饰者是一种更轻便灵活的做法。
+</code></pre><p><img src="http://oxpnrlb4j.bkt.clouddn.com/%E8%A3%85%E9%A5%B0%E8%80%85%E5%8C%85%E8%A3%85%E6%B5%81%E7%A8%8B.png" alt="图解装饰者模式"><br>普通对象被装饰者包裹起来，就形成了装饰者模式。<br>    举例：<br>        雷霆战机（吃道具的例子）</p>
+<h1 id="雷霆战机（吃道具的例子）"><a href="#雷霆战机（吃道具的例子）" class="headerlink" title="雷霆战机（吃道具的例子）"></a>雷霆战机（吃道具的例子）</h1><pre><code>介绍：现在我们假设正在开发一个小游戏--雷霆战机， 
+    最开始我们使用最渣的飞机，只能发射普通子弹；
+    吃一颗星，可以发射普通子弹和发射散弹 ；
+    再吃一颗，可以发射普通子弹和散弹和跟踪导弹。
+// 一级飞机    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var plane = &#123;</div><div class="line">	fire: function()&#123;</div><div class="line">		console.log(&apos;发射普通子弹&apos;);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">plane.fire(); // &apos;发射普通子弹&apos;</div></pre></td></tr></table></figure>
+
+// 二级飞机    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var fire1 = plane.fire;</div><div class="line">var shot = function() &#123;</div><div class="line">	console.log(&apos;发射散弹&apos;);</div><div class="line">&#125;;</div><div class="line">plane.fire = function () &#123;</div><div class="line">	fire1();</div><div class="line">	shot();</div><div class="line">&#125;;</div><div class="line">plane.fire(); // &apos;发射普通子弹&apos; &apos;发射散弹&apos;</div></pre></td></tr></table></figure>
+
+// 三级飞机
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var fire2 = plane.fire;</div><div class="line">var track = function() &#123;</div><div class="line">	console.log(&apos;发射跟踪导弹&apos;);</div><div class="line">&#125;;</div><div class="line">plane.fire = function () &#123;</div><div class="line">	fire2();</div><div class="line">	shot();</div><div class="line">&#125;;</div><div class="line">plane.fire(); // &apos;发射普通子弹&apos; &apos;发射散弹&apos; &apos;发射跟踪导弹&apos;</div></pre></td></tr></table></figure>
+</code></pre><p><img src="http://oxpnrlb4j.bkt.clouddn.com/%E8%A3%85%E9%A5%B0%E8%80%85%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B.png" alt="装饰者执行过程"><br>    说明：这样给对象动态的增加职责的方式就没有改变对象自身，<br>        一个对象放入另一个对象就形成了一条装饰链（一个聚合对象），<br>        而上面的shot和track也就是装饰者、装饰函数 ，<br>        当函数执行时，会把请求转给链中的下一个对象。</p>
+<h1 id="在-FUNCTION-原型上封装通用的装饰函数"><a href="#在-FUNCTION-原型上封装通用的装饰函数" class="headerlink" title="在 FUNCTION 原型上封装通用的装饰函数"></a>在 FUNCTION 原型上封装通用的装饰函数</h1><pre><code>// 在原函数之前执行    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Function.prototype.before=function(beforefn) &#123;</div><div class="line">	var _this = this;                               // 保存旧函数的引用</div><div class="line">	return function() &#123;                           // 返回包含旧函数和新函数的“代理”函数</div><div class="line">		beforefn.apply(this,arguments);            // 执行新函数,且保证this不被劫持,新函数接受的参数						   </div><div class="line">		return _this.apply(this,arguments);        // 也会被原封不动的传入旧函数,新函数在旧函数之前执行</div><div class="line">	&#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+
+// 在原函数之后执行    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">Function.prototype.after = function(afterfn) &#123;</div><div class="line">	var _this = this;</div><div class="line">	return function() &#123;</div><div class="line">		var ret = _this.apply(this,arguments);</div><div class="line">		afterfn.apply(this,arguments);</div><div class="line">		return ret;</div><div class="line">	&#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+</code></pre><h1 id="封装成单独函数（不污染原型）"><a href="#封装成单独函数（不污染原型）" class="headerlink" title="封装成单独函数（不污染原型）"></a>封装成单独函数（不污染原型）</h1><pre><code>// 在原函数之前执行
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var before = function(fn, before) &#123;</div><div class="line">	return function() &#123;</div><div class="line">		before.apply(this, arguments);</div><div class="line">		return fn.apply(this, arguments);</div><div class="line">	&#125;;</div><div class="line">&#125;;	</div><div class="line"></div><div class="line">// 使用</div><div class="line">before(func1, func2);</div></pre></td></tr></table></figure>
+
+// 在原函数之后执行
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">var after = function(fn, after) &#123;</div><div class="line">	return function() &#123;</div><div class="line">		var ret = fn.apply(this,arguments);</div><div class="line">		after.apply(this,arguments);</div><div class="line">		return ret;</div><div class="line">	&#125;;</div><div class="line">&#125;;	</div><div class="line"></div><div class="line">// 使用</div><div class="line">after(func1, func2);</div></pre></td></tr></table></figure>
+
+注意：代码来源于--腾讯.曾探《JavaScript设计模式与开发实践》，但能很好的说明装饰者模式在js实际项目中的应用。
+上面封装的函数可以直接在项目中使用。
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="http://blog.csdn.net/yisuowushinian/article/details/51934008" target="_blank" rel="external">JavaScript设计模式—-装饰者模式</a><br>    <a href="http://www.cnblogs.com/TomXu/archive/2012/02/24/2353434.html" target="_blank" rel="external">深入理解JavaScript系列（29）：设计模式之装饰者模式</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/16/js设计模式-中介者模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2623,221 +2843,6 @@ Node Inspector
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/10/Object的扩展、密密封、冻结/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/10/10/Object的扩展、密密封、冻结/" itemprop="url">
-                  Object的扩展、密密封、冻结
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-10T19:56:38+08:00">
-                2017-10-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/js/" itemprop="url" rel="index">
-                    <span itemprop="name">js</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/10/Object的扩展、密密封、冻结/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/10/Object的扩展、密密封、冻结/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  816
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  3
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="扩展特性"><a href="#扩展特性" class="headerlink" title="扩展特性"></a>扩展特性</h2><pre><code>Object.isExtensible(obj)
-    判断一个对象是可扩展(是否能有新的属性添加到它)。
-Object.preventExtensions(obj)
-    可以对对象的属性进行修改和删除，不能向自身添加属性但可以向其原型添加属性。
-示例：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">// Object.create(proto[, propertiesObject]);</div><div class="line">var obj = &#123;</div><div class="line">	a: 1,</div><div class="line">	b: 2</div><div class="line">&#125;;</div><div class="line">console.log(Object.isExtensible(obj)); // true</div><div class="line">Object.preventExtensions(obj);</div><div class="line">console.log(Object.isExtensible(obj)); // false</div><div class="line">// obj.a = 3; // 可以修改原有属性</div><div class="line">// delete obj.a; // 可以删除原有属性</div><div class="line">// obj.c = 3; // 不能自身添加属性		</div><div class="line">console.log(obj);</div></pre></td></tr></table></figure>
-</code></pre><h2 id="密封特性"><a href="#密封特性" class="headerlink" title="密封特性"></a>密封特性</h2><pre><code>Object.isSealed()
-    判断一个对象是密封的。
-Object.seal()
-    密封对象是指那些不能添加新的属性，不能删除已有属性，以及不能修改已有属性的可枚举性、可配置性、可写性，但可能可以修改已有属性的值的对象。
-    属性不可配置的效果就是属性变的不可删除，以及一个数据属性不能被重新定义成为访问器属性。
-    将所有现有的属性标记为不可配置。现在的属性的值仍然可以改变,只要它们是可写的。
-示例：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">var obj = &#123;</div><div class="line">  prop: function() &#123;&#125;,</div><div class="line">  foo: &apos;bar&apos;</div><div class="line">&#125;;</div><div class="line">var o = Object.seal(obj);</div><div class="line">console.log(o === obj); // true</div><div class="line">Object.isSealed(obj); // === true</div><div class="line"></div><div class="line">obj.foo = &apos;quux&apos;; // 可以改变属性</div><div class="line"></div><div class="line">// 不能改变属性访问器，会抛出错误</div><div class="line">Object.defineProperty(obj, &apos;foo&apos;, &#123;</div><div class="line">  get: function() &#123; return &apos;g&apos;; &#125;</div><div class="line">&#125;); // throws a TypeError</div><div class="line"></div><div class="line">// 不能添加新属性</div><div class="line">obj.quaxxor = &apos;the friendly duck&apos;;</div><div class="line"></div><div class="line">// 不能删除原有属性</div><div class="line">delete obj.foo;</div><div class="line"></div><div class="line">// 可以更改属性，只要它是可写的</div><div class="line">Object.defineProperty(obj, &apos;foo&apos;, &#123;</div><div class="line">  value: &apos;eit&apos;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h2 id="冻结特性"><a href="#冻结特性" class="headerlink" title="冻结特性"></a>冻结特性</h2><pre><code>Object.isFrozen()
-Object.freeze()
-    防止新的属性被添加到它;防止现有的属性被移除;
-    和防止现有的属性,或他们的可数性,可配置性,或可写性,被改变了,它还可以防止原型被改变了。
-    该方法返回对象处于冻结状态。
-示例：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">var obj = &#123;</div><div class="line">  prop: function() &#123;&#125;,</div><div class="line">  foo: &apos;bar&apos;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">// 返回已被冻结的对象</div><div class="line">var o = Object.freeze(obj);</div><div class="line"></div><div class="line">// o === obj; // true</div><div class="line">Object.isFrozen(obj); // === true</div><div class="line"></div><div class="line">// 改变原有属性失败</div><div class="line">obj.foo = &apos;quux&apos;; // silently does nothing</div><div class="line">// 添加属性失败</div><div class="line">obj.quaxxor = &apos;the friendly duck&apos;;</div><div class="line">// 删除原有属性失败</div><div class="line">delete obj.foo; // throws a TypeError</div><div class="line">console.log(obj);</div><div class="line"></div><div class="line">// 重新配置原有属性失败</div><div class="line">Object.defineProperty(obj, &apos;ohai&apos;, &#123; value: 17 &#125;);</div><div class="line">Object.defineProperty(obj, &apos;foo&apos;, &#123; value: &apos;eit&apos; &#125;);</div><div class="line"></div><div class="line">// 向原型中添加属性失败</div><div class="line">Object.setPrototypeOf(obj, &#123; x: 20 &#125;)</div><div class="line">obj.__proto__ = &#123; x: 20 &#125;</div></pre></td></tr></table></figure>
-</code></pre><h2 id="浅冻结与深冻结"><a href="#浅冻结与深冻结" class="headerlink" title="浅冻结与深冻结"></a>浅冻结与深冻结</h2><pre><code>如该方法 MDN 的描述所述，倘若一个对象的属性是一个对象，
-那么对这个外部对象进行冻结，内部对象的属性是依旧可以改变的，这就叫浅冻结，
-若把外部对象冻结的同时把其所有内部对象甚至是内部的内部无限延伸的对象属性也冻结了，这就叫深冻结。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">(function () &#123;</div><div class="line">	obj = &#123;</div><div class="line">		internal :&#123;&#125;</div><div class="line">	&#125;;</div><div class="line">	Object.freeze(obj);//浅冻结</div><div class="line">	obj.internal.a = &quot;aValue&quot;;</div><div class="line">	console.log(obj.internal.a);//&quot;aValue&quot;</div><div class="line"></div><div class="line">	//想让一个对象变得完全冻结,冻结所有对象中的对象,可以使用下面的函数.</div><div class="line">	function deepFreeze(o)&#123;</div><div class="line">		var prop,propKey;</div><div class="line">		Object.freeze(o);//首先冻结第一层对象</div><div class="line">		for(propKey in o)&#123;</div><div class="line">			prop = o[propKey];</div><div class="line">			if(!o.hasOwnProperty(propKey) || !(typeof prop === &quot;object&quot;) || Object.isFrozen(prop))&#123;</div><div class="line">				continue;</div><div class="line">			&#125;</div><div class="line">			deepFreeze(prop);//递归</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">		</div><div class="line">	deepFreeze(obj);</div><div class="line">	obj.internal.b = &quot;bValue&quot;;//静默失败</div><div class="line">	console.log(obj.internal.b);//undefined</div><div class="line">&#125;)();</div></pre></td></tr></table></figure>
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="https://segmentfault.com/a/1190000003894119" target="_blank" rel="external">浅谈 JS 对象之扩展、密封及冻结三大特性</a><br>    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/preventExtensions" target="_blank" rel="external">MDN</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2887,7 +2892,7 @@ Object.freeze()
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">92</span>
+                <span class="site-state-item-count">93</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -3026,7 +3031,7 @@ Object.freeze()
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共115.6k字</span>
+  <span class="post-count">博客全站共116.5k字</span>
 </div>
         
 
