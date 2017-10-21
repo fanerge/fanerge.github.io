@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fanerge.github.io/"/>
-  <updated>2017-10-20T13:49:02.628Z</updated>
+  <updated>2017-10-21T04:16:42.139Z</updated>
   <id>https://fanerge.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>js设计模式-适配器模式</title>
+    <link href="https://fanerge.github.io/2017/10/21/js%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F-%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/"/>
+    <id>https://fanerge.github.io/2017/10/21/js设计模式-适配器模式/</id>
+    <published>2017-10-21T03:22:06.000Z</published>
+    <updated>2017-10-21T04:16:42.139Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="适配器模式介绍"><a href="#适配器模式介绍" class="headerlink" title="适配器模式介绍"></a>适配器模式介绍</h1><pre><code>定义：适配器模式（Adapter）是将一个类（对象）的接口（方法或属性）转化成客户希望的另外一个接口（方法或属性），    适配器模式使得原本由于接口不兼容而不能一起工作的那些类（对象）可以一些工作。速成包装器（wrapper）。使用场景：比如，当系统中某个接口的结构已经无法满足我们现在的业务需求，但又不能改动这个接口，    因为可能原来的系统很多功能都依赖于这个接口，改动接口会牵扯到太多文件。    因此应对这种场景，我们可以很快地想到可以用适配器模式来解决这个问题。    </code></pre><h1 id="适配两个库"><a href="#适配两个库" class="headerlink" title="适配两个库"></a>适配两个库</h1><ol><li><p>下面我们来实现从Prototype库的$函数到YUI的get方法的转换。<br>这两个函数的功能比较相似，不过先看看她们在接口方面的差别：<br>Prototype库的$函数    </p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">function $()&#123;</div><div class="line">var elments = new Array();</div><div class="line">for(var i=0; i&lt;arguments.length; i++)&#123;</div><div class="line">var element = arguments[i];</div><div class="line">if(typeof element == &apos;string&apos;)&#123;</div><div class="line">element = document.getElementById(element);</div><div class="line">&#125;</div><div class="line">if(arguments.length == 1)&#123;</div><div class="line">return element;</div><div class="line">&#125;</div><div class="line">elments.push(element);</div><div class="line">&#125;</div><div class="line">return elements;</div><div class="line">&#125;</div></pre></td></tr></table></figure><p>YUI的get方法    </p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">YAHOO.util.Dom.get = function(el)&#123;</div><div class="line">if(YAHOO.lang.isString(el))&#123;</div><div class="line">return document.getElementById(el);</div><div class="line">&#125;</div><div class="line">if(YAHOO.lang.isArray(el))&#123;</div><div class="line">var c = [];</div><div class="line">for(var i= 0, len=el.length; i&lt;len; i++)&#123;</div><div class="line">c[c.length] = YAHOO.util.Dom.get(el[i]);</div><div class="line">&#125;</div><div class="line">return c;</div><div class="line">&#125;</div><div class="line">if(el)&#123;</div><div class="line">return el;</div><div class="line">&#125;</div><div class="line">return null;</div><div class="line">&#125;</div></pre></td></tr></table></figure></li><li><p>分析二者的区别：get具有一个参数，这个参数可以是一个HTML元素、字符串或者由字符串或HTML元素组成的数组，<br>与此不同，$函数没有正式列出参数，而是允许客户传入任意数目的参数，不管是字符串还是HTML元素都行。</p></li><li><p>这里两种转换的适配器就应该这样写<br>$ –&gt; get</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">function $2getAdapter()&#123;</div><div class="line">return YAHOO.util.Dom.get(arguments);</div><div class="line">&#125;</div><div class="line">对于从Prototype改投YUI的人应该如下使用</div><div class="line">$ = $2getAdapter;</div><div class="line">这样就可以继续使用 $ 方法了。</div></pre></td></tr></table></figure><p>get –&gt; $</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">function get2$Adapter(el)&#123;</div><div class="line">return $.apply(window, el instanceof Array ?el: [el]);</div><div class="line">&#125;</div><div class="line">对于从YUI改投Prototype的人应该如下使用</div><div class="line">YAHOO.util.Dom.get = get2$Adapter;</div><div class="line">这样就可以继续使用 YAHOO.util.Dom.get 方法了。</div></pre></td></tr></table></figure></li></ol><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p><strong>    注意：适配器模式尽量少使用，就类似于在衣服上打补丁。特别是在接口还没有确定的时候使用，因为这样后期不利于维护，相反，这个时候我们应该重新思考我们的接口设计是否合理。 </strong><br>    那合适使用适配器模式好呢？如果有以下情况出现时，建议使用：</p><ol><li>使用一个已经存在的对象，但其方法或属性接口不符合你的要求；</li><li>你想创建一个可复用的对象，该对象可以与其它不相关的对象或不可见对象（即接口方法或属性不兼容的对象）协同工作；</li><li>想使用已经存在的对象，但是不能对每一个都进行原型继承以匹配它的接口。对象适配器可以适配它的父对象接口方法或属性。</li></ol><pre><code>另外，适配器模式和其它几个模式可能容易让人迷惑，这里说一下大概的区别：</code></pre><ol><li>适配器和桥接模式虽然类似，但桥接的出发点不同，桥接的目的是将接口部分和实现部分分离，从而对他们可以更为容易也相对独立的加以改变。而适配器则意味着改变一个已有对象的接口。</li><li>装饰者模式增强了其它对象的功能而同时又不改变它的接口，因此它对应程序的透明性比适配器要好，其结果是装饰者支持递归组合，而纯粹使用适配器则是不可能的。</li><li>代理模式在不改变它的接口的条件下，为另外一个对象定义了一个代理。        </li></ol><blockquote><p>   参考文档：<br>    <a href="http://www.alloyteam.com/2012/10/commonly-javascript-design-patterns-adapter-mode/" target="_blank" rel="external">腾讯-曽探</a><br>    <a href="http://www.cnblogs.com/TomXu/archive/2012/04/11/2435452.html" target="_blank" rel="external">深入理解JavaScript系列（39）：设计模式之适配器模式</a><br>    <a href="http://www.cnblogs.com/JChen666/p/3658551.html" target="_blank" rel="external">JS设计模式——11.适配器模式</a></p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;适配器模式介绍&quot;&gt;&lt;a href=&quot;#适配器模式介绍&quot; class=&quot;headerlink&quot; title=&quot;适配器模式介绍&quot;&gt;&lt;/a&gt;适配器模式介绍&lt;/h1&gt;&lt;pre&gt;&lt;code&gt;定义：适配器模式（Adapter）是将一个类（对象）的接口（方法或属性）转化成客户希
+      
+    
+    </summary>
+    
+      <category term="设计模式" scheme="https://fanerge.github.io/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+    
+      <category term="设计模式" scheme="https://fanerge.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
+    
+  </entry>
   
   <entry>
     <title>vue开发规范</title>
@@ -485,9 +510,9 @@
     
       <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
     
-      <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
-    
       <category term="读书笔记" scheme="https://fanerge.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
     
   </entry>
   
@@ -514,36 +539,6 @@
     
     
       <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>深入浅出Node.js-读书笔记</title>
-    <link href="https://fanerge.github.io/2017/10/09/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BANode-js-%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0%EF%BC%88%E4%B8%8A%EF%BC%89/"/>
-    <id>https://fanerge.github.io/2017/10/09/深入浅出Node-js-读书笔记（上）/</id>
-    <published>2017-10-09T12:09:51.000Z</published>
-    <updated>2017-10-09T15:15:42.993Z</updated>
-    
-    <content type="html"><![CDATA[<p>最近在研究node.js,正赶上国庆长假，回趟老家。在网上找了一本电子书籍《深入浅出Node.js》，利用这个假期学习一下。</p><h2 id="Node-js-基础知识"><a href="#Node-js-基础知识" class="headerlink" title="Node.js 基础知识"></a>Node.js 基础知识</h2><h3 id="chrome-与-Node-工作原理"><a href="#chrome-与-Node-工作原理" class="headerlink" title="chrome 与 Node 工作原理"></a>chrome 与 Node 工作原理</h3><pre><code>chrome：HTML + JavaScript + WebKit + V8 &gt;&gt; 中间层 &gt;&gt; 网卡 + 硬盘 + 显卡 + ...Node：JavaScript + V8 &gt;&gt; 中间层（libuv）&gt;&gt; 网卡 + 硬盘 + 显卡 + ...说明：libuv 是 Node 的新跨平台抽象层，用于抽象 Windows 的 IOCP 及 Unix 的 libev。    作者打算在这个库的包含所有平台的差异性。</code></pre><h3 id="异步I-O"><a href="#异步I-O" class="headerlink" title="异步I/O"></a>异步I/O</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$.get(&apos;url&apos;, (data) =&gt; &#123;</div><div class="line">console.log(data);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>异步是并行的基础。单线程，不适合大量计算占用 CPU 导致无法继续调用异步I/O。</code></pre><h2 id="模块机制"><a href="#模块机制" class="headerlink" title="模块机制"></a>模块机制</h2><h3 id="CommonJS-规范"><a href="#CommonJS-规范" class="headerlink" title="CommonJS 规范"></a>CommonJS 规范</h3><pre><code>模块引用：    var math = require(&apos;math&apos;);    模块定义：    exports.add = () =&gt; {        var a = 1,            b = 3;        return a + b;    }exports 是 module 的属性。Node 引入模块的步骤：    路径分析    文件定位    编译执行</code></pre><h3 id="核心模块"><a href="#核心模块" class="headerlink" title="核心模块"></a>核心模块</h3><pre><code>文件模块 &gt;&gt; 核心模块（JavaScript） &gt;&gt; 内建模块（C/C++）</code></pre><h2 id="异步I-O-1"><a href="#异步I-O-1" class="headerlink" title="异步I/O"></a>异步I/O</h2><h3 id="Node-的异步I-O"><a href="#Node-的异步I-O" class="headerlink" title="Node 的异步I/O"></a>Node 的异步I/O</h3><pre><code>Node 自身的执行模型 -- 事件循环。单线程、事件循环、观察者和I/O线程池</code></pre><h3 id="非I-O的异步API"><a href="#非I-O的异步API" class="headerlink" title="非I/O的异步API"></a>非I/O的异步API</h3><pre><code>定时器：setTimeout()\setInterval()process.nextTick()    在事件循环的下一次循环中调用 callback 回调函数。    效果是将一个函数推迟到代码书写的下一个同步方法执行完毕时或异步方法的事件回调函数开始执行时；    与setTimeout(fn, 0) 函数的功能类似，但它的效率高多了。setImmediate()    nextTick()的回调函数执行的优先级要高于setImmediate();        process.nextTick()属于idle观察者,setImmediate()属于check观察者.在每一轮循环检查中,idle观察者先于I/O观察者,    I/O观察者先于check观察者.</code></pre><h2 id="异步编程"><a href="#异步编程" class="headerlink" title="异步编程"></a>异步编程</h2><h3 id="函数式编程"><a href="#函数式编程" class="headerlink" title="函数式编程"></a>函数式编程</h3><pre><code>高阶函数：以函数作为参数或返回值。偏函数用法：通过指定部分参数来产生一个新的定制函数的形式就是偏函数。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">const isType = function (type)&#123;</div><div class="line">return function (obj) &#123;</div><div class="line">return Object.prototype.toString.call(obj) == &apos;[object &apos; + type + &apos;]&apos;;</div><div class="line">&#125;; </div><div class="line">&#125;</div><div class="line">var isString = isType(&apos;String&apos;);</div></pre></td></tr></table></figure></code></pre><h3 id="异步编程解决方案"><a href="#异步编程解决方案" class="headerlink" title="异步编程解决方案"></a>异步编程解决方案</h3><pre><code>事件发布/订阅模式（事件绑定）promisegeneratorasync-await</code></pre><h3 id="并发方案"><a href="#并发方案" class="headerlink" title="并发方案"></a>并发方案</h3><pre><code>eventproxy[async](https://github.com/caolan/async)</code></pre><h2 id="内存控制"><a href="#内存控制" class="headerlink" title="内存控制"></a>内存控制</h2><h2 id="理解Buffer"><a href="#理解Buffer" class="headerlink" title="理解Buffer"></a>理解Buffer</h2><pre><code>Buffer 是一个像Array的对象，但它主要用于操作字节。Buffer 对象    var buf = new Buffer(&apos;string&apos;, &apos;utf-8&apos;);</code></pre><h3 id="Buffer-的转换"><a href="#Buffer-的转换" class="headerlink" title="Buffer 的转换"></a>Buffer 的转换</h3><pre><code>    支持的字符串编码类型：    ASCII\UTF-8\UTF-16LE/UCS-2\Base64\Binary\Hex字符串转 Buffer    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var buf = new Buffer(str, [encoding]);</div><div class="line">buf.write(string, [offset], [length], [encoding]);</div></pre></td></tr></table></figure>Buffer 转字符串buf.toString([encoding], [start], [end]);</code></pre><h2 id="网络编程"><a href="#网络编程" class="headerlink" title="网络编程"></a>网络编程</h2><pre><code>TCP 和 UDP 属于网络传输层协议，HTTP 属于应用层协议。</code></pre><h3 id="TCP（传输控制协议）"><a href="#TCP（传输控制协议）" class="headerlink" title="TCP（传输控制协议）"></a>TCP（传输控制协议）</h3><pre><code>创建TCP 服务器端 net 模块TCP 服务的事件</code></pre><h3 id="构建UDP-服务（用户数据包协议）"><a href="#构建UDP-服务（用户数据包协议）" class="headerlink" title="构建UDP 服务（用户数据包协议）"></a>构建UDP 服务（用户数据包协议）</h3><pre><code>创建UDP套接字 dgram模块创建UDP 服务器端创建UDP 客户端UDP 套接字事件</code></pre><h3 id="构建HTTP-服务"><a href="#构建HTTP-服务" class="headerlink" title="构建HTTP 服务"></a>构建HTTP 服务</h3><pre><code>HTTP 超文本传输协议。http 模块HTTP 客户端</code></pre><h3 id="构建WebSocket-服务"><a href="#构建WebSocket-服务" class="headerlink" title="构建WebSocket 服务"></a>构建WebSocket 服务</h3><pre><code>以前的方案：Comet（彗星）技术细节为：长轮询（long-polling）或iframe流（streaming）。长轮询原理：客户端向服务器断发送请求，服务端只在超时或有数据响应时断开连接（res.end()），    客户端在接收到数据或者超时后重新发送请求。iframe流原理：iframe 是很早就存在的一种 HTML 标记， 通过在 HTML 页面里嵌入一个隐蔵帧，    然后将这个隐蔵帧的 SRC 属性设为对一个长连接的请求，服务器端就能源源不断地往客户端输入数据。    通过iframe里的内容进行长时间的请求，当需要传输内容时通过调用父页面js方法来实现页面展示，以此达到comet所需要的效果。WebSocket原理：WebSocket是一种在单个TCP连接上进行全双工通讯的协议。    WebSocket使得客户端和服务器之间的数据交换变得更加简单，允许服务端主动向客户端推送数据。在WebSocket API中，    浏览器和服务器只需要完成一次握手，两者之间就直接可以创建持久性的连接，并进行双向数据传输。</code></pre><h3 id="网络服务与安全"><a href="#网络服务与安全" class="headerlink" title="网络服务与安全"></a>网络服务与安全</h3><pre><code>Node在网络安全上提供了3个模块</code></pre><ol><li>crypto – 主要用于加密和解密，SHA1、MD5。</li><li>tls – 类似于net模块，它是建立在TLS/SSL加密的TCP连接上。</li><li>https – 类似于http模块，他它是建立于安全的连接之上。<br>TLS/SSL<br>TLS/SSL是一个公钥/私钥的结构，它是一个非对称的结构。<br>每个服务器断和客户端都有自己的公私钥。<br>公钥要来加密要传输的数据，私钥用来解密接收到的数据。<br>Node在底层采用的是openssl实现TLS/SSL。<br>数字证书：CA（Certificate Authority，数字证书认证中心）<br>HTTPS服务<br>HTTPS服务就是工作在TLS/SSL上的HTTP。<blockquote><p>参考文档<br><a href="https://www.baidu.com/s?ie=utf8&amp;oe=utf8&amp;wd=%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAnode&amp;tn=98010089_dg&amp;ch=1" target="_blank" rel="external">朴灵-深入浅出Node</a></p></blockquote></li></ol>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;最近在研究node.js,正赶上国庆长假，回趟老家。在网上找了一本电子书籍《深入浅出Node.js》，利用这个假期学习一下。&lt;/p&gt;
-&lt;h2 id=&quot;Node-js-基础知识&quot;&gt;&lt;a href=&quot;#Node-js-基础知识&quot; class=&quot;headerlink&quot; title
-      
-    
-    </summary>
-    
-      <category term="NodeJS" scheme="https://fanerge.github.io/categories/NodeJS/"/>
-    
-    
-      <category term="js" scheme="https://fanerge.github.io/tags/js/"/>
-    
-      <category term="服务端" scheme="https://fanerge.github.io/tags/%E6%9C%8D%E5%8A%A1%E7%AB%AF/"/>
-    
-      <category term="读书笔记" scheme="https://fanerge.github.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
     
   </entry>
   
