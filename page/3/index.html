@@ -306,6 +306,477 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/10/深入浅出Node-js-读书笔记（下）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/10/深入浅出Node-js-读书笔记（下）/" itemprop="url">
+                  深入浅出Node.js-读书笔记
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-10T20:17:16+08:00">
+                2017-10-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
+                    <span itemprop="name">NodeJS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/10/深入浅出Node-js-读书笔记（下）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/10/深入浅出Node-js-读书笔记（下）/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  3,395
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  13
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="构建Web应用"><a href="#构建Web应用" class="headerlink" title="构建Web应用"></a>构建Web应用</h2><h3 id="基础功能"><a href="#基础功能" class="headerlink" title="基础功能"></a>基础功能</h3><pre><code>常见的需求：
+</code></pre><ol>
+<li>请求方法的判断（保存在报文）<br>常见的方法有：GET(查看)\POST(更新)\DELETE(删除)\PUT(新建)\CONNECT\HEAD<br>通过req.method 来判断</li>
+<li>URL的路径解析（保存在报文）<br><a href="http://localhost:8080/a.html" target="_blank" rel="external">http://localhost:8080/a.html</a><br>通过req.url 来查找</li>
+<li>URL中查询字符串解析（保存在报文）<br>?foo=bar&amp;baz=val<br>使用Node提供的querystring 模块处理</li>
+<li>Cookie的解析（保存在报文）<br>网站为了辨别用户身份而储存在用户本地终端（Client Side）上的数据（通常经过加密）。<br>http 为无状态协议。<br>数据保存在客户端。</li>
+<li>Session（会话）的需求（保存在报文）<br>数据保存在服务器端。<br>1.基于Cookie 来实现用户和数据的映射。<br>  原理：在客户端只保存口令，发送请求是通过该口令再去查找对应的数据<br>2.通过查询字符串来实现浏览器端和服务器端数据的对应。<br>  不推荐使用，风险大。<br>两种存储方式：<br>1.内存<br>2.数据工具<br>  Redis是一个支持网络、基于内存、可选持久性的键值对存储数据库。</li>
+<li>Basic认证（保存在报文）<br>当客户端与服务端进行请求时，允许通过用户名和密码实现的一种身份认证方式。</li>
+<li>数据上传<br>思路：先判断数据的格式，再通过对应的解析方法解析。<br>1.表单数据的解析<br>先判断req.headers[‘content-type’] === ‘application/x-www-formurlencoded’<br>  querystring.parse(req.rawBody);<br>2.其他格式<br>  json – application/json<br>  xml – application/xml</li>
+<li><p>任意格式文件的上传处理<br>此时需要<form action="/upload" method="post" enctype="multipart/form-data"></form></p>
+</li>
+<li><p>缓存<br>YSlow中提出的缓存规则：<br>1.添加Expires 和 Cache-Control 到报文头中。<br>2.配置ETags。<br>3.让Ajax 可缓存。<br>数据上传与安全<br>1.内存限制（提交数据占用了所有内存）<br>  限制上传内容的大小，一旦超过限制，停止接收数据，并响应400状态码。<br>  通过流式解析，将数据导向到磁盘中，Node只保留文件路径等小数据。<br>2.CSRF<br>  Cross-Site Request Forgery（跨站点请求伪造）</p>
+</li>
+</ol>
+<h3 id="路由解析"><a href="#路由解析" class="headerlink" title="路由解析"></a>路由解析</h3><pre><code>文件路径型
+    静态文件：URL 的路径与网站目录的路径一致，无须转换。
+    动态文件：在 MVC 模式流行起来之前，根据文件路径执行动态脚本也是基本的路由方式，
+        它的处理原理是Web服务器根据URL路径找到对应的文件，如/index.asp或/index.php。
+MVC
+    MVC 模型的主要思想是将业务逻辑按职责分离。
+        控制器（Controller），一组行为的集合。
+        模型（Model），数据相关的操作和封装。
+        视图（View），视图的渲染。
+        1.路由解析，根据URL寻找到对应的控制器和行为。
+        2.行为调用相关的模型，进行数据操作。
+        3.数据操作结束后，调用视图和相关数据进行页面渲染，输出到客户端。
+    路由映射
+    1.手工映射
+        正则匹配
+        参数解析
+    2.自然映射
+RESTful        
+    REST Representational State Transfer （表现层状态转化）        
+    POST /user/fanerge 修改用户信息
+    DELETE /user/fanerge 删除用户
+    PUT /user/fanerge 新建用户        
+    GET /user/fanerge 查询用户信息    
+    请求方法    
+</code></pre><h3 id="中间件"><a href="#中间件" class="headerlink" title="中间件"></a>中间件</h3><pre><code>作用：middleware 来简化和隔离这些基础设施与业务逻辑之间的细节，使开发者更加关注在业务的开发。    
+</code></pre><p><img src="/images/middleware.png" alt="中间件工作原理"><br>    中间件设计格式（connect的设计）<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var querystring = function (req, res, next) &#123;</div><div class="line">	// TODO</div><div class="line">	next();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<pre><code>使用中间件（串联多个中间件）
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">app.use(&apos;/user/:username&apos;, querystring, cookie, session, function (req, res) &#123;</div><div class="line">	// 这里处理具体的业务逻辑</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+
+
+异常处理
+    同步异常 -- try {} catch (err) {throw err} 
+    异步异常
+        需要把异常传递出来
+        domain 模块    
+</code></pre><h3 id="页面渲染"><a href="#页面渲染" class="headerlink" title="页面渲染"></a>页面渲染</h3><pre><code>内容响应
+    Content-Encoding: gzip
+    Content-Length: 21170
+    Content-Type: text/javascript; charset=utf-8
+    MIME : Multipurpose Internet Mail Extensions    
+    附件下载：有些MIME类的资源不需要在客户端中打开它，只需要弹出并下载它即可。
+        Content-Disposition: inline(查看)/attachment(附件下载);
+        例如：Content-Disposition: attachment; filename=&apos;filename.ext&apos;; // 下载附件并为其命名
+    响应JSON
+    响应跳转    
+视图渲染
+模板
+    如EJS、Pug等
+    模板引擎
+        语法分解。
+        处理表达式。
+        生成待执行的语句。
+        与数据一起执行，生成最终字符串。
+    with的应用    
+        模板安全 XSS 解决方案 转义用户的输入
+    模板逻辑
+    集成文件系统    
+    子模板    
+    布局视图    
+    模板性能
+Bigpipe
+    BigPipe是一个重新设计的基础动态网页服务体系。
+    前端加载技术，它的提出主要是为了解决重数据页面的加载问题。
+    Bigpipe 的解决思路则是将页面分割成多个部分（pagelet），
+    先向用户输出没有数据（框架），将每个部分逐步输出到前端，
+    再最终渲染填充框架，完成整个网页的渲染。
+    这个过程中需要前端js的参与，它负责将后续输出的数据渲染到页面上。
+    1.页面布局框架（无数据的）。
+    2.后端持续性的数据输出。
+    3.前端渲染。
+        bigpipe.ready() -- 以一个key注册一个事件。
+        bigpipe.set() -- 触发一个事件，进行页面渲染。
+</code></pre><h2 id="玩转进程"><a href="#玩转进程" class="headerlink" title="玩转进程"></a>玩转进程</h2><h3 id="多进程架构"><a href="#多进程架构" class="headerlink" title="多进程架构"></a>多进程架构</h3><pre><code>child_process 模块
+创建子进程
+    1.spawn(): 启动一个子进程来执行命令。
+    2.exec(): 启动一个子进程来执行命令，与spawn()不同的是其接口不同，
+    它有一个回调函数获知子进程的状况。
+    3.execFile(): 启动一个子进程来执行可执行文件。
+    4.fork(): 与spawn()类似，不同点在于它创建Node的子进程只需指定要执行的Javascript文件模块即可。
+    spawn()与exec()、execFile()不同的是，后两者创建时可以指定timeout属性设置超时时间，
+    一旦创建的进程运行超过设定的时间将会被杀死。
+    exec()与execFile()不同的是，exec()适合执行已有的命令，execFile()适合执行文件。
+进程间通信
+    message事件 绑定发送事件
+    send()方法 触发发送消息
+句柄传递
+    child_process.send(message, [sendHandle]);
+    句柄是一种可以用来标识资源的引用，它的内部包含了指向对象的文件描述符。
+    比如句柄可以用来标识一个服务器端socket对象、客户端socket对象、UDP套接字、一个管道等。
+</code></pre><h3 id="集群稳定之路"><a href="#集群稳定之路" class="headerlink" title="集群稳定之路"></a>集群稳定之路</h3><pre><code>进程事件
+    message
+    error
+    exit
+    close
+    disconnect
+自动重启
+    自杀信号
+    负载均衡（轮叫调度）    
+        由主进程接受链接，将其依次分发给工作进程。
+        cluster 模块
+    状态共享
+        第三方数据存储 通过轮询
+        主动通知 当数据更新时，主动通知子进程。
+</code></pre><h3 id="Cluster-模块"><a href="#Cluster-模块" class="headerlink" title="Cluster 模块"></a>Cluster 模块</h3><pre><code>解决多核CPU的利用率问题。
+Cluster 工作原理
+    该模块是 child_process 和 net 模块的组合应用。
+Cluster 事件
+    fork
+    online
+    listening
+    disconnect
+    exit
+    setup
+</code></pre><h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><pre><code>测试驱动开发
+</code></pre><h3 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h3><pre><code>测试代码编写的原则
+1.单一职责
+2.接口抽象
+3.层次分离
+单元测试介绍
+1.断言
+    assert 模块
+    单元测试中用来保证最小单元是否正常的检测方法。
+    用于检查程序在运行时是否满足期望。
+    ok(): 判断结果是否为真。
+    equal(): 判断实际值余期望值是否相等。
+    notEqual(): 判断实际值与期望值是否不相等。
+    deepEqual(): 判断实际值余期望值是否深度相等（对象和数组的元素是否相等）。
+    notDeepEqual(): 判断实际值与期望值是否不深度相等。
+    strictEqual(): 判断实际值与期望值是否严格相等（===）。
+    notStrictEqual(): 判断实际值与期望值是否不严格相等（!==）。
+    throws(): 判断代码块是否抛出异常。
+    doesNotThrow(): 判断代码块是否没有抛出异常。
+    ifError(): 判断实际值是否为一个假值（null、undefined、0、&apos;&apos;、false），若实际值为真值，将抛出异常。
+2.测试框架
+    用于管理测试用例和生成测试报告。
+    mocha 模块
+    测试风格
+        TDD 测试驱动开发
+        BDD 行为驱动开发
+    测试报告
+        mocha --reporters
+    测试代码的文件组织
+    测试用例
+    异步测试
+    测试覆盖率
+    mock 或者 muk
+    私有方法的测试
+        var lib = rewire(&apos;../lib/index.js&apos;); // 需要测试方法所在的文件
+        var litmit = lib.__get__(&apos;limit&apos;); // 需要测试的方法
+3.工程化与自动化    
+    工程化 -- Makefile
+    持续集成 -- travis-ci
+</code></pre><h2 id="性能测试"><a href="#性能测试" class="headerlink" title="性能测试"></a>性能测试</h2><pre><code>负载测试、压力测试和基准测试。
+基准测试：（对基本的方法如Array.protoryp.map 和 for循环的比较）
+    benchmark 模块
+压力测试：（网络接口进行压力测试）
+    常用的工具：ab、siege、http_load
+基准测试驱动开发
+    1.写基准测试
+    2.写/改代码
+    3.收集数据
+    4.找出问题
+    5.回到第（2）步
+测试数据余业务数据的转换
+    PV访问量（Page View），即页面访问量，每打开一次页面PV计数+1，刷新页面也是。
+    UV访问数（Unique Visitor）指独立访客访问数，一台电脑终端为一个访客。
+    TPS 是每秒内的事务数，比如执行了dml操作，那么相应的tps会增加；
+    QPS 是指每秒内查询次数，比如执行了select操作，相应的qps会增加。
+    QPS = PV/H (H为访问量集中的时间单位小时)。
+</code></pre><h2 id="产品化"><a href="#产品化" class="headerlink" title="产品化"></a>产品化</h2><pre><code>包括：工程化、架构、容灾备份、部署和运维。
+</code></pre><h3 id="项目工程化"><a href="#项目工程化" class="headerlink" title="项目工程化"></a>项目工程化</h3><pre><code>1.目录结构
+    Web框架：Express、Koa、Egg
+2.构建工具
+    合并静态文件、压缩文件大小、打包应用、编译模块。
+    Makefile 
+        一个工程中的源文件不计其数，其按类型、功能、模块分别放在若干个目录中，
+        makefile定义了一系列的规则来指定，哪些文件需要先编译，哪些文件需要后编译，
+        哪些文件需要重新编译，甚至于进行更复杂的功能操作，
+        因为 makefile就像一个Shell脚本一样，其中也可以执行操作系统的命令。
+    Grunt
+3.编码规范
+    JSLint JSHint ESLint
+4.代码审查
+</code></pre><h3 id="部署流程"><a href="#部署流程" class="headerlink" title="部署流程"></a>部署流程</h3><pre><code>部署环境
+部署操作    
+</code></pre><h3 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h3><pre><code>动静分离
+    静态请求用 Nginx 和 CDN 来保存
+启用缓存
+    Redis 和 Memcached
+多进程架构    
+    读写分离
+</code></pre><h3 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h3><pre><code>访问日志
+异常日志
+日志与数据库
+分割日志
+</code></pre><h3 id="监控报警"><a href="#监控报警" class="headerlink" title="监控报警"></a>监控报警</h3><pre><code>业务逻辑型监控 和 硬件型监控
+监控    
+    日志监控
+    响应时间
+    进程监控
+    磁盘监控
+    内存监控
+    CPU占用监控
+    CPU load监控
+    I/O负载
+    网络监控
+    应用状态监控
+    DNS 监控 -- 免费DNS监控服务 DNSPod
+    报警的实现
+        邮件报警 -- nodemailer 模块
+        短信或电话报警 
+
+监控系统的稳定性
+</code></pre><h3 id="稳定性"><a href="#稳定性" class="headerlink" title="稳定性"></a>稳定性</h3><pre><code>多机器
+多机房
+容灾备份
+</code></pre><h3 id="异构共存"><a href="#异构共存" class="headerlink" title="异构共存"></a>异构共存</h3><h2 id="调试Node"><a href="#调试Node" class="headerlink" title="调试Node"></a>调试Node</h2><pre><code>Debugger
+    1.在代码中插入 debugger
+    2.运行 node debug demo.js
+Node Inspector
+    1.安装 npm install -g node-inspector
+    2.错误堆栈
+</code></pre><h2 id="Node-编码规范"><a href="#Node-编码规范" class="headerlink" title="Node 编码规范"></a>Node 编码规范</h2><h3 id="编码规范"><a href="#编码规范" class="headerlink" title="编码规范"></a>编码规范</h3><pre><code>1.空格与格式 -- 采用2个空格缩进，而不是tab缩进。
+2.变量声明 -- 每个变量声明都应该带var。
+3.空格 -- 操作符前后加空格，如+、-、*、%、/、=等
+4.单双引号的问题 -- 只在html标签的属性中使用双引号，其余使用单引号。
+    但在JSON中，严格的规范是要求使用字符串使用双引号，内容中出现双引号时需要转义。
+5.大括号的位置 -- 不需要另起一行
+6.逗号 -- 若逗号不在行结尾，前面需要一个空格。
+7.分号 -- 给表达式结尾添加分号。    
+</code></pre><h3 id="命名规范"><a href="#命名规范" class="headerlink" title="命名规范"></a>命名规范</h3><pre><code>1.变量命名 -- 小驼峰式命名。
+2.方法命名 -- 小驼峰式命名，尽量采用动词或判断词汇。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var getUser = () =&gt; &#123;&#125;;</div><div class="line">var isAdmin = () =&gt; &#123;&#125;;</div></pre></td></tr></table></figure>
+
+3.类命名（构造函数和Class） -- 大驼峰式命名。
+4.常量命名 -- 全大写字母和下划线。    
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">var PINK_COLOR = &apos;pink&apos;;</div></pre></td></tr></table></figure>
+
+
+5.文件命名 -- 全小写字母和下划线。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">child_process.js // 普通文件</div><div class="line">_linklist.js // 私有文件</div></pre></td></tr></table></figure>
+
+6.包名 -- 不要包含 js 或 node 的字样，它们是重复的。
+</code></pre><h3 id="比较操作"><a href="#比较操作" class="headerlink" title="比较操作"></a>比较操作</h3><pre><code>1.使用 === 替代 ==
+2.当遇到 0、undefined、null、false、&apos;&apos;假值时，不需要使用 === 或 ==。    
+</code></pre><h3 id="字面量"><a href="#字面量" class="headerlink" title="字面量"></a>字面量</h3><pre><code>尽量使用 {}、[]，不要使用 new Object() 和 new Array()    
+</code></pre><h3 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h3><pre><code>1.慎用with
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">with (obj) &#123;</div><div class="line">	foo = bar;</div><div class="line">&#125;</div><div class="line">// 出现4中结果：obj.foo = obj.bar; obj.foo = bar; foo = obj.bar; foo = bar;</div></pre></td></tr></table></figure>
+
+2.慎用eval()
+</code></pre><h3 id="数组与对象"><a href="#数组与对象" class="headerlink" title="数组与对象"></a>数组与对象</h3><pre><code>1.字面量格式 -- 结尾用逗号分隔，若分行，一行只能一个元素。
+2.for in 循环 -- 只能对对象使用，不能对数组使用。
+    for in语句以任意顺序遍历一个对象的可枚举属性（包括原型上的属性）。
+3.不要把数组当对象使用    
+</code></pre><h3 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h3><pre><code>1.异步回调函数的第一个参数应该是错误指示    
+2.执行传入的回调函数    
+</code></pre><h3 id="类与模块"><a href="#类与模块" class="headerlink" title="类与模块"></a>类与模块</h3><pre><code>1.类继承（Node推荐的类继承方式）
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">function Socket (options) &#123;</div><div class="line">	stream.Stream.call(this);</div><div class="line">&#125;</div><div class="line">util.inherits(Socket, stream.Stream);</div></pre></td></tr></table></figure>
+
+2.导出 -- 所有供外部调用的方法或变量均需要挂载在exports变量上。
+    当需要将文件当做一个类导出时，需要通过如下方式挂载。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">module.exports = Class;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="注解规范"><a href="#注解规范" class="headerlink" title="注解规范"></a>注解规范</h3><pre><code>采用 JSDoc
+</code></pre><h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><pre><code>1.冲突的解决原则 -- 入乡随俗
+2.给编辑器设置检测工具    
+3.版本控制中的hook    
+4.持续集成
+</code></pre><h2 id="搭建局域NPM仓库"><a href="#搭建局域NPM仓库" class="headerlink" title="搭建局域NPM仓库"></a>搭建局域NPM仓库</h2><blockquote>
+<p>参考文档<br>    <a href="https://www.baidu.com/s?ie=utf8&amp;oe=utf8&amp;wd=%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAnode&amp;tn=98010089_dg&amp;ch=1" target="_blank" rel="external">朴灵-深入浅出Node</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/10/Object的扩展、密密封、冻结/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2887,271 +3358,6 @@ Multiple modules defined in one file（多模块定义在一个文件中）
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/24/jsDoc学习/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/24/jsDoc学习/" itemprop="url">
-                  jsDoc学习-入门知识
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-24T19:47:00+08:00">
-                2017-09-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/代码规范/" itemprop="url" rel="index">
-                    <span itemprop="name">代码规范</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/24/jsDoc学习/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/24/jsDoc学习/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  3,642
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  14
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="jsDoc介绍"><a href="#jsDoc介绍" class="headerlink" title="jsDoc介绍"></a>jsDoc介绍</h2><p>定义：JSDoc是一个根据javascript文件中注释信息，生成JavaScript应用程序或库、模块的API文档 的工具。<br>jsDoc注释：是以 /** 来作为jsDoc注释的开始，其它如 /* 和 /*** 的注释都会被jsDoc解析器忽略。<br>    在webstorm中自动生成jsDoc注释<br>    示例：<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Book类，代表一本书</div><div class="line"> * @param title</div><div class="line"> * @param anthor</div><div class="line"> * @param pageNum</div><div class="line"> * @constructor</div><div class="line"> */</div><div class="line">function Book (title, anthor, pageNum ) &#123;</div><div class="line">	// 实例属性</div><div class="line">	this.title = title;</div><div class="line">	this.anthor = anthor;</div><div class="line">	this.pageNum = pageNum || 0;</div><div class="line">&#125;</div><div class="line">Book.prototype = &#123;</div><div class="line">	/**</div><div class="line">	 * 获取书本的标题</div><div class="line">	 * @returns &#123;*&#125;</div><div class="line">	 */</div><div class="line">	getTitle : function () &#123;</div><div class="line">		return this.title;</div><div class="line">	&#125;,</div><div class="line">	/**</div><div class="line">	 * 获取书本的作者</div><div class="line">	 * @returns &#123;*&#125;</div><div class="line">	 */</div><div class="line">	getAnthor: function  () &#123;</div><div class="line">		return this.anthor;</div><div class="line">	&#125;,</div><div class="line">	/**</div><div class="line">	 * 设置书本的页码</div><div class="line">	 * @param pageNum</div><div class="line">	 */</div><div class="line">	setPageNum: function (pageNum) &#123;</div><div class="line">		this.pageNum = pageNum;</div><div class="line">	&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
-<h2 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h2><h3 id="Namepaths-in-JSDoc-3（JSDoc-3中的名称路径）"><a href="#Namepaths-in-JSDoc-3（JSDoc-3中的名称路径）" class="headerlink" title="Namepaths in JSDoc 3（JSDoc 3中的名称路径）"></a>Namepaths in JSDoc 3（JSDoc 3中的名称路径）</h3><pre><code>如果涉及到一个JavaScript变量，这个变量在文档中的其他地方，你必须提供一个唯一标识符映射到该变量。
-名称路径提供了一种这样做的方法，并且消除实例成员，静态成员和内部变量之间的歧义。
-jsDoc中名称路径的基本语法示例：
-</code></pre><ol>
-<li>myFunction</li>
-<li>MyConstructor</li>
-<li>MyConstructor#instanceMember（实例成员）</li>
-<li>MyConstructor.staticMember（静态成员）</li>
-<li><p>MyConstructor~innerMember（内部成员）<br>示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Person类，一个人</div><div class="line"> * @param name</div><div class="line"> * @constructor</div><div class="line"> */</div><div class="line">const  Person = function (name) &#123;</div><div class="line">	this.name = name;</div><div class="line">	/**</div><div class="line">	 * 这是一个实例成员</div><div class="line">	 * @returns &#123;string&#125;</div><div class="line">	 */</div><div class="line">	this.say = () =&gt; &#123;</div><div class="line">		return &apos;I\&apos;am an instance.&apos;;</div><div class="line">	&#125;;</div><div class="line">	/**</div><div class="line">	 * 这是一个内部成员</div><div class="line">	 * @returns &#123;string&#125;</div><div class="line">	 */</div><div class="line">	function say () &#123;</div><div class="line">		return &apos;I\&apos; am an inner.&apos;;</div><div class="line">	&#125;;</div><div class="line">&#125;;</div><div class="line">/**</div><div class="line"> * 这是一个静态成员</div><div class="line"> * @returns &#123;string&#125;</div><div class="line"> */</div><div class="line">Person.say = function () &#123;</div><div class="line">	return &apos;I\&apos;am an static.&apos;;</div><div class="line">&#125;;</div><div class="line">/**</div><div class="line"> * 实例化一个人</div><div class="line"> * @type &#123;Person&#125;</div><div class="line"> */</div><div class="line">const person1 = new Person(&apos;fanerge&apos;);</div><div class="line">// Person#say 使用实例方法</div><div class="line">person1.say();</div><div class="line">// Person.say 使用静态方法</div><div class="line">Person.say();</div><div class="line">// Person~say 使用内部方法，但这里不能访问到</div></pre></td></tr></table></figure>
-<p>使用名称路径也有一些特殊的情况：@module名称由”module:”前缀，<br>@external 名称由”external:”前缀，@event名称由”event:”前缀。</p>
-<h3 id="JSDoc中的命令行参数"><a href="#JSDoc中的命令行参数" class="headerlink" title="JSDoc中的命令行参数"></a>JSDoc中的命令行参数</h3><p>使用JSDoc最基本的，像这样使用：<br><code>/path/to/jsdoc yourSourceCodeFile.js anotherSourceCodeFile.js ...</code><br>其中…是生成文档文件的路径。<br>JSDoc支持大量的命令行选项，其中许多选项有长和短两种形式。<br>选项    描述<br>-a <value>, –access <value>    只显示特定access方法属性的标识符： private, protected, public, or undefined, 或者 all（表示所有的访问级别）。默认情况下， 显示除private标识符以外的所有标识符。<br>-c <value>, –configure <value>    JSDoc配置文件的路径。默认为安装JSDoc目录下的conf.json或conf.json.EXAMPLE。<br>-d <value>, –destination <value>    输出生成文档的文件夹路径。JSDoc内置的Haruki模板，使用console 将数据转储到控制台。默认为./out。<br>–debug    打印日志信息，可以帮助调试JSDoc本身的问题。<br>-e <value>, –encoding <value>    当JSDoc阅读源代码时假定使用这个编码，默认为 utf8。<br>-h, –help    显示JSDoc的命令行选项的信息，然后退出。<br>–match <value>    只有运行测试，其名称中包含value。<br>–nocolor    当运行测试时，在控制台输出信息不要使用的颜色。在Windows中，这个选项是默认启用的。<br>-p, –private    将标记有[@private 标签][tags-private.md]的标识符也生成到文档中。默认情况下，不包括私有标识符。<br>-P, –package    包含项目名称，版本，和其他细节的package.json文件。默认为在源路径中找到的第一个package.json文件。<br>–pedantic    将错误视为致命错误，将警告视为错误。默认为false。<br>-q <value>, –query <value>    一个查询字符串用来解析和存储到全局变量env.opts.query中。示例：foo=bar&amp;baz=true。<br>-r, –recurse    扫描源文件和导览时递归到子目录。<br>-R, –readme    用来包含到生成文档的README.md文件。默认为在源路径中找到的第一README.md 文件。<br>-t <value>, –template <value>    用于生成输出文档的模板的路径。默认为templates/default，JSDoc内置的默认模板。<br>-T, –test    运行JSDoc的测试套件，并把结果打印到控制台。<br>-u <value>, –tutorials <value>    导览路径，JSDoc要搜索的目录。如果省略，将不生成导览页。查看导览说明，以了解更多信息。<br>-v, –version    显示JSDoc的版本号，然后退出。<br>–verbose    日志的详细信息到控制台JSDoc运行。默认为false。<br>-X, –explain    以JSON格式转储所有的doclet到控制台，然后退出。</value></value></value></value></value></value></value></value></value></value></value></value></value></value></value></p>
-<p>示例：<br>使用配置文件/path/to/my/conf.json，为./src目录的中文件生成文档，并保存输出到./docs目录中：<br>  /path/to/jsdoc src -r -c /path/to/my/conf.json -d docs<br>运行所有JSDoc的测试，其名称包含 tag，并记录每个测试信息：<br>  /path/to/jsdoc -T –match tag –verbose</p>
-<h3 id="用conf-json配置JSDoc"><a href="#用conf-json配置JSDoc" class="headerlink" title="用conf.json配置JSDoc"></a>用conf.json配置JSDoc</h3><p>Configuration File(配置文件)<br>  要自定义JSDoc的行为，可以使用JSON格式的配置文件格式化JSDoc，使用-c选项，例如： jsdoc -c /path/to/conf.json。<br>  默认的jsDoc配置文件conf.json.EXAMPLE</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">	&quot;tags&quot;: &#123;</div><div class="line">		&quot;allowUnknownTags&quot;: true,</div><div class="line">		&quot;dictionaries&quot;: [&quot;jsdoc&quot;,&quot;closure&quot;]</div><div class="line">	&#125;,</div><div class="line">	&quot;source&quot;: &#123;</div><div class="line">		&quot;includePattern&quot;: &quot;.+\\.js(doc)?$&quot;,</div><div class="line">		&quot;excludePattern&quot;: &quot;(^|\\/|\\\\)_&quot;</div><div class="line">	&#125;,</div><div class="line">	&quot;plugins&quot;: [],</div><div class="line">	&quot;templates&quot;: &#123;</div><div class="line">		&quot;cleverLinks&quot;: false,</div><div class="line">		&quot;monospaceLinks&quot;: false</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>Specifying input files(指定输入文件)<br>  source选项组，结合给JSDoc命令行的路径，确定哪些文件要用JSDoc生成文档。 </p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&quot;source&quot;: &#123;</div><div class="line">	&quot;include&quot;: [ /* array of paths to files to generate documentation for */ ],</div><div class="line">	&quot;exclude&quot;: [ /* array of paths to exclude */ ],</div><div class="line">	&quot;includePattern&quot;: &quot;.+\\.js(doc)?$&quot;,</div><div class="line">	&quot;excludePattern&quot;: &quot;(^|\\/|\\\\)_&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>Incorporating command-line options into the configuration file(合并命令行选项到配置文件)<br>  它有可能把许多JSDoc的命令行选项放到配置文件，而不用在命令行中指定它们。<br>  要做到这一点，只要在conf.json的opts部分中使用的相关选项的longnames,值是该选项的值。</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&quot;opts&quot;: &#123;</div><div class="line">	&quot;template&quot;: &quot;templates/default&quot;,  // same as -t templates/default</div><div class="line">	&quot;encoding&quot;: &quot;utf8&quot;,               // same as -e utf8</div><div class="line">	&quot;destination&quot;: &quot;./out/&quot;,          // same as -d ./out/</div><div class="line">	&quot;recurse&quot;: true,                  // same as -r</div><div class="line">	&quot;tutorials&quot;: &quot;path/to/tutorials&quot;, // same as -u path/to/tutorials</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>Plugins（插件）<br>  要启用插件，只要添加它们的路径（相对于JSDoc文件夹）到plugins数组中就可以了。<br>  示例：<br>  例如，以下将包括 markdown 插件，它转换 markdown格式的文本为HTML，和“summarize”插件，该自动生成的每个的doclet的摘要：</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&quot;plugins&quot;: [</div><div class="line">	&quot;plugins/markdown&quot;,</div><div class="line">	&quot;plugins/summarize&quot;</div><div class="line">]</div></pre></td></tr></table></figure>
-<p>Tags and tag dictionaries(标签和标签字典)<br>  tags选项控制哪些JSDoc标签允许被使用和解析。</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&quot;tags&quot;: &#123;</div><div class="line">	&quot;allowUnknownTags&quot;: true,</div><div class="line">	&quot;dictionaries&quot;: [&quot;jsdoc&quot;,&quot;closure&quot;]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="配置JSDoc的默认模板"><a href="#配置JSDoc的默认模板" class="headerlink" title="配置JSDoc的默认模板"></a>配置JSDoc的默认模板</h3><pre><code>JSDoc的默认模板中提供了几个选项，您可以使用自定义外观和内容来生成文档。
-要使用这些选项，您必须为JSDoc创建一个配置文件，并在配置文件中设置相应的选项。
-
-Generating pretty-printed source files（生成适合打印的文档）
-    默认情况下，JSDoc的默认模板为你的源文件生成适合打印的文档。在文档中，它还链接到那些适合的打印文件。
-    要禁用适合打印的文件，设置选项templates.default.outputSourceFiles为false。
-    使用该选项也将删除文档中链接到源文件的连接。此选项在JSDoc3.3.0及更高版本上是可用的。
-Copying static files to the output directory(复制静态文件到输出目录)
-    SDoc的默认模板会自动复制一些静态文件，如CSS样式表，到输出目录。
-    在JSDoc3.3.0或更高版本，你可以告诉默认模板复制附加静态文件到输出目录。
-    例如，您可能希望复制一个图像的目录到输出目录，所以你可以在你的文档中显示这些图像。
-Showing the current date in the page footer（在页脚显示当前日期）
-    默认情况下，JSDoc的默认模板总是在生成文档的页脚显示当前日期。
-    在JSDoc3.3.0或更高版本，可以通过设置选项templates.default.includeDate为false来忽略当前日期。
-Showing longnames in the navigation column（在导航栏中显示长文件名）
-    默认情况下，JSDoc的默认模板在导航列中显示每个标识符缩写的名字。
-    例如，标识符my.namespace.MyClass将简单地称为显示MyClass。相反,要显示完整的长名称，设置选项templates.default.useLongnameInNav为true。
-    此选项在JSDoc3.4.0及更高版本中可用。
-Overriding the default template&apos;s layout file（重写默认模板的布局文件）
-    默认的模板使用名为 layout.tmpl 的文件 指定每个生成文档的页面中的页眉和页脚。
-    特别是，每个生产的文档页面会加载该文件定义了CSS和JavaScript文件。在JSDoc3.3.0或更高版本，可以指定使用自己的layout.tmpl文件，它允许你加载自己的自定义CSS和JavaScript文件，去除或替代，标准的文件。
-    要使用此功能，设置选项templates.default.layoutFile的路径到你的自定义布局文件。
-    路径是相对于config.json文件，当前的工作目录，和JSDoc目录的相对路径，按照这个顺序。
-</code></pre><h3 id="块标签和内联标签"><a href="#块标签和内联标签" class="headerlink" title="块标签和内联标签"></a>块标签和内联标签</h3><pre><code>JSDoc支持两种不同类型的标签：
-</code></pre><ol>
-<li>块标签, 这是在一个JSDoc注释的最高级别。</li>
-<li>内联标签, 块标签文本中的标签或说明。<br>块标签通常会提供有关您的代码的详细信息，如一个函数接受的参数。<br>块标签总是以 at 符号（@）开头。除了JSDoc注释中最后一个块标记，每个块标签后面必须跟一个换行符。<br>内联标签通常链接到文件的其他部分，类似于HTML中的锚标记（<a>）。<br>内联标签也以 at 符号（@）开。然而，内联标签及其文本必须用花括号（{ and }）括起来。 { 表示行内联标签的开始，而}表示内联标签的结束。<br>如果你的标签文本中包含右花括号（}），则必须用反斜线（ \ ）进行转义。<br>在内联标签后,你并不需要使用一个换行符。<br>示例：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Shoe类，一双鞋子</div><div class="line"> * @param color</div><div class="line"> * @param size</div><div class="line"> * @constructor</div><div class="line"> */</div><div class="line">const Shoe = function (color, size)&#123;</div><div class="line">	this.color = color;</div><div class="line">	this.size = size;</div><div class="line">&#125;;</div><div class="line">/**</div><div class="line"> * Set shoe&apos;s color. Use &#123;@link Shoe#setSize&#125; to set the shoe size</div><div class="line"> * @param color</div><div class="line"> */</div><div class="line">Shoe.prototype.setColor = function (color) &#123;</div><div class="line">	this.color = color;</div><div class="line">&#125;;</div><div class="line">/**</div><div class="line"> * 设置鞋子的尺寸</div><div class="line"> * @param size</div><div class="line"> */</div><div class="line">Shoe.prototype.setSize = function (size) &#123;</div><div class="line">	this.size = size;</div><div class="line">&#125;;</div><div class="line">/**</div><div class="line"> * 设置花边的颜色和样式</div><div class="line"> * @param color</div><div class="line"> * @param type</div><div class="line"> */</div><div class="line">Shoe.prototype.setLaceType = function (color, type) &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div><div class="line">var shoe1 = new Shoe(&apos;red&apos;, 12);</div></pre></td></tr></table></figure>
-</a></li>
-</ol>
-<h3 id="关于JSDoc插件"><a href="#关于JSDoc插件" class="headerlink" title="关于JSDoc插件"></a>关于JSDoc插件</h3><pre><code>Creating and Enabling a Plugin（创建并启用插件）
-    创建并启用新JSDoc插件,需要两个步骤：
-        创建一个包含你的插件代码的JavaScript模块.
-        将该模块添加到JSDoc配置文件的plugins数组中。你可以指定一个绝对或相对路径。
-        如果使用相对路径，JSDoc按照相对于配置文件所在的目录，当前的工作目录和JSDoc安装目录的顺序搜索插件。
-Authoring JSDoc 3 Plugins（创建JSDoc3插件）
-    JSDoc 3的插件系统广泛的控制着解析过程。一个插件可以通过执行以下任何一项操作，影响解析结果：
-</code></pre><ol>
-<li>定义事件处理程序</li>
-<li>定义标签</li>
-<li><p>定义一个抽象语法树节点的访问者<br>Event Handlers（事件处理程序）<br>事件: parseBegin – JSDoc开始加载和解析源文件之前，parseBegin事件被触发。<br>事件: fileBegin – 当解析器即将解析一个文件fileBegin事件触发。<br>事件: beforeParse – beforeParse事件在解析开始之前被触发。<br>事件: jsdocCommentFound – 每当JSDoc注释被发现,jsdocCommentFound事件就会被触发。<br>事件: symbolFound – 当解析器在代码中遇到一个可能需要被文档化的标识符时，symbolFound 事件就会被触发。<br>事件: newDoclet – newDoclet事件是最高级别的事件。新的doclet已被创建时，它就会被触发。<br>事件: fileComplete – 当解析器解析完一个文件时，fileComplete 事件就会被触发。<br>事件: parseComplete – JSDoc解析所有指定的源文件之后，parseComplete事件就会被触发。<br>事件: processingComplete – JSDoc更新反映继承和借来的标识符的解析结果后，processingComplete事件被触发。<br>Tag Definitions （标签定义）<br>添加标签到标签字典是影响文档生成的一个中级方式。<br>在一个newDoclet事件被触发前，JSDoc注释块被解析以确定可能存在的说明和任何JSDoc标签。<br>当一个标签被发现，如果它已在标签字典被定义，它就会被赋予一个修改doclet的机会。<br>The Dictionary（字典）<br>Node Visitors（节点访问者）<br>Reporting Errors(报告错误)</p>
-<h3 id="使用Markdown插件"><a href="#使用Markdown插件" class="headerlink" title="使用Markdown插件"></a>使用Markdown插件</h3><p>Enabling the Markdown plugin(启用markdown插件)<br>要启用markdown插件，只要将字符串plugins/markdown添加到JSDoc配置文件的plugins数组中即可。<br>Converting Markdown in additional JSDoc tags（在额外的JSDoc标签中转换Markdown）<br>默认情况下，markdown插件只处理特定JSDoc标签的markdown文本。<br>您可以通过添加一个 markdown.tags属性到你的JSDoc配置文件中，来处理的其他标签中的markdown文本。<br>Excluding the default tags from Markdown processing（剔除markdown默认处理的标签）<br>为了防止Markdown插件处理任何默认JSDoc标签，添加一个markdown.excludeTags属性到您的JSDoc配置文件。<br>Hard-wrapping text at line breaks （用换行符换行文本）<br>默认情况下，Markdown插件不处理换行符换行的文本。<br>Adding ID attributes to headings（添加ID属性到标题标签）<br>默认情况下，Markdown插件不会给每个HTML标题标签添加id 属性。</p>
-<h3 id="Tutorials-教程"><a href="#Tutorials-教程" class="headerlink" title="Tutorials 教程"></a>Tutorials 教程</h3><p>JSDoc允许你的API文档的页面旁边包含教程。<br>您可以使用此功能来为您的API提供详细的使用说明，如“入门”指南或实现一个功能的一步一步的过程。</p>
-<p>Adding tutorials（添加教程）<br>添加教程到您的API文档，可以通过–tutorials 或 -u 选项运行JSDoc，并提供JSDoc要搜索的教程目录。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">jsdoc -u path/to/tutorials path/to/js/files</div></pre></td></tr></table></figure>
-<p>Configuring titles, order, and hierarchy （配置标题，顺序和层次结构）<br>默认情况下，JSDoc使用的文件名作为教程标题，并且所有的教程都在同一层次。<br>您可以使用JSON文件为每个教程提供标题并指示文档中的教程应如何排序和分组。<br>Linking to tutorials from API documentation（从API文档链接到教程）<br>@tutorial 块标签<br>{@tutorial} 内联标签</p>
-<h3 id="包含Package（包）文件"><a href="#包含Package（包）文件" class="headerlink" title="包含Package（包）文件"></a>包含Package（包）文件</h3><p>包文件包含的信息对你的项目文档是很有用的，比如该项目的名称和版本号。<br>当JSDoc生成的文档的时候,可以自动使用项目中package.json文件中的信息。<br>示例，默认的模板在文档中显示项目的名称和版本号。<br>在源路径中包含一个包文件:<br>  jsdoc path/to/js path/to/package/package.json<br>使用 -P/–package 选项：<br>  jsdoc –package path/to/package/package-docs.json path/to/js    </p>
-<h3 id="包含-README-文件"><a href="#包含-README-文件" class="headerlink" title="包含 README 文件"></a>包含 README 文件</h3><p>有两种方法可以将 README 文件中的信息合并到您的文档：<br>在源路径中包含一个 README 文件:<br>jsdoc path/to/js path/to/readme/README.md<br>使用 -R/–readme 选项：<br>jsdoc –readme path/to/readme/README path/to/js</p>
-<blockquote>
-<p>   参考文档：<br><a href="http://www.css88.com/doc/jsdoc/" target="_blank" rel="external">jsDoc文档</a>    </p>
-</blockquote>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -3201,7 +3407,7 @@ Authoring JSDoc 3 Plugins（创建JSDoc3插件）
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">93</span>
+                <span class="site-state-item-count">94</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -3340,7 +3546,7 @@ Authoring JSDoc 3 Plugins（创建JSDoc3插件）
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共116.5k字</span>
+  <span class="post-count">博客全站共117.2k字</span>
 </div>
         
 
