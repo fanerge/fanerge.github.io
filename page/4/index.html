@@ -306,6 +306,301 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/25/jsDoc学习-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/25/jsDoc学习-2/" itemprop="url">
+                  jsDoc学习-标签1
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-25T21:03:22+08:00">
+                2017-09-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/代码规范/" itemprop="url" rel="index">
+                    <span itemprop="name">代码规范</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/25/jsDoc学习-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/25/jsDoc学习-2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,989
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  9
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>块标签（Block Tags）</p>
+<h3 id="abstract"><a href="#abstract" class="headerlink" title="@abstract"></a>@abstract</h3><pre><code>该成员（一般指父类的方法）必须在继承的子类中实现（或重写）。
+别名：@virtual
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * 奶制品</div><div class="line"> * @constructor</div><div class="line"> */</div><div class="line">function DairyProduct () &#123;&#125;</div><div class="line">/**</div><div class="line"> * 检查奶制品的状态</div><div class="line"> * @abstract</div><div class="line"> * @return &#123;boolean&#125;</div><div class="line"> */</div><div class="line">DairyProduct.prototype.isSolid = function () &#123;</div><div class="line">  throw new Error(&apos;must be implemented by subclass!&apos;);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">/**</div><div class="line"> * 牛奶</div><div class="line"> * @constructor</div><div class="line"> */</div><div class="line">function Milk () &#123;&#125;</div><div class="line">Milk.prototype = new DairyProduct();</div><div class="line">// 这里重写了父类的isSolid方法</div><div class="line">Milk.prototype.isSolid = function () &#123;</div><div class="line">	return false;</div><div class="line">&#125;;</div><div class="line">var dd = new Milk();</div><div class="line">console.log(dd.isSolid()); // false</div></pre></td></tr></table></figure>
+</code></pre><h3 id="access"><a href="#access" class="headerlink" title="@access"></a>@access</h3><pre><code>指定该成员的访问级别（私有 private，公共 public，或保护 protected）
+语法：@access &lt;private|protected|public&gt;
+    @access private 等价于 @private;
+    @access protected 等价于 @protected;
+    @access public 等价于 @public;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @constructor</div><div class="line"> */</div><div class="line">function Thingy () &#123;</div><div class="line">	/** @access private */</div><div class="line">	var foo = 0;</div><div class="line">	/** @access protected */</div><div class="line">	this._bar = 1;</div><div class="line">	/** @access public */</div><div class="line">	this.pez = 2;</div><div class="line">&#125;</div><div class="line">OR</div><div class="line">/**</div><div class="line"> * @constructor</div><div class="line"> */</div><div class="line">function Thingy () &#123;</div><div class="line">	/** @private */</div><div class="line">	var foo = 0;</div><div class="line">	/** @protected */</div><div class="line">	this._bar = 1;</div><div class="line">	/** @public */</div><div class="line">	this.pez = 2;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="alias"><a href="#alias" class="headerlink" title="alias"></a>alias</h3><pre><code>标记成员有一个别名
+语法：@alias &lt;aliasNamepath&gt;
+例如，匿名的构造函数使用@alias。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">Klass(&apos;trackr.CookieManager&apos;,</div><div class="line">	/**</div><div class="line">	 * 匿名函数</div><div class="line">	 * @alias trackr.CookieManager</div><div class="line">	 * @param kv</div><div class="line">	 */</div><div class="line">	function (kv) &#123;</div><div class="line">		/** trackr.CookieManager＃value */</div><div class="line">		this.value = kv;</div><div class="line">	&#125;</div><div class="line">)</div></pre></td></tr></table></figure>
+
+您也可以在一个立即调用的函数表达式（IIFE）中创建的成员中使用@alias标签。
+@alias标签告诉JSDoc，这些成员都暴露在IIFE作用域之外的。
+例如，命名空间的静态方法使用@alias。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">/** @namespace */</div><div class="line">var Apple = &#123;&#125;;</div><div class="line">(function (ns) &#123;</div><div class="line">	/**</div><div class="line">	 * @namespace</div><div class="line">	 * @alias Apple.Core</div><div class="line">	 */</div><div class="line">	var core = &#123;&#125;;</div><div class="line">	/** Documented as Apple.Core.seed */</div><div class="line">	core.speed = function () &#123;&#125;;</div><div class="line">	ns.Core = core;</div><div class="line">&#125;)(Apple);</div></pre></td></tr></table></figure>
+
+对于那些对象字面量中定义的成员，可以使用@alias标签替代的@lends标记。
+例如，对象常量使用@alias。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">// Documenting objectA with @alias</div><div class="line">var objectA = (function() &#123;</div><div class="line">	/**</div><div class="line">	 * Documented as objectA</div><div class="line">	 * @alias objectA</div><div class="line">	 * @namespace</div><div class="line">	 */</div><div class="line">	 /** @lends objectA */</div><div class="line">	var x = &#123;</div><div class="line">		/**</div><div class="line">		 * Documented as objectA.myProperty</div><div class="line">		 * @member</div><div class="line">		 */</div><div class="line">		myProperty: &apos;foo&apos;</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">	return x;</div><div class="line">&#125;)();</div></pre></td></tr></table></figure>
+</code></pre><h3 id="auguments"><a href="#auguments" class="headerlink" title="@auguments"></a>@auguments</h3><pre><code>@augments or@extends标签指明标识符继承自哪个父类，后面需要加父类名。
+你可以使用这个标签来记录基于类和并基于原型的继承。
+别名：@extends
+语法：@auguments &lt;namepath&gt;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * 动物</div><div class="line"> * @constructor</div><div class="line"> */</div><div class="line">function Animal () &#123;</div><div class="line">	this.alive = true;</div><div class="line">&#125;</div><div class="line"></div><div class="line">/**</div><div class="line"> * 鸭子</div><div class="line"> * @constructor</div><div class="line"> * @auguments Animal</div><div class="line"> */</div><div class="line">function Duck () &#123;&#125;</div><div class="line">Duck.prototype = new Animal();</div><div class="line">Duck.prototype.speak = function () &#123;</div><div class="line">	if (this.alive) &#123;</div><div class="line">		alert(&apos;Quack!&apos;);</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line">var d = new Duck();</div><div class="line">d.speak();</div></pre></td></tr></table></figure>
+</code></pre><h3 id="author"><a href="#author" class="headerlink" title="@author"></a>@author</h3><pre><code>@author标签标识一个项目的作者。
+语法：@author &lt;name&gt; [&lt;emailAddress&gt;]
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line">* @author fanerge &lt;fanerge@qq.com&gt;</div><div class="line">*/</div><div class="line">function MyClass () &#123;&#125;;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="borrows"><a href="#borrows" class="headerlink" title="@borrows"></a>@borrows</h3><pre><code>@borrows标签允许您将另一个标识符的描述添加到你的当前描述。
+语法：@borrows &lt;that namepath&gt; as &lt;this namepath&gt;
+在这个例子中，&quot;trstr&quot;函数存在文档，但&quot;util.trim&quot;只是使用不同的名称引用相同的功能。
+例如，复制trstr的文档描述给util.trim。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @namespace</div><div class="line"> * @borrows trstr as trim</div><div class="line"> */</div><div class="line">var util = &#123;</div><div class="line">	trim: trstr</div><div class="line">&#125;;</div><div class="line"></div><div class="line">/**</div><div class="line"> * Remove whitespace from around a string.</div><div class="line"> * @param &#123;string&#125; str</div><div class="line"> */</div><div class="line">function trstr(str) &#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="callback"><a href="#callback" class="headerlink" title="@callback"></a>@callback</h3><pre><code>描述一个回调函数。@Callback标签提供回调函数（可传递给其他函数）的描述，包括回调的参数和返回值。
+你可以包涵任何一个你能提供给@method标签。
+语法：@callback &lt;namepath&gt;
+例如,描述一个指定类回调。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @class</div><div class="line"> */</div><div class="line">function Requester() &#123;&#125;</div><div class="line"></div><div class="line">/**</div><div class="line"> * Send a request.</div><div class="line"> * @param &#123;Requester~requestCallback&#125; cb - The callback that handles the response.</div><div class="line"> */</div><div class="line">Requester.prototype.send = function(cb) &#123;</div><div class="line">	// code</div><div class="line">&#125;;</div><div class="line"></div><div class="line">/**</div><div class="line"> * This callback is displayed as part of the Requester class.</div><div class="line"> * @callback Requester~requestCallback</div><div class="line"> * @param &#123;number&#125; responseCode</div><div class="line"> * @param &#123;string&#125; responseMessage</div><div class="line"> */</div></pre></td></tr></table></figure>
+</code></pre><h3 id="class"><a href="#class" class="headerlink" title="@class"></a>@class</h3><pre><code>@class标签标明函数是一个构造器函数，意味着需要使用 new 关键字来返回一个实例，即使用 new 关键字实例化。
+别名：@constructor
+语法：@class [&lt;type&gt; &lt;name&gt;]
+例如，一个函数构建一个Person实例
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * 创建一个人</div><div class="line"> * @class</div><div class="line"> */</div><div class="line">function Person () &#123;&#125;</div><div class="line">var p = new Person();</div></pre></td></tr></table></figure>
+</code></pre><h3 id="classdesc"><a href="#classdesc" class="headerlink" title="@classdesc"></a>@classdesc</h3><pre><code>@classdesc标签用于为类提供一个描述，这样和构造函数的描述区分开来。
+@classdesc标签应该与 @class (或 @constructor)标签结合使用。
+语法：@classdesc &lt;some description&gt;
+如下所示，一个类有两个添加描述的地方，一个适用于函数本身，而另一个一般适用于类。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * This is a description of the MyClass constructor function.</div><div class="line"> * @class</div><div class="line"> * @classdesc This is a description of the MyClass class.</div><div class="line"> */</div><div class="line">function MyClass() &#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="constant"><a href="#constant" class="headerlink" title="@constant"></a>@constant</h3><pre><code>@constant 标签指明这个对象是一个常量。
+语法：@constant [&lt;type&gt; &lt;name&gt;]    
+例如，一个字符串常量表示红色。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">/** @constant</div><div class="line">	@type &#123;string&#125;</div><div class="line">	@default</div><div class="line">*/</div><div class="line">const RED = &apos;FF0000&apos;;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="constructs"><a href="#constructs" class="headerlink" title="@constructs"></a>@constructs</h3><pre><code>当使用对象字面量形式定义类（例如使用@lends标签）时，可使用@constructs标签标明这个函数用来作为类的构造实例。
+语法：＠constructs [name]
+例如， @constructs 和 @lends 结合使用
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">var Person = makeClass(</div><div class="line">   /** @lends Person.prototype */</div><div class="line">   &#123;</div><div class="line">       /**</div><div class="line">        * @constructs</div><div class="line">        * @param name</div><div class="line">        */</div><div class="line">       initialize: function (name) &#123;</div><div class="line">           this.name = name;</div><div class="line">       &#125;,</div><div class="line">       /**</div><div class="line">        * @param msg</div><div class="line">        * @returns &#123;*&#125;</div><div class="line">        */</div><div class="line">       say: function (msg) &#123;</div><div class="line">           return `$&#123;this.name&#125;says:$&#123;msg&#125;`;</div><div class="line">       &#125;</div><div class="line">   &#125;);</div></pre></td></tr></table></figure>
+</code></pre><h3 id="copyright"><a href="#copyright" class="headerlink" title="@copyright"></a>@copyright</h3><pre><code>@copyright标签是用来描述一个文件的版权信息。一般和@file 标签结合使用。
+语法：@copyright &lt;some copyright text&gt;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line">* @file this is javascript</div><div class="line">* @copyright fanerge 2017</div><div class="line">*/</div></pre></td></tr></table></figure>
+</code></pre><h3 id="default"><a href="#default" class="headerlink" title="@default"></a>@default</h3><pre><code>@default标签可以让你记录标识的赋值。
+可以在标签后面跟上他的值，或者当值是一个唯一被分配的简单值(可以是：一个字符串，数字，布尔值或null)的时候，你可以让JSDoc从源代码中获取值，自动记录 。
+别名：defaultvalue
+语法：@default [&lt;some value&gt;]
+在本实例中,一个常量被记录。该常数的值为0xff0000。通过添加@default标签，这个值将自动添加到文档。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line">* @constant</div><div class="line">* @default</div><div class="line">*/</div><div class="line">const RED = &apos;0xff0000&apos;;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="deprecated"><a href="#deprecated" class="headerlink" title="@deprecated"></a>@deprecated</h3><pre><code>@deprecated 标签指明一个标识在你代码中已经被弃用。
+语法：@deprecated [&lt;some text&gt;]
+例如，描述一个old函数从2.0版本开始已经被弃用
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line">* @deprecated since version 2.0</div><div class="line">*/</div><div class="line">function old () &#123;&#125;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="description"><a href="#description" class="headerlink" title="@description"></a>@description</h3><pre><code>@description标签允许您提供一般描述。
+该说明可能包括HTML标签。如果Markdown 插件启用的话，它也可包括Markdown格式。
+别名：@desc
+语法：@description &lt;some description&gt;
+例如，不用@description标签描述一个标识
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Add two numbers.</div><div class="line"> * @param &#123;number&#125; a</div><div class="line"> * @param &#123;number&#125; b</div><div class="line"> * @returns &#123;number&#125;</div><div class="line"> */</div><div class="line">function add(a, b) &#123;</div><div class="line">	return a + b;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+例如，用@description标签描述一个标识
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @param &#123;number&#125; a</div><div class="line"> * @param &#123;number&#125; b</div><div class="line"> * @returns &#123;number&#125;</div><div class="line"> * @description Add two numbers.</div><div class="line"> */</div><div class="line">function add(a, b) &#123;</div><div class="line">	return a + b;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="enum"><a href="#enum" class="headerlink" title="@enum"></a>@enum</h3><pre><code>@enum标签描述一个静态属性值的全部相同的集合。
+枚举类似一个属性的集合，除了枚举自己的描述注释之外，属性都记录在容器内部的注释中。
+通常这种标签是与@ReadOnly结合使用，作为一个枚举通常表示常量的集合。
+语法：@enum [&lt;type&gt;]
+例如，一个数字枚举，表示的3种状态
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Enum for tri-state values.</div><div class="line"> * @readonly</div><div class="line"> * @enum &#123;number&#125;</div><div class="line"> */</div><div class="line">var triState = &#123;</div><div class="line">	/** The true value */</div><div class="line">	TRUE: 1,</div><div class="line">	FALSE: -1,</div><div class="line">	/** @type &#123;boolean&#125; */</div><div class="line">	MAYBE: true</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="event"><a href="#event" class="headerlink" title="@event"></a>@event</h3><pre><code>描述一个事件。@event标签允许您描述一个可触发的事件，一个典型的事件是由对象定义的一组属性来表示。
+标签来定义事件的具体类型，您可以使用@fires标记，以表明这个种方法可以触发该事件。
+你还可以使用@listens标签，以指示表明用这个表示来侦听该事件。    
+语法：@event &lt;className&gt;#[event:]&lt;eventName&gt;
+例如，描述一个作为事件的行数
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Throw a snowball.</div><div class="line"> *</div><div class="line"> * @fires Hurl#snowball</div><div class="line"> */</div><div class="line">Hurl.prototype.snowball = function() &#123;</div><div class="line">	/**</div><div class="line">	 * Snowball event.</div><div class="line">	 *</div><div class="line">	 * @event Hurl#snowball</div><div class="line">	 * @type &#123;object&#125;</div><div class="line">	 * @property &#123;boolean&#125; isPacked - Indicates whether the snowball is tightly packed.</div><div class="line">	 */</div><div class="line">	this.emit(&apos;snowball&apos;, &#123;</div><div class="line">		isPacked: this._snowball.isPacked</div><div class="line">	&#125;);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="example"><a href="#example" class="headerlink" title="@example"></a>@example</h3><pre><code>提供一个如何使用描述项的例子。跟随此标签的文字将显示为高亮代码。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Solves equations of the form a * x = b</div><div class="line"> * @example</div><div class="line"> * // returns 2</div><div class="line"> * globalNS.method1(5, 10);</div><div class="line"> * @example</div><div class="line"> * // returns 3</div><div class="line"> * globalNS.method(5, 15);</div><div class="line"> * @returns &#123;Number&#125; Returns the value of x for the equation.</div><div class="line"> */</div><div class="line">globalNS.method1 = function (a, b) &#123;</div><div class="line">	return b / a;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="exports"><a href="#exports" class="headerlink" title="@exports"></a>@exports</h3><pre><code>@exports标签描述由JavaScript模块的exports或module.exports属性导出的任何内容。
+语法：@exports &lt;moduleName&gt;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * A module that says hello!</div><div class="line"> * @module hello/world</div><div class="line"> */</div><div class="line"></div><div class="line">/** Say hello. */</div><div class="line">exports.sayHello = function() &#123;</div><div class="line">	return &apos;Hello world&apos;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="external"><a href="#external" class="headerlink" title="@external"></a>@external</h3><pre><code>@external标签用来标识一个在当前包外部定义的类，命名空间，或模块。
+通过使用这个标签，你可以描述你的包的外部标识的扩展，或者您也可以提供关于 外部标识的相关信息给你的包的使用者。
+你也可以在任何其他JSDoc标签中引用外部标识的namepath（名称路径）。
+外部标识引用的路径名 始终需要使用external:前缀：（例如{@link external:Foo}或@augments external:Foo）。 但是，你可以省略@external标记的这个前缀。
+别名：@host
+下面的示例演示如何描述内置的String对象作为external，新的实例方法external:String#rot13
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * The built in string object.</div><div class="line"> * @external String</div><div class="line"> * @see &#123;@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String|String&#125;</div><div class="line"> */</div><div class="line"></div><div class="line">/**</div><div class="line"> * Create a ROT13-encoded version of the string. Added by the `foo` package.</div><div class="line"> * @function external:String#rot13</div><div class="line"> * @example</div><div class="line"> * var greeting = new String(&apos;hello world&apos;);</div><div class="line"> * console.log( greeting.rot13() ); // uryyb jbeyq</div><div class="line"> */</div></pre></td></tr></table></figure>
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="http://www.css88.com/doc/jsdoc/" target="_blank" rel="external">jsDoc文档</a>    </p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/25/jsDoc学习-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2444,203 +2739,6 @@ index.js
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/17/koa学习-文件上传/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/17/koa学习-文件上传/" itemprop="url">
-                  koa学习-文件上传
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-17T20:20:14+08:00">
-                2017-09-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
-                    <span itemprop="name">NodeJS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/17/koa学习-文件上传/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/17/koa学习-文件上传/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  608
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  3
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="busboy模块"><a href="#busboy模块" class="headerlink" title="busboy模块"></a>busboy模块</h3><pre><code>模块是用来解析POST请求，node原生req中的文件流。
-busboy 是用来解析出请求中文件流。
-</code></pre><h3 id="封装上传文件到写入服务的方法"><a href="#封装上传文件到写入服务的方法" class="headerlink" title="封装上传文件到写入服务的方法"></a>封装上传文件到写入服务的方法</h3><pre><code>创建上传模块upload.js
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div></pre></td><td class="code"><pre><div class="line">const inspect = require(&apos;util&apos;).inspect;</div><div class="line">const path = require(&apos;path&apos;);</div><div class="line">const os = require(&apos;os&apos;);</div><div class="line">const fs = require(&apos;fs&apos;);</div><div class="line">const Busboy = require(&apos;busboy&apos;);</div><div class="line"></div><div class="line">/*</div><div class="line">* 同步创建文件目录</div><div class="line">* @param &#123;string&#125; dirname 目录绝对地址</div><div class="line">* @return &#123;boolean&#125; 创建目录结果</div><div class="line">*/</div><div class="line">function mkdirsSync (dirname) &#123;</div><div class="line">	if (fs.existsSync(dirname)) &#123;</div><div class="line">		return true;</div><div class="line">	&#125; else &#123;</div><div class="line">		if (mkdirsSync(path.dirname(dirname))) &#123;</div><div class="line">			fs.mkdirSync(dirname);</div><div class="line">			return true;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">/*</div><div class="line">* 获取上传文件的后缀名</div><div class="line">* @param &#123;string&#125; fileName 获取上传文件的后缀名</div><div class="line">* @return &#123;string&#125; 文件后缀名</div><div class="line">*/</div><div class="line">function getSuffixName (fileName) &#123;</div><div class="line">	/*let nameList = fileName.split(&apos;.&apos;);</div><div class="line">	return nameList[nameList.length-1]*/</div><div class="line">	return path.extname(fileName);</div><div class="line">&#125;</div><div class="line"></div><div class="line">/*</div><div class="line">* 上传文件</div><div class="line">* @param &#123;object&#125; ctx koa上下文</div><div class="line">* @param &#123;object&#125; options 文件上传参数 fileType文件类型， path文件存放路径</div><div class="line">* @return &#123;promise&#125;</div><div class="line">*/</div><div class="line">function uploadFile (ctx, options) &#123;</div><div class="line">	let req = ctx.req;</div><div class="line">	let res = ctx.res;</div><div class="line">	let busboy = new Busboy(&#123;headers: req.headers&#125;);</div><div class="line"></div><div class="line">	// 获取类型</div><div class="line">	let fileType = options.fileType || &apos;common&apos;;</div><div class="line">	let filePath = path.join(options.path, fileType);</div><div class="line">	let mkdirResult = mkdirsSync(filePath);</div><div class="line"></div><div class="line">	return new Promise((resolve, reject) =&gt; &#123;</div><div class="line">		console.log(&apos;文件上传中...&apos;);</div><div class="line">		let result = &#123;</div><div class="line">			success: false,</div><div class="line">			formData: &#123;&#125;,</div><div class="line">		&#125;;</div><div class="line"></div><div class="line">		// 解析请求文件事件</div><div class="line">		busboy.on(&apos;file&apos;, function(fieldname, file, filename, encoding, mimetype) &#123;</div><div class="line">		  let fileName = Math.random().toString(16).substr(2) + &apos;.&apos; + getSuffixName(filename)</div><div class="line">		  let _uploadFilePath = path.join( filePath, fileName )</div><div class="line">		  let saveTo = path.join(_uploadFilePath)</div><div class="line"></div><div class="line">		  // 文件保存到制定路径</div><div class="line">		  file.pipe(fs.createWriteStream(saveTo))</div><div class="line"></div><div class="line">		  // 文件写入事件结束</div><div class="line">		  file.on(&apos;end&apos;, function() &#123;</div><div class="line">			result.success = true</div><div class="line">			result.message = &apos;文件上传成功&apos;</div><div class="line"></div><div class="line">			console.log(&apos;文件上传成功！&apos;)</div><div class="line">			resolve(result)</div><div class="line">		  &#125;)</div><div class="line">		&#125;)</div><div class="line"></div><div class="line">		// 解析表单中其他字段信息</div><div class="line">		busboy.on(&apos;field&apos;, function(fieldname, val, fieldnameTruncated, valTruncated, encoding, mimetype) &#123;</div><div class="line">		  console.log(&apos;表单字段数据 [&apos; + fieldname + &apos;]: value: &apos; + inspect(val));</div><div class="line">		  result.formData[fieldname] = inspect(val);</div><div class="line">		&#125;);</div><div class="line"></div><div class="line">		// 解析结束事件</div><div class="line">		busboy.on(&apos;finish&apos;, function( ) &#123;</div><div class="line">		  console.log(&apos;文件上结束&apos;)</div><div class="line">		  resolve(result)</div><div class="line">		&#125;)</div><div class="line"></div><div class="line">		// 解析错误事件</div><div class="line">		busboy.on(&apos;error&apos;, function(err) &#123;</div><div class="line">		  console.log(&apos;文件上出错&apos;)</div><div class="line">		  reject(result)</div><div class="line">		&#125;)</div><div class="line"></div><div class="line">		req.pipe(busboy)</div><div class="line"></div><div class="line">	&#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">module.exports =  &#123;</div><div class="line">  uploadFile</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-入口文件
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">const Koa = require(&apos;koa&apos;)</div><div class="line">const path = require(&apos;path&apos;)</div><div class="line">const app = new Koa()</div><div class="line">// const bodyParser = require(&apos;koa-bodyparser&apos;)</div><div class="line"></div><div class="line">const &#123; uploadFile &#125; = require(&apos;./util/upload&apos;)</div><div class="line"></div><div class="line">// app.use(bodyParser())</div><div class="line"></div><div class="line">app.use( async ( ctx ) =&gt; &#123;</div><div class="line"></div><div class="line">  if ( ctx.url === &apos;/&apos; &amp;&amp; ctx.method === &apos;GET&apos; ) &#123;</div><div class="line">	// 当GET请求时候返回表单页面</div><div class="line">	let html = `</div><div class="line">	  &lt;h1&gt;koa2 upload demo&lt;/h1&gt;</div><div class="line">	  &lt;form method=&quot;POST&quot; action=&quot;/upload.json&quot; enctype=&quot;multipart/form-data&quot;&gt;</div><div class="line">		&lt;p&gt;file upload&lt;/p&gt;</div><div class="line">		&lt;span&gt;picName:&lt;/span&gt;&lt;input name=&quot;picName&quot; type=&quot;text&quot; /&gt;&lt;br/&gt;</div><div class="line">		&lt;input name=&quot;file&quot; type=&quot;file&quot; /&gt;&lt;br/&gt;&lt;br/&gt;</div><div class="line">		&lt;button type=&quot;submit&quot;&gt;submit&lt;/button&gt;</div><div class="line">	  &lt;/form&gt;</div><div class="line">	`</div><div class="line">	ctx.body = html</div><div class="line"></div><div class="line">  &#125; else if ( ctx.url === &apos;/upload.json&apos; &amp;&amp; ctx.method === &apos;POST&apos; ) &#123;</div><div class="line">	// 上传文件请求处理</div><div class="line">	let result = &#123; success: false &#125;</div><div class="line">	let serverFilePath = path.join( __dirname, &apos;upload-files&apos; )</div><div class="line"></div><div class="line">	// 上传文件事件</div><div class="line">	result = await uploadFile( ctx, &#123;</div><div class="line">	  fileType: &apos;album&apos;, // common or album</div><div class="line">	  path: serverFilePath</div><div class="line">	&#125;)</div><div class="line"></div><div class="line">	ctx.body = result</div><div class="line">  &#125; else &#123;</div><div class="line">	// 其他请求显示404</div><div class="line">	ctx.body = &apos;&lt;h1&gt;404！！！ o(╯□╰)o&lt;/h1&gt;&apos;</div><div class="line">  &#125;</div><div class="line">&#125;)</div><div class="line"></div><div class="line">app.listen(3004, () =&gt; &#123;</div><div class="line">  console.log(&apos;[demo] upload-simple is starting at port 3000&apos;)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="https://chenshenhai.github.io/koa2-note/note/request/post-use-middleware.html" target="_blank" rel="external">koa-note</a><br>    <a href="https://www.npmjs.com/package/cookies" target="_blank" rel="external">cookies</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2690,7 +2788,7 @@ busboy 是用来解析出请求中文件流。
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">95</span>
+                <span class="site-state-item-count">96</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2701,7 +2799,7 @@ busboy 是用来解析出请求中文件流。
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -2712,7 +2810,7 @@ busboy 是用来解析出请求中文件流。
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">27</span>
+                <span class="site-state-item-count">28</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -2829,7 +2927,7 @@ busboy 是用来解析出请求中文件流。
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共117.7k字</span>
+  <span class="post-count">博客全站共118.3k字</span>
 </div>
         
 
