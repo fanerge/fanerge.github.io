@@ -306,6 +306,225 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/07/22/js函数式编程-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/22/js函数式编程-4/" itemprop="url">
+                  js函数式编程-4
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-22T21:15:25+08:00">
+                2017-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
+                    <span itemprop="name">函数式编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/22/js函数式编程-4/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/07/22/js函数式编程-4/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,160
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  6
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="特百惠"><a href="#特百惠" class="headerlink" title="特百惠"></a>特百惠</h2><p><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
+<h3 id="强大的容器"><a href="#强大的容器" class="headerlink" title="强大的容器"></a>强大的容器</h3><pre><code>函数式的程序：即通过管道把数据在一系列纯函数间传递的程序。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">1.	// 先创建一个容器（container），这个容器必须能够装载任意类型的值，一个存放宝贵的数据的特殊盒子。</div><div class="line">	var Container = function (x) &#123;</div><div class="line">		this._value = x;</div><div class="line">	&#125;;	</div><div class="line">	// 作用容器的构造器（constructor）</div><div class="line">	Container.of = function (x) &#123;</div><div class="line">		return new Container(x);</div><div class="line">	&#125;;</div><div class="line">	// 测试容器</div><div class="line">	var test = Container.of(Container.of(&#123;name: &apos;fanerge&apos;&#125;))	</div><div class="line">	console.log(test)</div></pre></td></tr></table></figure>
+</code></pre><ol>
+<li><p>第一个functor</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">// 操作容器中的值</div><div class="line">// (a -&gt; b) -&gt; Container a -&gt; Container b</div><div class="line">Container.prototype.map = function (f) &#123;</div><div class="line">	return Container.of(f(this._value))</div><div class="line">&#125;;	</div><div class="line">// 使用map方法</div><div class="line">Container.of(3).map(function (two) &#123;</div><div class="line">	return two + 2;</div><div class="line">&#125;);</div><div class="line">// Container(5)</div><div class="line">Container.of(&apos;fanerge&apos;).map(function (str) &#123; </div><div class="line">	return str.toUpperCase()</div><div class="line">&#125;);</div><div class="line">// Container(&apos;FANERGE&apos;)</div><div class="line">// 因为我们能够在不离开 Container 的情况下操作容器里面的值。这是非常了不起的一件事情。Container 里的值传递给 map 函数之后，就可以任我们操作；操作结束后，为了防止意外再把它放回它所属的 Container。这样做的结果是，我们能连续地调用 map，运行任何我们想运行的函数。</div></pre></td></tr></table></figure>
+<p><strong>functor 是实现了 map 函数并遵守一些特定规则的容器类型。</strong><br>把值装进一个容器，而且只能使用 map 来处理它，让容器自己去运用函数能给我们带来什么好处？答案是抽象，对于函数运用的抽象。当 map 一个函数的时候，我们请求容器来运行这个函数。不夸张地讲，这是一种十分强大的理念。</p>
+</li>
+<li><p>薛定谔的Maybe</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">var Maybe = function (x) &#123;</div><div class="line">	this._value = x;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">Maybe.of = function (x) &#123;</div><div class="line">	return new Maybe(x);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">Maybe.prototype.isNoting = function () &#123;</div><div class="line">	return (this._value == null || this._value === undefined)</div><div class="line">&#125;;</div><div class="line"></div><div class="line">Maybe.prototype.map = function (f) &#123;</div><div class="line">	return this.isNoting() ? Maybe.of(null) : Maybe.of(f(this._value));</div><div class="line">&#125;;</div><div class="line"></div><div class="line">Maybe.of(&apos;Malkovich Malkovich&apos;).map(_.match(/a/ig)) // Maybe([&apos;a&apos;, &apos;a&apos;]</div><div class="line">// map 完全有能力以 curry 函数的方式来“代理”任何 functor</div><div class="line">var map = curry(function (f, any_functor_at_all) &#123;</div><div class="line">	return any_functor_at_all.map(f);</div><div class="line">&#125;);</div><div class="line">// safeHead :: [a] -&gt; Maybe(a)</div><div class="line">var safeHead = function (xs) &#123;</div><div class="line">	return Maybe.of(xs[0]);</div><div class="line">&#125;;</div><div class="line">var streetName = _.compose(map(_.prop(&apos;street&apos;)), safeHead, _.prop(&apos;address&apos;));</div><div class="line">streetName(&#123;addresses: [&#123;street: &quot;Shady Ln.&quot;, number: 4201&#125;]&#125;); // Maybe(&quot;Shady Ln.&quot;)</div></pre></td></tr></table></figure>
+<p><em>购物的例子</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">// withdraw :: Number -&gt; Account -&gt; Maybe(Account)</div><div class="line">var withdraw = curry(function (amount, account) &#123;</div><div class="line">	return account.balance &gt;= amount ?</div><div class="line">		Maybe.of(&#123;balance: acount.balance - amount&#125;) :</div><div class="line">		Maybe.of(null);</div><div class="line">&#125;)</div><div class="line">// finishTransaction :: Account -&gt; String</div><div class="line">var finishTransaction = compose(remainingBalance, updateLedger); //// &lt;- 假定这两个函数已经在别处定义好了</div><div class="line">// getTwenty :: Account -&gt; Maybe(String)</div><div class="line">var getTwenty = compose(map(finishTransaction), withdraw(20));</div><div class="line">getTwenty(&#123;balance: 200.00&#125;); // Maybe(&quot;Your balance is $180.00&quot;)</div><div class="line">getTwenty(&#123; balance: 10.00&#125;); // Maybe(null)</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">// maybe :: b -&gt; (a -&gt; b) -&gt; Maybe a -&gt; b	</div><div class="line">var may = curry(function (x, f, m) &#123;</div><div class="line">	return m.isNoting() ? x : f(m._value);</div><div class="line">&#125;);</div><div class="line">// getTwenty :: Account -&gt; String</div><div class="line">var getTwenty = compose(</div><div class="line">	maybe(&quot;You&apos;re broke!&quot;, finishTransaction), withdraw(20)</div><div class="line">);	</div><div class="line">getTwenty(&#123; balance: 200.00&#125;); // &quot;Your balance is $180.00&quot;</div><div class="line">getTwenty(&#123; balance: 10.00&#125;); // &quot;You&apos;re broke!&quot;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="“纯”错误处理"><a href="#“纯”错误处理" class="headerlink" title="“纯”错误处理"></a>“纯”错误处理</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">Left 和 Right 是我们称之为 Either 的抽象类型的两个子类。</div><div class="line">var Left = function(x) &#123;</div><div class="line">  this.__value = x;</div><div class="line">&#125;</div><div class="line">Left.of = function(x) &#123;</div><div class="line">  return new Left(x);</div><div class="line">&#125;</div><div class="line">Left.prototype.map = function(f) &#123;</div><div class="line">  return this;</div><div class="line">&#125;</div><div class="line"></div><div class="line">var Right = function(x) &#123;</div><div class="line">  this.__value = x;</div><div class="line">&#125;</div><div class="line">Right.of = function(x) &#123;</div><div class="line">  return new Right(x);</div><div class="line">&#125;</div><div class="line">Right.prototype.map = function(f) &#123;</div><div class="line">  return Right.of(f(this.__value));</div><div class="line">&#125;</div><div class="line">// 就像 Maybe 可以有个 maybe 一样，Either 也可以有一个 either。两者的用法类似，但 either 接受两个函数（而不是一个）和一个静态值为参数。</div><div class="line">//  either :: (a -&gt; c) -&gt; (b -&gt; c) -&gt; Either a b -&gt; c</div><div class="line">var either = curry(function(f, g, e) &#123;</div><div class="line">  switch(e.constructor) &#123;</div><div class="line">	case Left: return f(e.__value);</div><div class="line">	case Right: return g(e.__value);</div><div class="line">  &#125;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">//  zoltar :: User -&gt; _</div><div class="line">var zoltar = compose(console.log, either(id, fortune), getAge(moment()));</div><div class="line"></div><div class="line">zoltar(&#123;birthdate: &apos;2005-12-12&apos;&#125;);</div><div class="line">// &quot;If you survive, you will be 10&quot;</div><div class="line">// undefined</div><div class="line"></div><div class="line">zoltar(&#123;birthdate: &apos;balloons!&apos;&#125;);</div><div class="line">// &quot;Birth date could not be parsed&quot;</div><div class="line">// undefined</div></pre></td></tr></table></figure>
+
+**取到容器里的东西**
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">var IO = function (f) &#123;</div><div class="line">	this.__value = f;</div><div class="line">&#125;;</div><div class="line">IO.of = function (x) &#123;</div><div class="line">	return new IO(function () &#123;</div><div class="line">		return x;</div><div class="line">	&#125;);</div><div class="line">&#125;;</div><div class="line">IO.prototype.map = function (f) &#123;</div><div class="line">	return new IO(_.compose(f, this.__value));</div><div class="line">&#125;;</div><div class="line">// io_window_ :: IO Window</div><div class="line">var io_window = new IO(function () &#123; return window;&#125;)</div><div class="line">io_window.map(function (win) &#123; return win.innerWidth &#125;) // IO(1430)</div><div class="line">io_window.map(_.prop(&apos;location&apos;)).map(_.prop(&apos;href&apos;)).map(split(&apos;/&apos;)); // IO([&quot;http:&quot;, &quot;&quot;, &quot;localhost:8000&quot;, &quot;blog&quot;, &quot;posts&quot;])</div><div class="line">// $ :: String -&gt; IO [DOM]</div><div class="line">var $ = function(selector) &#123;</div><div class="line">  return new IO(function()&#123; return document.querySelectorAll(selector); &#125;);</div><div class="line">&#125;</div><div class="line">$(&apos;#myDiv&apos;).map(head).map(function(div)&#123; return div.innerHTML; &#125;); // IO(&apos;I am some inner html&apos;)</div></pre></td></tr></table></figure>
+
+**解析url参数**
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">纯代码库: lib/params.js</div><div class="line">var url = new IO(function () &#123; return window.location.href; &#125;);</div><div class="line">// toPairs = String -&gt; [[String]]</div><div class="line">var toPairs = compose(map(split(&apos;=&apos;), split(&apos;&amp;&apos;));</div><div class="line">// params :: String -&gt; [[String]]</div><div class="line">var params = conmpose(toPairs, last, split(&apos;?&apos;));</div><div class="line">// findParam = String -&gt; Io Maybe [String]</div><div class="line">var findParam = function (key) &#123;</div><div class="line">	return map(compose(Maybe.of, filter(compose(eq(key), head)), params), url);</div><div class="line">&#125;;</div><div class="line">// 调用 __value() 来运行它！</div><div class="line">findParam(&apos;searchTerm&apos;).__value();</div><div class="line">// Maybe([&apos;searchTerm&apos;, &apos;wafflehouse&apos;])</div></pre></td></tr></table></figure>
+</code></pre><h3 id="异步任务"><a href="#异步任务" class="headerlink" title="异步任务"></a>异步任务</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">// Postgres.connect :: Url -&gt; IO DbConnection</div><div class="line">// runQuery :: DbConnection -&gt; ResultSet</div><div class="line">// readFile :: String -&gt; Task Error String</div><div class="line">// Pure application</div><div class="line">//=====================</div><div class="line">//  dbUrl :: Config -&gt; Either Error Url</div><div class="line">var dbUrl = function(c) &#123;</div><div class="line">  return (c.uname &amp;&amp; c.pass &amp;&amp; c.host &amp;&amp; c.db)</div><div class="line">	? Right.of(&quot;db:pg://&quot;+c.uname+&quot;:&quot;+c.pass+&quot;@&quot;+c.host+&quot;5432/&quot;+c.db)</div><div class="line">	: Left.of(Error(&quot;Invalid config!&quot;));</div><div class="line">&#125;</div><div class="line">//  connectDb :: Config -&gt; Either Error (IO DbConnection)</div><div class="line">var connectDb = compose(map(Postgres.connect), dbUrl);</div><div class="line">//  getConfig :: Filename -&gt; Task Error (Either Error (IO DbConnection))</div><div class="line">var getConfig = compose(map(compose(connectDB, JSON.parse)), readFile);</div><div class="line">// Impure calling code</div><div class="line">//=====================</div><div class="line">getConfig(&quot;db.json&quot;).fork(</div><div class="line">  logErr(&quot;couldn&apos;t read file&quot;), either(console.log, map(runQuery))</div><div class="line">);</div></pre></td></tr></table></figure>
+</code></pre><h3 id="一些理论"><a href="#一些理论" class="headerlink" title="一些理论"></a>一些理论</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// identity</div><div class="line">map(id) === id;</div><div class="line">// composition</div><div class="line">compose(map(f), map(g)) === map(compose(f, g));</div></pre></td></tr></table></figure>
+</code></pre><p>参考：</p>
+<blockquote>
+<p><a href="https://llh911001.gitbooks.io/mostly-adequate-guide-chinese/content/ch7.html#自由定理" target="_blank" rel="external">js函数式编程</a>    </p>
+</blockquote>
+<p>参考：</p>
+<blockquote>
+<p><a href="https://llh911001.gitbooks.io/mostly-adequate-guide-chinese/content/ch7.html#自由定理" target="_blank" rel="external">js函数式编程</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/07/21/js函数式编程-3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1612,7 +1831,7 @@ compose(id, f) === compose(f, id) === f;
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">96</span>
+                <span class="site-state-item-count">97</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1751,7 +1970,7 @@ compose(id, f) === compose(f, id) === f;
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共118.3k字</span>
+  <span class="post-count">博客全站共121.3k字</span>
 </div>
         
 

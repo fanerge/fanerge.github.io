@@ -306,6 +306,206 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/18/koa学习-数据库mysql/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/18/koa学习-数据库mysql/" itemprop="url">
+                  koa学习-数据库mysql
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-18T19:56:33+08:00">
+                2017-09-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
+                    <span itemprop="name">NodeJS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/18/koa学习-数据库mysql/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/18/koa学习-数据库mysql/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  327
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  2
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="模块介绍"><a href="#模块介绍" class="headerlink" title="模块介绍"></a>模块介绍</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">const mysql = require(&apos;mysql&apos;);</div><div class="line">// 数据库的配置信息</div><div class="line">const connection = mysql.createConnection(&#123;</div><div class="line">	host: &apos;localhost&apos;,</div><div class="line">	port: 3306,</div><div class="line">	user: &apos;root&apos;,</div><div class="line">	password: &apos;root&apos;,</div><div class="line">	database: &apos;sql&apos;</div><div class="line">&#125;);</div><div class="line">// 连接数据库</div><div class="line">connection.connect();</div><div class="line">// 进行数据库操作</div><div class="line">connection.query(&apos;SELECT * FROM apps&apos;, (err, result) =&gt; &#123;</div><div class="line">	if (err)  throw err;</div><div class="line">	console.log(result);</div><div class="line">&#125;);</div><div class="line">// 关闭连接</div><div class="line">connection.end();</div></pre></td></tr></table></figure>
+</code></pre><h3 id="创建数据连接池"><a href="#创建数据连接池" class="headerlink" title="创建数据连接池"></a>创建数据连接池</h3><pre><code>一般情况下操作数据库是很复杂的读写过程，不只是一个会话，如果直接用会话操作，就需要每次会话都要配置连接参数。
+所以这时候就需要连接池管理会话。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">const mysql = require(&apos;mysql&apos;);</div><div class="line">const pool = mysql.createPool(&#123;</div><div class="line">	host: &apos;localhost&apos;,</div><div class="line">	port: 3306,</div><div class="line">	user: &apos;root&apos;,</div><div class="line">	password: &apos;root&apos;,</div><div class="line">	database: &apos;sql&apos;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">// 在数据池中进行会话操作</div><div class="line">pool.getConnection((err, connection) =&gt; &#123;</div><div class="line">	connection.query(&apos;SELECT * FROM apps&apos;, (err, result) =&gt; &#123;</div><div class="line">		console.log(result);</div><div class="line">		// 连接完成，连接将返回连接池</div><div class="line">		connection.release();</div><div class="line">		if (err) throw err;</div><div class="line">	&#125;)</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h3 id="使用promise和async-await来封装"><a href="#使用promise和async-await来封装" class="headerlink" title="使用promise和async-await来封装"></a>使用promise和async-await来封装</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">// promise.js</div><div class="line">const mysql = require(&apos;mysql&apos;);</div><div class="line">const pool = mysql.createPool(&#123;</div><div class="line">	host     :  &apos;127.0.0.1&apos;,</div><div class="line">	user     :  &apos;root&apos;,</div><div class="line">	password :  &apos;root&apos;,</div><div class="line">	database :  &apos;sql&apos;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">let query = function (sql) &#123;</div><div class="line">	return new Promise((resolve, reject) =&gt; &#123;</div><div class="line">		pool.getConnection((err, connection) =&gt; &#123;</div><div class="line">			if (err) &#123;</div><div class="line">				reject(err);</div><div class="line">			&#125; else &#123;</div><div class="line">				connection.query(sql, (err, rows) =&gt; &#123;</div><div class="line">					if (err) &#123;</div><div class="line">						reject(err)</div><div class="line">					&#125; else &#123;</div><div class="line">						resolve(rows);</div><div class="line">					&#125;</div><div class="line">				connection.release();   </div><div class="line">				&#125;);</div><div class="line">			&#125;</div><div class="line"></div><div class="line">		&#125;);</div><div class="line">	&#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">module.exports = query;</div><div class="line"></div><div class="line">// async.js</div><div class="line">const query = require(&apos;./promise&apos;);</div><div class="line"></div><div class="line">async function getData (sql) &#123;</div><div class="line">	let dataList = await query(sql);</div><div class="line">	console.log(dataList);</div><div class="line">&#125;</div><div class="line"></div><div class="line">getData(&apos;SELECT * FROM sql&apos;);</div></pre></td></tr></table></figure>
+</code></pre><h3 id="建表初始化"><a href="#建表初始化" class="headerlink" title="建表初始化"></a>建表初始化</h3><pre><code>+----------+  遍历sql  +---+ 解析所有sql +---+  执行sql  +------------&gt;
+       |   |  目录下的  |   |  文件脚本  |   |   脚本     |   |
++----------+  sql文件   +---+   内容    +---+           +------------&gt;
+
+[详细代码见]()
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="https://chenshenhai.github.io/koa2-note/note/request/post-use-middleware.html" target="_blank" rel="external">koa-note</a><br>    <a href="https://www.npmjs.com/package/cookies" target="_blank" rel="external">cookies</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/17/koa学习-文件上传/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2318,227 +2518,6 @@ fs.appendFile(&apos;filename.txt&apos;, &apos;data to append&apos; , (err) =&gt;
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/16/nodejs自带模块学习-util/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/16/nodejs自带模块学习-util/" itemprop="url">
-                  util模块-工具
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-16T10:18:15+08:00">
-                2017-09-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
-                    <span itemprop="name">NodeJS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/16/nodejs自带模块学习-util/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/16/nodejs自带模块学习-util/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  528
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  2
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="util模块"><a href="#util模块" class="headerlink" title="util模块"></a>util模块</h3><pre><code>说明：util 模块主要用于支持 Node.js 内部 API 的需求。 大部分实用工具也可用于应用程序与模块开发者。
-</code></pre><h3 id="util-callbackify-original"><a href="#util-callbackify-original" class="headerlink" title="util.callbackify(original)"></a>util.callbackify(original)</h3><h3 id="util-debuglog-section"><a href="#util-debuglog-section" class="headerlink" title="util.debuglog(section)"></a>util.debuglog(section)</h3><pre><code>作用：util.debuglog() 方法用于创建一个函数，基于 NODE_DEBUG 环境变量的存在与否有条件地写入调试信息到 stderr。
-    const debuglog = util.debuglog(&apos;foo&apos;);
-    debuglog(&apos;hello from foo [%d]&apos;, 123);
-    若程序的环境运行是带上NODE_DEBUG=foo,则FOO 3245: hello from foo [123]
-    3234是进程id
-</code></pre><h3 id="util-deprecate-function-string"><a href="#util-deprecate-function-string" class="headerlink" title="util.deprecate(function, string)"></a>util.deprecate(function, string)</h3><pre><code>作用：util.deprecate() 方法会包装给定的 function 或类，并标记为废弃的。
-    // 在util模块中
-    exports.puts = util.deprecate(function() {
-      for (let i = 0, len = arguments.length; i &lt; len; ++i) {
-        process.stdout.write(arguments[i] + &apos;\n&apos;);
-      }
-    }, &apos;util.puts: 使用 console.log 代替&apos;);
-</code></pre><h3 id="util-format-format-…args"><a href="#util-format-format-…args" class="headerlink" title="util.format(format[, …args])"></a>util.format(format[, …args])</h3><pre><code>作用：返回一个格式化后的字符串，使用第一个参数作为一个类似 printf 的格式。
-对应的占位符：
-    %s - 字符串
-    %d - 数值
-    %i - Integer
-    %f - Float
-    %j - JSON
-    %o - Object
-    %% - 单个百分号（&apos;%&apos;）。不消耗参数。
-    util.format(&apos;%s:%d&apos;, &apos;fan&apos;, 100); // &apos;fan:100&apos;
-</code></pre><h3 id="util-inherits-constructor-superConstructor"><a href="#util-inherits-constructor-superConstructor" class="headerlink" title="util.inherits(constructor, superConstructor)"></a>util.inherits(constructor, superConstructor)</h3><pre><code>注意，不建议使用 util.inherits()。 请使用 ES6 的 class 和 extends 关键词获得语言层面的继承支持。
-作用：从一个构造函数中继承原型方法到另一个。 constructor 的原型会被设置到一个从 superConstructor 创建的新对象上。
-    util.inherits(MyStream, EventEmitter);
-</code></pre><h3 id="util-inspect-object-options"><a href="#util-inspect-object-options" class="headerlink" title="util.inspect(object[, options])"></a>util.inspect(object[, options])</h3><pre><code>作用：返回 object 的字符串表示，主要用于调试。 附加的 options 可用于改变格式化字符串的某些方面。
-</code></pre><h3 id="自定义-util-inspect-颜色"><a href="#自定义-util-inspect-颜色" class="headerlink" title="自定义 util.inspect 颜色"></a>自定义 util.inspect 颜色</h3><pre><code>作用：可以通过 util.inspect.styles 和 util.inspect.colors 属性全局地自定义 util.inspect 的颜色输出（如果已启用）。
-</code></pre><h3 id="util-inspect-custom"><a href="#util-inspect-custom" class="headerlink" title="util.inspect.custom"></a>util.inspect.custom</h3><pre><code>作用：可被用于声明自定义的查看函数。
-</code></pre><h3 id="util-inspect-defaultOptions"><a href="#util-inspect-defaultOptions" class="headerlink" title="util.inspect.defaultOptions"></a>util.inspect.defaultOptions</h3><pre><code>作用：defaultOptions 值允许对被 util.inspect 使用的默认选项进行自定义。
-</code></pre><h3 id="util-promisify-original"><a href="#util-promisify-original" class="headerlink" title="util.promisify(original)"></a>util.promisify(original)</h3><pre><code>作用：让一个遵循通常的让一个遵循通常的 Node.js 回调风格的函数， 即 (err, value) =&gt; ... 回调函数是最后一个参数, 返回一个返回值是一个 promise 版本的函数。    
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="http://nodejs.cn/api/util.html" target="_blank" rel="external">util参考-api</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2588,7 +2567,7 @@ fs.appendFile(&apos;filename.txt&apos;, &apos;data to append&apos; , (err) =&gt;
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">96</span>
+                <span class="site-state-item-count">97</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2727,7 +2706,7 @@ fs.appendFile(&apos;filename.txt&apos;, &apos;data to append&apos; , (err) =&gt;
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共118.3k字</span>
+  <span class="post-count">博客全站共121.3k字</span>
 </div>
         
 
