@@ -306,6 +306,400 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/08/10/js函数式编程-读书笔记-6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/08/10/js函数式编程-读书笔记-6/" itemprop="url">
+                  js函数式编程-纯度、不变性和更改政策
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-10T21:13:43+08:00">
+                2017-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
+                    <span itemprop="name">函数式编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/10/js函数式编程-读书笔记-6/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/08/10/js函数式编程-读书笔记-6/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  337
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  2
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸<strong>函数式编程</strong>。<br><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
+<h3 id="纯度、不变性和更改政策"><a href="#纯度、不变性和更改政策" class="headerlink" title="纯度、不变性和更改政策"></a>纯度、不变性和更改政策</h3><h4 id="纯度"><a href="#纯度" class="headerlink" title="纯度"></a>纯度</h4><pre><code>纯函数
+1.其结果只能从它的参数的值来计算
+2.不能依赖于能被外部操作改变的数据
+3.不能改变外部状态
+</code></pre><h4 id="不变性"><a href="#不变性" class="headerlink" title="不变性"></a>不变性</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">// 不变性</div><div class="line">function summ (array) &#123;</div><div class="line">	let result = 0;</div><div class="line">	let sz = array.length;</div><div class="line">	for (let i = 0; i &lt; sz; i++) &#123;</div><div class="line">		result += array[i];</div><div class="line">	&#125;</div><div class="line">	return result;</div><div class="line">&#125;</div><div class="line">let dd = summ(_.range(1, 11));</div><div class="line">console.log(dd); // 55</div><div class="line"></div><div class="line">// 递归</div><div class="line">function summRec (array, seed) &#123;</div><div class="line">	if (_.isEmpty(array))&#123;</div><div class="line">		return seed;</div><div class="line">	&#125; else &#123;</div><div class="line">		return summRec(_.rest(array), _.first(array) + seed)</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">let dd = summRec(_.range(1, 11), 0);</div><div class="line">console.log(dd); // 55</div><div class="line"></div><div class="line">// 冻结和克隆</div><div class="line">Object.freeze(a) // 浅冻结</div><div class="line">// 深冻结</div><div class="line">function deepFreeze(obj) &#123;</div><div class="line">	if (!Object.isFrozen(obj)) &#123;</div><div class="line">		Object.freeze(obj);</div><div class="line">	&#125;</div><div class="line">	for (let key in obj) &#123;</div><div class="line">		if (!obj.hasOwnProperty(key) || !_.isObject(obj[key])) &#123;</div><div class="line">			continue;</div><div class="line">		&#125;</div><div class="line">		deepFreeze(obj[key]);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">let x = [&#123;a: [1, 2, 3], b: 42&#125;, &#123;c: &#123;d: []&#125;&#125;];</div><div class="line">deepFreeze(x);</div><div class="line">x[0] = null;</div><div class="line">console.dir(x); // [&#123;a: [1, 2, 3], b: 42&#125;, &#123;c: &#123;d: []&#125;&#125;]</div></pre></td></tr></table></figure>
+</code></pre><h4 id="控制变化的政策"><a href="#控制变化的政策" class="headerlink" title="控制变化的政策"></a>控制变化的政策</h4><pre><code>用容器封装数据，不能直接更改数据。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">function Container (init) &#123;</div><div class="line">	this._value = init;</div><div class="line">&#125;</div><div class="line">Container.prototype = &#123;</div><div class="line">	update: function (fun) &#123;</div><div class="line">		let args = _.rest(arguments);</div><div class="line">		let oldValue = this._value;</div><div class="line"></div><div class="line">		this._value = fun.apply(this, constructor(oldValue, args));</div><div class="line">		return this._value;</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line">let aNumber = new Container(42);</div><div class="line">let dd = aNumber.update(function (n) &#123; return n + 1; &#125;);</div><div class="line">console.log(dd) // 43</div></pre></td></tr></table></figure>
+</code></pre><blockquote>
+<p>   源代码仓库<br>    <a href="https://github.com/fanerge/Functional-reading-notes" target="_blank" rel="external">函数式编程-读书笔记</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/08/09/js函数式编程-读书笔记-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/08/09/js函数式编程-读书笔记-5/" itemprop="url">
+                  js函数式编程-递归
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-09T21:07:36+08:00">
+                2017-08-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
+                    <span itemprop="name">函数式编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/09/js函数式编程-读书笔记-5/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/08/09/js函数式编程-读书笔记-5/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  547
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  3
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸<strong>函数式编程</strong>。<br><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
+<h3 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h3><h4 id="自吸收函数（调用自己的函数）"><a href="#自吸收函数（调用自己的函数）" class="headerlink" title="自吸收函数（调用自己的函数）"></a>自吸收函数（调用自己的函数）</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">function myLength (ary) &#123;</div><div class="line">	if (_.isEmpty(ary)) &#123;</div><div class="line">		return 0;</div><div class="line">	&#125; else &#123;</div><div class="line">		return 1 + myLength(_.rest(ary));</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">let dd = myLength([1, 2, 3]);</div><div class="line">console.log(dd); // 3</div><div class="line"></div><div class="line">function cycle(times, ary) &#123;</div><div class="line">	if (times &lt;= 0) &#123;</div><div class="line">		return [];</div><div class="line">	&#125; else &#123;</div><div class="line">		return cat(ary, cycle(times -1, ary));</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">let dd = cycle(2, [1, 2, 3]);</div><div class="line">console.log(dd); // [1, 2, 3, 1, 2, 3]</div><div class="line"></div><div class="line">*_.zip*</div><div class="line">function cycle(times, ary) &#123;</div><div class="line">	if (times &lt;= 0) &#123;</div><div class="line">		return [];</div><div class="line">	&#125; else &#123;</div><div class="line">		return cat(ary, cycle(times -1, ary));</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">let dd = _.zip([&apos;a&apos;, &apos;b&apos;, &apos;c&apos;], [1, 2, 3]);</div><div class="line">console.dir(dd); // [[&apos;a&apos;, 1],[&apos;b&apos;, 2], [&apos;c&apos;, 3]]</div></pre></td></tr></table></figure>
+
+// 深度优先自递归搜索
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">*andify 组合函数*</div><div class="line">function andify () &#123;</div><div class="line">	let preds = _.toArray(arguments);</div><div class="line">	return function () &#123;</div><div class="line">		let args = _.toArray(arguments);</div><div class="line">		let everything = function (ps, truth) &#123;</div><div class="line">			if (_.isEmpty(ps)) &#123;</div><div class="line">				return truth;</div><div class="line">			&#125; else &#123;</div><div class="line">				return _.every(args, _.first(ps))</div><div class="line">						&amp;&amp; everything(_.rest(ps), truth);</div><div class="line">			&#125;</div><div class="line">		&#125;;</div><div class="line">		return everything(preds, true);</div><div class="line">	&#125;;</div><div class="line">&#125;</div><div class="line">let evenNums = andify(_.isNumber, isEven);</div><div class="line">console.log(evenNums(4, 2)); // true</div><div class="line"></div><div class="line">*andify 组合函数*</div><div class="line">function orify () &#123;</div><div class="line">	let preds = _.toArray(arguments);</div><div class="line">	return function () &#123;</div><div class="line">		let args = _.toArray(arguments);</div><div class="line">		let something = function (ps, truth) &#123;</div><div class="line">			if (_.isEmpty(ps)) &#123;</div><div class="line">				return truth;</div><div class="line">			&#125; else &#123;</div><div class="line">				return _.some(args, _.first(ps))</div><div class="line">						|| something(_.rest(ps), truth);</div><div class="line">			&#125;</div><div class="line">		&#125;;</div><div class="line">		return something(preds, true);</div><div class="line">	&#125;;</div><div class="line">&#125;</div><div class="line">let evenNums = orify(_.isNumber, isEven);</div><div class="line">console.log(evenNums(1, 2)); // true</div></pre></td></tr></table></figure>
+</code></pre><h4 id="相互关联函数（函数调用其他会再调用回他的函数）"><a href="#相互关联函数（函数调用其他会再调用回他的函数）" class="headerlink" title="相互关联函数（函数调用其他会再调用回他的函数）"></a>相互关联函数（函数调用其他会再调用回他的函数）</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line">function evenSteven(n) &#123;</div><div class="line">	if (n === 0) &#123;</div><div class="line">		return true;</div><div class="line">	&#125; else &#123;</div><div class="line">		return oddJohn(Math.abs(n) - 1);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">function oddJohn(n) &#123;</div><div class="line">	if (n === 0) &#123;</div><div class="line">		return false;</div><div class="line">	&#125; else &#123;</div><div class="line">		return evenSteven(Math.abs(n) - 1);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">let dd = evenSteven(3);</div><div class="line">console.log(dd); // false</div><div class="line"></div><div class="line">*flat 展开嵌套数组*</div><div class="line">function flat(array) &#123;</div><div class="line">	if (_.isArray(array)) &#123;</div><div class="line">		return cat.apply(cat, _.map(array, flat));</div><div class="line">	&#125; else &#123;</div><div class="line">		return [array];</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">let dd = flat([[1, 2], [3, 4]]);</div><div class="line">console.log(dd) // [1, 2, 3, 4]</div><div class="line"></div><div class="line">*clone 浅clone*</div><div class="line">let x = [&#123;a: [1, 2, 3], b: 42&#125;, &#123;c: &#123;d: []&#125;&#125;]</div><div class="line">let y = _.clone(x);</div><div class="line">console.log(y) // [&#123;a: [1, 2, 3], b: 42&#125;, &#123;c: &#123;d: []&#125;&#125;]	</div><div class="line"></div><div class="line">*deepClone 深clone*</div><div class="line">function deepClone(obj) &#123;</div><div class="line">	if (!existy(obj) || !_.isObject(obj)) &#123;</div><div class="line">		return obj;</div><div class="line">	&#125;</div><div class="line">	let temp = new obj.constructor();</div><div class="line">	for (let key in obj) &#123;</div><div class="line">		if (obj.hasOwnProperty(key)) &#123;</div><div class="line">			temp[key] = deepClone(obj[key]);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	return temp;</div><div class="line">&#125;</div><div class="line">let x = [&#123;a: [1, 2, 3], b: 42&#125;, &#123;c: &#123;d: []&#125;&#125;]</div><div class="line">let y = deepClone(x);</div><div class="line">x[1][&apos;c&apos;][&apos;d&apos;] = 100;</div><div class="line">console.log(_.isEqual(x, y)); // false</div><div class="line"></div><div class="line">// 遍历嵌套数组的数组</div><div class="line">function visit(mapFun, resultFun, array) &#123;</div><div class="line">	if (_.isArray(array)) &#123;</div><div class="line">		return resultFun(_.map(array, mapFun));</div><div class="line">	&#125; else &#123;</div><div class="line">		return resultFun(array);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">let dd = visit(_.identity, _.isNumber, 42);</div><div class="line">console.log(dd); // true</div></pre></td></tr></table></figure>
+</code></pre><h4 id="太多递归了"><a href="#太多递归了" class="headerlink" title="太多递归了"></a>太多递归了</h4><h4 id="递归是一个底层操作"><a href="#递归是一个底层操作" class="headerlink" title="递归是一个底层操作"></a>递归是一个底层操作</h4><blockquote>
+<p>   源代码仓库<br>    <a href="https://github.com/fanerge/Functional-reading-notes" target="_blank" rel="external">函数式编程-读书笔记</a>    </p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/08/09/服务端学习/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2130,412 +2524,6 @@ PWA (Progressive Web Apps) 是一种 Web App 新模型：
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/07/24/js函数式编程-6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/07/24/js函数式编程-6/" itemprop="url">
-                  js函数式编程-6
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-24T21:25:38+08:00">
-                2017-07-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
-                    <span itemprop="name">函数式编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/07/24/js函数式编程-6/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/07/24/js函数式编程-6/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  327
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  2
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Applicative-Functor"><a href="#Applicative-Functor" class="headerlink" title="Applicative Functor"></a>Applicative Functor</h2><p><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
-<h3 id="应用-applicative-functor"><a href="#应用-applicative-functor" class="headerlink" title="应用 applicative functor"></a>应用 applicative functor</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Container.of(2).chain(function(two) &#123;</div><div class="line">  return Container.of(3).map(add(two));</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="瓶中之船"><a href="#瓶中之船" class="headerlink" title="瓶中之船"></a>瓶中之船</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">// ap 就是这样一种函数，能够把一个 functor 的函数值应用到另一个 functor 的值上。</div><div class="line">Container.prototype.ap = function(other_container) &#123;</div><div class="line">  return other_container.map(this.__value);</div><div class="line">&#125;</div><div class="line">Container.of(add(2)).ap(Container.of(3)); // Container(5)</div><div class="line"></div><div class="line">// all together now</div><div class="line">Container.of(2).map(add).ap(Container.of(3)); // Container(5</div></pre></td></tr></table></figure>
-</code></pre><h3 id="协调与激励"><a href="#协调与激励" class="headerlink" title="协调与激励"></a>协调与激励</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">// 帮助函数：</div><div class="line">//  $ :: String -&gt; IO DOM</div><div class="line">var $ = function(selector) &#123;</div><div class="line">  return new IO(function()&#123; return document.querySelector(selector) &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">//  getVal :: String -&gt; IO String</div><div class="line">var getVal = compose(map(_.prop(&apos;value&apos;)), $);</div><div class="line"></div><div class="line">// Example:</div><div class="line">//  signIn :: String -&gt; String -&gt; Bool -&gt; User</div><div class="line">var signIn = curry(function(username, password, remember_me)&#123; /* signing in */  &#125;)</div><div class="line"></div><div class="line">IO.of(signIn).ap(getVal(&apos;#email&apos;)).ap(getVal(&apos;#password&apos;)).ap(IO.of(false));</div><div class="line">// IO(&#123;id: 3, email: &quot;gg@allin.com&quot;&#125;)</div></pre></td></tr></table></figure>
-</code></pre><h3 id="定律"><a href="#定律" class="headerlink" title="定律"></a>定律</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">同一律（identity）</div><div class="line">	A.of(id).ap(v) == v</div><div class="line">	var v = Identity.of(&quot;Pillow Pets&quot;);</div><div class="line">	Identity.of(id).ap(v) == v</div><div class="line">同态（homomorphism）</div><div class="line">	A.of(f).ap(A.of(x)) == A.of(f(x))</div><div class="line">	Either.of(_.toUpper).ap(Either.of(&quot;oreos&quot;)) == Either.of(_.toUpper(&quot;oreos&quot;))</div><div class="line">互换（interchange）</div><div class="line">	v.ap(A.of(x)) == A.of(function(f) &#123; return f(x) &#125;).ap(v)</div><div class="line">	var v = Task.of(_.reverse);</div><div class="line">	var x = &apos;Sparklehorse&apos;;</div><div class="line">	v.ap(Task.of(x)) == Task.of(function(f) &#123; return f(x) &#125;).ap(v)</div><div class="line">组合（composition）</div><div class="line">	A.of(compose).ap(u).ap(v).ap(w) == u.ap(v.ap(w));</div><div class="line">	var u = IO.of(_.toUpper);</div><div class="line">	var v = IO.of(_.concat(&quot;&amp; beyond&quot;));</div><div class="line">	var w = IO.of(&quot;blood bath &quot;);</div><div class="line">	IO.of(_.compose).ap(u).ap(v).ap(w) == u.ap(v.ap(w))</div></pre></td></tr></table></figure>
-</code></pre><blockquote>
-<p><a href="https://llh911001.gitbooks.io/mostly-adequate-guide-chinese/content/ch7.html#自由定理" target="_blank" rel="external">js函数式编程</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/07/24/js函数式编程-5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/07/24/js函数式编程-5/" itemprop="url">
-                  js函数式编程-5
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-24T19:41:34+08:00">
-                2017-07-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
-                    <span itemprop="name">函数式编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/07/24/js函数式编程-5/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/07/24/js函数式编程-5/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  534
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  3
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Monad"><a href="#Monad" class="headerlink" title="Monad"></a>Monad</h2><p><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
-<h3 id="pointed-functor"><a href="#pointed-functor" class="headerlink" title="pointed functor"></a>pointed functor</h3><pre><code>of 方法不是用来避免使用 new 关键字的，而是用来把值放到默认最小化上下文（default minimal context）中的。
-</code></pre><blockquote>
-<p>  pointed functor 是实现了 of 方法的 functor。</p>
-</blockquote>
-<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">这里的关键是把任意值丢到容器里然后开始到处使用 map 的能力。</div><div class="line">IO.of(&quot;tetris&quot;).map(concat(&quot; master&quot;)); // IO(&quot;tetris master&quot;)</div><div class="line">Maybe.of(1336).map(add(1)); // Maybe(1337)</div></pre></td></tr></table></figure>
-</code></pre><h3 id="混合比喻"><a href="#混合比喻" class="headerlink" title="混合比喻"></a>混合比喻</h3><ol>
-<li><p>例子</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">var fs = require(&apos;fs&apos;);</div><div class="line"></div><div class="line">//  readFile :: String -&gt; IO String</div><div class="line">var readFile = function(filename) &#123;</div><div class="line">  return new IO(function() &#123;</div><div class="line">	return fs.readFileSync(filename, &apos;utf-8&apos;);</div><div class="line">  &#125;);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">//  print :: String -&gt; IO String</div><div class="line">var print = function(x) &#123;</div><div class="line">  return new IO(function() &#123;</div><div class="line">	console.log(x);</div><div class="line">	return x;</div><div class="line">  &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">//  cat :: IO (IO String)</div><div class="line">var cat = compose(map(print), readFile);</div><div class="line"></div><div class="line">cat(&quot;.git/config&quot;)</div><div class="line">// IO(IO(&quot;[core]\nrepositoryformatversion = 0\n&quot;))</div></pre></td></tr></table></figure>
-</li>
-<li><p>剥开洋葱</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">我说过 monad 像洋葱，可以使用一个叫作 join 的方法，来剥开。</div><div class="line">var mmo = Maybe.of(Maybe.of(&quot;nunchucks&quot;));</div><div class="line">// Maybe(Maybe(&quot;nunchucks&quot;))</div><div class="line">mmo.join();</div><div class="line">// Maybe(&quot;nunchucks&quot;)</div><div class="line"></div><div class="line">var ttt = Task.of(Task.of(Task.of(&quot;sewers&quot;)));</div><div class="line">// Task(Task(Task(&quot;sewers&quot;)));</div><div class="line">ttt.join()</div><div class="line">// Task(Task(&quot;sewers&quot;))</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<blockquote>
-<p>   monad 是可以变扁（flatten）的 pointed functor。<br>    一个 functor，只要它定义个了一个 join 方法和一个 of 方法，并遵守一些定律，那么它就是一个 monad。</p>
-</blockquote>
-<pre><code>为Maybe实现join方法
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">Maybe.prototype.join = function () &#123;</div><div class="line">	return this.isNothing() ? Maybe.of(null) : this.__value;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">Example</div><div class="line">//  join :: Monad m =&gt; m (m a) -&gt; m a</div><div class="line">var join = function(mma)&#123; return mma.join(); &#125;</div><div class="line"></div><div class="line">//  firstAddressStreet :: User -&gt; Maybe Street</div><div class="line">var firstAddressStreet = compose(</div><div class="line">  join, map(safeProp(&apos;street&apos;)), join, map(safeHead), safeProp(&apos;addresses&apos;)</div><div class="line">);</div><div class="line"></div><div class="line">firstAddressStreet(</div><div class="line">  &#123;addresses: [&#123;street: &#123;name: &apos;Mulburry&apos;, number: 8402&#125;, postcode: &quot;WC2N&quot; &#125;]&#125;</div><div class="line">);</div><div class="line">// Maybe(&#123;name: &apos;Mulburry&apos;, number: 8402&#125;)</div></pre></td></tr></table></figure>
-</code></pre><h3 id="chain-函数"><a href="#chain-函数" class="headerlink" title="chain 函数"></a>chain 函数</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">// 使用 chain封装（map的后面调用join）</div><div class="line">//  chain :: Monad m =&gt; (a -&gt; m b) -&gt; m a -&gt; m b</div><div class="line">var chain = curry(function(f, m)&#123;</div><div class="line">  return m.map(f).join(); // 或者 compose(join, map(f))(m)</div><div class="line">&#125;);</div><div class="line"></div><div class="line">// map/join</div><div class="line">var firstAddressStreet = compose(</div><div class="line">  join, map(safeProp(&apos;street&apos;)), join, map(safeHead), safeProp(&apos;addresses&apos;)</div><div class="line">);</div><div class="line"></div><div class="line">// chain</div><div class="line">var firstAddressStreet = compose(</div><div class="line">  chain(safeProp(&apos;street&apos;)), chain(safeHead), safeProp(&apos;addresses&apos;)</div><div class="line">);</div><div class="line"></div><div class="line">Example</div><div class="line">Maybe.of(3).chain(function(three) &#123;</div><div class="line">  return Maybe.of(2).map(add(three));</div><div class="line">&#125;);</div><div class="line">// Maybe(5);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="理论"><a href="#理论" class="headerlink" title="理论"></a>理论</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"> // 结合律</div><div class="line">compose(join, map(join)) == compose(join, join)</div></pre></td></tr></table></figure>
-
-总结：monad 能够借给我们从盒子中取出的值，而且知道我们会在结束使用后还给它。
-monad 让我们深入到嵌套的运算当中，使我们能够在完全避免回调金字塔（pyramid of doom）情况下，为变量赋值，运行有序的作用，执行异步任务等等。
-</code></pre>
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2585,7 +2573,7 @@ monad 让我们深入到嵌套的运算当中，使我们能够在完全避免�
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">97</span>
+                <span class="site-state-item-count">99</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2596,7 +2584,7 @@ monad 让我们深入到嵌套的运算当中，使我们能够在完全避免�
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -2607,7 +2595,7 @@ monad 让我们深入到嵌套的运算当中，使我们能够在完全避免�
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-count">29</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -2724,7 +2712,7 @@ monad 让我们深入到嵌套的运算当中，使我们能够在完全避免�
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共121.3k字</span>
+  <span class="post-count">博客全站共124.9k字</span>
 </div>
         
 
