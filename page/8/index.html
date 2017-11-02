@@ -306,6 +306,228 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/01/http缓存知识总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/01/http缓存知识总结/" itemprop="url">
+                  http缓存相关的知识
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-01T18:56:40+08:00">
+                2017-09-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/通信协议/" itemprop="url" rel="index">
+                    <span itemprop="name">通信协议</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/01/http缓存知识总结/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/01/http缓存知识总结/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,206
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  4
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="http缓存整理"><a href="#http缓存整理" class="headerlink" title="http缓存整理"></a>http缓存整理</h4><h5 id="缓存过程"><a href="#缓存过程" class="headerlink" title="缓存过程"></a>缓存过程</h5><pre><code>当一个用户发送一个静态资源请求通过下面几步获取资源：
+</code></pre><ol>
+<li>当第一次发送请求时，http返回200的状态码。</li>
+<li>在没有关闭缓存请求的时候，则返回header中返回包含last-Modified以及Etag和Expires的字段，然后将文件保存在Cache目录下。</li>
+<li>后续请求该文件时，先本地查找该资源。如果本地缓存存在该资源，但不知道是否过期，则发送一个http请求到服务器，然后服务器来判断。<br>如果该文件没有改动，则返回304，继续使用本地资源。<br>如果该文件发生改动，服务器返回该资源并返回200。<br>如果服务器没有这个资源，则返回404。<h5 id="http头部缓存相关key"><a href="#http头部缓存相关key" class="headerlink" title="http头部缓存相关key"></a>http头部缓存相关key</h5><h6 id="request-header缓存相关"><a href="#request-header缓存相关" class="headerlink" title="request header缓存相关"></a>request header缓存相关</h6>cache-control：<br>  其缓存指令对于前端常用的有如下no-cache、no-store、max-age这几个值；<br>if-none-match：<br>  该字段与响应中的eTag一起使用，表示检查实体是否有更新改变;客户端第一次发送请求时候响应报文会包含字段Etag，表示资源状态，当资源改变后该值也会改变（客户端不必关心该值怎么生成）<br>  然后缓存保存下该字段，第二次已经有该缓存时候在浏览本地缓存时候会将该值赋给if-none-match字段发送给服务器，服务器将发送的值与当前的状态进行对比，<br>  如果值一样的话则答复304去使用缓存数据，如果值改变了则发送最新数据给客户端替代现有缓存数据，并且返回状态200;<br>if-modified-since:<br>  该字段与last-modified配合使用，跟上述原理差不多，都是响应端先返回一个last-modified时间字段，再次请求时候 request头部会将缓存中的last-modified字段拿出来赋给if-modified-since，<br>  发送给服务器，服务器去判断时间是否过期，如未过期则返回304，告诉客户使用缓存数据，如果过期则重新返回一个last-modified并且返回200；<h6 id="response-header缓存相关："><a href="#response-header缓存相关：" class="headerlink" title="response header缓存相关："></a>response header缓存相关：</h6>Etag：<br>  刚才也说过 是跟if-none-match配合去使用，它根据实体内容生成的一段hash字符串（类似于MD5或者SHA1之后的结果），可以标识资源的状态。 当资源发送改变时，ETag也随之发生变化。<br>  使用Etag主要是为了解决根据时间无法解决的问题：比如文件修改频繁（秒之内修改），导致根据时间无法判断是否更新；以及修改时间变了，但是内容没变（我们应该认为该文件是没变的）<br>expires：<br>  表示缓存过期时间例如:expires:Mon Dec 30 2011 11:01:19 GMT，跟cache-control中的max-age作用一样，不过在碰见max-age之后，该值会被覆盖从而被max-age替代;<br>last-modified:<br>  表示文件最后修改时间；</li>
+</ol>
+<h5 id="实现有关前端对于缓存的操作"><a href="#实现有关前端对于缓存的操作" class="headerlink" title="实现有关前端对于缓存的操作"></a>实现有关前端对于缓存的操作</h5><h6 id="使用缓存"><a href="#使用缓存" class="headerlink" title="使用缓存"></a>使用缓存</h6><pre><code>方法一：
+在服务器进行配置其max-age或者expires使其设置一个过期值为当前一年之后。这样每次进行检验时候都会使用缓存中文件。
+例如在.htaccess中
+&lt;IfModule mod_headers.c&gt;
+ &lt;FilesMatch &quot;.(gif|jpg|jpeg|png|ico)$&quot;&gt;
+Header set Cache-Control &quot;max-age=604800&quot;
+ &lt;/FilesMatch&gt;
+方法二：
+前端设置if-modified-since去设置一个上次修改时间大于当前日期，
+方法三：
+服务器端根据etag去判断是否匹配来根据实际业务来使用缓存；
+后面两个方法属于弱缓存数据头，需要浪费http连接，所以建议使用第一种方式;
+</code></pre><h6 id="禁用缓存"><a href="#禁用缓存" class="headerlink" title="禁用缓存"></a>禁用缓存</h6><pre><code>方法一：
+可以在meta标签标明
+&lt;meta http-equiv=&quot;pragma&quot; content=&quot;no-cache&quot;&gt;
+&lt;meta http-equiv=&quot;cache-control&quot; content=&quot;no-cache&quot;&gt;
+&lt;meta http-equiv=&quot;expires&quot; content=&quot;0&quot;&gt; 
+方法二：
+也可以动态去setRequestHeader，强制不用缓存设置组合如下：
+cache-control=&apos;no-cache,no-store&apos;
+pragma=&apos;no-cache&apos;
+if-modified-since=0;
+方法三：
+请求端设置if-modified-since为已经过期的某个时间，可以是几年前或者几十年前。
+方法四：
+服务端设置Expires为过期某个时间，例如PHP中header(&quot;Expires: Mon, 26 Jul 1997 05:00:00 GMT&quot;);
+实际开发中如果需要一致性检测则尽量去配合Etag以及last-Modified去进行比较然后返回使用缓存还是新数据;这个有点偏服务器端了，不再赘述
+方法五：
+url后面加随机数或者时间戳url += “&amp;random=” + Math.random()这个方法js以及PHP经常用，原理就是每个请求的url都不一样这样一来缓存中找不到对应数据，就自动去服务器寻找最新资源;
+</code></pre>
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/08/30/css加强-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3761,204 +3983,6 @@ compose：从右往左执行函数组合（右侧函数的输出作为左侧函�
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/08/16/ramda库的使用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/08/16/ramda库的使用/" itemprop="url">
-                  ramda库的使用
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-16T20:24:01+08:00">
-                2017-08-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
-                    <span itemprop="name">函数式编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/08/16/ramda库的使用/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/08/16/ramda库的使用/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  714
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  4
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://github.com/fanerge/Ramda-study/blob/master/ramda/js/pointfree.js" target="_blank" rel="external">学习源代码地址</a></p>
-<h4 id="了解Pointfree的概念"><a href="#了解Pointfree的概念" class="headerlink" title="了解Pointfree的概念"></a>了解Pointfree的概念</h4><pre><code>概念：fn = R.pipe(f1, f2, f3);
-可以把数据处理的过程，定义成一种与参数无关的合成运算。
-**不使用所要处理的值，只合成运算过程。**
-</code></pre><h5 id="一些小例子"><a href="#一些小例子" class="headerlink" title="一些小例子"></a>一些小例子</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">// pointfree例子</div><div class="line">var addOne = x =&gt; x + 1;</div><div class="line">var square = x =&gt; x * x;</div><div class="line">var addOneThenSquare = R.pipe(square, addOne);</div><div class="line">var pointfree1 = addOneThenSquare(3);</div><div class="line">console.log(pointfree1); // 10</div><div class="line">// addOneThenSquare是一个合成函数。定义它的时候，根本不需要提到要处理的值，这就是 Pointfree。</div><div class="line"></div><div class="line">var prop = (p, obj) =&gt; obj[p]; // 封装了读取操作，它需要两个参数p（属性名）和obj（对象）。</div><div class="line">var propRole = R.curry(prop)(&apos;role&apos;); // 将函数柯里化</div><div class="line">var demo1 = propRole(&#123;role: &apos;fan&apos;&#125;);</div><div class="line">console.log(demo1); // fan</div><div class="line"></div><div class="line">var data = [</div><div class="line">  &#123;name: &apos;张三&apos;, role: &apos;worker&apos;&#125;,</div><div class="line">  &#123;name: &apos;李四&apos;, role: &apos;worker&apos;&#125;,</div><div class="line">  &#123;name: &apos;王五&apos;, role: &apos;manager&apos;&#125;,</div><div class="line">];</div><div class="line">var isWorker = r =&gt; r === &apos;worker&apos;;</div><div class="line">var getWorkers = R.filter(R.pipe(R.prop(&apos;role&apos;), isWorker));</div><div class="line">var demo2 = getWorkers(data);</div><div class="line">// console.log(demo2); </div><div class="line">// [</div><div class="line">//   &#123;&quot;name&quot;: &quot;张三&quot;, &quot;role&quot;: &quot;worker&quot;&#125;,</div><div class="line">//   &#123;&quot;name&quot;: &quot;李四&quot;, &quot;role&quot;: &quot;worker&quot;&#125;</div><div class="line">// ]</div></pre></td></tr></table></figure>
-</code></pre><h5 id="Pointfree示例一"><a href="#Pointfree示例一" class="headerlink" title="Pointfree示例一"></a>Pointfree示例一</h5><pre><code>**求下面字符串，请问其中最长的单词有多少个字符？**
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">var str = &apos;Lorem ipsum dolor sit amet consectetur adipiscing elit&apos;;</div><div class="line">// 以空格分割单词</div><div class="line">var splitBySpace = s =&gt; s.split(&apos; &apos;);</div><div class="line">// 获得每个单词的长度</div><div class="line">var getLength = w =&gt; w.length;</div><div class="line">// 单词数组转化为单词长度的数组</div><div class="line">var getLengArr = arr =&gt; R.map(getLength, arr);</div><div class="line">// 返回较大的数字</div><div class="line">var getBiggerNumber = (a, b) =&gt; a &gt; b ? a : b;</div><div class="line">// 返回最大的一个数字</div><div class="line">var findBiggestNumber = arr =&gt; R.reduce(getBiggerNumber, 0, arr);</div><div class="line"></div><div class="line">var getLongestWordLength = R.pipe(  </div><div class="line">	splitBySpace,</div><div class="line">	getLengArr,</div><div class="line">	findBiggestNumber</div><div class="line">  );</div><div class="line">var demo3 = getLongestWordLength(str);</div><div class="line">console.log(demo3); // 11</div><div class="line"></div><div class="line">// 使用ramda库</div><div class="line">var getLongestWordLength = R.pipe(</div><div class="line">	R.split(&apos; &apos;),</div><div class="line">	R.map(R.length),</div><div class="line">	R.reduce(R.max, 0)</div><div class="line">  );</div><div class="line">var demo3 = getLongestWordLength(str);</div><div class="line">// console.log(demo3); // 11</div></pre></td></tr></table></figure>
-</code></pre><h4 id="Pointfree-示例二"><a href="#Pointfree-示例二" class="headerlink" title="Pointfree 示例二"></a>Pointfree 示例二</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div></pre></td><td class="code"><pre><div class="line">// 下面是一段服务器返回的 JSON 数据。</div><div class="line">var data = &#123;</div><div class="line">	result: &quot;SUCCESS&quot;,</div><div class="line">	interfaceVersion: &quot;1.0.3&quot;,</div><div class="line">	requested: &quot;10/17/2013 15:31:20&quot;,</div><div class="line">	lastUpdated: &quot;10/16/2013 10:52:39&quot;,</div><div class="line">	tasks: [</div><div class="line">		&#123;id: 104, complete: false,            priority: &quot;high&quot;,</div><div class="line">				  dueDate: &quot;2013-11-29&quot;,      username: &quot;Scott&quot;,</div><div class="line">				  title: &quot;Do something&quot;,      created: &quot;9/22/2013&quot;&#125;,</div><div class="line">		&#123;id: 105, complete: false,            priority: &quot;medium&quot;,</div><div class="line">				  dueDate: &quot;2013-11-22&quot;,      username: &quot;Lena&quot;,</div><div class="line">				  title: &quot;Do something else&quot;, created: &quot;9/22/2013&quot;&#125;,</div><div class="line">		&#123;id: 107, complete: true,             priority: &quot;high&quot;,</div><div class="line">				  dueDate: &quot;2013-11-22&quot;,      username: &quot;Mike&quot;,</div><div class="line">				  title: &quot;Fix the foo&quot;,       created: &quot;9/22/2013&quot;&#125;,</div><div class="line">		&#123;id: 108, complete: false,            priority: &quot;low&quot;,</div><div class="line">				  dueDate: &quot;2013-11-15&quot;,      username: &quot;Punam&quot;,</div><div class="line">				  title: &quot;Adjust the bar&quot;,    created: &quot;9/25/2013&quot;&#125;,</div><div class="line">		&#123;id: 110, complete: false,            priority: &quot;medium&quot;,</div><div class="line">				  dueDate: &quot;2013-11-15&quot;,      username: &quot;Scott&quot;,</div><div class="line">				  title: &quot;Rename everything&quot;, created: &quot;10/2/2013&quot;&#125;,</div><div class="line">		&#123;id: 112, complete: true,             priority: &quot;high&quot;,</div><div class="line">				  dueDate: &quot;2013-11-27&quot;,      username: &quot;Lena&quot;,</div><div class="line">				  title: &quot;Alter all quuxes&quot;,  created: &quot;10/5/2013&quot;&#125;</div><div class="line">	]</div><div class="line">&#125;;</div><div class="line"></div><div class="line">var fetchData = function (data) &#123;</div><div class="line">  return Promise.resolve(data);</div><div class="line">&#125;;</div><div class="line">// 提取 tasks 属性</div><div class="line">var SelectTasks = R.prop(&apos;tasks&apos;);</div><div class="line"></div><div class="line">// 过滤出指定的用户</div><div class="line">var filterMember = member =&gt; R.filter(</div><div class="line">  R.propEq(&apos;username&apos;, member)</div><div class="line">  );</div><div class="line"></div><div class="line">// 排除已经完成的任务</div><div class="line">var excludeCompletedTasks = R.reject(R.propEq(&apos;complete&apos;, true));</div><div class="line"></div><div class="line">// 选取指定属性</div><div class="line">var selectFields = R.map(</div><div class="line">	R.pick([&apos;id&apos;, &apos;dueDate&apos;, &apos;title&apos;, &apos;priority&apos;])</div><div class="line">  );</div><div class="line"></div><div class="line">// 按照到期日期排序</div><div class="line">var sortByDueDate = R.sortBy(R.prop(&apos;dueDate&apos;));</div><div class="line"></div><div class="line">// 合成函数</div><div class="line">var getIncompleteTaskSummaries = function (membername) &#123;</div><div class="line">  return fetchData(data)</div><div class="line">  .then(R.prop(&apos;tasks&apos;))</div><div class="line">  .then(R.filter(R.propEq(&apos;username&apos;, membername)))</div><div class="line">  .then(R.reject(R.propEq(&apos;complete&apos;, true)))</div><div class="line">  .then(R.map(R.pick([&apos;id&apos;, &apos;dueData&apos;, &apos;title&apos;, &apos;priority&apos;])))</div><div class="line">  .then(R.sortBy(R.prop(&apos;dueData&apos;)));</div><div class="line">&#125;;</div><div class="line"></div><div class="line">var scottList = getIncompleteTaskSummaries(&apos;Scott&apos;);</div><div class="line">console.log(scottList);	</div><div class="line">[[object Object] &#123;</div><div class="line">  dueDate: &quot;2013-11-15&quot;,</div><div class="line">  id: 110,</div><div class="line">  priority: &quot;medium&quot;,</div><div class="line">  title: &quot;Rename everything&quot;</div><div class="line">&#125;, [object Object] &#123;</div><div class="line">  dueDate: &quot;2013-11-29&quot;,</div><div class="line">  id: 104,</div><div class="line">  priority: &quot;high&quot;,</div><div class="line">  title: &quot;Do something&quot;</div><div class="line">&#125;]</div></pre></td></tr></table></figure>
-</code></pre><blockquote>
-<p>   参考文档：<br><a href="http://www.ruanyifeng.com/blog/2017/03/pointfree.html" target="_blank" rel="external">阮老师–Pointfree 编程风格指南</a><br><a href="http://ramda.cn/" target="_blank" rel="external">Ramda 中文</a>    </p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -4008,7 +4032,7 @@ compose：从右往左执行函数组合（右侧函数的输出作为左侧函�
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">104</span>
+                <span class="site-state-item-count">105</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -4147,7 +4171,7 @@ compose：从右往左执行函数组合（右侧函数的输出作为左侧函�
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共131.3k字</span>
+  <span class="post-count">博客全站共131.8k字</span>
 </div>
         
 
