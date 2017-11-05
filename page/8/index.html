@@ -306,6 +306,304 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/03/css加强-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/03/css加强-3/" itemprop="url">
+                  css加强（进度条和遮罩条和切角）
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T17:39:50+08:00">
+                2017-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/css/" itemprop="url" rel="index">
+                    <span itemprop="name">css</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/03/css加强-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/03/css加强-3/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  618
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  3
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在接下来的一段时间学习看云上购买的一本<a href="https://www.kancloud.cn/dennis/javascriptmethod/261472" target="_blank" rel="external">Web开发实战</a>书籍，来提升自己的软实力。<br>本部分为css实战部分。<br>进度条<br>    <img src="./images/progress.png" alt="进度条"></p>
+<h4 id="进度条"><a href="#进度条" class="headerlink" title="进度条"></a>进度条</h4><h5 id="创建进度条"><a href="#创建进度条" class="headerlink" title="创建进度条"></a>创建进度条</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">	&lt;div class=&quot;fan-progress fan-striped fan-active&quot;&gt;</div><div class="line">		&lt;div class=&quot;fan-progress-bar&quot; style=&quot;width: 40%;&quot;&gt;40%&lt;/div&gt;</div><div class="line">	&lt;/div&gt;</div><div class="line">	```	</div><div class="line">	解释：</div><div class="line">	1.	fan-progress为定义进度条的整体样式（背景）</div><div class="line">	2.	fan-striped为定义斑纹样式（背景）</div><div class="line">	3. 	fan-active为定义动态进度条样式（背景）</div><div class="line">	4.	fan-progress-bar为定义当前行进到样式</div><div class="line">#####	设置样式</div></pre></td></tr></table></figure>
+
+* {
+    box-sizing: border-box;
+}
+fan-progress {
+    box-sizing: border-box;
+    height: 20px;
+    line-height: 20px;
+    background: #f7f7f7;
+    overflow: hidden;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .08), inset 0 2px 2px rgba(0, 0, 0, .08);
+    border-radius: 4px;
+}
+fan-progress-bar {
+    width: 0;
+    height: 100%;
+    background: #009dd8;
+    float: left;
+    transition: width .6s ease;
+    font-size: 12px;
+    color: #fff;
+    text-align: center;
+    background-image: linear-gradient(to bottom, #oob4f5, #008dc5);
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .3), inset 0 0 0 1px rgba(0, 0, 0, .1);
+    text-shadow: 0 -1px 0 rgba(0,0,0,.2);
+}
+/*条纹*/
+.fan-progress-striped .fan-progress-bar {
+    background-image:linear-gradient(-45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent);
+    background-size:30px 30px;
+}
+/*动态*/
+.fan-progress-striped.fan-active .fan-progress-bar {
+    animation: fan-progress-active 2s linear infinite;
+}
+@keyframes fan-progress-active {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 30px 0;
+    }
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">####	遮罩条</div><div class="line">	设计思路：</div><div class="line">1.	用一个DOM容器包图片</div><div class="line">2. 	遮罩条主要以容器的伪类来创建</div><div class="line">3.	通过hover效果和css3的transition和transform完成相应动画</div><div class="line">#####	创建DOM节点</div></pre></td></tr></table></figure>
+
+&lt;div class=&quot;mask&quot; data-title=&quot;遮罩条&quot;&gt;
+    &lt;img src=&quot;img/demo.png&quot; alt=&quot;&quot;&gt;
+&lt;/div&gt;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">#####	设置样式</div></pre></td></tr></table></figure>
+
+.mask {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+}   
+.mask:before {
+    content: attr(data-title);
+    position: absolute;
+    top: 100%;
+    left: 0;
+    padding: .7em 0;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    background: rgba(0,0,0,.5);
+    transform: translate(0, 100%);
+    transition: all .3s ease-in-out;
+    opacity: 0;
+}  
+.mask:hover:before {
+    top: 80%;
+    transform: translate(0, 0);
+    opacity: 1;
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">####	切角</div><div class="line">#####	创建DOM节点</div></pre></td></tr></table></figure>
+
+&lt;div class=&quot;box corner&quot;&gt;单个切角&lt;/div&gt;
+&lt;div class=&quot;box corner1&quot;&gt;多个切角&lt;/div&gt;
+&lt;div class=&quot;box corner2&quot;&gt;多个园角&lt;/div&gt;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">#####	设置样式</div></pre></td></tr></table></figure>
+
+.corner {
+    background: linear-gradient(-45deg, transparent 15px, #58a 15px);
+}
+.corner1 {
+    background: linear-gradient(135deg, transparent 15px, #58a 0) top left, 
+        linear-gradient(-135deg, transparent 15px, #58a 0) top right, 
+        linear-gradient(-45deg, transparent 15px, #58a 0) bottom right,
+        linear-gradient(45deg, transparent 15px, #58a 0) bottom left;
+    background-size: 50% 50%;
+    background-repeat: no-repeat;
+}
+.corner2 {
+    background: radial-gradient(circle at top left, transparent 15px, #58a 0) top left, 
+        radial-gradient(circle at top right, transparent 15px, #58a 0) top right, 
+        radial-gradient(circle at bottom right, transparent 15px, #58a 0) bottom right, 
+        radial-gradient(circle at bottom left, transparent 15px, #58a 0) bottom left;
+    background-size: 50% 50%;
+    background-repeat: no-repeat;
+}
+```
+</code></pre><blockquote>
+<p>   参考文档</p>
+<ol>
+<li><a href="https://www.kancloud.cn/dennis/javascriptmethod/261473" target="_blank" rel="external">web开发实战</a></li>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/linear-gradient3.    [transform](http://www.runoob.com/cssref/css3-pr-transform.html" target="_blank" rel="external">linear-gradient</a><br><a href="https://github.com/fanerge/web-/tree/master" target="_blank" rel="external">代码仓库</a></li>
+</ol>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/01/http缓存知识总结/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3769,220 +4067,6 @@ isNil：检测输入值是否为 null 或 undefined 。
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/08/20/ramda运用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/08/20/ramda运用/" itemprop="url">
-                  ramda入门和函数组合
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-20T21:37:12+08:00">
-                2017-08-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
-                    <span itemprop="name">函数式编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/08/20/ramda运用/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/08/20/ramda运用/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  1,055
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  5
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>继续函数式编程的学习。</p>
-<h4 id="总结Ramda与Lodash和Underscore的优势"><a href="#总结Ramda与Lodash和Underscore的优势" class="headerlink" title="总结Ramda与Lodash和Underscore的优势"></a>总结Ramda与Lodash和Underscore的优势</h4><h5 id="自动柯里化"><a href="#自动柯里化" class="headerlink" title="自动柯里化"></a>自动柯里化</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">// 一map函数为例，解释Ramda的自动柯里化 </div><div class="line">// map函数解释：param1为对集合每一项进行处理并返回同类型的数据，param2需要处理的集合（Array或Object）</div><div class="line">// 第一种，为使用柯里化</div><div class="line">var map3 = R.map(function (item) &#123;</div><div class="line">  return item * item;</div><div class="line">&#125;, [1, 2, 3, 4]); </div><div class="line">// console.log(map3); // [1, 4, 9, 16]</div><div class="line"></div><div class="line">// 第一种curry化（转化成单参数函数）</div><div class="line">var map1 = R.map(function (item) &#123;</div><div class="line">  return item * item;</div><div class="line">&#125;);</div><div class="line">var map2 = map1([1, 2, 3, 4]);</div><div class="line">// console.log(map2); // [1, 4, 9, 16]</div></pre></td></tr></table></figure>
-</code></pre><h5 id="函数参数优先于数据"><a href="#函数参数优先于数据" class="headerlink" title="函数参数优先于数据"></a>函数参数优先于数据</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">// 函数优先于数据</div><div class="line">var map4 = R.map(R.multiply(2), [1, 2, 3, 4]);</div><div class="line">// console.log(map4); // [2, 4, 6, 8]</div><div class="line">var map5 = R.map(R.multiply(2))([1, 2, 3, 4]);</div><div class="line">// console.log(map5); // [2, 4, 6, 8]</div></pre></td></tr></table></figure>
-</code></pre><h4 id="Ramdajs的组合"><a href="#Ramdajs的组合" class="headerlink" title="Ramdajs的组合"></a>Ramdajs的组合</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">// ramdajs的compose组合</div><div class="line">var users = [</div><div class="line">  &#123; &apos;user&apos;: &apos;user1&apos;,  &apos;age&apos;: 36 &#125;,</div><div class="line">  &#123; &apos;user&apos;: &apos;user2&apos;,    &apos;age&apos;: 40 &#125;,</div><div class="line">  &#123; &apos;user&apos;: &apos;user3&apos;, &apos;age&apos;: 18 &#125;</div><div class="line">];</div><div class="line">// R.pluck(k)[array] === R.map(R.prop(k), array)</div><div class="line">var pluck1 = R.pluck(&apos;user&apos;)(users);</div><div class="line">var pluck2 = R.map(R.prop(&apos;user&apos;))(users);</div><div class="line"></div><div class="line">// compose为函数组合（从右到左）</div><div class="line">var pluck3 = R.compose(R.join(&apos;,&apos;), R.pluck(&apos;user&apos;))(users);</div><div class="line">// console.log(pluck3); // user1,user2,user3</div><div class="line">// pipe为函数组合（从左到右）</div><div class="line">var pipe1 = R.pipe(R.pluck(&apos;user&apos;), R.join(&apos;*&apos;))(users);</div><div class="line">// console.log(pipe1); // user1*user2*user3</div><div class="line"></div><div class="line">// 依次获得用户的出生年</div><div class="line">var compose1 = R.compose(R.join(&apos;,&apos;), R.map(R.subtract(new Date().getFullYear())), R.pluck(&apos;age&apos;))(users);</div><div class="line">console.log(compose1); // 1981,1977,1999</div><div class="line"></div><div class="line">// 获得最年轻的用户信息</div><div class="line">var userMin = R.compose(R.head, R.sortBy(R.prop(&apos;age&apos;)))(users);</div><div class="line">var userMax = R.compose(R.last, R.sortBy(R.prop(&apos;age&apos;)))(users);</div><div class="line">var userMax1 = R.compose(R.head, R.reverse, R.sortBy(R.prop(&apos;age&apos;)))(users);</div><div class="line">console.log(userMin, userMax); // &#123;user: &quot;user3&quot;, age: 18&#125; &#123;user: &quot;user2&quot;, age: 40&#125;</div><div class="line">console.log(userMax1); // &#123;user: &quot;user2&quot;, age: 40&#125;</div></pre></td></tr></table></figure>
-
-**纯函数**纯函数是没有副作用的函数。它不会给任何外部变量赋值，不会获取输入，不会产生 &quot;输出&quot;，不会对数据库进行读写，不会修改输入参数等。
-纯函数的基本思想是：相同的输入，永远会得到相同的输出。
-**数据不变性**函数式编程的另一个重要概念是 &quot;Immutability&quot;，&quot;Immutability&quot; 是指 &quot;数据不变性&quot;。
-当以 immutable 方式工作时，一旦定义了某个值或对象，以后就再也不会改变它了。这意味着不能更改已有数组中的元素或对象中的属性。
-开始以函数式思维思考最简单的方式是，使用集合迭代函数代替循环。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">foreach</div><div class="line">for (const value of Array) &#123;</div><div class="line">	console.log(value);</div><div class="line">&#125;</div><div class="line">forEach(value =&gt; console.log(value), Array);</div><div class="line"></div><div class="line">map</div><div class="line">map(x =&gt; x*2, [1, 2, 3]); // [2, 4, 6]</div><div class="line"></div><div class="line">filter/reject(互补)</div><div class="line">const isEven = x =&gt; x % 2 === 0;</div><div class="line">filter(isEven, [1, 2, 3]); // [2]</div><div class="line">reject(isEven, [1, 2, 3]); // [1, 3]</div><div class="line"></div><div class="line">find</div><div class="line">find(isEven, [1, 2, 3, 4]); // 2</div><div class="line"></div><div class="line">reduce</div><div class="line">const add = (accum, value) =&gt; accum + value;	</div><div class="line">reduce(add, 5, [1, 2, 3, 4]); // 15</div></pre></td></tr></table></figure>
-</code></pre><h4 id="函数组合"><a href="#函数组合" class="headerlink" title="函数组合"></a>函数组合</h4><h5 id="Complement"><a href="#Complement" class="headerlink" title="Complement"></a>Complement</h5><pre><code>Complement：对函数的返回值取反。接受一个函数 f，返回一个新函数 g。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">const isEven = x =&gt; x % 2 === 0;</div><div class="line">var complement1 = R.find(isEven, [1, 1, 2, 4]); // 2</div><div class="line">var complement2 = R.find(R.complement(isEven), [1, 2, 2, 4]); // 1</div></pre></td></tr></table></figure>
-</code></pre><h5 id="Both-Either"><a href="#Both-Either" class="headerlink" title="Both/Either"></a>Both/Either</h5><pre><code>both：该函数调用两个函数，并对两函数返回值进行与（&amp;&amp;）操作。
-either：该函数调用两个函数，并对两函数返回值进行或（||）操作。    
-投票系统（投票资格的条件：在本国出生，或者后来加入该国国籍，且年满18岁。）
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">// 判断是否有投票的权利</div><div class="line">let person1 = &#123;</div><div class="line">  birthCountry: &apos;CHINA&apos;,</div><div class="line">  naturalizationDate: false,</div><div class="line">  age: 20</div><div class="line">&#125;;</div><div class="line">const wasBornInCountry = person =&gt; person.birthCountry === &apos;CHINA&apos;;</div><div class="line">const wasNaturalized = person =&gt; Boolean(person.naturalizationDate);</div><div class="line">const isOver18 = person =&gt; person.age &gt;= 18;</div><div class="line">var isCitizen = R.either(wasBornInCountry, wasNaturalized); // 在本国出生，或者后来加入该国国籍。</div><div class="line">var isEligibleToVote = R.both(isCitizen, isOver18);</div><div class="line">var vote1 = isEligibleToVote(person1); // true</div></pre></td></tr></table></figure>
-</code></pre><h5 id="Pipelines-管道"><a href="#Pipelines-管道" class="headerlink" title="Pipelines(管道)"></a>Pipelines(管道)</h5><pre><code>pipe：从左往右执行函数组合。最左边的函数可以是任意元函数（参数个数不限），其余函数必须是一元函数。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var multiply = (num1, num2) =&gt; num1 * num2;</div><div class="line">var addOne = num =&gt; num + 1;</div><div class="line">var square = num =&gt; num * num;</div><div class="line">var operate1 = R.pipe(multiply, addOne, square)(1, 2); // ((1*2)+1)^2 = 9</div></pre></td></tr></table></figure>
-
-compose：从右往左执行函数组合（右侧函数的输出作为左侧函数的输入）。最右侧函数可以是任意元函数（参数个数不限），其余函数必须是一元函数。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">var operate2 =R.compose(square, addOne, multiply)(1, 2); // 9</div></pre></td></tr></table></figure>
-</code></pre><h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><pre><code>本节学习了：函数、纯函数、IMMUTABILITY、foreach（递归替代循环）、map、filter、reject、find、reduce、
-函数组合的方法：complement、either、both、pipe、compose、
-</code></pre><blockquote>
-<p>   参考文献：<br>    <a href="http://www.cnblogs.com/whitewolf/p/javascript-functional-programming-Ramdajs.html" target="_blank" rel="external">JavaScript函数编程-Ramdajs</a><br>    <a href="https://zhuanlan.zhihu.com/p/27446536" target="_blank" rel="external">Thinking in Ramda系列文章</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -4032,7 +4116,7 @@ compose：从右往左执行函数组合（右侧函数的输出作为左侧函�
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">105</span>
+                <span class="site-state-item-count">106</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -4171,7 +4255,7 @@ compose：从右往左执行函数组合（右侧函数的输出作为左侧函�
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共131.8k字</span>
+  <span class="post-count">博客全站共135.3k字</span>
 </div>
         
 
