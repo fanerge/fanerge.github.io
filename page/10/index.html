@@ -306,6 +306,534 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/08/09/js函数式编程-读书笔记-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/08/09/js函数式编程-读书笔记-5/" itemprop="url">
+                  js函数式编程-递归
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-09T21:07:36+08:00">
+                2017-08-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
+                    <span itemprop="name">函数式编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/09/js函数式编程-读书笔记-5/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/08/09/js函数式编程-读书笔记-5/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  547
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  3
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸<strong>函数式编程</strong>。<br><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
+<h3 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h3><h4 id="自吸收函数（调用自己的函数）"><a href="#自吸收函数（调用自己的函数）" class="headerlink" title="自吸收函数（调用自己的函数）"></a>自吸收函数（调用自己的函数）</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">function myLength (ary) &#123;</div><div class="line">	if (_.isEmpty(ary)) &#123;</div><div class="line">		return 0;</div><div class="line">	&#125; else &#123;</div><div class="line">		return 1 + myLength(_.rest(ary));</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">let dd = myLength([1, 2, 3]);</div><div class="line">console.log(dd); // 3</div><div class="line"></div><div class="line">function cycle(times, ary) &#123;</div><div class="line">	if (times &lt;= 0) &#123;</div><div class="line">		return [];</div><div class="line">	&#125; else &#123;</div><div class="line">		return cat(ary, cycle(times -1, ary));</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">let dd = cycle(2, [1, 2, 3]);</div><div class="line">console.log(dd); // [1, 2, 3, 1, 2, 3]</div><div class="line"></div><div class="line">*_.zip*</div><div class="line">function cycle(times, ary) &#123;</div><div class="line">	if (times &lt;= 0) &#123;</div><div class="line">		return [];</div><div class="line">	&#125; else &#123;</div><div class="line">		return cat(ary, cycle(times -1, ary));</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">let dd = _.zip([&apos;a&apos;, &apos;b&apos;, &apos;c&apos;], [1, 2, 3]);</div><div class="line">console.dir(dd); // [[&apos;a&apos;, 1],[&apos;b&apos;, 2], [&apos;c&apos;, 3]]</div></pre></td></tr></table></figure>
+
+// 深度优先自递归搜索
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">*andify 组合函数*</div><div class="line">function andify () &#123;</div><div class="line">	let preds = _.toArray(arguments);</div><div class="line">	return function () &#123;</div><div class="line">		let args = _.toArray(arguments);</div><div class="line">		let everything = function (ps, truth) &#123;</div><div class="line">			if (_.isEmpty(ps)) &#123;</div><div class="line">				return truth;</div><div class="line">			&#125; else &#123;</div><div class="line">				return _.every(args, _.first(ps))</div><div class="line">						&amp;&amp; everything(_.rest(ps), truth);</div><div class="line">			&#125;</div><div class="line">		&#125;;</div><div class="line">		return everything(preds, true);</div><div class="line">	&#125;;</div><div class="line">&#125;</div><div class="line">let evenNums = andify(_.isNumber, isEven);</div><div class="line">console.log(evenNums(4, 2)); // true</div><div class="line"></div><div class="line">*andify 组合函数*</div><div class="line">function orify () &#123;</div><div class="line">	let preds = _.toArray(arguments);</div><div class="line">	return function () &#123;</div><div class="line">		let args = _.toArray(arguments);</div><div class="line">		let something = function (ps, truth) &#123;</div><div class="line">			if (_.isEmpty(ps)) &#123;</div><div class="line">				return truth;</div><div class="line">			&#125; else &#123;</div><div class="line">				return _.some(args, _.first(ps))</div><div class="line">						|| something(_.rest(ps), truth);</div><div class="line">			&#125;</div><div class="line">		&#125;;</div><div class="line">		return something(preds, true);</div><div class="line">	&#125;;</div><div class="line">&#125;</div><div class="line">let evenNums = orify(_.isNumber, isEven);</div><div class="line">console.log(evenNums(1, 2)); // true</div></pre></td></tr></table></figure>
+</code></pre><h4 id="相互关联函数（函数调用其他会再调用回他的函数）"><a href="#相互关联函数（函数调用其他会再调用回他的函数）" class="headerlink" title="相互关联函数（函数调用其他会再调用回他的函数）"></a>相互关联函数（函数调用其他会再调用回他的函数）</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line">function evenSteven(n) &#123;</div><div class="line">	if (n === 0) &#123;</div><div class="line">		return true;</div><div class="line">	&#125; else &#123;</div><div class="line">		return oddJohn(Math.abs(n) - 1);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">function oddJohn(n) &#123;</div><div class="line">	if (n === 0) &#123;</div><div class="line">		return false;</div><div class="line">	&#125; else &#123;</div><div class="line">		return evenSteven(Math.abs(n) - 1);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">let dd = evenSteven(3);</div><div class="line">console.log(dd); // false</div><div class="line"></div><div class="line">*flat 展开嵌套数组*</div><div class="line">function flat(array) &#123;</div><div class="line">	if (_.isArray(array)) &#123;</div><div class="line">		return cat.apply(cat, _.map(array, flat));</div><div class="line">	&#125; else &#123;</div><div class="line">		return [array];</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">let dd = flat([[1, 2], [3, 4]]);</div><div class="line">console.log(dd) // [1, 2, 3, 4]</div><div class="line"></div><div class="line">*clone 浅clone*</div><div class="line">let x = [&#123;a: [1, 2, 3], b: 42&#125;, &#123;c: &#123;d: []&#125;&#125;]</div><div class="line">let y = _.clone(x);</div><div class="line">console.log(y) // [&#123;a: [1, 2, 3], b: 42&#125;, &#123;c: &#123;d: []&#125;&#125;]	</div><div class="line"></div><div class="line">*deepClone 深clone*</div><div class="line">function deepClone(obj) &#123;</div><div class="line">	if (!existy(obj) || !_.isObject(obj)) &#123;</div><div class="line">		return obj;</div><div class="line">	&#125;</div><div class="line">	let temp = new obj.constructor();</div><div class="line">	for (let key in obj) &#123;</div><div class="line">		if (obj.hasOwnProperty(key)) &#123;</div><div class="line">			temp[key] = deepClone(obj[key]);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	return temp;</div><div class="line">&#125;</div><div class="line">let x = [&#123;a: [1, 2, 3], b: 42&#125;, &#123;c: &#123;d: []&#125;&#125;]</div><div class="line">let y = deepClone(x);</div><div class="line">x[1][&apos;c&apos;][&apos;d&apos;] = 100;</div><div class="line">console.log(_.isEqual(x, y)); // false</div><div class="line"></div><div class="line">// 遍历嵌套数组的数组</div><div class="line">function visit(mapFun, resultFun, array) &#123;</div><div class="line">	if (_.isArray(array)) &#123;</div><div class="line">		return resultFun(_.map(array, mapFun));</div><div class="line">	&#125; else &#123;</div><div class="line">		return resultFun(array);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">let dd = visit(_.identity, _.isNumber, 42);</div><div class="line">console.log(dd); // true</div></pre></td></tr></table></figure>
+</code></pre><h4 id="太多递归了"><a href="#太多递归了" class="headerlink" title="太多递归了"></a>太多递归了</h4><h4 id="递归是一个底层操作"><a href="#递归是一个底层操作" class="headerlink" title="递归是一个底层操作"></a>递归是一个底层操作</h4><blockquote>
+<p>   源代码仓库<br>    <a href="https://github.com/fanerge/Functional-reading-notes" target="_blank" rel="external">函数式编程-读书笔记</a>    </p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/08/09/服务端学习/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/08/09/服务端学习/" itemprop="url">
+                  JSP学习-了解
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-09T19:56:56+08:00">
+                2017-08-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/服务端/" itemprop="url" rel="index">
+                    <span itemprop="name">服务端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/09/服务端学习/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/08/09/服务端学习/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,946
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  7
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近，由于最近项目需要集成到老项目中去，采用原始的前后端不分离开发，需要学习jsp语言。<br><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
+<h3 id="JSP简介"><a href="#JSP简介" class="headerlink" title="JSP简介"></a>JSP简介</h3><pre><code>1.    JSP全称Java Server Pages，是一种动态网页开发技术。它使用JSP标签在HTML网页中插入Java代码。标签通常以&lt;%开头以%&gt;结束。
+</code></pre><h3 id="JSP-生命周期"><a href="#JSP-生命周期" class="headerlink" title="JSP 生命周期"></a>JSP 生命周期</h3><pre><code>1.    编译阶段：
+当浏览器请求JSP页面时，JSP引擎会首先去检查是否需要编译这个文件。如果这个文件没有被编译过，或者在上次编译后被更改过，则编译这个JSP文件。
+编译的过程包括三个步骤：
+    解析JSP文件。
+    将JSP文件转为servlet。
+    编译servlet。
+2.    初始化阶段：
+    容器载入JSP文件后，它会在为请求提供任何服务前调用jspInit()方法。如果您需要执行自定义的JSP初始化任务，复写jspInit()方法就行了，就像下面这样：
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public void jspInit()&#123;</div><div class="line">  // 初始化代码</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+    一般来讲程序只初始化一次，servlet也是如此。通常情况下您可以在jspInit()方法中初始化数据库连接、打开文件和创建查询表。
+执行阶段：
+    这一阶段描述了JSP生命周期中一切与请求相关的交互行为，直到被销毁。
+    当JSP网页完成初始化后，JSP引擎将会调用_jspService()方法。
+    _jspService()方法需要一个HttpServletRequest对象和一个HttpServletResponse对象作为它的参数，就像下面这样：
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">void _jspService(HttpServletRequest request,</div><div class="line">				 HttpServletResponse response)</div><div class="line">&#123;</div><div class="line">   // 服务端处理代码</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+    _jspService()方法在每个request中被调用一次并且负责产生与之相对应的response，并且它还负责产生所有7个HTTP方法的回应，比如GET、POST、DELETE等等。
+销毁阶段：
+    SP生命周期的销毁阶段描述了当一个JSP网页从容器中被移除时所发生的一切。
+    jspDestroy()方法在JSP中等价于servlet中的销毁方法。当您需要执行任何清理工作时复写jspDestroy()方法，比如释放数据库连接或者关闭文件夹等等。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">jspDestroy()方法的格式如下：</div><div class="line">public void jspDestroy()</div><div class="line">&#123;</div><div class="line">   // 清理代码</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="JSP语法"><a href="#JSP语法" class="headerlink" title="JSP语法"></a>JSP语法</h3><pre><code>语法格式：
+    &lt;% 代码片段 %&gt;
+    &lt;jsp:scriptlet&gt;
+       代码片段
+    &lt;/jsp:scriptlet&gt;
+中文编码问题：
+    &lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot; pageEncoding=&quot;UTF-8&quot;%&gt;
+JSP声明
+    &lt;%! declaration; [ declaration; ]+ ... %&gt;
+    &lt;jsp:declaration&gt;
+       代码片段
+    &lt;/jsp:declaration&gt;
+    例子：
+    &lt;%! int i = 0; %&gt; 
+JSP表达式    
+    &lt;%= 表达式 %&gt;
+    &lt;jsp:expression&gt;
+       表达式
+    &lt;/jsp:expression&gt;
+JSP注释
+    &lt;%-- 注释 --%&gt;
+JSP指令
+    JSP指令用来设置与整个JSP页面相关的属性。
+    &lt;%@ directive attribute=&quot;value&quot; %&gt;
+    例子：
+    &lt;%@ page ... %&gt;    定义页面的依赖属性，比如脚本语言、error页面、缓存需求等等
+    &lt;%@ include ... %&gt;    包含其他文件
+    &lt;%@ taglib ... %&gt;    引入标签库的定义，可以是自定义标签
+JSP行为
+    JSP行为标签使用XML语法结构来控制servlet引擎。
+    &lt;jsp:action_name attribute=&quot;value&quot; /&gt;
+JSP隐含对象
+    JSP支持九个自动定义的变量，江湖人称隐含对象。
+    request    HttpServletRequest类的实例
+    response    HttpServletResponse类的实例
+判断语句
+    if-else
+        &lt;%! int day =  %&gt;
+        &lt;% if (day == 1 | day == 7) { %&gt;
+            &lt;p&gt;今天是周末&lt;/p&gt;
+        &lt;% } else { %&gt;
+              &lt;p&gt;今天不是周末&lt;/p&gt;
+        &lt;% } %&gt;
+    switch-case
+        &lt;% 
+        switch(day) {
+        case 0:
+           out.println(&quot;星期天&quot;);
+           break;
+        case 1:
+           out.println(&quot;星期一&quot;);
+           break;
+        default:
+           out.println(&quot;星期六&quot;);
+        }
+        %&gt;
+循环语句
+    for
+        &lt;%for ( fontSize = 1; fontSize &lt;= 3; fontSize++){ %&gt;
+           &lt;font color=&quot;green&quot; size=&quot;&lt;%= fontSize %&gt;&quot;&gt;
+            菜鸟教程
+           &lt;/font&gt;&lt;br /&gt;
+        &lt;%}%&gt;
+    while
+        &lt;%while ( fontSize &lt;= 3){ %&gt;
+           &lt;font color=&quot;green&quot; size=&quot;&lt;%= fontSize %&gt;&quot;&gt;
+            菜鸟教程
+           &lt;/font&gt;&lt;br /&gt;
+        &lt;%fontSize++;%&gt;
+        &lt;%}%&gt;
+JSP 字面量
+    布尔值(boolean)：true 和 false;
+    整型(int)：与 Java 中的一样;
+    浮点型(float)：与 Java 中的一样;
+    字符串(string)：以单引号或双引号开始和结束;
+    Null：null。
+</code></pre><h3 id="JSP指令"><a href="#JSP指令" class="headerlink" title="JSP指令"></a>JSP指令</h3><pre><code>JSP指令用来设置整个JSP页面相关的属性，如网页的编码方式和脚本语言。
+    &lt;%@ directive attribute=&quot;value&quot; %&gt;
+Page指令
+    Page指令为容器提供当前页面的使用说明。一个JSP页面可以包含多个page指令。
+    &lt;%@ page attribute=&quot;value&quot; %&gt;
+    &lt;jsp:directive.page attribute=&quot;value&quot; /&gt;
+Include指令
+    JSP可以通过include指令来包含其他文件。被包含的文件可以是JSP文件、HTML文件或文本文件。
+    &lt;%@ include file=&quot;文件相对 url 地址&quot; %&gt;
+    &lt;jsp:directive.include file=&quot;文件相对 url 地址&quot; /&gt;
+Taglib指令
+    JSP API允许用户自定义标签，一个自定义标签库就是自定义标签的集合。
+    &lt;%@ taglib uri=&quot;uri&quot; prefix=&quot;prefixOfTag&quot; %&gt;
+    &lt;jsp:directive.taglib uri=&quot;uri&quot; prefix=&quot;prefixOfTag&quot; /&gt;
+</code></pre><h3 id="JSP动作元素"><a href="#JSP动作元素" class="headerlink" title="JSP动作元素"></a>JSP动作元素</h3><pre><code>JSP动作元素在请求处理阶段起作用。JSP动作元素是用XML语法写成的。
+    &lt;jsp:action_name attribute=&quot;value&quot; /&gt;
+</code></pre><h3 id="JSP隐式对象"><a href="#JSP隐式对象" class="headerlink" title="JSP隐式对象"></a>JSP隐式对象</h3><pre><code>JSP隐式对象是JSP容器为每个页面提供的Java对象，开发者可以直接使用它们而不用显式声明。JSP隐式对象也被称为预定义变量。    
+</code></pre><h3 id="JSP客户端请求"><a href="#JSP客户端请求" class="headerlink" title="JSP客户端请求"></a>JSP客户端请求</h3><pre><code>当浏览器请求一个网页时，它会向网络服务器发送一系列不能被直接读取的信息，因为这些信息是作为HTTP信息头的一部分来传送的。您可以查阅HTTP协议来获得更多的信息。
+</code></pre><h3 id="JSP服务器响应"><a href="#JSP服务器响应" class="headerlink" title="JSP服务器响应"></a>JSP服务器响应</h3><pre><code>Response响应对象主要将JSP容器处理后的结果传回到客户端。可以通过response变量设置HTTP的状态和向客户端发送数据，如Cookie、HTTP文件头信息等。
+</code></pre><h3 id="JSP-HTTP状态码"><a href="#JSP-HTTP状态码" class="headerlink" title="JSP HTTP状态码"></a>JSP HTTP状态码</h3><pre><code>以状态行+CRLF（回车换行）开始
+零行或多行头模块+CRLF
+一个空行，比如CRLF
+可选的消息体比如文件，查询数据，查询输出
+</code></pre><h3 id="JSP-表单处理"><a href="#JSP-表单处理" class="headerlink" title="JSP 表单处理"></a>JSP 表单处理</h3><pre><code>JSP 读取表单数据
+    getParameter(): 使用 request.getParameter() 方法来获取表单参数的值。
+    getParameterValues(): 获得如checkbox类（名字相同，但值有多个）的数据。 接收数组变量 ，如checkbox类型
+    getParameterNames():该方法可以取得所有变量的名称，该方法返回一个Emumeration。
+    getInputStream():调用此方法来读取来自客户端的二进制数据流。
+</code></pre><h3 id="JSP过滤器"><a href="#JSP过滤器" class="headerlink" title="JSP过滤器"></a>JSP过滤器</h3><pre><code>JSP 和 Servlet 中的过滤器都是 Java 类。
+过滤器可以动态地拦截请求和响应，以变换或使用包含在请求或响应中的信息。
+可以将一个或多个过滤器附加到一个 Servlet 或一组 Servlet。过滤器也可以附加到 JavaServer Pages (JSP) 文件和 HTML 页面。
+过滤器是可用于 Servlet 编程的 Java 类，可以实现以下目的：
+在客户端的请求访问后端资源之前，拦截这些请求。
+在服务器的响应发送回客户端之前，处理这些响应。
+</code></pre><h3 id="JSP-Cookie-处理"><a href="#JSP-Cookie-处理" class="headerlink" title="JSP Cookie 处理"></a>JSP Cookie 处理</h3><pre><code>Cookie是存储在客户机的文本文件，它们保存了大量轨迹信息。在servlet技术基础上，JSP显然能够提供对HTTP cookie的支持。
+</code></pre><h3 id="JSP-Session"><a href="#JSP-Session" class="headerlink" title="JSP Session"></a>JSP Session</h3><pre><code>有三种方法来维持客户端与服务器的会话
+    Cookies
+    隐藏表单域  &lt;input type=&quot;hidden&quot; name=&quot;sessionid&quot; value=&quot;12345&quot;&gt;
+    重写URL   http://w3cschool.cc/file.htm;sessionid=12345
+session对象
+    JSP利用servlet提供的HttpSession接口来识别一个用户，存储这个用户的所有访问信息。
+    默认情况下，JSP允许会话跟踪，一个新的HttpSession对象将会自动地为新的客户端实例化。
+</code></pre><h3 id="JSP-文件上传"><a href="#JSP-文件上传" class="headerlink" title="JSP 文件上传"></a>JSP 文件上传</h3><h3 id="JSP-日期处理"><a href="#JSP-日期处理" class="headerlink" title="JSP 日期处理"></a>JSP 日期处理</h3><pre><code>使用JSP最重要的优势之一，就是可以使用所有Java  API。本章将会详细地讲述Java中的Date类，它在java.util包下，封装了当前日期和时间。
+</code></pre><h3 id="JSP-页面重定向"><a href="#JSP-页面重定向" class="headerlink" title="JSP 页面重定向"></a>JSP 页面重定向</h3><pre><code>当需要将文档移动到一个新的位置时，就需要使用JSP重定向了。
+</code></pre><h3 id="JSP-点击量统计"><a href="#JSP-点击量统计" class="headerlink" title="JSP 点击量统计"></a>JSP 点击量统计</h3><h3 id="JSP-自动刷新"><a href="#JSP-自动刷新" class="headerlink" title="JSP 自动刷新"></a>JSP 自动刷新</h3><pre><code>想象一下，如果要直播比赛的比分，或股票市场的实时状态，或当前的外汇配给，该怎么实现呢？显然，要实现这种实时功能，您就不得不规律性地刷新页面。
+</code></pre><h3 id="JSP-发送邮件"><a href="#JSP-发送邮件" class="headerlink" title="JSP 发送邮件"></a>JSP 发送邮件</h3>
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/08/08/js函数式编程-读书笔记-4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1993,436 +2521,6 @@ PWA (Progressive Web Apps) 是一种 Web App 新模型：
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/07/24/js函数式编程-5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/07/24/js函数式编程-5/" itemprop="url">
-                  js函数式编程-5
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-24T19:41:34+08:00">
-                2017-07-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
-                    <span itemprop="name">函数式编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/07/24/js函数式编程-5/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/07/24/js函数式编程-5/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  534
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  3
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Monad"><a href="#Monad" class="headerlink" title="Monad"></a>Monad</h2><p><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
-<h3 id="pointed-functor"><a href="#pointed-functor" class="headerlink" title="pointed functor"></a>pointed functor</h3><pre><code>of 方法不是用来避免使用 new 关键字的，而是用来把值放到默认最小化上下文（default minimal context）中的。
-</code></pre><blockquote>
-<p>  pointed functor 是实现了 of 方法的 functor。</p>
-</blockquote>
-<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">这里的关键是把任意值丢到容器里然后开始到处使用 map 的能力。</div><div class="line">IO.of(&quot;tetris&quot;).map(concat(&quot; master&quot;)); // IO(&quot;tetris master&quot;)</div><div class="line">Maybe.of(1336).map(add(1)); // Maybe(1337)</div></pre></td></tr></table></figure>
-</code></pre><h3 id="混合比喻"><a href="#混合比喻" class="headerlink" title="混合比喻"></a>混合比喻</h3><ol>
-<li><p>例子</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">var fs = require(&apos;fs&apos;);</div><div class="line"></div><div class="line">//  readFile :: String -&gt; IO String</div><div class="line">var readFile = function(filename) &#123;</div><div class="line">  return new IO(function() &#123;</div><div class="line">	return fs.readFileSync(filename, &apos;utf-8&apos;);</div><div class="line">  &#125;);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">//  print :: String -&gt; IO String</div><div class="line">var print = function(x) &#123;</div><div class="line">  return new IO(function() &#123;</div><div class="line">	console.log(x);</div><div class="line">	return x;</div><div class="line">  &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">//  cat :: IO (IO String)</div><div class="line">var cat = compose(map(print), readFile);</div><div class="line"></div><div class="line">cat(&quot;.git/config&quot;)</div><div class="line">// IO(IO(&quot;[core]\nrepositoryformatversion = 0\n&quot;))</div></pre></td></tr></table></figure>
-</li>
-<li><p>剥开洋葱</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">我说过 monad 像洋葱，可以使用一个叫作 join 的方法，来剥开。</div><div class="line">var mmo = Maybe.of(Maybe.of(&quot;nunchucks&quot;));</div><div class="line">// Maybe(Maybe(&quot;nunchucks&quot;))</div><div class="line">mmo.join();</div><div class="line">// Maybe(&quot;nunchucks&quot;)</div><div class="line"></div><div class="line">var ttt = Task.of(Task.of(Task.of(&quot;sewers&quot;)));</div><div class="line">// Task(Task(Task(&quot;sewers&quot;)));</div><div class="line">ttt.join()</div><div class="line">// Task(Task(&quot;sewers&quot;))</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<blockquote>
-<p>   monad 是可以变扁（flatten）的 pointed functor。<br>    一个 functor，只要它定义个了一个 join 方法和一个 of 方法，并遵守一些定律，那么它就是一个 monad。</p>
-</blockquote>
-<pre><code>为Maybe实现join方法
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">Maybe.prototype.join = function () &#123;</div><div class="line">	return this.isNothing() ? Maybe.of(null) : this.__value;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">Example</div><div class="line">//  join :: Monad m =&gt; m (m a) -&gt; m a</div><div class="line">var join = function(mma)&#123; return mma.join(); &#125;</div><div class="line"></div><div class="line">//  firstAddressStreet :: User -&gt; Maybe Street</div><div class="line">var firstAddressStreet = compose(</div><div class="line">  join, map(safeProp(&apos;street&apos;)), join, map(safeHead), safeProp(&apos;addresses&apos;)</div><div class="line">);</div><div class="line"></div><div class="line">firstAddressStreet(</div><div class="line">  &#123;addresses: [&#123;street: &#123;name: &apos;Mulburry&apos;, number: 8402&#125;, postcode: &quot;WC2N&quot; &#125;]&#125;</div><div class="line">);</div><div class="line">// Maybe(&#123;name: &apos;Mulburry&apos;, number: 8402&#125;)</div></pre></td></tr></table></figure>
-</code></pre><h3 id="chain-函数"><a href="#chain-函数" class="headerlink" title="chain 函数"></a>chain 函数</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">// 使用 chain封装（map的后面调用join）</div><div class="line">//  chain :: Monad m =&gt; (a -&gt; m b) -&gt; m a -&gt; m b</div><div class="line">var chain = curry(function(f, m)&#123;</div><div class="line">  return m.map(f).join(); // 或者 compose(join, map(f))(m)</div><div class="line">&#125;);</div><div class="line"></div><div class="line">// map/join</div><div class="line">var firstAddressStreet = compose(</div><div class="line">  join, map(safeProp(&apos;street&apos;)), join, map(safeHead), safeProp(&apos;addresses&apos;)</div><div class="line">);</div><div class="line"></div><div class="line">// chain</div><div class="line">var firstAddressStreet = compose(</div><div class="line">  chain(safeProp(&apos;street&apos;)), chain(safeHead), safeProp(&apos;addresses&apos;)</div><div class="line">);</div><div class="line"></div><div class="line">Example</div><div class="line">Maybe.of(3).chain(function(three) &#123;</div><div class="line">  return Maybe.of(2).map(add(three));</div><div class="line">&#125;);</div><div class="line">// Maybe(5);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="理论"><a href="#理论" class="headerlink" title="理论"></a>理论</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"> // 结合律</div><div class="line">compose(join, map(join)) == compose(join, join)</div></pre></td></tr></table></figure>
-
-总结：monad 能够借给我们从盒子中取出的值，而且知道我们会在结束使用后还给它。
-monad 让我们深入到嵌套的运算当中，使我们能够在完全避免回调金字塔（pyramid of doom）情况下，为变量赋值，运行有序的作用，执行异步任务等等。
-</code></pre>
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/07/22/js函数式编程-4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/07/22/js函数式编程-4/" itemprop="url">
-                  js函数式编程-4
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-22T21:15:25+08:00">
-                2017-07-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
-                    <span itemprop="name">函数式编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/07/22/js函数式编程-4/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/07/22/js函数式编程-4/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  1,160
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  6
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="特百惠"><a href="#特百惠" class="headerlink" title="特百惠"></a>特百惠</h2><p><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
-<h3 id="强大的容器"><a href="#强大的容器" class="headerlink" title="强大的容器"></a>强大的容器</h3><pre><code>函数式的程序：即通过管道把数据在一系列纯函数间传递的程序。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">1.	// 先创建一个容器（container），这个容器必须能够装载任意类型的值，一个存放宝贵的数据的特殊盒子。</div><div class="line">	var Container = function (x) &#123;</div><div class="line">		this._value = x;</div><div class="line">	&#125;;	</div><div class="line">	// 作用容器的构造器（constructor）</div><div class="line">	Container.of = function (x) &#123;</div><div class="line">		return new Container(x);</div><div class="line">	&#125;;</div><div class="line">	// 测试容器</div><div class="line">	var test = Container.of(Container.of(&#123;name: &apos;fanerge&apos;&#125;))	</div><div class="line">	console.log(test)</div></pre></td></tr></table></figure>
-</code></pre><ol>
-<li><p>第一个functor</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">// 操作容器中的值</div><div class="line">// (a -&gt; b) -&gt; Container a -&gt; Container b</div><div class="line">Container.prototype.map = function (f) &#123;</div><div class="line">	return Container.of(f(this._value))</div><div class="line">&#125;;	</div><div class="line">// 使用map方法</div><div class="line">Container.of(3).map(function (two) &#123;</div><div class="line">	return two + 2;</div><div class="line">&#125;);</div><div class="line">// Container(5)</div><div class="line">Container.of(&apos;fanerge&apos;).map(function (str) &#123; </div><div class="line">	return str.toUpperCase()</div><div class="line">&#125;);</div><div class="line">// Container(&apos;FANERGE&apos;)</div><div class="line">// 因为我们能够在不离开 Container 的情况下操作容器里面的值。这是非常了不起的一件事情。Container 里的值传递给 map 函数之后，就可以任我们操作；操作结束后，为了防止意外再把它放回它所属的 Container。这样做的结果是，我们能连续地调用 map，运行任何我们想运行的函数。</div></pre></td></tr></table></figure>
-<p><strong>functor 是实现了 map 函数并遵守一些特定规则的容器类型。</strong><br>把值装进一个容器，而且只能使用 map 来处理它，让容器自己去运用函数能给我们带来什么好处？答案是抽象，对于函数运用的抽象。当 map 一个函数的时候，我们请求容器来运行这个函数。不夸张地讲，这是一种十分强大的理念。</p>
-</li>
-<li><p>薛定谔的Maybe</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">var Maybe = function (x) &#123;</div><div class="line">	this._value = x;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">Maybe.of = function (x) &#123;</div><div class="line">	return new Maybe(x);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">Maybe.prototype.isNoting = function () &#123;</div><div class="line">	return (this._value == null || this._value === undefined)</div><div class="line">&#125;;</div><div class="line"></div><div class="line">Maybe.prototype.map = function (f) &#123;</div><div class="line">	return this.isNoting() ? Maybe.of(null) : Maybe.of(f(this._value));</div><div class="line">&#125;;</div><div class="line"></div><div class="line">Maybe.of(&apos;Malkovich Malkovich&apos;).map(_.match(/a/ig)) // Maybe([&apos;a&apos;, &apos;a&apos;]</div><div class="line">// map 完全有能力以 curry 函数的方式来“代理”任何 functor</div><div class="line">var map = curry(function (f, any_functor_at_all) &#123;</div><div class="line">	return any_functor_at_all.map(f);</div><div class="line">&#125;);</div><div class="line">// safeHead :: [a] -&gt; Maybe(a)</div><div class="line">var safeHead = function (xs) &#123;</div><div class="line">	return Maybe.of(xs[0]);</div><div class="line">&#125;;</div><div class="line">var streetName = _.compose(map(_.prop(&apos;street&apos;)), safeHead, _.prop(&apos;address&apos;));</div><div class="line">streetName(&#123;addresses: [&#123;street: &quot;Shady Ln.&quot;, number: 4201&#125;]&#125;); // Maybe(&quot;Shady Ln.&quot;)</div></pre></td></tr></table></figure>
-<p><em>购物的例子</em></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">// withdraw :: Number -&gt; Account -&gt; Maybe(Account)</div><div class="line">var withdraw = curry(function (amount, account) &#123;</div><div class="line">	return account.balance &gt;= amount ?</div><div class="line">		Maybe.of(&#123;balance: acount.balance - amount&#125;) :</div><div class="line">		Maybe.of(null);</div><div class="line">&#125;)</div><div class="line">// finishTransaction :: Account -&gt; String</div><div class="line">var finishTransaction = compose(remainingBalance, updateLedger); //// &lt;- 假定这两个函数已经在别处定义好了</div><div class="line">// getTwenty :: Account -&gt; Maybe(String)</div><div class="line">var getTwenty = compose(map(finishTransaction), withdraw(20));</div><div class="line">getTwenty(&#123;balance: 200.00&#125;); // Maybe(&quot;Your balance is $180.00&quot;)</div><div class="line">getTwenty(&#123; balance: 10.00&#125;); // Maybe(null)</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">// maybe :: b -&gt; (a -&gt; b) -&gt; Maybe a -&gt; b	</div><div class="line">var may = curry(function (x, f, m) &#123;</div><div class="line">	return m.isNoting() ? x : f(m._value);</div><div class="line">&#125;);</div><div class="line">// getTwenty :: Account -&gt; String</div><div class="line">var getTwenty = compose(</div><div class="line">	maybe(&quot;You&apos;re broke!&quot;, finishTransaction), withdraw(20)</div><div class="line">);	</div><div class="line">getTwenty(&#123; balance: 200.00&#125;); // &quot;Your balance is $180.00&quot;</div><div class="line">getTwenty(&#123; balance: 10.00&#125;); // &quot;You&apos;re broke!&quot;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="“纯”错误处理"><a href="#“纯”错误处理" class="headerlink" title="“纯”错误处理"></a>“纯”错误处理</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">Left 和 Right 是我们称之为 Either 的抽象类型的两个子类。</div><div class="line">var Left = function(x) &#123;</div><div class="line">  this.__value = x;</div><div class="line">&#125;</div><div class="line">Left.of = function(x) &#123;</div><div class="line">  return new Left(x);</div><div class="line">&#125;</div><div class="line">Left.prototype.map = function(f) &#123;</div><div class="line">  return this;</div><div class="line">&#125;</div><div class="line"></div><div class="line">var Right = function(x) &#123;</div><div class="line">  this.__value = x;</div><div class="line">&#125;</div><div class="line">Right.of = function(x) &#123;</div><div class="line">  return new Right(x);</div><div class="line">&#125;</div><div class="line">Right.prototype.map = function(f) &#123;</div><div class="line">  return Right.of(f(this.__value));</div><div class="line">&#125;</div><div class="line">// 就像 Maybe 可以有个 maybe 一样，Either 也可以有一个 either。两者的用法类似，但 either 接受两个函数（而不是一个）和一个静态值为参数。</div><div class="line">//  either :: (a -&gt; c) -&gt; (b -&gt; c) -&gt; Either a b -&gt; c</div><div class="line">var either = curry(function(f, g, e) &#123;</div><div class="line">  switch(e.constructor) &#123;</div><div class="line">	case Left: return f(e.__value);</div><div class="line">	case Right: return g(e.__value);</div><div class="line">  &#125;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">//  zoltar :: User -&gt; _</div><div class="line">var zoltar = compose(console.log, either(id, fortune), getAge(moment()));</div><div class="line"></div><div class="line">zoltar(&#123;birthdate: &apos;2005-12-12&apos;&#125;);</div><div class="line">// &quot;If you survive, you will be 10&quot;</div><div class="line">// undefined</div><div class="line"></div><div class="line">zoltar(&#123;birthdate: &apos;balloons!&apos;&#125;);</div><div class="line">// &quot;Birth date could not be parsed&quot;</div><div class="line">// undefined</div></pre></td></tr></table></figure>
-
-**取到容器里的东西**
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">var IO = function (f) &#123;</div><div class="line">	this.__value = f;</div><div class="line">&#125;;</div><div class="line">IO.of = function (x) &#123;</div><div class="line">	return new IO(function () &#123;</div><div class="line">		return x;</div><div class="line">	&#125;);</div><div class="line">&#125;;</div><div class="line">IO.prototype.map = function (f) &#123;</div><div class="line">	return new IO(_.compose(f, this.__value));</div><div class="line">&#125;;</div><div class="line">// io_window_ :: IO Window</div><div class="line">var io_window = new IO(function () &#123; return window;&#125;)</div><div class="line">io_window.map(function (win) &#123; return win.innerWidth &#125;) // IO(1430)</div><div class="line">io_window.map(_.prop(&apos;location&apos;)).map(_.prop(&apos;href&apos;)).map(split(&apos;/&apos;)); // IO([&quot;http:&quot;, &quot;&quot;, &quot;localhost:8000&quot;, &quot;blog&quot;, &quot;posts&quot;])</div><div class="line">// $ :: String -&gt; IO [DOM]</div><div class="line">var $ = function(selector) &#123;</div><div class="line">  return new IO(function()&#123; return document.querySelectorAll(selector); &#125;);</div><div class="line">&#125;</div><div class="line">$(&apos;#myDiv&apos;).map(head).map(function(div)&#123; return div.innerHTML; &#125;); // IO(&apos;I am some inner html&apos;)</div></pre></td></tr></table></figure>
-
-**解析url参数**
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">纯代码库: lib/params.js</div><div class="line">var url = new IO(function () &#123; return window.location.href; &#125;);</div><div class="line">// toPairs = String -&gt; [[String]]</div><div class="line">var toPairs = compose(map(split(&apos;=&apos;), split(&apos;&amp;&apos;));</div><div class="line">// params :: String -&gt; [[String]]</div><div class="line">var params = conmpose(toPairs, last, split(&apos;?&apos;));</div><div class="line">// findParam = String -&gt; Io Maybe [String]</div><div class="line">var findParam = function (key) &#123;</div><div class="line">	return map(compose(Maybe.of, filter(compose(eq(key), head)), params), url);</div><div class="line">&#125;;</div><div class="line">// 调用 __value() 来运行它！</div><div class="line">findParam(&apos;searchTerm&apos;).__value();</div><div class="line">// Maybe([&apos;searchTerm&apos;, &apos;wafflehouse&apos;])</div></pre></td></tr></table></figure>
-</code></pre><h3 id="异步任务"><a href="#异步任务" class="headerlink" title="异步任务"></a>异步任务</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">// Postgres.connect :: Url -&gt; IO DbConnection</div><div class="line">// runQuery :: DbConnection -&gt; ResultSet</div><div class="line">// readFile :: String -&gt; Task Error String</div><div class="line">// Pure application</div><div class="line">//=====================</div><div class="line">//  dbUrl :: Config -&gt; Either Error Url</div><div class="line">var dbUrl = function(c) &#123;</div><div class="line">  return (c.uname &amp;&amp; c.pass &amp;&amp; c.host &amp;&amp; c.db)</div><div class="line">	? Right.of(&quot;db:pg://&quot;+c.uname+&quot;:&quot;+c.pass+&quot;@&quot;+c.host+&quot;5432/&quot;+c.db)</div><div class="line">	: Left.of(Error(&quot;Invalid config!&quot;));</div><div class="line">&#125;</div><div class="line">//  connectDb :: Config -&gt; Either Error (IO DbConnection)</div><div class="line">var connectDb = compose(map(Postgres.connect), dbUrl);</div><div class="line">//  getConfig :: Filename -&gt; Task Error (Either Error (IO DbConnection))</div><div class="line">var getConfig = compose(map(compose(connectDB, JSON.parse)), readFile);</div><div class="line">// Impure calling code</div><div class="line">//=====================</div><div class="line">getConfig(&quot;db.json&quot;).fork(</div><div class="line">  logErr(&quot;couldn&apos;t read file&quot;), either(console.log, map(runQuery))</div><div class="line">);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="一些理论"><a href="#一些理论" class="headerlink" title="一些理论"></a>一些理论</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// identity</div><div class="line">map(id) === id;</div><div class="line">// composition</div><div class="line">compose(map(f), map(g)) === map(compose(f, g));</div></pre></td></tr></table></figure>
-</code></pre><p>参考：</p>
-<blockquote>
-<p><a href="https://llh911001.gitbooks.io/mostly-adequate-guide-chinese/content/ch7.html#自由定理" target="_blank" rel="external">js函数式编程</a>    </p>
-</blockquote>
-<p>参考：</p>
-<blockquote>
-<p><a href="https://llh911001.gitbooks.io/mostly-adequate-guide-chinese/content/ch7.html#自由定理" target="_blank" rel="external">js函数式编程</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2472,7 +2570,7 @@ monad 让我们深入到嵌套的运算当中，使我们能够在完全避免�
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">106</span>
+                <span class="site-state-item-count">108</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2611,7 +2709,7 @@ monad 让我们深入到嵌套的运算当中，使我们能够在完全避免�
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共135.3k字</span>
+  <span class="post-count">博客全站共136.9k字</span>
 </div>
         
 
