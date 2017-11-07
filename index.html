@@ -306,6 +306,447 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/11/07/js设计模式-享元模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/11/07/js设计模式-享元模式/" itemprop="url">
+                  js设计模式-享元模式
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-07T20:59:00+08:00">
+                2017-11-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/11/07/js设计模式-享元模式/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/11/07/js设计模式-享元模式/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  986
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  4
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="享元模式的基础"><a href="#享元模式的基础" class="headerlink" title="享元模式的基础"></a>享元模式的基础</h1><pre><code>定义：享元模式是一种用于性能优化的模式，如果系统中因为创建了大量类似的对象而导致内存不足或占用过高这种模式就非常有用了。
+使用场景：第一种是应用在数据层上，主要是应用在内存里大量相似的对象上；第二种是应用在DOM层上，
+    享元可以用在中央事件管理器上用来避免给父容器里的每个子元素都附加事件句柄。
+作用：Flyweight中有两个重要概念--内部状态intrinsic和外部状态extrinsic之分，内部状态就是在对象里通过内部方法管理，
+    而外部信息可以在通过外部删除或者保存。
+</code></pre><h1 id="内衣厂展示许多商品"><a href="#内衣厂展示许多商品" class="headerlink" title="内衣厂展示许多商品"></a>内衣厂展示许多商品</h1><pre><code>说明：假设有个内衣工厂，目前的产品有50种男士内衣与50种女士内衣，为了推销产品，
+    工厂决定生产一些塑料模特来穿上它们的内衣拍成内衣广告。
+这里很显然适合使用 &lt;span style=&quot;color: red;&quot;&gt;享元模式&lt;/span&gt; 来组织代码。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">// 定义塑料模特的构造函数</div><div class="line">var Model = function (sex) &#123;</div><div class="line">	this.sex = sex;</div><div class="line">&#125;</div><div class="line">// 为模特拍照</div><div class="line">Model.prototype.takePhoto = function () &#123;</div><div class="line">	console.log(&apos;sex=&apos; + this.sex + &apos;underwear=&apos; + this.underwear )</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 实例化一个男模特 和 一个女模特</div><div class="line">var maleModel = new Model(&apos;male&apos;),</div><div class="line">	female    = new Model(&apos;female&apos;);    </div><div class="line">for (var i = 1; i &lt;=50; i++)&#123;</div><div class="line">	// 分别为模特换上 50 件内衣 以及 照相</div><div class="line">	maleModel.underwear = &apos;underwear&apos; + i;</div><div class="line">	maleModel.takePhoto();</div><div class="line">&#125;</div><div class="line">for (var i = 1; i &lt;=50; i++)&#123;</div><div class="line">	// 分别为模特换上 50 件内衣 以及 照相</div><div class="line">	female.underwear = &apos;underwear&apos; + i;</div><div class="line">	femaleModel.takePhoto();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+PS：很显然，这里只需要两个对象便完成这个需求。
+</code></pre><h1 id="地图应用（对象池）"><a href="#地图应用（对象池）" class="headerlink" title="地图应用（对象池）"></a>地图应用（对象池）</h1><pre><code>说明：对象池维护一个装载空闲对象的池子，如果需要对象的时候，不是直接new，而是转从对象池里获取对象。
+    如果对象池里没有空闲对象则创建一个新的对象，当获取的对象完成他的职责之后，再进入池子等待被下次获取。
+    假设我们在开发一个地图应用，地图上经常会出现一些标志地名的小气泡，我们叫它toolTip 。
+    当第一次搜索A地点时假设出现了2个小气泡，第二次搜索A附近的B地点的时候页面出现了6个小气泡，
+    按照对象池的思想，在第二次搜索开始之前，并不会把第一次创建的2个小气泡删除掉，而是把它们放进对象池。
+    这样第二次搜索结果页面里，我们只需要再创建4个小气泡而不是6个。
+</code></pre><h2 id="定义个气泡工厂"><a href="#定义个气泡工厂" class="headerlink" title="定义个气泡工厂"></a>定义个气泡工厂</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">var toolTipFactory = (function () &#123;</div><div class="line">	var toolTipPool  = [];   // toolTip 对象池</div><div class="line">	return &#123;</div><div class="line">		create : function () &#123;</div><div class="line">			if(toolTipPool.length === 0)&#123;</div><div class="line">			   var div = document.createElement(&apos;div&apos;);</div><div class="line">			   document.body.appendChild(div);</div><div class="line">			   return div;</div><div class="line">			&#125; else&#123;</div><div class="line">			   return toolTipPool.shift(); //shift a dom</div><div class="line">			&#125;</div><div class="line">		&#125;,</div><div class="line">		recover : function (tooltipDom) &#123;</div><div class="line">			return toolTipPool.push(tooltipDom);  </div><div class="line">		&#125;</div><div class="line">	&#125;;</div><div class="line">&#125;)();</div></pre></td></tr></table></figure>
+
+PS：气泡工厂的对象池为数组是私有属性被包含在工厂闭包里，这个工厂又两个暴露对外的方法，
+    create表示获取一个div节点，recover表示回收一个div节点。
+</code></pre><h2 id="第一次搜索（2个气泡）"><a href="#第一次搜索（2个气泡）" class="headerlink" title="第一次搜索（2个气泡）"></a>第一次搜索（2个气泡）</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var ary = [];</div><div class="line">for(var i = 0, str; str = [&apos;A&apos;,&apos;B&apos;][i++])&#123;  // get ary elem</div><div class="line">	var toolTip = toolTipFactory.create();</div><div class="line">	toolTip.innerHTML = str;</div><div class="line">	ary.push(toolTip)</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+
+PS：现在重新回到第一次搜索的时刻，目前需要创建2个小气泡节点，为了方便回收，用一个数组ary来记录它们。
+</code></pre><h2 id="现在开始回收节点"><a href="#现在开始回收节点" class="headerlink" title="现在开始回收节点"></a>现在开始回收节点</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">for(var i = 0 , toolTip ; toolTip = ary[i++])&#123;</div><div class="line">	toolTip.recover(toolTip)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h2 id="第二次搜索（6个气泡）"><a href="#第二次搜索（6个气泡）" class="headerlink" title="第二次搜索（6个气泡）"></a>第二次搜索（6个气泡）</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">for(var i =0 , str; str = [&apos;A&apos;,&apos;B&apos;,&apos;C&apos;,&apos;D&apos;,&apos;E&apos;,&apos;F&apos;][i++]; )&#123;</div><div class="line">	var toolTip = toolTipFactory.create();</div><div class="line">	toolTip.innerHTML(str);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+PS：现在页面中已经出现了6个节点，上一次创建好的节点被共享给了下一次操作。
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="http://www.jianshu.com/p/a158478c95b5" target="_blank" rel="external">三分钟教会你JS设计模式之享元模式</a><br>    <a href="http://www.cnblogs.com/TomXu/archive/2012/04/09/2379774.html" target="_blank" rel="external">深入理解JavaScript系列（37）：设计模式之享元模式</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/11/07/js设计模式-状态模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/11/07/js设计模式-状态模式/" itemprop="url">
+                  js设计模式-状态模式
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-07T20:15:23+08:00">
+                2017-11-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/11/07/js设计模式-状态模式/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/11/07/js设计模式-状态模式/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  919
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  3
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="状态模式的基础"><a href="#状态模式的基础" class="headerlink" title="状态模式的基础"></a>状态模式的基础</h1><pre><code>定义：状态模式（State）定义一个对象，这个对象可以通过管理其状态从而使得应用程序作出相应的变化。
+    状态模式是一个非常常用的设计模式，它主要有两个角色组成：
+    （1）环境类：拥有一个状态成员，可以修改其状态并作出相应反应。
+    （2）状态类：表示一种状态，包含其相应的处理方法
+作用：状态模式就是一种适合多种状态场景下的设计模式。使用状态模式可以可以让代码更加清晰，
+    提高应用程序的维护性和扩展性。
+使用场景：文件下载（开始、暂停、完成、失败等）、红绿灯
+</code></pre><h1 id="红绿灯（红绿黄灯）"><a href="#红绿灯（红绿黄灯）" class="headerlink" title="红绿灯（红绿黄灯）"></a>红绿灯（红绿黄灯）</h1><pre><code>说明：我们简单地通过一个红绿灯的例子来说明状态模式，红绿灯拥有一个状态：哪一种颜色的灯亮了，
+每一种颜色的灯亮了之后又各自的动作，一共有红绿黄三种颜色的灯，也就是有三种状态。
+</code></pre><h2 id="定义环境类（红绿灯对象）"><a href="#定义环境类（红绿灯对象）" class="headerlink" title="定义环境类（红绿灯对象）"></a>定义环境类（红绿灯对象）</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var trafficLight = (function () &#123;</div><div class="line">	var currentLight = null;</div><div class="line">	return &#123;</div><div class="line">		change: function (light) &#123;</div><div class="line">			currentLight = light;</div><div class="line">			currentLight.go();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;)();</div></pre></td></tr></table></figure>
+
+PS：上面的代码中，trafficLight是一个红绿灯对象，它有一个局部变量currentLight表示当前亮灯的对象，
+    同时返回一个方法，这个方法用来改变红绿灯的状态，并触发相应的处理程序。
+</code></pre><h2 id="定义状态类（三种不同颜色的灯）"><a href="#定义状态类（三种不同颜色的灯）" class="headerlink" title="定义状态类（三种不同颜色的灯）"></a>定义状态类（三种不同颜色的灯）</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">// 红灯</div><div class="line">function RedLight() &#123; &#125;</div><div class="line">RedLight.prototype.go = function () &#123;</div><div class="line">	console.log(&quot;this is red light&quot;);</div><div class="line">&#125;</div><div class="line">// 绿灯</div><div class="line">function GreenLight() &#123; &#125;</div><div class="line">GreenLight.prototype.go = function () &#123;</div><div class="line">	console.log(&quot;this is green light&quot;);</div><div class="line">&#125;</div><div class="line">// 黄灯</div><div class="line">function YellowLight() &#123; &#125;</div><div class="line">YellowLight.prototype.go = function () &#123;</div><div class="line">	console.log(&quot;this is yellow light&quot;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+PS：这段代码分别定义了红绿黄三种颜色的灯对象，每一个对象都包含一个go方法作为亮灯之后的处理程序。
+</code></pre><h2 id="客户端切换不同颜色的灯"><a href="#客户端切换不同颜色的灯" class="headerlink" title="客户端切换不同颜色的灯"></a>客户端切换不同颜色的灯</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">trafficLight.change(new RedLight()); // this is red light</div><div class="line">trafficLight.change(new YellowLight()); // this is yellow light</div></pre></td></tr></table></figure>
+
+PS：通过传入灯对象到change方法中，从而改变红绿灯的状态，触发其相应的处理程序，
+这就是一个典型的状态模式的应用。
+</code></pre><h1 id="菜单组件（JS组件开发中的状态模式）"><a href="#菜单组件（JS组件开发中的状态模式）" class="headerlink" title="菜单组件（JS组件开发中的状态模式）"></a>菜单组件（JS组件开发中的状态模式）</h1><pre><code>说明：状态模式在开发JS组件时非常有用，我们平时开发组件时很多时候要切换组件的状态，
+每种状态有不同的处理方式，这个时候就可以使用状态模式进行开发。比如我们要开发一个菜单组件，
+菜单拥有最基本的两种状态：显示和隐藏，相应的显示或隐藏可能会有各自的其他操作。
+</code></pre><h2 id="定义一个环境类（菜单对象）"><a href="#定义一个环境类（菜单对象）" class="headerlink" title="定义一个环境类（菜单对象）"></a>定义一个环境类（菜单对象）</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">function Menu() &#123; &#125;</div><div class="line">Menu.prototype.toggle = function (state) &#123;</div><div class="line">	state();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+PS：这个菜单类有一个toggle方法用来切换状态，然后调用相应的处理方法。
+</code></pre><h2 id="定义状态类（切换菜单）"><a href="#定义状态类（切换菜单）" class="headerlink" title="定义状态类（切换菜单）"></a>定义状态类（切换菜单）</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">var menuStates = &#123;</div><div class="line">	&quot;show&quot;: function () &#123;</div><div class="line">		console.log(&quot;the menu is showing&quot;);</div><div class="line">	&#125;,</div><div class="line">	&quot;hide&quot;: function () &#123;</div><div class="line">		console.log(&quot;the menu is hiding&quot;);</div><div class="line">	&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+
+PS：通过一个对象menuStates来定义menu的状态，这里有两种状态show和hide，然后拥有相应的处理方法。
+</code></pre><h2 id="客户端切换菜单状态"><a href="#客户端切换菜单状态" class="headerlink" title="客户端切换菜单状态"></a>客户端切换菜单状态</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var menu = new Menu();</div><div class="line">menu.toggle(menuStates.show);</div><div class="line">menu.toggle(menuStates.hide);</div></pre></td></tr></table></figure>
+
+PS：这段代码实例化了一个Menu对象，然后分别切换了显示和隐藏两种状态，如果有第三种状态，
+我们只需要menuStates添加相应的状态和处理程序即可。
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="http://www.cnblogs.com/TomXu/archive/2012/04/18/2437099.html" target="_blank" rel="external">深入理解JavaScript系列（43）：设计模式之状态模式</a><br>    <a href="http://www.cnblogs.com/lrzw32/p/4994817.htm" target="_blank" rel="external">Javascript设计模式理论与实战：状态模式</a><br>    <a href="http://luopq.com/2015/11/25/design-pattern-state/" target="_blank" rel="external">Javascript设计模式理论与实战：状态模式</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/11/06/js设计模式-职责链模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2370,497 +2811,6 @@ props
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/29/Redux总结/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/10/29/Redux总结/" itemprop="url">
-                  Redux总结
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-29T19:53:24+08:00">
-                2017-10-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/React/" itemprop="url" rel="index">
-                    <span itemprop="name">React</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/29/Redux总结/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/29/Redux总结/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  998
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  4
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Redux-三大原则"><a href="#Redux-三大原则" class="headerlink" title="Redux 三大原则"></a>Redux 三大原则</h1><h2 id="单一数据源"><a href="#单一数据源" class="headerlink" title="单一数据源"></a>单一数据源</h2><pre><code>整个应用的 state 被储存在一棵 object tree 中，并且这个 object tree 只存在于唯一一个 store 中。
-</code></pre><h2 id="State-是只读的"><a href="#State-是只读的" class="headerlink" title="State 是只读的"></a>State 是只读的</h2><pre><code>惟一改变 state 的方法就是触发 action，action 是一个用于描述已发生事件的普通对象。
-</code></pre><h2 id="使用纯函数来执行修改"><a href="#使用纯函数来执行修改" class="headerlink" title="使用纯函数来执行修改"></a>使用纯函数来执行修改</h2><pre><code>为了描述 action 如何改变 state tree ，你需要编写 reducers。
-</code></pre><p>Immutable 是一个可实现持久数据结构的 JavaScript 库。</p>
-<h1 id="Redux-基本概念"><a href="#Redux-基本概念" class="headerlink" title="Redux 基本概念"></a>Redux 基本概念</h1><h2 id="Action"><a href="#Action" class="headerlink" title="Action"></a>Action</h2><h3 id="Action-1"><a href="#Action-1" class="headerlink" title="Action"></a>Action</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">const ADD_TODO = &apos;ADD_TODO&apos;</div><div class="line">&#123;</div><div class="line">  type: ADD_TODO,</div><div class="line">  text: &apos;Build my first Redux app&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-Action 是把数据从应用传到 store 的有效载荷。它是 store 数据的唯一来源。
-一般来说你会通过 store.dispatch() 将 action 传到 store。    
-Action 本质上是 JavaScript 普通对象。
-我们约定，action 内必须使用一个字符串类型的 type 字段来表示将要执行的动作。
-</code></pre><h3 id="Action-创建函数"><a href="#Action-创建函数" class="headerlink" title="Action 创建函数"></a>Action 创建函数</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">function addTodo(text) &#123;</div><div class="line">  return &#123;</div><div class="line">	type: ADD_TODO,</div><div class="line">	text</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-Action 创建函数 就是生成 action 的方法。“action” 和 “action 创建函数” 这两个概念很容易混在一起，使用时最好注意区分。
-</code></pre><h3 id="分发-Action（此时就新建了一条-todo）"><a href="#分发-Action（此时就新建了一条-todo）" class="headerlink" title="分发 Action（此时就新建了一条 todo）"></a>分发 Action（此时就新建了一条 todo）</h3><pre><code>Redux 中只需把 action 创建函数的结果传给 dispatch() 方法即可发起一次 dispatch 过程。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dispatch(addTodo(&apos;新建的todo&apos;))</div></pre></td></tr></table></figure>
-</code></pre><h2 id="Reducer"><a href="#Reducer" class="headerlink" title="Reducer"></a>Reducer</h2><pre><code>Action 只是描述了有事情发生了这一事实，并没有指明应用如何更新 state。
-而这正是 reducer 要做的事情。
-</code></pre><h3 id="设计-State-结构"><a href="#设计-State-结构" class="headerlink" title="设计 State 结构"></a>设计 State 结构</h3><pre><code>在 Redux 应用中，所有的 state 都被保存在一个单一对象中。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  visibilityFilter: &apos;SHOW_ALL&apos;,</div><div class="line">  todos: [</div><div class="line">	&#123;</div><div class="line">	  text: &apos;Consider using Redux&apos;,</div><div class="line">	  completed: true,</div><div class="line">	&#125;,</div><div class="line">	&#123;</div><div class="line">	  text: &apos;Keep all state in a single tree&apos;,</div><div class="line">	  completed: false</div><div class="line">	&#125;</div><div class="line">  ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="Action-处理（reducer-纯函数）"><a href="#Action-处理（reducer-纯函数）" class="headerlink" title="Action 处理（reducer 纯函数）"></a>Action 处理（reducer 纯函数）</h3><pre><code>reducer 模版（不再reducer中执行有副作用的操作，如 API 请求和路由跳转）
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// 模版(previousState, action) =&gt; newState</div><div class="line"></div><div class="line">function todoApp(state = initialState, action) &#123;</div><div class="line">  // 这里暂不处理任何 action，</div><div class="line">  // 仅返回传入的 state。</div><div class="line">  return state</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="处理多个-action"><a href="#处理多个-action" class="headerlink" title="处理多个 action"></a>处理多个 action</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">function todoApp(state = initialState, action) &#123;</div><div class="line">  switch (action.type) &#123;</div><div class="line">	case SET_VISIBILITY_FILTER:</div><div class="line">	  return Object.assign(&#123;&#125;, state, &#123;</div><div class="line">		visibilityFilter: action.filter</div><div class="line">	  &#125;)</div><div class="line">	case ADD_TODO:</div><div class="line">	  return Object.assign(&#123;&#125;, state, &#123;</div><div class="line">		todos: [</div><div class="line">		  ...state.todos,</div><div class="line">		  &#123;</div><div class="line">			text: action.text,</div><div class="line">			completed: false</div><div class="line">		  &#125;</div><div class="line">		]</div><div class="line">	  &#125;)</div><div class="line">	default:</div><div class="line">	  return state</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="拆分-Reducer"><a href="#拆分-Reducer" class="headerlink" title="拆分 Reducer"></a>拆分 Reducer</h3><pre><code>注意每个 reducer 只负责管理全局 state 中它负责的一部分。
-每个 reducer 的 state 参数都不同，分别对应它管理的那部分 state 数据。
-</code></pre><h2 id="Store"><a href="#Store" class="headerlink" title="Store"></a>Store</h2><pre><code>总结，action 和 reducers。
-action 来描述“发生了什么”，和使用 reducers 来根据 action 更新 state 的用法。
-Store的作用：
-1.维持应用的 state
-2.提供 getState() 方法获取 state    
-3.提供 dispatch(action) 方法更新 state
-4.通过 subscribe(listener) 注册监听器
-5.通过 subscribe(listener) 返回的函数注销监听器
-</code></pre><h3 id="发起-Actions"><a href="#发起-Actions" class="headerlink" title="发起 Actions"></a>发起 Actions</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// 订阅 state 更改</div><div class="line">// 注意 subscribe() 返回一个函数用来注销监听器</div><div class="line">let unsubscribe = store.subscribe(() =&gt;</div><div class="line">  console.log(store.getState())</div><div class="line">)</div><div class="line">// 发起 action</div><div class="line">store.dispatch(reducers)</div></pre></td></tr></table></figure>
-</code></pre><h2 id="数据流动"><a href="#数据流动" class="headerlink" title="数据流动"></a>数据流动</h2><pre><code>Redux 应用中数据的生命周期
-1.调用 store.dispatch(action)
-    你可以在任何地方调用 store.dispatch(action)，包括组件中、XHR 回调中、甚至定时器中。
-2.Redux store 调用传入的 reducer 函数
-    Store 会把两个参数传入 reducer： 当前的 state 树和 action。
-    let nextState = todoApp(previousState, action);
-3.根 reducer 应该把多个子 reducer 输出合并成一个单一的 state 树。    
-    combineReducers() 来把根 reducer 拆分成多个函数，用于分别处理 state 树的一个分支。
-4.Redux store 保存了根 reducer 返回的完整 state 树。    
-</code></pre><h1 id="Redux-高级"><a href="#Redux-高级" class="headerlink" title="Redux 高级"></a>Redux 高级</h1><h2 id="异步-Action"><a href="#异步-Action" class="headerlink" title="异步 Action"></a>异步 Action</h2><pre><code>Action
-    每个 API 请求都需要 dispatch 至少三种 action：    
-    1.一种通知 reducer 请求开始的 action。    
-    2.一种通知 reducer 请求成功结束的 action。    
-    3.一种通知 reducer 请求失败的 action。    
-同步 Action Creator    
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">export const SELECT_SUBREDDIT = &apos;SELECT_SUBREDDIT&apos;</div><div class="line"></div><div class="line">export function selectSubreddit(subreddit) &#123;</div><div class="line">  return &#123;</div><div class="line">	type: SELECT_SUBREDDIT,</div><div class="line">	subreddit</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="设计-state-结构"><a href="#设计-state-结构" class="headerlink" title="设计 state 结构"></a>设计 state 结构</h3><h3 id="处理-Action（reducer）"><a href="#处理-Action（reducer）" class="headerlink" title="处理 Action（reducer）"></a>处理 Action（reducer）</h3><pre><code>处理异步 action：redux-thunk、redux-promise、redux-promise-middleware
-</code></pre><h3 id="异步-Action-Creator"><a href="#异步-Action-Creator" class="headerlink" title="异步 Action Creator"></a>异步 Action Creator</h3><h2 id="Middleware"><a href="#Middleware" class="headerlink" title="Middleware"></a>Middleware</h2><pre><code>你可以利用 Redux middleware 来进行日志记录、创建崩溃报告、调用异步接口或者路由等等。        
-问题: 记录日志    
-问题: 崩溃报告    
-</code></pre><h2 id="搭配-React-Router"><a href="#搭配-React-Router" class="headerlink" title="搭配 React Router"></a>搭配 React Router</h2><pre><code>Redux 和 React Router 将分别成为你数据和 URL 的事实来源。    
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="http://www.redux.org.cn/docs/introduction/Motivation.html" target="_blank" rel="external">Redux 中文文档</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/26/React-API/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/10/26/React-API/" itemprop="url">
-                  React-API
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-26T20:28:33+08:00">
-                2017-10-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/React/" itemprop="url" rel="index">
-                    <span itemprop="name">React</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/26/React-API/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/26/React-API/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  1,684
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  7
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="React-高阶-API"><a href="#React-高阶-API" class="headerlink" title="React 高阶 API"></a>React 高阶 API</h1><pre><code>Creating React Elements
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">推荐使用 JSX</div><div class="line">createElement() -- 根据给定的类型创建并返回新的 React element。</div><div class="line">createFactory() -- 根据给定的类型返回一个创建React元素的函数。</div></pre></td></tr></table></figure>
-
-Transforming Elements
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">cloneElement() -- 以 element 作为起点，克隆并返回一个新的 React Element。</div><div class="line">isValidElement() -- 验证对象是否是一个React元素。返回 true 或 false 。</div><div class="line">React.Children() -- React.Children 提供了处理 this.props.children 这个不透明数据结构的工具。</div><div class="line">	React.Children.map(children, function[(thisArg)]) -- 返回数组</div><div class="line">	React.Children.forEach(children, function[(thisArg)]) -- 对数组每项进行操作</div><div class="line">	React.Children.count(children) -- 返回组件总数</div><div class="line">	React.Children.only(children) -- 返回仅有的子级</div><div class="line">	React.Children.toArray(children) -- 返回扁平数组</div></pre></td></tr></table></figure>
-</code></pre><h1 id="Components"><a href="#Components" class="headerlink" title="Components"></a>Components</h1><pre><code>React 组件可以让你把UI分割为独立、可复用的片段，并将每一片段视为相互独立的部分。
-React组件可以通过继承 React.Component 或 React.PureComponent 来定义。
-</code></pre><h2 id="React-Component"><a href="#React-Component" class="headerlink" title="React.Component"></a>React.Component</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">class Greeting extends React.Component &#123;</div><div class="line">  render() &#123;</div><div class="line">	return &lt;h1&gt;Hello, &#123;this.props.name&#125;&lt;/h1&gt;;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-组件生命周期
-    装配 -- 这些方法会在组件实例被创建和插入DOM中时被调用
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">constructor()</div><div class="line">componentWillMount()</div><div class="line">render()</div><div class="line">componentDidMount()</div></pre></td></tr></table></figure>
-
-    更新 -- 属性或状态的改变会触发一次更新。当一个组件在被重渲时，这些方法将会被调用
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">componentWillReceiveProps()</div><div class="line">shouldComponentUpdate()</div><div class="line">componentWillUpdate()</div><div class="line">render()</div><div class="line">componentDidUpdate()</div></pre></td></tr></table></figure>
-
-    卸载 -- 当一个组件被从DOM中移除时，该方法被调用
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">componentWillUnmount()</div></pre></td></tr></table></figure>
-
-其他API
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">setState() 参数为对象或函数</div><div class="line">forceUpdate()</div></pre></td></tr></table></figure>
-
-类属性
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">defaultProps</div><div class="line">	defaultProps可以被定义为组件类的一个属性，用以为类设置默认的属性。</div><div class="line">displayName</div><div class="line">	displayName被用在调试信息中。</div></pre></td></tr></table></figure>
-
-实例属性
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">props</div><div class="line">	this.props包含了组件该调用者定义的属性。</div><div class="line">state</div><div class="line">	状态是该组件的特定数据，其可能改变多次。</div></pre></td></tr></table></figure>
-
-参考
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">render()</div><div class="line">	可以返回：React元素、字符串和数字、Portals、null、布尔值（null和布尔值什么都不渲染）</div><div class="line">constructor(props)</div><div class="line">	super(props) 有两个作用：</div><div class="line">		this 指向（子类的实例）</div><div class="line">		在构造函数中使用 this.props  </div><div class="line">componentWillMount()		</div><div class="line">	在装配发生前被立刻调用。</div><div class="line">	其在render()之前被调用。</div><div class="line">componentDidMount()	</div><div class="line">	在组件被装配后立即调用。	</div><div class="line">	初始化使得DOM节点应该进行到这里。ajax 和 定时器</div><div class="line">componentWillReceiveProps(nextProps)	</div><div class="line">	在装配了的组件接收到新属性前调用。</div><div class="line">shouldComponentUpdate(nextProps, nextState)	</div><div class="line">	使用shouldComponentUpdate()以让React知道当前状态或属性的改变是否不影响组件的输出。</div><div class="line">componentWillUpdate(nextProps, nextState)	</div><div class="line">	当接收到新属性或状态时，componentWillUpdate()为在渲染前被立即调用。</div><div class="line">componentDidUpdate(prevProps, prevState)	</div><div class="line">	在更新发生后立即被调用。该方法并不会在初始化渲染时调用。</div><div class="line">componentWillUnmount()	</div><div class="line">	在组件被卸载和销毁之前立刻调用。	</div><div class="line">	可以在该方法里处理任何必要的清理工作，例如解绑定时器，取消网络请求，清理任何在componentDidMount环节创建的DOM元素。</div><div class="line">setState(updater, [callback])</div><div class="line">	参数为对象 &#123;name: &apos;fanerge&apos;&#125;</div><div class="line">	参数为函数(prevState, props) =&gt; stateChange</div><div class="line">component.forceUpdate(callback)	</div><div class="line">	调用forceUpdate()将会导致组件的 render()方法被调用，并忽略shouldComponentUpdate()。</div></pre></td></tr></table></figure>
-</code></pre><h2 id="React-PureComponent"><a href="#React-PureComponent" class="headerlink" title="React.PureComponent"></a>React.PureComponent</h2><pre><code>浅对比继承该类来对 prop 和 state 进行比较，并调用 shouldComponentUpate()。 
-深对比使用 forceUpdate() 和 不可变对象 来促进嵌套数据的快速比较。        
-</code></pre><h1 id="ReactDOM"><a href="#ReactDOM" class="headerlink" title="ReactDOM"></a>ReactDOM</h1><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">react-dom这个软件包提供了针对DOM的方法，可以在你应用的顶级域中调用，也可以在有需要的情况下用作跳出React模型的出口。</div><div class="line">render()</div><div class="line">	渲染一个React元素，添加到位于提供的container里的DOM元素中，并返回这个组件的一个引用 (或者对于无状态组件返回null).</div></pre></td></tr></table></figure>
-
-    ReactDOM.render(
-      element,
-      container,
-      [callback]
-    )
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ReactDOM.unmountComponentAtNode(container)</div><div class="line">	从DOM元素中移除已挂载的React组件，清除它的事件处理器和state。</div><div class="line">	有组件被卸载的时候返回true，没有组件可供卸载时返回 false。</div><div class="line">ReactDOM.findDOMNode(component)</div><div class="line">	如果这个组件已经被挂载到DOM中，函数会返回对应的浏览器中生成的DOM元素 。</div><div class="line">	大多数情况下，你可以添加一个指向DOM节点的引用，从而完全避免使用 findDOMNode 这个函数.</div></pre></td></tr></table></figure>
-</code></pre><h1 id="ReactDOMServer"><a href="#ReactDOMServer" class="headerlink" title="ReactDOMServer"></a>ReactDOMServer</h1><pre><code>ReactDOMServer 类可以让你在服务端渲染你的组件。
-</code></pre><h2 id="ReactDOMServer-renderToString-element"><a href="#ReactDOMServer-renderToString-element" class="headerlink" title="ReactDOMServer.renderToString(element)"></a>ReactDOMServer.renderToString(element)</h2><pre><code>把一个React元素渲染为原始的HTML。
-你可以用这个方法在服务端生成HTML，并根据初始请求发送标记来加快页面的加载速度，
-同时让搜索引擎可以抓取你的页面来达到优化SEO的目的。    
-</code></pre><h2 id="ReactDOMServer-renderToStaticMarkup-element"><a href="#ReactDOMServer-renderToStaticMarkup-element" class="headerlink" title="ReactDOMServer.renderToStaticMarkup(element)"></a>ReactDOMServer.renderToStaticMarkup(element)</h2><pre><code>类似 renderToString，但是不会创建额外的DOM属性，例如 data-reactid 这些仅在React内部使用的属性。
-如果你希望把React当作一个简单的静态页面生成器来使用，这很有用，因为去掉
-</code></pre><h1 id="DOM-Elements"><a href="#DOM-Elements" class="headerlink" title="DOM Elements"></a>DOM Elements</h1><h2 id="React实现了一套与浏览器无关的DOM系统，兼顾了性能和跨浏览器的兼容性。"><a href="#React实现了一套与浏览器无关的DOM系统，兼顾了性能和跨浏览器的兼容性。" class="headerlink" title="React实现了一套与浏览器无关的DOM系统，兼顾了性能和跨浏览器的兼容性。"></a>React实现了一套与浏览器无关的DOM系统，兼顾了性能和跨浏览器的兼容性。</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">class -- className</div><div class="line">for -- htmlFor</div><div class="line">tabindex -- tabIndex</div><div class="line">aria-* （对于残障人士更易使用的各种机制）小写字母命名 </div><div class="line">data-* （自定义属性）小写字母命名</div></pre></td></tr></table></figure>
-</code></pre><h2 id="React和HTML-DOM属性的区别"><a href="#React和HTML-DOM属性的区别" class="headerlink" title="React和HTML DOM属性的区别"></a>React和HTML DOM属性的区别</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">checked属性</div><div class="line">	受控组件 -- &lt;input&gt;标签type属性值为checkbox或radio时，支持checked属性。</div><div class="line">	非受控组件 -- defaultChecked这是非受控组件的属性</div><div class="line">类名属性</div><div class="line">	class -- className</div><div class="line">dangerouslySetInnerHTML函数</div><div class="line">	处理Cross-site scripting (XSS) </div><div class="line">	dangerouslySetInnerHTML是React提供的替换浏览器DOM中的innerHTML接口的一个函数。</div><div class="line">htmlFor</div><div class="line">	for -- htmlFor</div><div class="line">绑定事件</div><div class="line">	onchange -- onChange</div><div class="line">selected</div><div class="line">	受控组件 -- 使用selected属性，设定组件是否选中的状态。</div><div class="line">style属性</div><div class="line">	&lt;Hello style=&#123;&#123;color: &apos;blue&apos;&#125;&#125; /&gt;</div><div class="line">	浏览器后缀除了ms以外，都应该以大写字母开头。</div><div class="line">	这就是为什么WebkitTransition有一个大写字母W。</div><div class="line">suppressContentEditableWarning</div><div class="line">	contentEditable 该属性少使用。</div><div class="line">value</div><div class="line">	受控组件 -- &lt;input&gt; 和 &lt;textarea&gt; 组件都支持value属性。</div><div class="line">	非受控组件 -- defaultValue属性对应的是非受控组件的属性，用来设置组件第一次加载时的值。</div><div class="line">支持所有的HTMl属性</div></pre></td></tr></table></figure>
-</code></pre><h1 id="SyntheticEvent"><a href="#SyntheticEvent" class="headerlink" title="SyntheticEvent"></a>SyntheticEvent</h1><h2 id="您的事件处理函数将会接收SyntheticEvent的实例，一个基于浏览器原生事件的跨浏览器实现。"><a href="#您的事件处理函数将会接收SyntheticEvent的实例，一个基于浏览器原生事件的跨浏览器实现。" class="headerlink" title="您的事件处理函数将会接收SyntheticEvent的实例，一个基于浏览器原生事件的跨浏览器实现。"></a>您的事件处理函数将会接收SyntheticEvent的实例，一个基于浏览器原生事件的跨浏览器实现。</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">boolean bubbles</div><div class="line">boolean cancelable</div><div class="line">DOMEventTarget currentTarget</div><div class="line">boolean defaultPrevented</div><div class="line">number eventPhase</div><div class="line">boolean isTrusted</div><div class="line">DOMEvent nativeEvent</div><div class="line">void preventDefault()</div><div class="line">boolean isDefaultPrevented()</div><div class="line">void stopPropagation()</div><div class="line">boolean isPropagationStopped()</div><div class="line">DOMEventTarget target</div><div class="line">number timeStamp</div><div class="line">string type</div></pre></td></tr></table></figure>
-</code></pre><h2 id="事件池"><a href="#事件池" class="headerlink" title="事件池"></a>事件池</h2><pre><code>SyntheticEvent是共享的。那就意味着在调用事件回调之后，SyntheticEvent对象将会被重用，并且所有属性会被置空。
-</code></pre><h2 id="支持的事件"><a href="#支持的事件" class="headerlink" title="支持的事件"></a>支持的事件</h2><pre><code>在事件名后面加Capture就能在事件捕获阶段注册事件处理函数。
-你可以使用onClickCapture代替onClick在事件捕获阶段来处理点击事件。
-[查看所有支持的事件](https://doc.react-china.org/docs/events.html)
-</code></pre><h1 id="Test-Utilities"><a href="#Test-Utilities" class="headerlink" title="Test Utilities"></a>Test Utilities</h1><pre><code>导入 -- import ReactTestUtils from &apos;react-dom/test-utils&apos;;
-[单元测试](https://doc.react-china.org/docs/test-utils.html)
-</code></pre><h1 id="浅层渲染"><a href="#浅层渲染" class="headerlink" title="浅层渲染"></a>浅层渲染</h1><pre><code>[浅层渲染](https://doc.react-china.org/docs/shallow-renderer.html)
-</code></pre><h1 id="Test-Renderer"><a href="#Test-Renderer" class="headerlink" title="Test Renderer"></a>Test Renderer</h1><pre><code>[Test Renderer](https://doc.react-china.org/docs/test-renderer.html)        
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="https://doc.react-china.org/docs/react-api.html" target="_blank" rel="external">React官方API</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2910,7 +2860,7 @@ React组件可以通过继承 React.Component 或 React.PureComponent 来定义�
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">108</span>
+                <span class="site-state-item-count">110</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -3049,7 +2999,7 @@ React组件可以通过继承 React.Component 或 React.PureComponent 来定义�
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共136.9k字</span>
+  <span class="post-count">博客全站共138.8k字</span>
 </div>
         
 
