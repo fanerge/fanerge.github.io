@@ -306,6 +306,688 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/09/深入浅出Node-js-读书笔记（上）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/09/深入浅出Node-js-读书笔记（上）/" itemprop="url">
+                  深入浅出Node.js-读书笔记
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-09T20:09:51+08:00">
+                2017-10-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
+                    <span itemprop="name">NodeJS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/09/深入浅出Node-js-读书笔记（上）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/09/深入浅出Node-js-读书笔记（上）/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,254
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  5
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近在研究node.js,正赶上国庆长假，回趟老家。在网上找了一本电子书籍《深入浅出Node.js》，利用这个假期学习一下。</p>
+<h2 id="Node-js-基础知识"><a href="#Node-js-基础知识" class="headerlink" title="Node.js 基础知识"></a>Node.js 基础知识</h2><h3 id="chrome-与-Node-工作原理"><a href="#chrome-与-Node-工作原理" class="headerlink" title="chrome 与 Node 工作原理"></a>chrome 与 Node 工作原理</h3><pre><code>chrome：HTML + JavaScript + WebKit + V8 &gt;&gt; 中间层 &gt;&gt; 网卡 + 硬盘 + 显卡 + ...
+Node：JavaScript + V8 &gt;&gt; 中间层（libuv）&gt;&gt; 网卡 + 硬盘 + 显卡 + ...
+说明：libuv 是 Node 的新跨平台抽象层，用于抽象 Windows 的 IOCP 及 Unix 的 libev。
+    作者打算在这个库的包含所有平台的差异性。
+</code></pre><h3 id="异步I-O"><a href="#异步I-O" class="headerlink" title="异步I/O"></a>异步I/O</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$.get(&apos;url&apos;, (data) =&gt; &#123;</div><div class="line">	console.log(data);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+
+异步是并行的基础。
+单线程，不适合大量计算占用 CPU 导致无法继续调用异步I/O。
+</code></pre><h2 id="模块机制"><a href="#模块机制" class="headerlink" title="模块机制"></a>模块机制</h2><h3 id="CommonJS-规范"><a href="#CommonJS-规范" class="headerlink" title="CommonJS 规范"></a>CommonJS 规范</h3><pre><code>模块引用：
+    var math = require(&apos;math&apos;);    
+模块定义：
+    exports.add = () =&gt; {
+        var a = 1,
+            b = 3;
+        return a + b;
+    }
+exports 是 module 的属性。
+Node 引入模块的步骤：
+    路径分析
+    文件定位
+    编译执行
+</code></pre><h3 id="核心模块"><a href="#核心模块" class="headerlink" title="核心模块"></a>核心模块</h3><pre><code>文件模块 &gt;&gt; 核心模块（JavaScript） &gt;&gt; 内建模块（C/C++）
+</code></pre><h2 id="异步I-O-1"><a href="#异步I-O-1" class="headerlink" title="异步I/O"></a>异步I/O</h2><h3 id="Node-的异步I-O"><a href="#Node-的异步I-O" class="headerlink" title="Node 的异步I/O"></a>Node 的异步I/O</h3><pre><code>Node 自身的执行模型 -- 事件循环。
+单线程、事件循环、观察者和I/O线程池
+</code></pre><h3 id="非I-O的异步API"><a href="#非I-O的异步API" class="headerlink" title="非I/O的异步API"></a>非I/O的异步API</h3><pre><code>定时器：setTimeout()\setInterval()
+process.nextTick()
+    在事件循环的下一次循环中调用 callback 回调函数。
+    效果是将一个函数推迟到代码书写的下一个同步方法执行完毕时或异步方法的事件回调函数开始执行时；
+    与setTimeout(fn, 0) 函数的功能类似，但它的效率高多了。
+setImmediate()
+    nextTick()的回调函数执行的优先级要高于setImmediate();    
+    process.nextTick()属于idle观察者,setImmediate()属于check观察者.在每一轮循环检查中,idle观察者先于I/O观察者,
+    I/O观察者先于check观察者.
+</code></pre><h2 id="异步编程"><a href="#异步编程" class="headerlink" title="异步编程"></a>异步编程</h2><h3 id="函数式编程"><a href="#函数式编程" class="headerlink" title="函数式编程"></a>函数式编程</h3><pre><code>高阶函数：以函数作为参数或返回值。
+偏函数用法：通过指定部分参数来产生一个新的定制函数的形式就是偏函数。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">const isType = function (type)&#123;</div><div class="line">	return function (obj) &#123;</div><div class="line">		return Object.prototype.toString.call(obj) == &apos;[object &apos; + type + &apos;]&apos;;</div><div class="line">	&#125;; </div><div class="line">&#125;</div><div class="line">var isString = isType(&apos;String&apos;);</div></pre></td></tr></table></figure>
+</code></pre><h3 id="异步编程解决方案"><a href="#异步编程解决方案" class="headerlink" title="异步编程解决方案"></a>异步编程解决方案</h3><pre><code>事件发布/订阅模式（事件绑定）
+promise
+generator
+async-await
+</code></pre><h3 id="并发方案"><a href="#并发方案" class="headerlink" title="并发方案"></a>并发方案</h3><pre><code>eventproxy
+[async](https://github.com/caolan/async)
+</code></pre><h2 id="内存控制"><a href="#内存控制" class="headerlink" title="内存控制"></a>内存控制</h2><h2 id="理解Buffer"><a href="#理解Buffer" class="headerlink" title="理解Buffer"></a>理解Buffer</h2><pre><code>Buffer 是一个像Array的对象，但它主要用于操作字节。
+Buffer 对象
+    var buf = new Buffer(&apos;string&apos;, &apos;utf-8&apos;);
+</code></pre><h3 id="Buffer-的转换"><a href="#Buffer-的转换" class="headerlink" title="Buffer 的转换"></a>Buffer 的转换</h3><pre><code>    支持的字符串编码类型：
+    ASCII\UTF-8\UTF-16LE/UCS-2\Base64\Binary\Hex
+字符串转 Buffer    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var buf = new Buffer(str, [encoding]);</div><div class="line">buf.write(string, [offset], [length], [encoding]);</div></pre></td></tr></table></figure>
+
+Buffer 转字符串
+buf.toString([encoding], [start], [end]);
+</code></pre><h2 id="网络编程"><a href="#网络编程" class="headerlink" title="网络编程"></a>网络编程</h2><pre><code>TCP 和 UDP 属于网络传输层协议，HTTP 属于应用层协议。
+</code></pre><h3 id="TCP（传输控制协议）"><a href="#TCP（传输控制协议）" class="headerlink" title="TCP（传输控制协议）"></a>TCP（传输控制协议）</h3><pre><code>创建TCP 服务器端 net 模块
+TCP 服务的事件
+</code></pre><h3 id="构建UDP-服务（用户数据包协议）"><a href="#构建UDP-服务（用户数据包协议）" class="headerlink" title="构建UDP 服务（用户数据包协议）"></a>构建UDP 服务（用户数据包协议）</h3><pre><code>创建UDP套接字 dgram模块
+创建UDP 服务器端
+创建UDP 客户端
+UDP 套接字事件
+</code></pre><h3 id="构建HTTP-服务"><a href="#构建HTTP-服务" class="headerlink" title="构建HTTP 服务"></a>构建HTTP 服务</h3><pre><code>HTTP 超文本传输协议。
+http 模块
+HTTP 客户端
+</code></pre><h3 id="构建WebSocket-服务"><a href="#构建WebSocket-服务" class="headerlink" title="构建WebSocket 服务"></a>构建WebSocket 服务</h3><pre><code>以前的方案：Comet（彗星）技术细节为：长轮询（long-polling）或iframe流（streaming）。
+长轮询原理：客户端向服务器断发送请求，服务端只在超时或有数据响应时断开连接（res.end()），
+    客户端在接收到数据或者超时后重新发送请求。
+iframe流原理：iframe 是很早就存在的一种 HTML 标记， 通过在 HTML 页面里嵌入一个隐蔵帧，
+    然后将这个隐蔵帧的 SRC 属性设为对一个长连接的请求，服务器端就能源源不断地往客户端输入数据。
+    通过iframe里的内容进行长时间的请求，当需要传输内容时通过调用父页面js方法来实现页面展示，以此达到comet所需要的效果。
+WebSocket原理：WebSocket是一种在单个TCP连接上进行全双工通讯的协议。
+    WebSocket使得客户端和服务器之间的数据交换变得更加简单，允许服务端主动向客户端推送数据。在WebSocket API中，
+    浏览器和服务器只需要完成一次握手，两者之间就直接可以创建持久性的连接，并进行双向数据传输。
+</code></pre><h3 id="网络服务与安全"><a href="#网络服务与安全" class="headerlink" title="网络服务与安全"></a>网络服务与安全</h3><pre><code>Node在网络安全上提供了3个模块
+</code></pre><ol>
+<li>crypto – 主要用于加密和解密，SHA1、MD5。</li>
+<li>tls – 类似于net模块，它是建立在TLS/SSL加密的TCP连接上。</li>
+<li>https – 类似于http模块，他它是建立于安全的连接之上。<br>TLS/SSL<br>TLS/SSL是一个公钥/私钥的结构，它是一个非对称的结构。<br>每个服务器断和客户端都有自己的公私钥。<br>公钥要来加密要传输的数据，私钥用来解密接收到的数据。<br>Node在底层采用的是openssl实现TLS/SSL。<br>数字证书：CA（Certificate Authority，数字证书认证中心）<br>HTTPS服务<br>HTTPS服务就是工作在TLS/SSL上的HTTP。<blockquote>
+<p>参考文档<br><a href="https://www.baidu.com/s?ie=utf8&amp;oe=utf8&amp;wd=%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAnode&amp;tn=98010089_dg&amp;ch=1" target="_blank" rel="external">朴灵-深入浅出Node</a></p>
+</blockquote>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/28/koa学习-总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/28/koa学习-总结/" itemprop="url">
+                  koa学习-总结
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-28T20:22:32+08:00">
+                2017-09-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
+                    <span itemprop="name">NodeJS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/28/koa学习-总结/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/28/koa学习-总结/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,610
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  8
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="一个koa示例"><a href="#一个koa示例" class="headerlink" title="一个koa示例"></a>一个koa示例</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">const koa = require(&apos;koa&apos;);</div><div class="line">const app = new koa();</div><div class="line"></div><div class="line">// 使用中间件</div><div class="line">app.use(); // @param function</div><div class="line">// 监听端口，开启服务</div><div class="line">app.listen(1314, () =&gt; &#123;</div><div class="line">	console.log(&apos;success&apos;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h2 id="Context-对象"><a href="#Context-对象" class="headerlink" title="Context 对象"></a>Context 对象</h2><pre><code>Koa 提供一个 Context 对象，表示一次对话的上下文（包括 HTTP 请求和 HTTP 回复）。
+koa 通过 ctx.request.accepts 设置期望返回的类型内容，默认为 text/plain。        
+koa 通过 ctx.response.type 指定返回类型。
+示例：常用的格式xml、json、html、text等。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">	app.use((ctx) =&gt; &#123;</div><div class="line">		if (ctx.request.accepts(&apos;xml&apos;)) &#123;</div><div class="line">			ctx.response.type = &apos;xml&apos;;</div><div class="line">			ctx.response.body = &apos;&lt;data&gt;我是xml&lt;/data&gt;&apos;;</div><div class="line">		&#125; else &#123;</div><div class="line">			ctx.response.type = &apos;text&apos;;</div><div class="line">			ctx.response.body = &apos;我是text&apos;;</div><div class="line">		&#125;</div><div class="line">	&#125;);</div><div class="line">	```	</div><div class="line">示例：实际开发（网页模板）</div><div class="line">	直接返回template.html</div></pre></td></tr></table></figure>
+
+    app.use(ctx =&gt; {
+      ctx.response.type = &apos;html&apos;;
+      ctx.response.body = fs.createReadStream(&apos;./views/template.html&apos;);
+    });
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">##	路由</div><div class="line">	通过ctx.request.path可以获取用户请求的路径，由此实现简单的路由。</div><div class="line">###	原生路由</div></pre></td></tr></table></figure>
+
+    const main = ctx =&gt; {
+        ctx.response.type = &apos;html&apos;;
+      if (ctx.request.path === &apos;/&apos;) {
+        ctx.response.body = &apos;&lt;a href=&quot;/&quot;&gt;Index Page&lt;/a&gt;&apos;;
+      } else if (ctx.request.path === &apos;/get&apos;) {
+        ctx.response.body = &apos;&lt;a href=&quot;/&quot;&gt;Get Page&lt;/a&gt;&apos;;
+      } else {
+        ctx.response.body = &apos;&lt;a href=&quot;/&quot;&gt;other Page&lt;/a&gt;&apos;;
+      }
+    };
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">###	koa-route 模块</div></pre></td></tr></table></figure>
+
+const Koa = require(&apos;koa&apos;);
+const route = require(&apos;koa-route&apos;);
+const app = new Koa();
+
+const about = ctx =&gt; {
+    ctx.response.type = &apos;html&apos;;
+    ctx.response.body = &apos;&lt;p&gt;about page&lt;/p&gt;&apos;
+};
+
+const user = ctx =&gt; {
+    ctx.response.type = &apos;html&apos;;
+    ctx.response.body = &apos;&lt;p&gt;user page&lt;/p&gt;&apos;
+};
+
+const main = ctx =&gt; {
+    ctx.response.type = &apos;html&apos;;
+    ctx.response.body = &apos;hello world&apos;
+};
+
+app.use(route.get(&apos;/&apos;, main)); // 主页
+app.use(route.get(&apos;/about&apos;, about)); // about页面
+app.use(route.get(&apos;/user&apos;, user)); // user页面
+
+// app.use(main);
+app.listen(3000);
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">##	静态资源 和 重定向</div><div class="line">###	静态资源</div><div class="line">	如果网站提供静态资源（图片、字体、样式表、脚本......）。</div><div class="line">	koa-static 模块封装了这部分的请求。</div><div class="line">	示例：请求本地12.js</div></pre></td></tr></table></figure>
+
+const Koa = require(&apos;koa&apos;);
+const app = new Koa();
+const path = require(&apos;path&apos;);
+const serve = require(&apos;koa-static&apos;);
+
+const main = serve(path.join(__dirname));
+
+app.use(main);
+app.listen(3000);
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">	说明：__dirname 表示 node.js 执行环境路径。</div><div class="line">	请求资源： http://127.0.0.1:3000/12.js</div><div class="line">###	重定向</div><div class="line">	有些场合，服务器需要重定向（redirect）访问请求。</div><div class="line">	比如，用户登陆以后，将他重定向到登陆前的页面。</div><div class="line">	ctx.response.redirect()方法可以发出一个302跳转，将用户导向另一个路由。</div></pre></td></tr></table></figure>
+
+const redirect = ctx =&gt; {
+  ctx.response.redirect(&apos;/&apos;);
+};
+
+const main = ctx =&gt; {
+  ctx.response.body = &apos;Hello World&apos;;
+};
+
+app.use(route.get(&apos;/&apos;, main));
+app.use(route.get(&apos;/redirect&apos;, redirect)); // 当请求路径为 /redirect 时，执行 redirect 方法，进行重定向
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">	访问 http://127.0.0.1:3000/redirect ，浏览器会将用户导向根路由。</div><div class="line">##	中间件</div><div class="line">###	设计中间件</div><div class="line">	Koa 的最大特色，也是最重要的一个设计，就是中间件（middleware）。</div><div class="line">	示例：自己设计一个logger中间件。</div></pre></td></tr></table></figure>
+
+/**
+* 定义日志中间件 logger
+* @param ctx {object} 上下文对象 
+* @param next {function} 下一个中间件执行权
+*/
+const logger = (ctx, next) =&gt; {
+    console.log(`${Date.now()} ${ctx.request.method} ${ctx.request.url}`);
+    next(); // 只要调用next函数，就可以把执行权转交给下一个中间件。
+};
+// 使用中间件
+app.use(logger);
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">###	中间件特性</div><div class="line">	多个中间件会形成一个栈结构（middle stack），以&quot;先进后出&quot;（first-in-last-out）的顺序执行。</div></pre></td></tr></table></figure>
+
+const one = (ctx, next) =&gt; {
+  console.log(&apos;&gt;&gt; one&apos;);
+  next();
+  console.log(&apos;&lt;&lt; one&apos;);
+}
+
+const two = (ctx, next) =&gt; {
+  console.log(&apos;&gt;&gt; two&apos;);
+  next(); 
+  console.log(&apos;&lt;&lt; two&apos;);
+}
+
+const three = (ctx, next) =&gt; {
+  console.log(&apos;&gt;&gt; three&apos;);
+  next();
+  console.log(&apos;&lt;&lt; three&apos;);
+}
+
+app.use(one);
+app.use(two);
+app.use(three);
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">	输出：</div><div class="line">	&gt;&gt; one   // one中间件进栈</div><div class="line">	&gt;&gt; two   // two中间件进栈</div><div class="line">	&gt;&gt; three // three中间件进栈</div><div class="line">	&lt;&lt; three // three中间件 出栈</div><div class="line">	&lt;&lt; two   // two中间件 出栈</div><div class="line">	&lt;&lt; one	 // one中间件 出栈	</div><div class="line">###	异步中间件</div><div class="line">	如果有异步操作（比如读取数据库），中间件就必须写成 async 函数。</div><div class="line">	实例：异步 main 中间件</div></pre></td></tr></table></figure>
+
+const fs = require(&apos;fs.promised&apos;);
+
+const main = async function (ctx, next) {
+  ctx.response.type = &apos;html&apos;;
+  ctx.response.body = await fs.readFile(&apos;./demos/template.html&apos;, &apos;utf8&apos;);
+};
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	fs.readFile是一个异步操作，必须写成异步中间件。</div><div class="line">###	koa-compose模块可以将多个中间件合成为一个。</div><div class="line">	示例：合并 logger 和 main 中间件。</div></pre></td></tr></table></figure>
+
+const compose = require(&apos;koa-compose&apos;);
+
+const middlewares = compose([logger, main]);
+app.use(middlewares);
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">##	错误处理</div><div class="line">	如果代码运行过程中发生错误，我们需要把错误信息返回给用户。</div><div class="line">###	500错误</div><div class="line">	HTTP 协定约定这时要返回500状态码。</div><div class="line">	Koa 提供了ctx.throw()方法，用来抛出错误，ctx.throw(500)就是抛出500错误。</div></pre></td></tr></table></figure>
+
+const main = ctx =&gt; {
+    ctx.throw(500);
+};
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">###	404错误</div><div class="line">	如果将ctx.response.status设置成404，就相当于ctx.throw(404)，返回404错误。</div></pre></td></tr></table></figure>
+
+const main = ctx =&gt; {
+  ctx.response.status = 404; // ctx.throw(404);
+  ctx.response.body = &apos;Page Not Found&apos;;
+};
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">###	处理错误的中间件	</div><div class="line">	为了方便处理错误，最好使用try...catch将其捕获。</div><div class="line">	但是，为每个中间件都写try...catch太麻烦，我们可以让最外层的中间件，负责所有中间件的错误处理。</div></pre></td></tr></table></figure>
+
+// 最外层中间件
+const handler = async (ctx, next) =&gt; {
+  try {
+    await next();
+  } catch (err) {
+    ctx.response.status = err.statusCode || err.status || 500;
+    ctx.response.body = {
+      message: err.message
+    };
+  }
+};
+// 内层中间件
+const main = ctx =&gt; {
+  ctx.throw(404);
+};
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">###	error 事件的监听</div><div class="line">	运行过程中一旦出错，Koa 会触发一个error事件。</div><div class="line">	监听这个事件，也可以处理错误。</div></pre></td></tr></table></figure>
+
+const main = ctx =&gt; {
+    ctx.throw(500); // 直接触发错误
+};
+// 监听错误
+app.on(&apos;error&apos;, (err, ctx) =&gt; {
+    console.error(&apos;server error&apos;, err);
+});
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">###	释放 error 事件	</div><div class="line">	需要注意的是，如果错误被try...catch捕获，就不会触发error事件。</div><div class="line">	这时，必须调用ctx.app.emit()，手动释放error事件，才能让监听函数生效。</div></pre></td></tr></table></figure>
+
+const handler = async (ctx, next) =&gt; {
+    try {
+        await next();
+    } catch (err) {
+        ctx.response.status = err.statusCode || err.status || 500;
+        ctx.response.type = &apos;html&apos;;
+        ctx.response.body = &apos;&lt;p&gt;Something wrong, please contact administrator.&lt;/p&gt;&apos;;
+        ctx.app.emit(&apos;error&apos;, err, ctx);
+    }
+};
+
+const main = ctx =&gt; {
+    ctx.throw(500);
+};
+
+app.on(&apos;error&apos;, function(err) {
+    console.log(&apos;logging error &apos;, err.message);
+    console.log(err);
+});
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">	main函数抛出错误，被handler函数捕获。</div><div class="line">	catch代码块里面使用ctx.app.emit()手动释放error事件，才能让监听函数监听到。</div><div class="line">##	Web App 的功能</div><div class="line">###	Cookies</div><div class="line">	ctx.cookies 用来读写 Cookie。</div></pre></td></tr></table></figure>
+
+const main = function(ctx) {
+    const n = Number(ctx.cookies.get(&apos;view&apos;) || 0) + 1;
+    ctx.cookies.set(&apos;view&apos;, n);
+    ctx.response.body = n + &apos; views&apos;;
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">###	表单</div><div class="line">	Web 应用离不开处理表单。</div><div class="line">	表单就是 POST 方法发送到服务器的键值对。</div><div class="line">	koa-body模块可以用来从 POST 请求的数据体里面提取键值对。</div></pre></td></tr></table></figure>
+
+const koaBody = require(&apos;koa-body&apos;);
+
+const main = async function (ctx) {
+    const body = ctx.request.body;
+    if (!body.name) ctx.throw(400, &apos;.name required&apos;);
+    ctx.body = { name: body.name };
+};
+
+app.use(koaBody());
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">###	文件上传</div><div class="line">	koa-body模块还可以用来处理文件上传。</div></pre></td></tr></table></figure>
+
+const os = require(&apos;os&apos;);
+const path = require(&apos;path&apos;);
+const koaBody = require(&apos;koa-body&apos;);
+
+const main = async function(ctx) {
+    const tmpdir = os.tmpdir();
+    const filePaths = [];
+    const files = ctx.request.body.files || {};
+
+    for (let key in files) {
+        const file = files[key];
+        const filePath = path.join(tmpdir, file.name);
+        const reader = fs.createReadStream(file.path);
+        const writer = fs.createWriteStream(filePath);
+        reader.pipe(writer);
+        filePaths.push(filePath);
+    }
+
+    ctx.body = filePaths;
+};
+
+app.use(koaBody({ multipart: true }));
+```
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="http://www.ruanyifeng.com/blog/2017/08/koa.html" target="_blank" rel="external">阮一峰老师的koa教程</a><br>    <a href="https://www.npmjs.com/package/koa-router" target="_blank" rel="external">koa-router官方文档</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/27/jsDoc学习-5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2477,585 +3159,11 @@ C--即Controller控制器是指控制器接受用户的输入并调用模型和�
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/20/Sass学习/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/20/Sass学习/" itemprop="url">
-                  Sass学习
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-20T19:41:05+08:00">
-                2017-09-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/css/" itemprop="url" rel="index">
-                    <span itemprop="name">css</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/20/Sass学习/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/20/Sass学习/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  3,860
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  16
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Sass是在CSS语法的基础上增加了变量 (variables)、嵌套 (nested rules)、混合 (mixins)、导入 (inline imports) 等高级功能，这些拓展令 CSS 更加强大与优雅。</p>
-<h2 id="常用的指令"><a href="#常用的指令" class="headerlink" title="常用的指令"></a>常用的指令</h2><pre><code>在命令行中运行 Sass
-    sass input.scss output.css
-监视单个 Sass 文件，每次修改并保存时自动编译
-    sass --watch input.scss:output.css
-监视整个文件夹
-    sass --watch app/scss:public/stylesheets
-开启debug信息
-    sass --watch input.scss:output.css --debug-info
-选择编译格式并添加调试map
-    sass --watch input.scss:output.css --style expanded --sourcemap
-编译添加调试map
-    sass --watch input.scss:output.css --sourcemap
-编译格式
-    sass --watch input.scss:output.css --style compact
-</code></pre><h2 id="使用变量"><a href="#使用变量" class="headerlink" title="使用变量"></a>使用变量</h2><pre><code>sass让人们受益的一个重要特性就是它为css引入了变量。你可以把反复使用的css属性值 定义成变量，然后通过变量名来引用它们，而无需重复书写这一属性值。或者，对于仅使用过一 次的属性值，你可以赋予其一个易懂的变量名，让人一眼就知道这个属性值的用途。
-sass使用$符号来标识变量，如比如$highlight-color和$sidebar-width。
-</code></pre><h3 id="变量声明"><a href="#变量声明" class="headerlink" title="变量声明"></a>变量声明</h3><ol>
-<li>声明单个属性值<br>$higlight-color: #f90;</li>
-<li>声明多个属性值<br>$basic-border: 1px solid black;</li>
-<li>逗号分割多个属性值<br>$plain-font: “Myriad Pro”,Myriad,”Helvetica Neue”,Helvetica,”Liberation Sans”,Arial,sans-serif,sans-serif;</li>
-<li><p>变量的作用域<br>当变量定义在css规则块内，那么该变量只能在此规则块内使用。<br>如果它们出现在任何形式的{…}块中（如@media或者@font-face块）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$nav-color: #F90; // 全局声明</div><div class="line">nav &#123;</div><div class="line">  $width: 100px; // 局部声明</div><div class="line">  width: $width; // 100px</div><div class="line">  color: $nav-color; // #f90</div><div class="line">&#125;</div><div class="line">// 这意味着是你可以在样式表的其他地方定义和使用$width变量，不会对这里造成影响。</div></pre></td></tr></table></figure>
-</li>
-<li><p>在声明变量时，变量值也可以引用其他变量。<br>$highlight-color: #F90;<br>$highlight-border: 1px solid $highlight-color;</p>
-<h3 id="变量引用"><a href="#变量引用" class="headerlink" title="变量引用"></a>变量引用</h3><p>如果你需要一个不同的值，只需要改变这个变量的值，则所有引用此变量的地方生成的值都会随之改变。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">// 声明变量</div><div class="line">$highlight-color: #F90;</div><div class="line">$highlight-border: 1px solid $highlight-color;</div><div class="line">.selected &#123;</div><div class="line">  border: $highlight-border; // 引用变量</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="变量命名"><a href="#变量命名" class="headerlink" title="变量命名"></a>变量命名</h3><ol>
-<li>变量名用中划线还是下划线分隔<br>用中划线声明的变量可以使用下划线的方式引用，反之亦然。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$link-color: blue; // 中划线声明</div><div class="line">a &#123;</div><div class="line">  color: $link_color; // 下划线引用</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="将局部变量升级为全局变量"><a href="#将局部变量升级为全局变量" class="headerlink" title="将局部变量升级为全局变量"></a>将局部变量升级为全局变量</h3><pre><code>编译前
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">#main &#123;</div><div class="line">  $width: 5em !global;</div><div class="line">  width: $width;</div><div class="line">&#125;</div><div class="line">#sidebar &#123;</div><div class="line">  width: $width;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-编译后
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">#main &#123; </div><div class="line">	width: 5em; </div><div class="line">&#125;</div><div class="line">#sidebar &#123; </div><div class="line">	width: 5em; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="数据类型-Data-Types"><a href="#数据类型-Data-Types" class="headerlink" title="数据类型 (Data Types)"></a>数据类型 (Data Types)</h3><pre><code>Interactive Shell
-    color: #777 + #777; // color: #eeeeee;
-如果需要使用变量，同时又要确保 / 不做除法运算而是完整地编译到 CSS 文件中，只需要用 #{} 插值语句将变量包裹。
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">p &#123;</div><div class="line">  $font-size: 12px;</div><div class="line">  $line-height: 30px;</div><div class="line">  font: #&#123;$font-size&#125;/#&#123;$line-height&#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-数字，1, 2, 13, 10px
-字符串，有引号字符串与无引号字符串，&quot;foo&quot;, &apos;bar&apos;, baz
-颜色，blue, #04a3f9, rgba(255,0,0,0.5)
-布尔型，true, false
-空值，null
-数组 (list)，用空格或逗号作分隔符，1.5em 1em 0 2em, Helvetica, Arial, sans-serif
-maps, 相当于 JavaScript 的 object，(key1: value1, key2: value2)
-</code></pre><h2 id="嵌套CSS-规则"><a href="#嵌套CSS-规则" class="headerlink" title="嵌套CSS 规则"></a>嵌套CSS 规则</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">// 编译前</div><div class="line">#content &#123;</div><div class="line">  article &#123;</div><div class="line">	h1 &#123; color: #333 &#125;</div><div class="line">	p &#123; margin-bottom: 1.4em &#125;</div><div class="line">  &#125;</div><div class="line">  aside &#123; background-color: #EEE &#125;</div><div class="line">&#125;</div><div class="line">// 编译后</div><div class="line">#content article h1 &#123; color: #333 &#125;</div><div class="line">#content article p &#123; margin-bottom: 1.4em &#125;</div><div class="line">#content aside &#123; background-color: #EEE &#125;</div></pre></td></tr></table></figure>
-
-当你同时要为一个容器元素及其子元素编写特定样式时，这种能力就非常有用了。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">// 编译前</div><div class="line">#content &#123;</div><div class="line">  background-color: #f5f5f5;</div><div class="line">  aside &#123; background-color: #eee &#125;</div><div class="line">&#125;</div><div class="line">// 编译后</div><div class="line">#content &#123; background-color: #f5f5f5 &#125;</div><div class="line">#content aside &#123; background-color: #eee &#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="父选择器的标识符-amp"><a href="#父选择器的标识符-amp" class="headerlink" title="父选择器的标识符&amp;"></a>父选择器的标识符&amp;</h3><pre><code>作用于伪类:hover、:after等等
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">// 编译前</div><div class="line">article a &#123;</div><div class="line">  color: blue;</div><div class="line">  &amp;:hover &#123; color: red &#125;</div><div class="line">&#125;</div><div class="line">// 编译后</div><div class="line">article a &#123; color: blue &#125;</div><div class="line">article a:hover &#123; color: red &#125;</div></pre></td></tr></table></figure>
-
-父选择器标识符还有另外一种用法，你可以在父选择器之前添加选择器。
-举例来说，当用户在使用IE浏览器时，你会通过JavaScript在&lt;body&gt;标签上添加一个ie的类名，为这种情况编写特殊的样式如下
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">// 编译前</div><div class="line">#content aside &#123;</div><div class="line">  color: red;</div><div class="line">  body.ie &amp; &#123; color: green &#125;</div><div class="line">&#125;</div><div class="line">// 编译后</div><div class="line">#content aside &#123;color: red&#125;;</div><div class="line">body.ie #content aside &#123; color: green &#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="群组选择器的嵌套"><a href="#群组选择器的嵌套" class="headerlink" title="群组选择器的嵌套"></a>群组选择器的嵌套</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">// 编译前</div><div class="line">nav, aside &#123;</div><div class="line">  a &#123;color: blue&#125;</div><div class="line">&#125;</div><div class="line">// 编译后</div><div class="line">nav a, </div><div class="line">aside a &#123;</div><div class="line">	color: blue</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="子组合选择器和同层组合选择器：-gt-、-和"><a href="#子组合选择器和同层组合选择器：-gt-、-和" class="headerlink" title="子组合选择器和同层组合选择器：&gt;、+和~"></a>子组合选择器和同层组合选择器：&gt;、+和~</h3><pre><code>上边这三个组合选择器必须和其他选择器配合使用，以指定浏览器仅选择某种特定上下文中的元素。    
-可以把它们放在外层选择器后边，或里层选择器前边。
-&gt;  直接后代选择器
-+  紧接的相邻兄弟选择器
-~  同层全体组合选择器
-</code></pre><h3 id="嵌套属性"><a href="#嵌套属性" class="headerlink" title="嵌套属性"></a>嵌套属性</h3><pre><code>除了CSS选择器，属性也可以进行嵌套。
-嵌套属性的规则是这样的：把属性名从中划线-的地方断开，在根属性后边添加一个冒号:，紧跟一个{ }块，把子属性部分写在这个{ }块中。
-</code></pre><ol>
-<li><p>属性的嵌套</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">// 编译前</div><div class="line">nav &#123;</div><div class="line">  border: &#123;</div><div class="line">  style: solid;</div><div class="line">  width: 1px;</div><div class="line">  color: #ccc;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">// 编译后</div><div class="line">nav &#123;</div><div class="line">  border-style: solid;</div><div class="line">  border-width: 1px;</div><div class="line">  border-color: #ccc;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p>对于属性的缩写形式</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">// 编译前</div><div class="line">nav &#123;</div><div class="line">  border: 1px solid #ccc &#123;</div><div class="line">  left: 0px;</div><div class="line">  right: 0px;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">// 编译后</div><div class="line">nav &#123;</div><div class="line">  border: 1px solid #ccc;</div><div class="line">  border-left: 0px;</div><div class="line">  border-right: 0px;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="导入SASS文件"><a href="#导入SASS文件" class="headerlink" title="导入SASS文件"></a>导入SASS文件</h2><pre><code>css有一个特别不常用的特性，即@import规则，它允许在一个css文件中导入其他css文件。
-使用sass的@import规则并不需要指明被导入文件的全名。你可以省略.sass或.scss文件后缀。
-@import &quot;sidebar&quot;;这条命令将把sidebar.scss文件中所有样式添加到当前样式表中。
-</code></pre><h3 id="使用SASS部分文件"><a href="#使用SASS部分文件" class="headerlink" title="使用SASS部分文件"></a>使用SASS部分文件</h3><pre><code>sass局部文件的文件名以下划线开头。这样，sass就不会在编译时单独编译这个文件输出css，而只把这个文件用作导入。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">你想导入themes/_night-sky.scss这个局部文件里的变量，</div><div class="line">你只需在样式表中写@import &quot;themes/night-sky&quot;;。</div></pre></td></tr></table></figure>
-</code></pre><h3 id="默认变量值"><a href="#默认变量值" class="headerlink" title="默认变量值"></a>默认变量值</h3><pre><code>你反复声明一个变量，只有最后一处声明有效且它会覆盖前边的值。
-如果这个变量被声明赋值了，那就用它声明的值，否则就用这个默认值。    
-使用sass的!default标签可以实现这个目的。
-对于通过@import导入的sass库文件，你可能希望导入者可以定制修改sass库文件中的某些值，非常有用。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$fancybox-width: 400px !default;</div><div class="line">.fancybox &#123;</div><div class="line">	width: $fancybox-width; // 400px</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="嵌套导入"><a href="#嵌套导入" class="headerlink" title="嵌套导入"></a>嵌套导入</h3><pre><code>跟原生的css不同，sass允许@import命令写在css规则内。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">// _blue-theme.scss</div><div class="line">aside &#123;</div><div class="line">  background: blue;</div><div class="line">  color: white;</div><div class="line">&#125;</div><div class="line">// 在主scss文件中index.scss</div><div class="line">.blue-theme &#123;@import &quot;blue-theme&quot;&#125;	</div><div class="line">// 类似于编译前</div><div class="line">.blue-theme &#123;</div><div class="line">	aside &#123;</div><div class="line">		background: blue;</div><div class="line">		color: #fff;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">// 编译后</div><div class="line">.blue-theme aside &#123;</div><div class="line">	background: blue;</div><div class="line">	color: #fff;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="原生的CSS导入"><a href="#原生的CSS导入" class="headerlink" title="原生的CSS导入"></a>原生的CSS导入</h3><pre><code>下列3种情况使用原生CSS@import，浏览器解析css时的额外下载。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">被导入文件的名字以.css结尾；</div><div class="line">被导入文件的名字是一个URL地址（比如http://www.sass.hk/css/css.css），由此可用谷歌字体API提供的相应服务；</div><div class="line">被导入文件的名字是CSS的url()值。</div></pre></td></tr></table></figure>
-</code></pre><h2 id="静默注释"><a href="#静默注释" class="headerlink" title="静默注释"></a>静默注释</h2><pre><code>sass另外提供了一种不同于css标准注释格式/* ... */的注释语法，
-即静默注释，其内容不会出现在生成的css文件中。
-将 ! 作为多行注释的第一个字符表示在压缩输出模式下保留这条注释并输出到 CSS 文件中，通常用于添加版权信息。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">body &#123;</div><div class="line">  color: #333; // 这种注释内容不会出现在生成的css文件中(静默注释)</div><div class="line">  padding: 0; /* 这种注释内容会出现在生成的css文件中 */</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-当注释出现在原生css不允许的地方，如在css属性或选择器中，sass将不知如何将其生成到对应css文件中的相应位置，于是这些注释被抹掉。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">body &#123;</div><div class="line">  color /* 这块注释内容不会出现在生成的css中 */: #333;</div><div class="line">  padding: 1; /* 这块注释内容也不会出现在生成的css中 */ 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h2 id="混合器"><a href="#混合器" class="headerlink" title="混合器"></a>混合器</h2><pre><code>混合器允许用户编写语义化样式的同时避免视觉层面上样式的重复。
-你可以通过sass的混合器实现大段样式的重用。
-混合器使用@mixin标识符定义。这个标识符给一大段样式赋予一个名字，这样你就可以轻易地通过引用这个名字重用这段样式。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// 声明混合器</div><div class="line">@mixin rounded-corners &#123;</div><div class="line">  -moz-border-radius: 5px;</div><div class="line">  -webkit-border-radius: 5px;</div><div class="line">  border-radius: 5px;</div><div class="line">&#125;</div><div class="line">// 使用混合器</div><div class="line">div p &#123;</div><div class="line">	color: red;</div><div class="line">	@include rounded-corners;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="何时使用混合器"><a href="#何时使用混合器" class="headerlink" title="何时使用混合器"></a>何时使用混合器</h3><pre><code>一条经验法则就是你能否为这个混合器想出一个好的名字。如果你能找到一个很好的短名字来描述这些属性修饰的样式，比如rounded-cornersfancy-font或者no-bullets，那么往往能够构造一个合适的混合器。
-如果你找不到，这时候构造一个混合器可能并不合适。
-</code></pre><h3 id="混合器中的CSS规则"><a href="#混合器中的CSS规则" class="headerlink" title="混合器中的CSS规则"></a>混合器中的CSS规则</h3><pre><code>混合器中不仅可以包含属性，也可以包含css规则，包含选择器和选择器中的属性。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">// 定义一个嵌套css混合</div><div class="line">@mixin no-bullets &#123;</div><div class="line">  list-style: none;</div><div class="line">  li &#123;</div><div class="line">	list-style-image: none;</div><div class="line">	list-style-type: none;</div><div class="line">	margin-left: 0px;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">// 使用混合</div><div class="line">ul.plain &#123;</div><div class="line">  color: #444;</div><div class="line">  @include no-bullets;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-编译后
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">ul.plain &#123;</div><div class="line">  color: #444;</div><div class="line">  list-style: none;</div><div class="line">&#125;</div><div class="line">ul.plain li &#123;</div><div class="line">  list-style-image: none;</div><div class="line">  list-style-type: none;</div><div class="line">  margin-left: 0px;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="给混合器传参"><a href="#给混合器传参" class="headerlink" title="给混合器传参"></a>给混合器传参</h3><pre><code>可以通过在@include混合器时给混合器传参，来定制混合器生成的精确样式。
-// 声明带参数的混合
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@mixin link-colors($normal, $hover, $visited) &#123;</div><div class="line">  color: $normal;</div><div class="line">  &amp;:hover &#123; color: $hover; &#125;</div><div class="line">  &amp;:visited &#123; color: $visited; &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-// 使用带参数的混合
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">// 使用1</div><div class="line">p a &#123;</div><div class="line">	@include link-colors(red, blue, white);</div><div class="line">&#125;</div><div class="line">// 使用2（好处是表明每个参数的意思和顺序）</div><div class="line">a &#123;</div><div class="line">	@include link-colors(</div><div class="line">	  $normal: blue,</div><div class="line">	  $visited: green,</div><div class="line">	  $hover: red</div><div class="line">  );</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-编译后
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">p a &#123; color: blue; &#125;</div><div class="line">p a:hover &#123; color: red; &#125;</div><div class="line">p a:visited &#123; color: green; &#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="默认参数值"><a href="#默认参数值" class="headerlink" title="默认参数值"></a>默认参数值</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// 默认都使用$normal的值</div><div class="line">@mixin link-colors(</div><div class="line">	$normal,</div><div class="line">	$hover: $normal,</div><div class="line">	$visited: $normal</div><div class="line">  )</div><div class="line">&#123;</div><div class="line">  color: $normal;</div><div class="line">  &amp;:hover &#123; color: $hover; &#125;</div><div class="line">  &amp;:visited &#123; color: $visited; &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-使用混合
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">@include link-colors(red)</div><div class="line">编译后</div><div class="line">p a &#123;</div><div class="line">	color: red; </div><div class="line">&#125;</div><div class="line">p a:hover &#123;</div><div class="line">	color: red; </div><div class="line">&#125;</div><div class="line">p a:visited &#123;</div><div class="line">	color: red; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-使用混合
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">@include link-colors(red, blue, white)</div><div class="line">编译后</div><div class="line">p a &#123;</div><div class="line">	color: red; </div><div class="line">&#125;</div><div class="line">p a:hover &#123;</div><div class="line">	color: blue; </div><div class="line">&#125;</div><div class="line">p a:visited &#123;</div><div class="line">	color: white; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h2 id="使用选择器继承来精简CSS"><a href="#使用选择器继承来精简CSS" class="headerlink" title="使用选择器继承来精简CSS"></a>使用选择器继承来精简CSS</h2><pre><code>继承允许你声明类之间语义化的关系，通过这些关系可以保持你的css的整洁和可维护性。
-</code></pre><ol>
-<li><p>选择器继承是说一个选择器可以继承为另一个选择器定义的所有样式。这个通过@extend语法实现。<br>编译前</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">//通过选择器继承继承样式</div><div class="line">.error &#123;</div><div class="line">  border: 1px solid red;</div><div class="line">  background-color: #fdd;</div><div class="line">&#125;</div><div class="line">.seriousError &#123;</div><div class="line">  @extend .error;</div><div class="line">  border-width: 3px;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>编译后</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">.error, .seriousError &#123;</div><div class="line">  border: 1px solid red;</div><div class="line">  background-color: #fdd; </div><div class="line">&#125;</div><div class="line">.seriousError &#123;</div><div class="line">  border-width: 3px; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p>.seriousError不仅会继承.error自身的所有样式，任何跟.error有关的组合选择器样式也会被.seriousError以组合选择器的形式继承    </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">//.seriousError从.error继承样式</div><div class="line">.error a&#123;  //应用到.seriousError a</div><div class="line">  color: red;</div><div class="line">  font-weight: 100;</div><div class="line">&#125;</div><div class="line">h1.error &#123; //应用到hl.seriousError</div><div class="line">  font-size: 1.2rem;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="何时使用继承"><a href="#何时使用继承" class="headerlink" title="何时使用继承"></a>何时使用继承</h3><pre><code>混合器主要用于展示性样式的重用，而类名用于语义化样式的重用。
-当一个元素拥有的类（比如说.seriousError）表明它属于另一个类（比如说.error），这时使用继承再合适不过了。
-综上所述你应该使用@extend。让.seriousError从.error继承样式，使两者之间的关系非常清晰。
-更重要的是无论你在样式表的哪里使用.error.seriousError都会继承其中的样式。
-</code></pre><h3 id="继承的高级用法"><a href="#继承的高级用法" class="headerlink" title="继承的高级用法"></a>继承的高级用法</h3><pre><code>接下来的这段代码定义了一个名为disabled的类，样式修饰使它看上去像一个灰掉的超链接。通过继承a这一超链接元素来实现
-编译前
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">a &#123;</div><div class="line">	background: #fff;</div><div class="line">&#125;</div><div class="line">.disabled &#123;</div><div class="line">  color: gray;</div><div class="line">  @extend a;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-编译后
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">a, .disabled &#123;</div><div class="line">  background: #fff; </div><div class="line">&#125;</div><div class="line"></div><div class="line">.disabled &#123;</div><div class="line">  color: gray; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="继承的工作细节"><a href="#继承的工作细节" class="headerlink" title="继承的工作细节"></a>继承的工作细节</h3><pre><code>@extend背后最基本的想法是，如果.seriousError @extend .error， 那么样式表中的任何一处.error都用.error.seriousError这一选择器组进行替换。
-@extend的优点
-    跟混合器相比，继承生成的css代码相对更少。因为继承仅仅是重复选择器，而不会重复属性，所以使用继承往往比混合器生成的css体积更小。如果你非常关心你站点的速度，请牢记这一点。
-    继承遵从css层叠的规则。当两个不同的css规则应用到同一个html元素上时，并且这两个不同的css规则对同一属性的修饰存在不同的值，css层叠规则会决定应用哪个样式。相当直观：通常权重更高的选择器胜出，如果权重相同，定义在后边的规则胜出。
-</code></pre><h3 id="使用继承的最佳实践"><a href="#使用继承的最佳实践" class="headerlink" title="使用继承的最佳实践"></a>使用继承的最佳实践</h3><pre><code>通常使用继承会让你的css美观、整洁。因为继承只会在生成css时复制选择器，而不会复制大段的css属性。
-避免这种情况出现的最好方法就是不要在css规则中使用后代选择器（比如.foo .bar）去继承css规则。
-</code></pre><h2 id="小知识点"><a href="#小知识点" class="headerlink" title="小知识点"></a>小知识点</h2><ol>
-<li>占位符选择器 %foo (Placeholder Selectors: %foo)</li>
-<li>字符串 (Strings)<br>  有引号字符串 与 无引号字符串 (unquoted strings)</li>
-<li>数组 (Lists)<br>  nth 函数可以直接访问数组中的某一项；<br>  join 函数可以将多个数组连接在一起；<br>  append 函数可以在数组中添加新值；<br>  @each 指令能够遍历数组中的每一项。</li>
-<li>Maps<br>  $map: (key1: value1, key2: value2, key3: value3);</li>
-<li>颜色 (Colors)</li>
-<li><p>运算 (Operations)<br>所有数据类型均支持相等运算 == 或 !=，此外，每种数据类型也有其各自支持的运算方式。<br>SassScript 支持数字的加减乘除、取整等运算 (+, -, *, /, %)，如果必要会在不同单位间转换值。<br>字符串运算 (String Operations)</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">p &#123;</div><div class="line">  cursor: e + -resize;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p>布尔运算 (Boolean Operations)<br>SassScript 支持布尔型的 and or 以及 not 运算。</p>
-</li>
-<li>圆括号 (Parentheses)<br>  width: 1em + (2em * 3);</li>
-<li>插值语句 #{} (Interpolation: #{})<br>  $attr: border;<br>  #{$attr}-color: blue;</li>
-<li>&amp; in SassScript<br> 父选择器标识符</li>
-<li>变量定义 !default (Variable Defaults: !default)</li>
-<li>@import 并可以嵌套<br> 导入其他scss文件</li>
-<li>@extend</li>
-<li><p>控制指令 (Control Directives)<br>@if 声明后面可以跟多个 @else if 声明，或者一个 @else 声明。<br> @if 1 + 1 == 2 { border: 1px solid; }<br> @if 5 &lt; 3 { border: 2px dotted; }<br>@for</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">@for $i from 1 through 3 &#123;</div><div class="line">  .item-#&#123;$i&#125; &#123; width: 2em * $i; &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>@each</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@each $animal in puma, sea-slug, egret, salamander &#123;</div><div class="line">  .#&#123;$animal&#125;-icon &#123;</div><div class="line">	background-image: url(&apos;/images/#&#123;$animal&#125;.png&apos;);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>@while</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$i: 6;</div><div class="line">@while $i &gt; 0 &#123;</div><div class="line">  .item-#&#123;$i&#125; &#123; width: 2em * $i; &#125;</div><div class="line">  $i: $i - 2;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><pre><code>变量（声明及使用）：
-    可以声明全局和局部变量。声明方法：$var-name
-嵌套CSS规则：
-    article a {
-      color: blue;
-      &amp;:hover { color: red } // 父选择器的标识符&amp;，此时代表 a 元素
-    }
-导入SASS文件：
-    在一个scss文件同导入其他scss文件。导入方法：@import &quot;sidebar&quot;;
-静默注释：
-    在scss文件中有注释，编译之后注释被抹掉。注释方法为：// 
-混合器：
-    混合器允许用户编写语义化样式的同时避免视觉层面上样式的重复。
-    定义混合器使用@mixin标识符。
-    使用混合器@include。        
-使用选择器继承来精简CSS：
-    继承允许你声明类之间语义化的关系，通过这些关系可以保持你的css的整洁和可维护性。
-    这个通过@extend语法实现。    
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="https://www.sass.hk" target="_blank" rel="external">Sass中文网</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/19/koa学习-搭建项目/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/19/koa学习-搭建项目/" itemprop="url">
-                  koa学习-搭建项目
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-19T19:41:00+08:00">
-                2017-09-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
-                    <span itemprop="name">NodeJS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/19/koa学习-搭建项目/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/19/koa学习-搭建项目/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  7
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  1
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>   参考文档：<br>    <a href="https://chenshenhai.github.io/koa2-note/note/request/post-use-middleware.html" target="_blank" rel="external">koa-note</a><br>    <a href="https://www.npmjs.com/package/cookies" target="_blank" rel="external">cookies</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -3100,7 +3208,7 @@ maps, 相当于 JavaScript 的 object，(key1: value1, key2: value2)
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">110</span>
+                <span class="site-state-item-count">112</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -3111,7 +3219,7 @@ maps, 相当于 JavaScript 的 object，(key1: value1, key2: value2)
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -3122,7 +3230,7 @@ maps, 相当于 JavaScript 的 object，(key1: value1, key2: value2)
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-count">32</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -3239,7 +3347,7 @@ maps, 相当于 JavaScript 的 object，(key1: value1, key2: value2)
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共138.8k字</span>
+  <span class="post-count">博客全站共140.3k字</span>
 </div>
         
 

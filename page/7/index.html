@@ -306,6 +306,482 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/16/koa学习-中间件和路由/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/16/koa学习-中间件和路由/" itemprop="url">
+                  koa学习-中间件和路由
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-16T21:24:00+08:00">
+                2017-09-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
+                    <span itemprop="name">NodeJS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/16/koa学习-中间件和路由/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/16/koa学习-中间件和路由/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  488
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  2
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="koa中间件的制作和使用"><a href="#koa中间件的制作和使用" class="headerlink" title="koa中间件的制作和使用"></a>koa中间件的制作和使用</h2><h3 id="koa模版"><a href="#koa模版" class="headerlink" title="koa模版"></a>koa模版</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var koa = require(&apos;koa&apos;);</div><div class="line">const app = new koa();</div><div class="line">// 中间件</div><div class="line">app.use(async (ctx) =&gt; &#123;</div><div class="line">	ctx.body = &apos;hello koa2&apos;;</div><div class="line">&#125;);</div><div class="line">app.listen(3000);</div></pre></td></tr></table></figure>
+</code></pre><h3 id="async-await"><a href="#async-await" class="headerlink" title="async/await"></a>async/await</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">function getSyncTime () &#123;</div><div class="line">	return new Promise((resolve, reject) =&gt; &#123;</div><div class="line">		try &#123;</div><div class="line">			let startTime = new Date().getTime();</div><div class="line">			setTimeout(() =&gt; &#123;</div><div class="line">				let endTime = new Date().getTime();</div><div class="line">				let data = endTime - startTime;</div><div class="line">				resolve(data);</div><div class="line">			&#125;, 500);</div><div class="line">		&#125; catch (e) &#123;</div><div class="line">			reject(e);</div><div class="line">		&#125;</div><div class="line">	&#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">async function getSyncData () &#123;</div><div class="line">	let time = await getSyncTime();</div><div class="line">	let data = `endTime - startTime = $&#123;time&#125;`;</div><div class="line">	console.log(data);</div><div class="line">&#125;</div><div class="line">getSyncData();</div></pre></td></tr></table></figure>
+</code></pre><h3 id="koa2简析结构"><a href="#koa2简析结构" class="headerlink" title="koa2简析结构"></a>koa2简析结构</h3><pre><code>源码文件：
+├── lib
+│   ├── application.js
+│   ├── context.js
+│   ├── request.js
+│   └── response.js
+└── package.json
+文件说明：
+application.js 是整个koa2 的入口文件，封装了context，request，response，以及最核心的中间件处理流程。
+context.js 处理应用上下文，里面直接封装部分request.js和response.js的方法
+request.js 处理http请求
+response.js 处理http响应
+</code></pre><h3 id="koa中间件开发和使用"><a href="#koa中间件开发和使用" class="headerlink" title="koa中间件开发和使用"></a>koa中间件开发和使用</h3><pre><code>以日志中间件为例
+middleware/logger-async.js
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">function log (ctx) &#123;</div><div class="line">	console.log(`请求方法：$&#123;ctx.method&#125;, host：$&#123;ctx.header.host&#125;, url：$&#123;ctx.url&#125;`);</div><div class="line">&#125;</div><div class="line"></div><div class="line">module.exports = function () &#123;</div><div class="line">	return async function (ctx, next)&#123;</div><div class="line">		log(ctx);</div><div class="line">		await next();</div><div class="line">	&#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+
+使用该中间件logger
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">const loggerAsync  = require(&apos;./middleware/logger-async&apos;);</div><div class="line">// 使用日志中间件</div><div class="line">app.use(loggerAsync());</div></pre></td></tr></table></figure>
+</code></pre><h2 id="koa路由中间件"><a href="#koa路由中间件" class="headerlink" title="koa路由中间件"></a>koa路由中间件</h2><h3 id="koa2原生路由实现"><a href="#koa2原生路由实现" class="headerlink" title="koa2原生路由实现"></a>koa2原生路由实现</h3><pre><code>获取url：ctx.request.url
+后端路由：根据前端get请求的url地址，后端返回对应的view页面达到。
+</code></pre><h3 id="koa-router中间件"><a href="#koa-router中间件" class="headerlink" title="koa-router中间件"></a>koa-router中间件</h3><pre><code>安装koa-router中间件
+    npm install --save koa-router
+使用koa-router
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">// 子路由1</div><div class="line">let home = new Router();</div><div class="line">home.get(&apos;/&apos;, async (ctx) =&gt; &#123;</div><div class="line">	let html = `</div><div class="line">		&lt;ul&gt;</div><div class="line">			&lt;li&gt;&lt;a href=&quot;/&quot;&gt;/&lt;/a&gt;&lt;/li&gt;</div><div class="line">			&lt;li&gt;&lt;a href=&quot;/page&quot;&gt;/page&lt;/a&gt;&lt;/li&gt;</div><div class="line">			&lt;li&gt;&lt;a href=&quot;/page/helloword&quot;&gt;/page/helloword&lt;/a&gt;&lt;/li&gt;</div><div class="line">			&lt;li&gt;&lt;a href=&quot;/page/chengdu&quot;&gt;/page/chengdu&lt;/a&gt;&lt;/li&gt;</div><div class="line">			&lt;li&gt;&lt;a href=&quot;/page/ss&quot;&gt;not found&lt;/a&gt;&lt;/li&gt;</div><div class="line">		&lt;/ul&gt;</div><div class="line">	`;</div><div class="line">	ctx.body = html;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">// 子路由2</div><div class="line">let page = new Router();</div><div class="line">page.get(&apos;/&apos;, async (ctx) =&gt; &#123;</div><div class="line">	ctx.body = &apos;page主页&apos;;</div><div class="line">&#125;)</div><div class="line">.get(&apos;/chengdu&apos;, async (ctx) =&gt; &#123;</div><div class="line">	ctx.body = &apos;欢迎来到成都&apos;;</div><div class="line">&#125;)</div><div class="line">.get(&apos;/helloword&apos;, (ctx) =&gt; &#123;</div><div class="line">	ctx.body = &apos;helloword page&apos;;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">// 子路由3-Not found</div><div class="line">let notFound = new Router();</div><div class="line">notFound.get(&apos;*&apos;, async (ctx) =&gt; &#123;</div><div class="line">	ctx.body = &apos;没有找到！&apos;;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">// 装载所有的子路由</div><div class="line">let router = new Router();</div><div class="line">router.use(&apos;/&apos;, home.routes(), home.allowedMethods());</div><div class="line">router.use(&apos;/page&apos;, page.routes(), page.allowedMethods());</div><div class="line">router.use(&apos;*&apos;, notFound.routes(), notFound.allowedMethods());</div><div class="line"></div><div class="line">// 加载路由中间件</div><div class="line">app.use(router.routes())</div><div class="line">.use(router.allowedMethods());</div></pre></td></tr></table></figure>
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="https://chenshenhai.github.io/koa2-note/note/request/get.html" target="_blank" rel="external">koa2-note</a><br>    <a href="https://www.npmjs.com/package/koa-router" target="_blank" rel="external">koa-router官方文档</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/16/nodejs自带模块-HTTP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/16/nodejs自带模块-HTTP/" itemprop="url">
+                  HTTP模块
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-16T17:06:40+08:00">
+                2017-09-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
+                    <span itemprop="name">NodeJS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/16/nodejs自带模块-HTTP/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/16/nodejs自带模块-HTTP/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,965
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  8
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="要使用-HTTP-服务器与客户端，需要-require-‘http’-。"><a href="#要使用-HTTP-服务器与客户端，需要-require-‘http’-。" class="headerlink" title="要使用 HTTP 服务器与客户端，需要 require(‘http’)。"></a>要使用 HTTP 服务器与客户端，需要 require(‘http’)。</h3><pre><code>Node.js 中的 HTTP 接口被设计成支持协议的许多特性。 比如，大块编码的消息。 这些接口不缓冲完整的请求或响应，用户能够以流的形式处理数据。
+</code></pre><h3 id="http-Agent-类"><a href="#http-Agent-类" class="headerlink" title="http.Agent 类"></a>http.Agent 类</h3><pre><code>Agent 负责为 HTTP 客户端管理连接的持续与复用。 它为一个给定的主机与端口维护着一个等待请求的队列，且为每个请求重复使用一个单一的 socket 连接直到队列为空，此时 socket 会被销毁或被放入一个连接池中，在连接池中等待被有着相同主机与端口的请求再次使用。 是否被销毁或被放入连接池取决于 keepAlive 选项。
+</code></pre><ol>
+<li>new Agent([options])<br>  作用：实例化一个代理 代理的配置选项。<br>  var agent = new Agent([options]);</li>
+<li>agent.createConnection(options[, callback])<br>  作用：创建一个用于 HTTP 请求的 socket 或流。</li>
+<li>agent.keepSocketAlive(socket)<br>  作用：在 socket 被请求分离的时候调用, 可能被代理持续使用。</li>
+<li>agent.reuseSocket(socket, request)<br>  作用：由于 keep-alive 选项被保持持久化, 在 socket 附加到 request 时调用。</li>
+<li>agent.destroy()<br>  作用：销毁当前正被代理使用的任何 socket。</li>
+<li>agent.freeSockets<br>  作用：返回一个对象，包含当前正在等待被启用了 keepAlive 的代理使用的 socket 数组。 不要修改该属性。</li>
+<li>agent.getName(options)<br>  作用：为请求选项的集合获取一个唯一的名称，用来判断一个连接是否可以被复用。</li>
+<li>agent.maxFreeSockets<br>  作用：默认为 256。 对于已启用 keepAlive 的代理，该属性可设置要保留的空闲 socket 的最大数量。</li>
+<li>agent.maxSockets<br>  作用：默认为不限制。 该属性可设置代理为每个来源打开的并发 socket 的最大数量。</li>
+<li>agent.requests<br> 作用：返回一个对象，包含还未被分配到 socket 的请求队列。 不要修改。</li>
+<li>agent.sockets<br> 作用：返回一个对象，包含当前正被代理使用的 socket 数组。 不要修改。<h3 id="http-ClientRequest-类"><a href="#http-ClientRequest-类" class="headerlink" title="http.ClientRequest 类"></a>http.ClientRequest 类</h3>该对象在 http.request() 内部被创建并返回。 它表示着一个正在处理的请求，其请求头已进入队列。 请求头仍可使用 setHeader(name, value)、getHeader(name) 和 removeHeader(name) API 进行修改。</li>
+<li>abort事件<br>当请求已被客户端终止时触发。 该事件仅在首次调用 abort() 时触发。</li>
+<li>aborted事件<br>当请求已被服务器终止且网络 socket 已关闭时触发。</li>
+<li>connect事件<br>每当服务器响应 CONNECT 请求时触发。</li>
+<li>continue事件<br>当服务器发送了一个 100 Continue 的 HTTP 响应时触发，通常是因为请求包含 Expect: 100-continue。 这是客户端将要发送请求主体的指令。</li>
+<li>response事件<br>当请求的响应被接收到时触发。 该事件只触发一次。</li>
+<li>socket事件<br>当 socket 被分配到请求后触发。</li>
+<li>upgrade事件<br>每当服务器响应 upgrade 请求时触发。 </li>
+<li>request.abort()<br>标记请求为终止。 调用该方法将使响应中剩余的数据被丢弃且 socket 被销毁。</li>
+<li>request.aborted<br>如果请求已被终止，则该属性的值为请求被终止的时间，从 1 January 1970 00:00:00 UTC 到现在的毫秒数。</li>
+<li>request.connection</li>
+<li>request.end([data[, encoding]][, callback])<br>结束发送请求。</li>
+<li>request.flushHeaders()<br>刷新请求头。</li>
+<li>request.setNoDelay([noDelay])<br>一旦 socket 被分配给请求且已连接，socket.setNoDelay() 会被调用。</li>
+<li>request.setSocketKeepAlive([enable][, initialDelay])<br>一旦 socket 被分配给请求且已连接，socket.setKeepAlive() 会被调用。</li>
+<li>request.setTimeout(timeout[, callback])<br>一旦 socket 被分配给请求且已连接，socket.setTimeout() 会被调用。</li>
+<li>request.socket<br>引用底层socket。</li>
+<li>request.write(chunk[, encoding][, callback])<br>发送请求主体的一个数据块。<h3 id="http-Server-类"><a href="#http-Server-类" class="headerlink" title="http.Server 类"></a>http.Server 类</h3>该类继承自 net.Server，且具有以下额外的事件</li>
+<li>checkContinue 事件<br>每当接收到一个带有 HTTP Expect: 100-continue 请求头的请求时触发。</li>
+<li>checkExpectation 事件<br>每当接收到一个带有 HTTP Expect 请求头（值不为 100-continue）的请求时触发。 </li>
+<li>clientError 事件<br>如果客户端触发了一个 ‘error’ 事件，则它会被传递到这里。</li>
+<li>close事件<br>当服务器关闭时触发。</li>
+<li>connect事件<br>每当客户端发送 HTTP CONNECT 请求时触发。</li>
+<li>connection事件<br>当一个新的 TCP 流被建立时触发。 </li>
+<li>request事件<br>每次接收到一个请求时触发。 </li>
+<li>upgrade事件<br>每当客户端发送 HTTP upgrade 请求时触发。</li>
+<li>server.close([callback])<br>停止服务端接收新的连接。</li>
+<li>server.listen(handle[, callback])<br>handle 对象可以被设为一个服务器或 socket（任何带有一个 _handle 成员的对象）、或一个 {fd: <n>} 对象。</n></li>
+<li>server.listen(path[, callback])<br>启动一个 UNIX socket 服务器，并在给定的 path 上监听连接。</li>
+<li>server.listen([port][, hostname][, backlog][, callback])<br>开始在指定的 port 和 hostname 上接受连接。</li>
+<li>server.listening<br>返回一个布尔值，表示服务器是否正在监听连接。</li>
+<li>server.maxHeadersCount<br>限制请求头的最大数量，默认为 2000。 如果设为 0，则没有限制。</li>
+<li>server.setTimeout([msecs][, callback])<br>设置 socket 的超时时间。</li>
+<li>server.timeout<br>socket 被认定为超时的空闲毫秒数。</li>
+<li>server.keepAliveTimeout<br>服务器完成最后的响应之后需要等待的额外的传入数据的活跃毫秒数, socket 才能被销毁。<h3 id="http-ServerResponse-类"><a href="#http-ServerResponse-类" class="headerlink" title="http.ServerResponse 类"></a>http.ServerResponse 类</h3>该对象在 HTTP 服务器内部被创建。 它作为第二个参数被传入 ‘request’ 事件。</li>
+<li>close事件<br>当底层连接在 response.end() 被调用或能够刷新之前被终止时触发。</li>
+<li>finish事件<br>当响应已被发送时触发。 </li>
+<li>response.addTrailers(headers)<br>该方法会添加 HTTP 尾部响应头（一种在消息尾部的响应头）到响应。</li>
+<li>response.connection</li>
+<li>response.end([data][, encoding][, callback])<br>该方法会通知服务器，所有响应头和响应主体都已被发送，即服务器将其视为已完成。 </li>
+<li>response.finished<br>返回一个布尔值，表示响应是否已完成。</li>
+<li>response.getHeader(name)<br>读取一个已入队列但尚未发送到客户端的响应头。</li>
+<li>response.getHeaderNames()<br>返回一个包含当前响应唯一名称的 http 头信息名称数组. 名称均为小写。</li>
+<li>response.getHeaders()<br>返回当前响应头文件的浅拷贝。</li>
+<li>response.hasHeader(name)<br>如果响应头当前有设置 name 头部，返回 true。</li>
+<li>response.headersSent<br>返回一个布尔值（只读）。 </li>
+<li>response.removeHeader(name)<br>从隐式发送的队列中移除一个响应头。</li>
+<li>response.sendDate<br>当为 true 时，如果响应头里没有日期响应头，则日期响应头会被自动生成并发送。</li>
+<li>response.setHeader(name, value)<br>为一个隐式的响应头设置值。</li>
+<li>response.setTimeout(msecs[, callback])<br>设置 socket 的超时时间为 msecs。</li>
+<li>response.socket<br>引用底层socket。 </li>
+<li>response.statusCode<br>当使用隐式的响应头时（没有显式地调用 response.writeHead()），该属性控制响应头刷新时将被发送到客户端的状态码。</li>
+<li>response.statusMessage<br>使用隐式的响应头时（没有显式地调用 response.writeHead()），该属性控制响应头刷新时将被发送到客户端的状态信息。</li>
+<li>response.write(chunk[, encoding][, callback])<br>如果该方法被调用且 response.writeHead() 没有被调用，则它会切换到隐式响应头模式并刷新隐式响应头。</li>
+<li>response.writeContinue()<br>发送一个 HTTP/1.1 100 Continue 消息到客户端，表示请求主体可以开始发送。 参阅 Server 的 ‘checkContinue’ 事件。</li>
+<li>response.writeHead(statusCode[, statusMessage][, headers])<br>发送一个响应头给请求。 <h3 id="http-IncomingMessage-类"><a href="#http-IncomingMessage-类" class="headerlink" title="http.IncomingMessage 类"></a>http.IncomingMessage 类</h3>IncomingMessage 对象由 http.Server 或 http.ClientRequest 创建，并作为第一个参数分别递给 ‘request’ 和 ‘response’ 事件。 它可以用来访问响应状态、消息头、以及数据。<blockquote>
+<p>   参考文档：<br><a href="http://nodejs.cn/api/http.html" target="_blank" rel="external">HTTP参考-api</a></p>
+</blockquote>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/16/nodejs自带模块-url/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2578,572 +3054,11 @@ ADD PRIMARY KEY (last_name, first_name);
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/12/musql学习/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/12/musql学习/" itemprop="url">
-                  mysql学习（上部分）
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-12T19:09:59+08:00">
-                2017-09-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/sql/" itemprop="url" rel="index">
-                    <span itemprop="name">sql</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/12/musql学习/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/12/musql学习/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  2,268
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  10
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>基础构架：database –&gt; table –&gt; row 和 col（数据块）</p>
-<h3 id="RDBMS-术语"><a href="#RDBMS-术语" class="headerlink" title="RDBMS 术语"></a>RDBMS 术语</h3><ol>
-<li>数据库: 数据库是一些关联表的集合。.</li>
-<li>数据表: 表是数据的矩阵。在一个数据库中的表看起来像一个简单的电子表格。</li>
-<li>列: 一列(数据元素) 包含了相同的数据, 例如邮政编码的数据。</li>
-<li>行：一行（=元组，或记录）是一组相关的数据，例如一条用户订阅的数据。</li>
-<li>冗余：存储两倍数据，冗余降低了性能，但提高了数据的安全性。</li>
-<li>主键：主键是唯一的。一个数据表中只能包含一个主键。你可以使用主键来查询数据。</li>
-<li>外键：外键用于关联两个表。</li>
-<li>复合键：复合键（组合键）将多个列作为一个索引键，一般用于复合索引。</li>
-<li>索引：使用索引可快速访问数据库表中的特定信息。索引是对数据库表中一列或多列的值进行排序的一种结构。类似于书籍的目录。</li>
-<li>参照完整性: 参照的完整性要求关系中不允许引用不存在的实体。与实体完整性是关系模型必须满足的完整性约束条件，目的是保证数据的一致性。</li>
-</ol>
-<h3 id="MySQL-创建数据库"><a href="#MySQL-创建数据库" class="headerlink" title="MySQL 创建数据库"></a>MySQL 创建数据库</h3><h4 id="使用-mysqladmin-创建数据库"><a href="#使用-mysqladmin-创建数据库" class="headerlink" title="使用 mysqladmin 创建数据库"></a>使用 mysqladmin 创建数据库</h4><pre><code>以下实例会创建一个 RUNOOB 数据库
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@host]# mysqladmin -u root -p create RUNOOB</div><div class="line">Enter password:******</div></pre></td></tr></table></figure>
-</code></pre><h4 id="SQL语句创建数据库-RUNOOB"><a href="#SQL语句创建数据库-RUNOOB" class="headerlink" title="SQL语句创建数据库 RUNOOB"></a>SQL语句创建数据库 RUNOOB</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&apos;CREATE DATABASE RUNOOB&apos;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="MySQL-删除数据库"><a href="#MySQL-删除数据库" class="headerlink" title="MySQL 删除数据库"></a>MySQL 删除数据库</h3><h4 id="使用-mysqladmin-删除数据库"><a href="#使用-mysqladmin-删除数据库" class="headerlink" title="使用 mysqladmin 删除数据库"></a>使用 mysqladmin 删除数据库</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@host]# mysqladmin -u root -p drop RUNOOB</div><div class="line">Enter password:******</div></pre></td></tr></table></figure>
-</code></pre><h4 id="SQL语句删除数据库-RUNOOB"><a href="#SQL语句删除数据库-RUNOOB" class="headerlink" title="SQL语句删除数据库 RUNOOB"></a>SQL语句删除数据库 RUNOOB</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&apos;DROP DATABASE RUNOOB&apos;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="MySQL-选择数据库"><a href="#MySQL-选择数据库" class="headerlink" title="MySQL 选择数据库"></a>MySQL 选择数据库</h3><h4 id="从命令提示窗口中选择MySQL数据库"><a href="#从命令提示窗口中选择MySQL数据库" class="headerlink" title="从命令提示窗口中选择MySQL数据库"></a>从命令提示窗口中选择MySQL数据库</h4><pre><code>使用 RUNOOB 数据库
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@host]# mysql -u root -p</div><div class="line">Enter password:******</div><div class="line">mysql&gt; use RUNOOB;</div></pre></td></tr></table></figure>
-</code></pre><h4 id="使用-NODE-js-选择数据库"><a href="#使用-NODE-js-选择数据库" class="headerlink" title="使用 NODE.js 选择数据库"></a>使用 NODE.js 选择数据库</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">var mysql = require(&apos;mysql&apos;);</div><div class="line">var connection = mysql.createConnetion(&#123;</div><div class="line">	host: &apos;localhost&apos;,</div><div class="line">	prot: 3306,</div><div class="line">	user: &apos;root&apos;,</div><div class="line">	password: &apos;****&apos;,</div><div class="line">	database: &apos;RUNOOB&apos;</div><div class="line">&#125;);</div><div class="line">connection.connect(); // 连接数据库</div><div class="line">connection.query(&apos;SQL命令&apos;, function (err, result) &#123; // 数据库相应的 CURD &#125;)	</div><div class="line">connection.end(); // 断开连接</div></pre></td></tr></table></figure>
-</code></pre><h3 id="MySQL-数据类型"><a href="#MySQL-数据类型" class="headerlink" title="MySQL 数据类型"></a>MySQL 数据类型</h3><pre><code>MySQL支持多种类型，大致可以分为三类：数值、日期/时间和字符串(字符)类型。
-</code></pre><h4 id="数值类型"><a href="#数值类型" class="headerlink" title="数值类型"></a>数值类型</h4><p><img src="/images/mysql_int.png" alt="mysql_int"></p>
-<h4 id="日期和时间类型"><a href="#日期和时间类型" class="headerlink" title="日期和时间类型"></a>日期和时间类型</h4><pre><code>每个时间类型有一个有效值范围和一个&quot;零&quot;值，当指定不合法的MySQL不能表示的值时使用&quot;零&quot;值。
-</code></pre><p><img src="/images/mysql_time.png" alt="mysql_time"></p>
-<h4 id="字符串类型"><a href="#字符串类型" class="headerlink" title="字符串类型"></a>字符串类型</h4><pre><code>字符串类型指CHAR、VARCHAR、BINARY、VARBINARY、BLOB、TEXT、ENUM和SET。
-</code></pre><p><img src="/images/mysql_string.png" alt="mysql_string"></p>
-<h3 id="MySQL-创建数据表"><a href="#MySQL-创建数据表" class="headerlink" title="MySQL 创建数据表"></a>MySQL 创建数据表</h3><pre><code>创建数据表需要：表名、表字段名、定义每个表字段
-</code></pre><h4 id="SQL命令"><a href="#SQL命令" class="headerlink" title="SQL命令"></a>SQL命令</h4><pre><code>语法：
-    CREATE TABLE table_name (column_name column_type)
-    CREATE TABLE IF NOT EXISTS table_name (column_name column_type) // 判断是否存在
-实例：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE IF NOT EXISTS `runoob_tbl`(</div><div class="line">   `runoob_id` INT UNSIGNED AUTO_INCREMENT,</div><div class="line">   `runoob_title` VARCHAR(100) NOT NULL,</div><div class="line">   `runoob_author` VARCHAR(40) NOT NULL,</div><div class="line">   `submission_date` DATE,</div><div class="line">   PRIMARY KEY ( `runoob_id` )</div><div class="line">)ENGINE=InnoDB DEFAULT CHARSET=utf8;</div><div class="line">1.如果你不想字段为 NULL 可以设置字段的属性为 NOT NULL</div><div class="line">2.AUTO_INCREMENT定义列为自增的属性，一般用于主键，数值会自动加1。</div><div class="line">3.PRIMARY KEY关键字用于定义列为主键。 您可以使用多列来定义主键，列间以逗号分隔。</div></pre></td></tr></table></figure>
-</code></pre><h4 id="在命令提示窗口中创建数据表"><a href="#在命令提示窗口中创建数据表" class="headerlink" title="在命令提示窗口中创建数据表"></a>在命令提示窗口中创建数据表</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">root@host# mysql -u root -p</div><div class="line">Enter password:*******</div><div class="line">mysql&gt; use RUNOOB;</div><div class="line">mysql&gt; CREATE TABLE runoob_tbl(</div><div class="line">   -&gt; runoob_id INT NOT NULL AUTO_INCREMENT,</div><div class="line">   -&gt; runoob_title VARCHAR(100) NOT NULL,</div><div class="line">   -&gt; runoob_author VARCHAR(40) NOT NULL,</div><div class="line">   -&gt; submission_date DATE,</div><div class="line">   -&gt; PRIMARY KEY ( runoob_id )</div><div class="line">   -&gt; )ENGINE=InnoDB DEFAULT CHARSET=utf8;</div></pre></td></tr></table></figure>
-</code></pre><h4 id="node-js中创建表"><a href="#node-js中创建表" class="headerlink" title="node.js中创建表"></a>node.js中创建表</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">connection.query(&quot;CREATE TABLE person(id int,user varchar(255),password varchar(255))&quot;, function(err,result)&#123;</div><div class="line">	if(err)&#123;throw err&#125;</div><div class="line">	console.log(&quot;创建表成功&quot;)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
-</code></pre><h3 id="MySQL-删除数据表"><a href="#MySQL-删除数据表" class="headerlink" title="MySQL 删除数据表"></a>MySQL 删除数据表</h3><pre><code>语法：
-    DROP TABLE table_name
-</code></pre><h4 id="在命令提示窗口中删除数据表"><a href="#在命令提示窗口中删除数据表" class="headerlink" title="在命令提示窗口中删除数据表"></a>在命令提示窗口中删除数据表</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">root@host# mysql -u root -p</div><div class="line">Enter password:*******</div><div class="line">mysql&gt; use RUNOOB;</div><div class="line">mysql&gt; DROP TABLE runoob_tbl</div></pre></td></tr></table></figure>
-</code></pre><h4 id="node-js中删除表"><a href="#node-js中删除表" class="headerlink" title="node.js中删除表"></a>node.js中删除表</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">connection.query(&apos;DROP TABLE runoob_tbl&apos;, function (err, result) &#123;</div><div class="line">	if (err) throw err;</div><div class="line">	console.log(result);</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
-</code></pre><h3 id="MySQL-插入数据"><a href="#MySQL-插入数据" class="headerlink" title="MySQL 插入数据"></a>MySQL 插入数据</h3><pre><code>语法：    
-    INSERT INTO table_name (field1, field2, ...filedN) VALUES (value1, value2, value3);
-</code></pre><h4 id="通过命令提示窗口插入数据"><a href="#通过命令提示窗口插入数据" class="headerlink" title="通过命令提示窗口插入数据"></a>通过命令提示窗口插入数据</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">root@host# mysql -u root -p password;</div><div class="line">Enter password:*******</div><div class="line">mysql&gt; use RUNOOB;</div><div class="line">mysql&gt; INSERT INTO runoob_tbl </div><div class="line">	-&gt; (runoob_title, runoob_author, submission_date)</div><div class="line">	-&gt; VALUES</div><div class="line">	-&gt; (&quot;学习 PHP&quot;, &quot;菜鸟教程&quot;, NOW());</div></pre></td></tr></table></figure>
-
-读取某张表 -- select * from runoob_tbl;
-</code></pre><h4 id="node-js插入数据"><a href="#node-js插入数据" class="headerlink" title="node.js插入数据"></a>node.js插入数据</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">connection.query(&apos;INSERT INTO websites(id, name, url, alexa, country) VALUES (0, &quot;fanerge&quot;, &quot;23213&quot;, &quot;234&quot;, &quot;成都&quot;)&apos;, function (err, result) &#123;</div><div class="line">	console.log(result);</div><div class="line">&#125;);</div><div class="line">// 占位符的形式</div><div class="line">connection.query(&apos;INSERT INTO websites(id, name, url, alexa, country) VALUES (0, ?, ?, ?)&apos;, [&quot;fanerge12&quot;, &quot;23213&quot;, &quot;234&quot;, &quot;成都&quot;], function (err, result) &#123;</div><div class="line">	console.log(&apos;DELETE affectedRows:&apos;, result);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="MySQL-查询数据"><a href="#MySQL-查询数据" class="headerlink" title="MySQL 查询数据"></a>MySQL 查询数据</h3><pre><code>语法：
-    SELECT column_name, column_name 
-    FROM table_name // 可以查询多张表以,分隔
-    [WHERE clause] // 查询条件
-    [OFFSET M][LIMIT N] // 偏移量 和 限制条数
-</code></pre><h4 id="通过命令提示符获取数据"><a href="#通过命令提示符获取数据" class="headerlink" title="通过命令提示符获取数据"></a>通过命令提示符获取数据</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from runoob_tbl</div></pre></td></tr></table></figure>
-</code></pre><h4 id="node-js查询数据"><a href="#node-js查询数据" class="headerlink" title="node.js查询数据"></a>node.js查询数据</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">connection.query(&apos;SELECT name, url FROM websites&apos;, function (err, result) &#123;</div><div class="line">	console.log(result);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="MySQL-WHERE-子句"><a href="#MySQL-WHERE-子句" class="headerlink" title="MySQL WHERE 子句"></a>MySQL WHERE 子句</h3><pre><code>可以用在：SELECT 和 DELETE 和 UPDATE 命令中。
-默认where语句不区分大小写，使用BINARY开启区分大小写。
-语法：
-    SELECT field1, field2, ...filedN
-    FROM table_name1, table_name2
-    [WHERE confition1 [AND [OR]]] condition2
-</code></pre><p><img src="/images/mysql_where.png" alt="mysql_where">    </p>
-<h4 id="从命令提示符中读取数据"><a href="#从命令提示符中读取数据" class="headerlink" title="从命令提示符中读取数据"></a>从命令提示符中读取数据</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	SELECT name, url FROM user WHERE name=&quot;fanerge&quot; AND url=&quot;fanerge&quot;</div><div class="line">	```	</div><div class="line">####	node.js读取数据</div></pre></td></tr></table></figure>
-
-connection.query(&apos;SELECT name, url FROM user WHERE name=&quot;fanerge&quot; AND url=&quot;fanerge&quot;&apos;, function (err, result) {
-    console.log(result);
-});
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">###		MySQL UPDATE 查询	</div><div class="line">	语法：	</div><div class="line">		UPDATE table_name SET field1=new-value1, field1=new-value2</div><div class="line">		[WHERE clause]</div><div class="line">####	通过命令提示符更新数据</div></pre></td></tr></table></figure>
-
-UPDATE runoob_tbl SET runoob_title=&apos;学习 C++&apos; WHERE runoob_id=3;
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">####	node.js更新数据</div></pre></td></tr></table></figure>
-
-connection.query(&apos;UPDATE user SET url=&quot;zhongguo&quot; WHERE name=&quot;1name&quot;&apos;, function (err, result) {
-    console.log(result);
-});
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">		</div><div class="line">###		MySQL DELETE 语句	</div><div class="line">	语法：	</div><div class="line">		DELETE FROM table_name [WHERE clause]</div><div class="line">####	从命令行中删除数据</div></pre></td></tr></table></figure>
-
-use RUNOOB;
-mysql&gt; DELETE FROM runoob_tbl WHERE runoob_id=3;
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">####	node.js删除数据</div></pre></td></tr></table></figure>
-
-connection.query(&apos;DELETE FROM user WHERE name=&quot;1name&quot;&apos;, function (err, result) {
-    console.log(result);
-});
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">		</div><div class="line">###	MySQL LIKE 子句</div><div class="line">	我们需要获取 runoob_author 字段含有 &quot;COM&quot; 字符的所有记录，这时我们就需要在 WHERE 子句中使用 SQL LIKE 子句。	</div><div class="line">	如果没有使用百分号 %, LIKE 子句与等号 = 的效果是一样的。	</div><div class="line">	语法：</div><div class="line">		SELECT field1, field2, ...filedN</div><div class="line">		FROM table_name</div><div class="line">		WHERE field1 LIKE confition1 [AND [OR]] field2 = &apos;somevalue&apos;</div><div class="line">####	在命令提示符中使用 LIKE 子句</div><div class="line">	以下是我们将 runoob_tbl 表中获取 runoob_author 字段中以 COM 为结尾的的所有记录：</div></pre></td></tr></table></figure>
-
-use RUNOOB
-SELECT * from runoob_tl WHERE runoob_author LIKE &apos;%COM&apos;
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">####	node.js中使用 LIKE 子句</div></pre></td></tr></table></figure>
-
-connection.query(&apos;SELECT * FROM websites WHERE BINARY name LIKE &quot;f%&quot;&apos;, function (err, result) {
-    console.log(result);
-});
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">		</div><div class="line">###	MySQL UNION 操作符</div><div class="line">	MySQL UNION 操作符用于连接两个以上的 SELECT 语句的结果组合到一个结果集合中。</div><div class="line">	多个 SELECT 语句会删除重复的数据。</div><div class="line">	UNION [ALL | DISTINCT]	// DISTINCT: 可选，删除结果集中重复的数据。ALL: 可选，返回所有结果集，包含重复数据。</div><div class="line">	语法：</div><div class="line">		SELECT column1, column2, ... columnN</div><div class="line">		FROM tables</div><div class="line">		[WHERE conditions]</div><div class="line">		UNION [ALL | DISTINCT]</div><div class="line">		SELECT column1, column2, ... columnN</div><div class="line">		FROM tables</div><div class="line">		[WHERE conditions];</div><div class="line">####	node.js 中使用 UNION</div></pre></td></tr></table></figure>
-
-connection.query(&apos;SELECT country FROM websites UNION ALL SELECT country FROM apps ORDER BY country&apos;, function (err, result) {
-    console.log(result);
-});
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">####	带有 WHERE 的 SQL UNION ALL</div></pre></td></tr></table></figure>
-
-connection.query(&apos;SELECT country, name FROM websites WHERE country LIKE &quot;C%&quot; UNION ALL SELECT country, app_name FROM apps WHERE country=&quot;CN&quot; ORDER BY country&apos;, function (err, result) {
-    console.log(result);
-});
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">		</div><div class="line">###	MySQL 排序	</div><div class="line">	语法：</div><div class="line">		SELECT field1, field2, ...filedN table_name1, table_name2</div><div class="line">		ORDER BY field1, [field2] [ASC [DESC]] </div><div class="line">####	在命令提示符中使用 ORDER BY 子句</div></pre></td></tr></table></figure>
-
-use RUNOOB;
-mysql&gt; SELECT * from runoob_tbl ORDER BY submission_date ASC;
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">####	node.js 中 ORDER BY [ASC DESC]</div></pre></td></tr></table></figure>
-
-connection.query(&apos;SELECT * FROM websites ORDER BY id DESC&apos;, function (err, result) {
-    console.log(result);
-});
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">		</div><div class="line">###	MySQL GROUP BY 语句</div><div class="line">	语法：	</div><div class="line">		SELECT column_name, function(column_name)</div><div class="line">		FROM table_name</div><div class="line">		WHERE column_name operator value</div><div class="line">		GROUP BY column_name;</div><div class="line">####	我们使用 GROUP BY 语句 将数据表按名字进行分组，并统计每个人有多少条记录</div></pre></td></tr></table></figure>
-
-SELECT name, COUNT(*) FROM employee_tbl GROUP BY name;
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">####	使用 WITH ROLLUP</div><div class="line">	WITH ROLLUP 可以实现在分组统计数据基础上再进行相同的统计（SUM,AVG,COUNT…）。</div><div class="line">	coalesce函数说明：name !== null ? name : &apos;总数&apos;。</div></pre></td></tr></table></figure>
-
-SELECT coalesce(name, &quot;总数&quot;), SUM(singin) as singin_count FROM employee_tbl GROUP BY name WITH ROLLUP
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">###	Mysql 连接的使用</div><div class="line">	从多个数据表中读取数据。</div><div class="line">	你可以在 SELECT, UPDATE 和 DELETE 语句中使用 Mysql 的 JOIN 来联合多表查询。</div><div class="line">	JOIN 按照功能大致分为如下三类：</div><div class="line">	1.	INNER JOIN（内连接,或等值连接）：获取两个表中字段匹配关系的记录。(类似于交集)</div><div class="line">	2.	LEFT JOIN（左连接）：获取左表所有记录，即使右表没有对应匹配的记录。</div><div class="line">	3.	RIGHT JOIN（右连接）： 与 LEFT JOIN 相反，用于获取右表所有记录，即使左表没有对应匹配的记录。	</div><div class="line">####	在命令提示符中使用 INNER JOIN(相当于交集)</div></pre></td></tr></table></figure>
-
-SELECT a.runoob_id, a.runoob_author, b.runoob_count FROM runoob_tbl a INNER JOIN tcount_tbl b ON a.runoob_author = b.runoob_author;
-SELECT a.runoob_id, a.runoob_author, b.runoob_count FROM runoob_tbl a, tcount_tbl b WHERE a.runoob_author = b.runoob_author;
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">####	MySQL LEFT JOIN</div><div class="line">	MySQL left join 与 join 有所不同。 MySQL LEFT JOIN 会读取左边数据表的全部数据，即便右边表无对应数据。</div></pre></td></tr></table></figure>
-
-SELECT a.runoob_id, a.runoob_author, b.runoob_count FROM runoob_tbl a LEFT JOIN tcount_tbl b ON a.runoob_author = b.runoob_author;
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">####	MySQL RIGHT JOIN</div><div class="line">	MySQL RIGHT JOIN 会读取右边数据表的全部数据，即便左边边表无对应数据。</div></pre></td></tr></table></figure>
-
-SELECT a.runoob_id, a.runoob_author, b.runoob_count FROM runoob_tbl a RIGHT JOIN tcount_tbl b ON a.runoob_author = b.runoob_author;
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">###	MySQL NULL 值处理</div><div class="line">	IS NULL: 当列的值是 NULL,此运算符返回 true。</div><div class="line">	IS NOT NULL: 当列的值不为 NULL, 运算符返回 true。</div><div class="line">	&lt;=&gt;: 比较操作符（不同于=运算符），当比较的的两个值为 NULL 时返回 true。</div><div class="line">####	在命令提示符中使用 NULL 值</div><div class="line">	SELECT * FROM runoob_test_tbl WHERE runoob_count IS NULL;</div><div class="line">	SELECT * FROM runoob_test_tbl WHERE runoob_count IS NOT NULL;</div><div class="line"></div><div class="line">###	MySQL 正则表达式</div><div class="line">![mysql_regexp](/images/mysql_regexp1.png)</div></pre></td></tr></table></figure>
-
-SELECT name FROM websites WHERE BINARY name REGEXP &apos;^F&apos;
-SELECT name FROM person_tbl WHERE name REGEXP &apos;ok$&apos;;
-```
-</code></pre><blockquote>
-<p>   参考文档<br>    <a href="http://www.runoob.com/mysql/mysql-tutorial.html" target="_blank" rel="external">MYSQL</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/12/node-mysql/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/12/node-mysql/" itemprop="url">
-                  node.js 和 mysql 结合使用
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-12T19:06:38+08:00">
-                2017-09-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
-                    <span itemprop="name">NodeJS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/12/node-mysql/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/12/node-mysql/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  1,908
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  9
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>可视化工具：navicat for MySQL</p>
-<h3 id="node和mysql的配合"><a href="#node和mysql的配合" class="headerlink" title="node和mysql的配合"></a>node和mysql的配合</h3><h4 id="mysql和node-js的连接"><a href="#mysql和node-js的连接" class="headerlink" title="mysql和node.js的连接"></a>mysql和node.js的连接</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">var mysql      = require(&apos;mysql&apos;);</div><div class="line">var connection = mysql.createConnection(&#123;</div><div class="line">  host     : &apos;localhost&apos;, // 数据库的ip</div><div class="line">  port	   : 3306, // 数据库起服务的端口</div><div class="line">  user     : &apos;root&apos;, </div><div class="line">  password : &apos;123456&apos;,</div><div class="line">  database : &apos;test&apos; // 数据库名称</div><div class="line">&#125;);</div><div class="line">// 链接数据库 </div><div class="line">connection.connect();</div><div class="line">// 推荐使用下面的链接方式</div><div class="line">connection.connect(function(err) &#123;    </div><div class="line">	if (err) &#123;      </div><div class="line">		console.error(&apos;error connecting: &apos; + err.stack);      </div><div class="line">		return;    </div><div class="line">	&#125;    </div><div class="line">	console.log(&apos;connected as id &apos; + connection.threadId);  // 线程id</div><div class="line">&#125;);</div><div class="line">// 测试数据库是否连接成功 </div><div class="line">connection.query(&apos;SELECT 1 + 1 AS solution&apos;, function (error, results, fields) &#123;</div><div class="line">  if (error) throw error;</div><div class="line">  console.log(&apos;The solution is: &apos;, results[0].solution);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">connection.query(&quot;CREATE TABLE person(id int,user varchar(255),password varchar(255))&quot;, function(err,result)&#123;</div><div class="line">	if(err)&#123;throw err&#125;</div><div class="line">	console.log(&quot;创建表成功&quot;)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
-</code></pre><h3 id="连接池"><a href="#连接池" class="headerlink" title="连接池"></a>连接池</h3><h4 id="连接池连接"><a href="#连接池连接" class="headerlink" title="连接池连接"></a>连接池连接</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">var pool  = mysql.createPool(&#123;    </div><div class="line">	connectionLimit : 10,    </div><div class="line">	host            : &apos;example.org&apos;,    </div><div class="line">	user            : &apos;bob&apos;,    </div><div class="line">	password        : &apos;secret&apos;,    </div><div class="line">	database        : &apos;my_db&apos;  </div><div class="line">&#125;);	</div><div class="line">// 测试数据库是否连接成功 </div><div class="line">pool.query(&apos;SELECT 1 + 1 AS solution&apos;, function (error, results, fields) &#123;</div><div class="line">  if (error) throw error;</div><div class="line">  console.log(&apos;The solution is: &apos;, results[0].solution);</div><div class="line">&#125;);</div><div class="line">// 使用连接池连接可以更容易地共享某个连接，也可以管理多个连接。</div><div class="line">pool.getConnection(function(err, connection) &#123; // 使用连接        </div><div class="line">	connection.query( &apos;SELECT something FROM sometable&apos;, function(err, rows) &#123; </div><div class="line">		// 使用连接执行查询       </div><div class="line">		connection.release(); //连接不再使用，返回到连接池</div><div class="line">		connection.destroy(); // 如果你想关闭连接并从连接池中删除它，在下次需要时连接池会再创建一个新的连接。			</div><div class="line">	&#125;);  </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h4 id="连接池的事件"><a href="#连接池的事件" class="headerlink" title="连接池的事件"></a>连接池的事件</h4><h5 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">pool.on(&apos;connection&apos;, function (connection) &#123;    </div><div class="line">	connection.query(&apos;SET SESSION auto_increment_increment=1&apos;)  </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h5 id="入列"><a href="#入列" class="headerlink" title="入列"></a>入列</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">pool.on(&apos;enqueue&apos;, function () &#123;    </div><div class="line">	console.log(&apos;Waiting for available connection slot&apos;);  </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h5 id="在连接池中关闭所有连接"><a href="#在连接池中关闭所有连接" class="headerlink" title="在连接池中关闭所有连接"></a>在连接池中关闭所有连接</h5><pre><code>如不再需要连接池时，你必须关闭所有连接。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">pool.end(function (err) &#123;    </div><div class="line">	// all connections in the pool have ended  </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h5 id="集群连接池"><a href="#集群连接池" class="headerlink" title="集群连接池"></a>集群连接池</h5><pre><code>集群连接池提供多主机连接.(分组&amp;重试&amp;选择器)
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">// create  </div><div class="line">var poolCluster = mysql.createPoolCluster();  </div><div class="line">// add configurations (the config is a pool config object)  </div><div class="line">poolCluster.add(config); </div><div class="line">// add configuration with automatic name  </div><div class="line">poolCluster.add(&apos;MASTER&apos;, masterConfig); </div><div class="line">// add a named configuration  </div><div class="line">poolCluster.add(&apos;SLAVE1&apos;, slave1Config);  </div><div class="line">poolCluster.add(&apos;SLAVE2&apos;, slave2Config);  </div><div class="line">// remove configurations  </div><div class="line">poolCluster.remove(&apos;SLAVE2&apos;); </div><div class="line">// By nodeId  poolCluster.remove(&apos;SLAVE*&apos;); </div><div class="line">// By target group : SLAVE1-2  </div><div class="line">// Target Group : ALL(anonymous, MASTER, SLAVE1-2), Selector : round-robin(default)  </div><div class="line">poolCluster.getConnection(function (err, connection) &#123;&#125;);  </div><div class="line">// Target Group : MASTER, Selector : round-robin  </div><div class="line">poolCluster.getConnection(&apos;MASTER&apos;, function (err, connection) &#123;&#125;);  </div><div class="line">// Target Group : SLAVE1-2, Selector : order  </div><div class="line">// If can&apos;t connect to SLAVE1, return SLAVE2. (remove SLAVE1 in the cluster)  </div><div class="line">poolCluster.on(&apos;remove&apos;, function (nodeId) &#123;    console.log(&apos;REMOVED NODE : &apos; + nodeId); </div><div class="line">// nodeId = SLAVE1   &#125;);  </div><div class="line">poolCluster.getConnection(&apos;SLAVE*&apos;, &apos;ORDER&apos;, function (err, connection) &#123;&#125;);  </div><div class="line">// of namespace : of(pattern, selector)  </div><div class="line">poolCluster.of(&apos;*&apos;).getConnection(function (err, connection) &#123;&#125;);  </div><div class="line">var pool = poolCluster.of(&apos;SLAVE*&apos;, &apos;RANDOM&apos;);  </div><div class="line">pool.getConnection(function (err, connection) &#123;&#125;);  </div><div class="line">pool.getConnection(function (err, connection) &#123;&#125;);  </div><div class="line">// close all connections  </div><div class="line">poolCluster.end(function (err) &#123;    // all connections in the pool cluster have ended  &#125;);</div></pre></td></tr></table></figure>
-</code></pre><h5 id="更换用户并且改变连接状态"><a href="#更换用户并且改变连接状态" class="headerlink" title="更换用户并且改变连接状态"></a>更换用户并且改变连接状态</h5><pre><code>该命令允许你在不关闭下列socket的情况下，改变当前用户和连接的其余部分.
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">connection.changeUser(&#123;user : &apos;john&apos;&#125;, function(err) &#123;    </div><div class="line">	if (err) throw err;  </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="数据库操作（CURD）"><a href="#数据库操作（CURD）" class="headerlink" title="数据库操作（CURD）"></a>数据库操作（CURD）</h3><pre><code>代表创建（Create）、更新（Update）、读取（Retrieve）和删除（Delete）操作。
-</code></pre><h4 id="查询数据（Retrieve）"><a href="#查询数据（Retrieve）" class="headerlink" title="查询数据（Retrieve）"></a>查询数据（Retrieve）</h4><h5 id="query-sqlString-callback"><a href="#query-sqlString-callback" class="headerlink" title="query(sqlString, callback)"></a>query(sqlString, callback)</h5><pre><code>第一个参数是一条SQL字符串，第二个参数是回调
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">connection.query(&apos;SELECT * FROM `books` WHERE `author` = &quot;David&quot;&apos;, function (error, results, fields) &#123;    </div><div class="line">	if (error) &#123;</div><div class="line">		console.log(error.message);</div><div class="line">	&#125;</div><div class="line">	// 查询之后的操作</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h5 id="query-sqlString-values-callback"><a href="#query-sqlString-values-callback" class="headerlink" title="query(sqlString, values, callback)"></a>query(sqlString, values, callback)</h5><pre><code>带有值的占位符 (查看转义查询值)
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">connection.query(&apos;SELECT * FROM `books` WHERE `author` = ?&apos;, [&apos;David&apos;], function (error, results, fields) &#123;    </div><div class="line">	if (error) &#123;</div><div class="line">		console.log(error.message);</div><div class="line">	&#125;</div><div class="line">	// 查询之后的操作</div><div class="line">&#125;);</div><div class="line">connection.end(); // 断开数据库连接</div></pre></td></tr></table></figure>
-</code></pre><h5 id="query-options-callback"><a href="#query-options-callback" class="headerlink" title="query(options, callback)"></a>query(options, callback)</h5><pre><code>在查询时带有大量的高级可选项
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">connection.query(&#123;</div><div class="line">	sql: &apos;SELECT * FROM `books` WHERE `author` = ?&apos;,    </div><div class="line">	timeout: 40000,   </div><div class="line">	values: [&apos;David&apos;]  </div><div class="line">&#125;, function (error, results, fields) &#123;    </div><div class="line">	if (error) &#123;</div><div class="line">		console.log(error.message);</div><div class="line">	&#125;</div><div class="line">	// 查询之后的操作</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h5 id="查询值转义"><a href="#查询值转义" class="headerlink" title="查询值转义"></a>查询值转义</h5><pre><code>为了防止SQL注入，每当需要在SQL查询中使用用户数据时，你都应当提前对这些值进行转义。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">// 第一种，转义可以通过 mysql.escape(), connection.escape() 或 pool.escape() 方法实现。</div><div class="line">var userId = &apos;some user provided value&apos;;  </div><div class="line">var sql    = &apos;SELECT * FROM users WHERE id = &apos; + connection.escape(userId);  </div><div class="line">connection.query(sql, function(err, results) &#123;    </div><div class="line">	// ...  </div><div class="line">&#125;);</div><div class="line">// 第二种，使用 ? 作为查询字符串中的占位符，替代你想要转义的值。</div><div class="line">connection.query(&apos;SELECT * FROM users WHERE id = ?&apos;, [userId], function(err, results) &#123;    </div><div class="line">	// ...  </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h5 id="查询标识符转义"><a href="#查询标识符转义" class="headerlink" title="查询标识符转义"></a>查询标识符转义</h5><pre><code>如果用户提供了不可信的查询标识符（数据库名、表名、列名），
-你应该用 mysql.escapeId(identifier), connection.escapeId(identifier) 或 pool.escapeId(identifier) 方法对它进行转义。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">var sorter = &apos;date&apos;;  </div><div class="line">var sql    = &apos;SELECT * FROM posts ORDER BY &apos; + connection.escapeId(sorter);  </div><div class="line">connection.query(sql, function(err, results) &#123;    </div><div class="line">	// ...  </div><div class="line">&#125;);</div><div class="line">var userId = 1;  </div><div class="line">var columns = [&apos;username&apos;, &apos;email&apos;];  </div><div class="line">var query = connection.query(&apos;SELECT ?? FROM ?? WHERE id = ?&apos;, [columns, &apos;users&apos;, userId], function(err, results) &#123;    </div><div class="line">	// SELECT `username`, `email` FROM `users` WHERE id = 1</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h5 id="预查询"><a href="#预查询" class="headerlink" title="预查询"></a>预查询</h5><pre><code>你可以使用 mysql.format 来创建一个多插入点的查询语句，对id和值可以使用适当的转义处理 。
-这样你就获得了一个有效并且安全的查询语句，然后可以把它发送给 数据库。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var sql = &quot;SELECT * FROM ?? WHERE ?? = ?&quot;;  </div><div class="line">var inserts = [&apos;users&apos;, &apos;id&apos;, userId];  </div><div class="line">sql = mysql.format(sql, inserts);</div></pre></td></tr></table></figure>
-</code></pre><h4 id="插入数据（Insert）"><a href="#插入数据（Insert）" class="headerlink" title="插入数据（Insert）"></a>插入数据（Insert）</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">var addSql = &apos;INSERT INTO websites(Id, name, url, alexa, country) VALUES(0, ?, ?, ?, ?)&apos;;</div><div class="line">var addSqlParams = [&apos;余真帆的博客&apos;, &apos;fanerge.githut.io&apos;, &apos;333325&apos;, &apos;CN&apos;];</div><div class="line">connection.query(addSql, addSqlParams, function (err, result) &#123;</div><div class="line">	if (err) &#123;</div><div class="line">		console.log(&apos;[SELECT ERROR] - &apos;, err.message);</div><div class="line">	&#125;</div><div class="line">	console.log(&apos;-------INSERT--------&apos;);</div><div class="line">	console.log(&apos;INSERT ID:&apos;, result);</div><div class="line">	console.log(&apos;-------END--------&apos;);</div><div class="line">&#125;);</div><div class="line">connection.end();</div></pre></td></tr></table></figure>
-</code></pre><h4 id="更新数据（Update）"><a href="#更新数据（Update）" class="headerlink" title="更新数据（Update）"></a>更新数据（Update）</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">var modSql = &apos;UPDATE websites SET name = ?, url = ?, alexa = ? WHERE Id = ?&apos;;</div><div class="line">var modSqlParams = [&apos;余真帆的网站&apos;, &apos;https://fanerge.github.io&apos;, 23, 6]</div><div class="line">connection.query(modSql, modSqlParams, function (err, result) &#123;</div><div class="line">	if (err) &#123;</div><div class="line">		console.log(&apos;[UPDATE ERROR] - &apos;, err.message);</div><div class="line">	&#125;</div><div class="line">	console.log(&apos;-------UPDATE--------&apos;);</div><div class="line">	console.log(&apos;UPDATE affectedRows:&apos;, result.affectedRows);</div><div class="line">	console.log(&apos;-------END--------&apos;);</div><div class="line">&#125;);</div><div class="line">connection.end();</div></pre></td></tr></table></figure>
-</code></pre><h4 id="删除数据（Delete）"><a href="#删除数据（Delete）" class="headerlink" title="删除数据（Delete）"></a>删除数据（Delete）</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">var delSql = &apos;DELETE FROM websites WHERE name = &quot;余真帆的博客&quot;&apos;;</div><div class="line">connection.query(delSql, function (err, result) &#123;</div><div class="line">	if (err) &#123;</div><div class="line">		console.log(&apos;[DELETE ERROR] - &apos;, err.message);</div><div class="line">	&#125;</div><div class="line">	console.log(&apos;-------DELETE--------&apos;);</div><div class="line">	console.log(&apos;DELETE affectedRows:&apos;, result.affectedRows);</div><div class="line">	console.log(&apos;-------END--------&apos;);</div><div class="line">&#125;);</div><div class="line">connection.end();</div></pre></td></tr></table></figure>
-</code></pre><h3 id="常用技巧"><a href="#常用技巧" class="headerlink" title="常用技巧"></a>常用技巧</h3><h4 id="获取插入行的id"><a href="#获取插入行的id" class="headerlink" title="获取插入行的id"></a>获取插入行的id</h4><pre><code>如果你把一行插入到一个有自增主键的表中，可以这样获得插入的ID
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">connection.query(&apos;INSERT INTO posts SET ?&apos;, &#123;title: &apos;test&apos;&#125;, function(err, result) &#123;    </div><div class="line">	if (err) throw err;    console.log(result.insertId);  </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h4 id="取得受影响的行数"><a href="#取得受影响的行数" class="headerlink" title="取得受影响的行数"></a>取得受影响的行数</h4><pre><code>你可以从 insert，update 或者 delete 子句中取得受影响的行数。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">connection.query(&apos;DELETE FROM posts WHERE title = &quot;wrong&quot;&apos;, function (err, result) &#123;    </div><div class="line">	if (err) throw err;    </div><div class="line">	console.log(&apos;deleted &apos; + result.affectedRows + &apos; rows&apos;);  </div><div class="line">&#125;)</div></pre></td></tr></table></figure>
-</code></pre><h4 id="取得被改变的行数"><a href="#取得被改变的行数" class="headerlink" title="取得被改变的行数"></a>取得被改变的行数</h4><pre><code>你可以从 update 子句取得被改变的行数。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">connection.query(&apos;UPDATE posts SET ...&apos;, function (err, result) &#123;    </div><div class="line">	if (err) throw err;    </div><div class="line">	console.log(&apos;changed &apos; + result.changedRows + &apos; rows&apos;);  </div><div class="line">&#125;)</div></pre></td></tr></table></figure>
-</code></pre><h4 id="获取连接ID"><a href="#获取连接ID" class="headerlink" title="获取连接ID"></a>获取连接ID</h4><pre><code>你可以取得MySQL的连接ID（“线程ID”），这是一个给定的连接，使用的是线程ID属性。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">connection.connect(function(err) &#123;    </div><div class="line">	if (err) throw err;    </div><div class="line">	console.log(&apos;connected as id &apos; + connection.threadId);  </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h4 id="并行执行查询"><a href="#并行执行查询" class="headerlink" title="并行执行查询"></a>并行执行查询</h4><pre><code>MySQL协议是顺序的，这意味着你需要多次连接执行并行查询。
-你可以使用池来管理连接，一个简单的办法是每传入一个http请求，就创建一个连接。
-</code></pre><h4 id="流式查询行"><a href="#流式查询行" class="headerlink" title="流式查询行"></a>流式查询行</h4><pre><code>有的时候可能需要查询大量的数据行，然后在接收到这些数据行的时候一行行的处理它们。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">var query = connection.query(&apos;SELECT * FROM posts&apos;);  </div><div class="line">query.on(&apos;error&apos;, function(err) &#123;      </div><div class="line">	// 处理错误，这之后会触发 &apos;end&apos; 事件    </div><div class="line">&#125;)    </div><div class="line">.on(&apos;fields&apos;, function(fields) &#123;      </div><div class="line">	// 字段信息    </div><div class="line">&#125;)</div><div class="line">.on(&apos;result&apos;, function(row) &#123;      </div><div class="line">	// 暂停连接。如果你的处理过程涉及到 I/O 操作，这会很有用。      </div><div class="line">	connection.pause();     </div><div class="line">	processRow(row, function() &#123;        </div><div class="line">		connection.resume();      </div><div class="line">	&#125;);    </div><div class="line">&#125;)</div><div class="line">.on(&apos;end&apos;, function() &#123;      </div><div class="line">	// 所有数据行都已经接收完毕    </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h4 id="通过-Streams2-管道输出"><a href="#通过-Streams2-管道输出" class="headerlink" title="通过 Streams2 管道输出"></a>通过 Streams2 管道输出</h4><pre><code>通过管道将查询结果输出到另一个流（最大缓冲 5 个对象）
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">connection.query(&apos;SELECT * FROM posts&apos;)    </div><div class="line">.stream(&#123;highWaterMark: 5&#125;)    </div><div class="line">.pipe(...);</div></pre></td></tr></table></figure>
-</code></pre><h4 id="多语句查询"><a href="#多语句查询" class="headerlink" title="多语句查询"></a>多语句查询</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">// 开启多语句查询</div><div class="line">var connection = mysql.createConnection(&#123;multipleStatements: true&#125;);</div><div class="line">connection.query(&apos;SELECT 1; SELECT 2&apos;, function(err, results) &#123;    </div><div class="line">	if (err) throw err;    </div><div class="line">	// `results` is an array with one element for every statement in the query:     </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><ol>
-<li>先使用var connection = mysql.createConnection方法一个数据库连接的配置项</li>
-<li>使用connection.connect方法连接数据库</li>
-<li>使用sql语句对数据库进行CURD操作</li>
-<li>操作完成后需使用connection.end方法断开数据库连接<br>connection.end(function (err) { … }); // 支持回调<br>connection.destroy(); // 该方法会立即终止底层套接字（underlying socket）。另外，destroy()不会触发更多的事件和回调函数。<blockquote>
-<p>参考文档：<br><a href="http://www.runoob.com/nodejs/nodejs-mysql.html" target="_blank" rel="external">Node.js 连接 MySQL</a><br><a href="http://www.techug.com/post/node-mysql-node-js.html" target="_blank" rel="external">如何在node.js里连接和使用mysql</a><br><a href="https://github.com/mysqljs/mysql" target="_blank" rel="external">mysqljs</a><br><a href="http://www.runoob.com/mysql/mysql-tutorial.html" target="_blank" rel="external">mysql</a></p>
-</blockquote>
-</li>
-</ol>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -3188,7 +3103,7 @@ SELECT name FROM person_tbl WHERE name REGEXP &apos;ok$&apos;;
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">110</span>
+                <span class="site-state-item-count">112</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -3199,7 +3114,7 @@ SELECT name FROM person_tbl WHERE name REGEXP &apos;ok$&apos;;
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -3210,7 +3125,7 @@ SELECT name FROM person_tbl WHERE name REGEXP &apos;ok$&apos;;
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-count">32</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -3327,7 +3242,7 @@ SELECT name FROM person_tbl WHERE name REGEXP &apos;ok$&apos;;
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共138.8k字</span>
+  <span class="post-count">博客全站共140.3k字</span>
 </div>
         
 
