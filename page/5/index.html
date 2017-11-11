@@ -306,6 +306,610 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/13/RESTful-API-设计指南/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/13/RESTful-API-设计指南/" itemprop="url">
+                  RESTful API 设计指南
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-13T21:21:51+08:00">
+                2017-10-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/服务端/" itemprop="url" rel="index">
+                    <span itemprop="name">服务端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/13/RESTful-API-设计指南/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/13/RESTful-API-设计指南/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,339
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  5
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="RESTful-API-的产生"><a href="#RESTful-API-的产生" class="headerlink" title="RESTful API 的产生"></a>RESTful API 的产生</h2><pre><code>当前的发展趋势，就是前端设备层出不穷（手机、平板、桌面电脑、其他专用设备......）。
+因此，必须有一种统一的机制，方便不同的前端设备与后端进行通信，在这种情况下RESTful API产生了。
+</code></pre><h2 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h2><pre><code>HTTP、HTTPS 应用层协议。 
+联网的设备 和 服务器之前的通信。
+</code></pre><h2 id="域名"><a href="#域名" class="headerlink" title="域名"></a>域名</h2><ol>
+<li>API专用域名<br><a href="https://api.example.com" target="_blank" rel="external">https://api.example.com</a></li>
+<li>API放在主域名<br><a href="https://example.org/api/" target="_blank" rel="external">https://example.org/api/</a></li>
+</ol>
+<h2 id="版本（Versioning）"><a href="#版本（Versioning）" class="headerlink" title="版本（Versioning）"></a>版本（Versioning）</h2><pre><code>将API的版本放入URL中。
+https://api.example.com/v1
+</code></pre><h2 id="路径（Endpoint）"><a href="#路径（Endpoint）" class="headerlink" title="路径（Endpoint）"></a>路径（Endpoint）</h2><blockquote>
+<p>   路径又称”终点”（endpoint），表示API的具体网址。<br>    在RESTful架构中，每个网址代表一种资源（resource），所以网址中不能有动词，只能有名词，而且所用的名词往往与数据库的表格名对应。一般来说，数据库中的表都是同种记录的”集合”（collection），所以API中的名词也应该使用复数。<br>    举例来说，有一个API提供动物园（zoo）的信息，还包括各种动物和雇员的信息，则它的路径应该设计成下面这样。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">https://api.example.com/v1/zoos</div><div class="line">https://api.example.com/v1/animals</div><div class="line">https://api.example.com/v1/employees</div></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="HTTP-动词"><a href="#HTTP-动词" class="headerlink" title="HTTP 动词"></a>HTTP 动词</h2><pre><code>对于资源的具体操作类型，由HTTP动词表示。
+常用的HTTP动词有下面五个（括号里是对应的SQL命令）。
+</code></pre><ol>
+<li>GET（SELECT）：从服务器取出资源（一项或多项）。</li>
+<li>POST（CREATE）：在服务器新建一个资源。    </li>
+<li>PUT（UPDATE）：在服务器更新资源（客户端提供改变后的完整资源）。</li>
+<li>PATCH（UPDATE）：在服务器更新资源（客户端提供改变的属性）。</li>
+<li>DELETE（DELETE）:从服务器删除资源。<br>不常用的两个动词</li>
+<li>HEAD：获取资源的元数据。</li>
+<li>OPTIONS：获取信息，关于资源的那些属性是客户端可以改变的。<br>动物园管理系统举例：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">GET /zoos: 列出所有动物园。</div><div class="line">POST /zoos: 新建一个动物园（动物园的信息的请求体中）。</div><div class="line">GET /zoos/ID: 获取某个动物园的信息。</div><div class="line">PUT /zoos/ID: 更新某个指定动物园的信息（提供该动物园的全部信息）。</div><div class="line">PATCH /zoos/ID: 更新某个动物园的信息（提供该动物园的部分信息）。</div><div class="line">DELETE /zoos/ID: 删除某个动物园。</div><div class="line">GET /zoos/ID/animals: 列出某个指定动物园的所有动物。</div><div class="line">DELETE /zoos/ID/animals/ID: 删除某个动物园的指定动物。</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="过滤信息（Filtering）"><a href="#过滤信息（Filtering）" class="headerlink" title="过滤信息（Filtering）"></a>过滤信息（Filtering）</h2><pre><code>如果记录数量很多，服务器不可能都将它们返回给用户。API应该提供参数，过滤返回结果。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">?limit=10：指定返回记录的数量</div><div class="line">?offset=10：指定返回记录的开始位置。</div><div class="line">?page=2&amp;per_page=100：指定第几页，以及每页的记录数。</div><div class="line">?sortby=name&amp;order=asc：指定返回结果按照哪个属性排序，以及排序顺序。</div><div class="line">?animal_type_id=1：指定筛选条件</div></pre></td></tr></table></figure>
+
+参数的设计允许存在冗余，即允许API路径和URL参数偶尔有重复。
+比如，GET /zoo/ID/animals 与 GET /animals?zoo_id=ID 的含义是相同的。
+</code></pre><h2 id="状态码（Status-Codes）"><a href="#状态码（Status-Codes）" class="headerlink" title="状态码（Status Codes）"></a>状态码（Status Codes）</h2><blockquote>
+<p>   服务器向用户返回的状态码和提示信息，常见的有以下一些（方括号中是该状态码对应的HTTP动词）。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">200 OK - [GET]：服务器成功返回用户请求的数据，该操作是幂等的（Idempotent）。</div><div class="line">201 CREATED - [POST/PUT/PATCH]：用户新建或修改数据成功。</div><div class="line">202 Accepted - [*]：表示一个请求已经进入后台排队（异步任务）</div><div class="line">204 NO CONTENT - [DELETE]：用户删除数据成功。</div><div class="line">400 INVALID REQUEST - [POST/PUT/PATCH]：用户发出的请求有错误，服务器没有进行新建或修改数据的操作，该操作是幂等的。</div><div class="line">401 Unauthorized - [*]：表示用户没有权限（令牌、用户名、密码错误）。</div><div class="line">403 Forbidden - [*] 表示用户得到授权（与401错误相对），但是访问是被禁止的。</div><div class="line">404 NOT FOUND - [*]：用户发出的请求针对的是不存在的记录，服务器没有进行操作，该操作是幂等的。</div><div class="line">406 Not Acceptable - [GET]：用户请求的格式不可得（比如用户请求JSON格式，但是只有XML格式）。</div><div class="line">410 Gone -[GET]：用户请求的资源被永久删除，且不会再得到的。</div><div class="line">422 Unprocesable entity - [POST/PUT/PATCH] 当创建一个对象时，发生一个验证错误。</div><div class="line">500 INTERNAL SERVER ERROR - [*]：服务器发生错误，用户将无法判断发出的请求是否成功。</div></pre></td></tr></table></figure></p>
+</blockquote>
+<pre><code>状态码的完全列表参见[w3c](https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)。
+</code></pre><h2 id="错误处理（Error-handling）"><a href="#错误处理（Error-handling）" class="headerlink" title="错误处理（Error handling）"></a>错误处理（Error handling）</h2><pre><code>如果状态码是4xx，就应该向用户返回出错信息。
+一般来说，返回的信息中将error作为键名，出错信息作为键值即可。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">	error: &quot;Invalid API key&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h2 id="返回结果"><a href="#返回结果" class="headerlink" title="返回结果"></a>返回结果</h2><blockquote>
+<p>   针对不同操作，服务器向用户返回的结果应该符合以下规范。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">GET /collection：返回资源对象的列表（数组）</div><div class="line">GET /collection/resource：返回单个资源对象</div><div class="line">POST /collection：返回新生成的资源对象</div><div class="line">PUT /collection/resource：返回完整的资源对象</div><div class="line">PATCH /collection/resource：返回完整的资源对象</div><div class="line">DELETE /collection/resource：返回一个空文档</div></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><pre><code>（1）API的身份认证应该使用OAuth 2.0框架。
+（2）服务器返回的数据格式，应该尽量使用JSON，避免使用XML。
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="http://www.ruanyifeng.com/blog/2014/05/restful_api.html" target="_blank" rel="external">RESTful API 设计</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/12/js代码规范/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/12/js代码规范/" itemprop="url">
+                  js代码规范
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-12T20:56:39+08:00">
+                2017-10-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/代码规范/" itemprop="url" rel="index">
+                    <span itemprop="name">代码规范</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/12/js代码规范/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/12/js代码规范/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  2,722
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  11
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Airbnb JavaScript Style Guide，这是业界中比较权威的js编码规范，先学习这个规范，后期项目配合ESLint指定良好的代码规范。</p>
+<h2 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h2><ol>
+<li>基本类型：直接存取基本类型。<br>String 字符串<br>Number 数值<br>Boolean 布尔类型<br>null<br>undefined</li>
+<li>复制类型：通过引用的方式存取复杂类型。<br>Object 对象<br>Array 数组<br>Function 函数<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2></li>
+<li>对不可变的引用使用 const 避免使用 var。<br>  const 声明的变量不可以重新赋值，而 var 可以。</li>
+<li>对可变的引用使用 let 避免使用 var。</li>
+<li>注意 let 和 const 都是块级作用域。<h2 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h2></li>
+<li>使用字面值创建对象。</li>
+<li>如果你的代码在浏览器环境下执行，别使用 保留字 作为键值。这样的话在 IE8 不会运行。</li>
+<li>使用同义词替换需要使用的保留字。</li>
+<li><p>创建有动态属性名的对象时，使用可被计算的属性名称。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">function getKey(k) &#123;</div><div class="line">	return `a key named $&#123;k&#125;`;</div><div class="line">&#125;</div><div class="line">const obj = &#123;</div><div class="line">	id: 5,</div><div class="line">	name: &apos;San Francisco&apos;,</div><div class="line">	[getKey(&apos;enabled&apos;)]: true,</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用对象方法的简写。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">const atom = &#123;</div><div class="line">  value: 1,</div><div class="line">  // 方法简写</div><div class="line">  addValue(value) &#123;</div><div class="line">	return atom.value + value;</div><div class="line">  &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用对象属性值的简写。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">const lukeSkywalker = &apos;Luke Skywalker111&apos;;</div><div class="line"></div><div class="line">const obj = &#123;</div><div class="line">	lukeSkywalker,</div><div class="line">&#125;;</div><div class="line">console.log(obj.lukeSkywalker); // &apos;Luke Skywalker111&apos;</div></pre></td></tr></table></figure>
+</li>
+<li><p>在对象属性声明前把简写的属性分组（也就是说把简写属性放在一起）。</p>
+<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2></li>
+<li>使用字面值创建数组。</li>
+<li><p>向数组添加元素时使用 Arrary#push 替代直接赋值。    </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">	const someStack = [];</div><div class="line"></div><div class="line">	// bad</div><div class="line">	someStack[someStack.length] = &apos;abracadabra&apos;;</div><div class="line"></div><div class="line">	// good</div><div class="line">	someStack.push(&apos;abracadabra&apos;);</div><div class="line">	```	</div><div class="line">3.	使用拓展运算符 ... 复制数组。</div></pre></td></tr></table></figure>
+<p>let array = [‘1’,’2’];<br>console.log([…array]);</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">4.	使用 Array#from 把一个类数组对象转换成数组。</div></pre></td></tr></table></figure>
+<p>const foo = document.querySelectorAll(‘.foo’);<br>const nodes = Array.from(foo);</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">##	解构</div><div class="line">1.	使用解构存取和使用多属性对象。</div></pre></td></tr></table></figure>
+<p>// good<br>function getFullName(obj) {<br>  const { firstName, lastName } = obj;<br>  return <code>${firstName} ${lastName}</code>;<br>}</p>
+<p>// best<br>  function getFullName({ firstName, lastName }) {<br>  return <code>${firstName} ${lastName}</code>;<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">2.	对数组使用解构赋值。</div></pre></td></tr></table></figure>
+<p>const arr = [1, 2, 3, 4];<br>const [first, second] = arr;<br>console.log(first, second); // 1, 2</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">3.	需要回传多个值时，使用对象解构，而不是数组解构。</div></pre></td></tr></table></figure>
+<p>function processInput(input) {<br>  // then a miracle occurs<br>  return { left, right, top, bottom };<br>}</p>
+<p>// 调用时只选择需要的数据<br>const { left, right } = processInput(input);</p>
+<h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2></li>
+<li>字符串使用单引号 ‘’。 </li>
+<li>字符串超过 80 个字节应该使用字符串连接号换行。\    </li>
+<li>过度使用字串连接符号可能会对性能造成影响。可换用 +     </li>
+<li>程序化生成字符串时，使用模板字符串代替字符串连接。<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2></li>
+<li>使用函数声明代替函数表达式。    </li>
+<li><p>立即调用的函数表达式 (IIFE)    </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">(() =&gt; &#123;</div><div class="line">  console.log(&apos;Welcome to the Internet. Please follow me.&apos;);</div><div class="line">&#125;)();</div></pre></td></tr></table></figure>
+</li>
+<li><p>永远不要在一个非函数代码块（if、while 等）中声明一个函数，把那个函数赋给一个变量。<br>浏览器允许你这么做，但它们的解析表现不一致。<br>可以这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">let test;</div><div class="line">if (currentUser) &#123;</div><div class="line">  test = () =&gt; &#123;</div><div class="line">	console.log(&apos;Yup.&apos;);</div><div class="line">  &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>永远不要把参数命名为 arguments。这将取代原来函数作用域内的 arguments 对象。</p>
+</li>
+<li>不要使用 arguments。可以选择 rest 语法 … 替代。</li>
+<li><p>直接给函数的参数指定默认值，不要使用一个变化的函数参数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">function handleThings(opts = &#123;&#125;) &#123;</div><div class="line">  // ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>直接给函数参数赋值时需要避免副作用。</p>
+<h2 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a>箭头函数</h2></li>
+<li><p>当你必须使用函数表达式（或传递一个匿名函数）时，使用箭头函数符号。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[1, 2, 3].map((x) =&gt; &#123;</div><div class="line">	return x * x;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</li>
+<li><p>如果一个函数适合用一行写出并且只有一个参数，那就把花括号、圆括号和 return 都省略掉。<br>如果不是，那就不要省略。</p>
+<h2 id="Classes-和-Constructors"><a href="#Classes-和-Constructors" class="headerlink" title="Classes 和 Constructors"></a>Classes 和 Constructors</h2></li>
+<li><p>总是使用 class。避免直接操作 prototype 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">// good</div><div class="line">class Queue &#123;</div><div class="line">	constructor(contents = []) &#123;</div><div class="line">	  this._queue = [...contents];</div><div class="line">	&#125;</div><div class="line">	pop() &#123;</div><div class="line">	  const value = this._queue[0];</div><div class="line">	  this._queue.splice(0, 1);</div><div class="line">	  return value;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">var demo = new Queue([1, 2, 3]);</div><div class="line">console.log(demo.pop()); // 1</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用 extends 继承。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">class PeekableQueue extends Queue &#123;</div><div class="line">	constructor (args) &#123;</div><div class="line">		super(args);</div><div class="line">	&#125;</div><div class="line">	peek() &#123;</div><div class="line">		return this._queue[0];</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>方法可以返回 this 来帮助链式调用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">class Jedi &#123;</div><div class="line">	jump() &#123;</div><div class="line">		this.jumping = true;</div><div class="line">		return this;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	setHeight(height) &#123;</div><div class="line">		this.height = height;</div><div class="line">		return this;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">const luke = new Jedi();</div><div class="line">luke.jump()</div><div class="line">	.setHeight(20);</div></pre></td></tr></table></figure>
+</li>
+<li><p>可以写一个自定义的 toString() 方法，但要确保它能正常运行并且不会引起副作用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">class Jedi &#123;</div><div class="line">	constructor(options = &#123;&#125;) &#123;</div><div class="line">		this.name = options.name || &apos;no name&apos;;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	getName() &#123;</div><div class="line">		return this.name;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	toString() &#123;</div><div class="line">		return `Jedi - $&#123;this.getName()&#125;`;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h2><ol>
+<li><p>总是使用模组 (import/export) 而不是其他非标准模块系统。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// ok</div><div class="line">import AirbnbStyleGuide from &apos;./AirbnbStyleGuide&apos;;</div><div class="line">export default AirbnbStyleGuide.es6;</div><div class="line"></div><div class="line">// best</div><div class="line">import &#123; es6 &#125; from &apos;./AirbnbStyleGuide&apos;;</div><div class="line">export default es6;</div></pre></td></tr></table></figure>
+</li>
+<li><p>不要使用通配符 import。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">// bad</div><div class="line">import * as AirbnbStyleGuide from &apos;./AirbnbStyleGuide&apos;;</div><div class="line"></div><div class="line">// good</div><div class="line">import AirbnbStyleGuide from &apos;./AirbnbStyleGuide&apos;;</div></pre></td></tr></table></figure>
+</li>
+<li><p>不要从 import 中直接 export。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">import &#123; es6 &#125; from &apos;./AirbnbStyleGuide&apos;;</div><div class="line">export default es6;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="Iterators-amp-Generators"><a href="#Iterators-amp-Generators" class="headerlink" title="Iterators &amp; Generators"></a>Iterators &amp; Generators</h2><ol>
+<li>不要使用 iterators。使用高阶函数例如 map() 和 reduce() 替代 for-of。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">const numbers = [1, 2, 3, 4, 5];</div><div class="line"></div><div class="line">// good</div><div class="line">let sum = 0;</div><div class="line">numbers.forEach((num) =&gt; sum += num);</div><div class="line"></div><div class="line">// best (use the functional force)</div><div class="line">const sum = numbers.reduce((total, num) =&gt; total + num, 0);</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><ol>
+<li>普通属性使用 . 来访问对象的属性。    </li>
+<li>当通过变量访问属性时使用中括号 []。<h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2></li>
+<li>一直使用 const 来声明变量，如果不这样做就会产生全局变量。我们需要避免全局命名空间的污染。</li>
+<li><p>单独声明每一个变量。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">const items = getItems();</div><div class="line">const goSportsTeam = true;</div><div class="line">const dragonball = &apos;z&apos;;</div></pre></td></tr></table></figure>
+</li>
+<li><p>将所有的 const 和 let 分组。</p>
+</li>
+<li>在你需要的地方给变量赋值，但请把它们放在一个合理的位置。<h2 id="提升"><a href="#提升" class="headerlink" title="提升"></a>提升</h2></li>
+<li>var 声明会被提升至该作用域的顶部，但它们赋值不会提升。<br>let 和 const 被赋予了一种称为「暂时性死区（Temporal Dead Zones, TDZ）」的概念。</li>
+<li>匿名函数表达式的变量名会被提升，但函数内容并不会。</li>
+<li>命名的函数表达式的变量名会被提升，但函数名和函数函数内容并不会。</li>
+<li>函数声明的名称和函数体都会被提升。<h2 id="比较运算符-amp-等号"><a href="#比较运算符-amp-等号" class="headerlink" title="比较运算符 &amp; 等号"></a>比较运算符 &amp; 等号</h2></li>
+<li>优先使用 === 和 !== 而不是 == 和 !=。</li>
+<li>条件表达式例如 if 语句通过抽象方法 ToBoolean 强制计算它们的表达式并且总是遵守下面的规则<br>对象 被计算为 true<br>Undefined 被计算为 false<br>Null 被计算为 false<br>布尔值 被计算为 布尔的值<br>数字 如果是 +0、-0、或 NaN 被计算为 false, 否则为 true<br>字符串 如果是空字符串 ‘’ 被计算为 false，否则为 true</li>
+<li>使用简写。<h2 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h2></li>
+<li>使用大括号包裹所有的多行代码块。</li>
+<li>如果通过 if 和 else 使用多行代码块，把 else 放在 if 代码块关闭括号的同一行。<h2 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h2></li>
+<li>使用 /<em>* … </em>/ 作为多行注释。包含描述、指定所有参数和返回值的类型和值。<br>配合 JSDoc 完美</li>
+<li>使用 // 作为单行注释。在评论对象上面另起一行使用单行注释。<br>在注释前插入空行。</li>
+<li>给注释增加 FIXME 或 TODO 的前缀可以帮助其他开发者快速了解这是一个需要复查的问题，或是给需要实现的功能提供一个解决方式。<br>这将有别于常见的注释，因为它们是可操作的。<br>使用FIXME – need to figure this out 或者 TODO – need to implement。</li>
+<li><p>使用 // FIXME: 标注问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">class Calculator &#123;</div><div class="line">	constructor() &#123;</div><div class="line">		// FIXME: shouldn&apos;t use a global here</div><div class="line">		total = 0;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用 // TODO: 标注问题的解决方式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">class Calculator &#123;</div><div class="line">  constructor() &#123;</div><div class="line">	// TODO: total should be configurable by an options param</div><div class="line">	this.total = 0;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="空白"><a href="#空白" class="headerlink" title="空白"></a>空白</h2><ol>
+<li>使用 2 个空格作为缩进。</li>
+<li>在花括号前放一个空格。</li>
+<li>在控制语句（if、while 等）的小括号前放一个空格。<br>在函数调用及声明中，不在函数的参数列表前加空格。</li>
+<li>使用空格把运算符隔开。</li>
+<li>在文件末尾插入一个空行。</li>
+<li>在使用长方法链时进行缩进。使用前面的点 . 强调这是方法调用而不是新语句。</li>
+<li>在块末和新语句前插入空行。<h2 id="逗号"><a href="#逗号" class="headerlink" title="逗号"></a>逗号</h2></li>
+<li>行首不要加逗号。</li>
+<li>增加结尾的逗号: 需要。<h2 id="分号"><a href="#分号" class="headerlink" title="分号"></a>分号</h2></li>
+<li>每个语句都使用分号。</li>
+<li>IIFE 函数前添加分号。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">// good (防止函数在两个 IIFE 合并时被当成一个参数)</div><div class="line">;(() =&gt; &#123;</div><div class="line">  const name = &apos;Skywalker&apos;;</div><div class="line">  return name;</div><div class="line">&#125;)();</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h2><ol>
+<li>在语句开始时执行类型转换。</li>
+<li>显式转换字符串。<br>const reviewScore = 9;<br>const totalScore = String(reviewScore);</li>
+<li><p>对数字使用 parseInt 转换，并带上类型转换的基数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">const val = Number(inputValue);</div><div class="line"></div><div class="line">const val = parseInt(inputValue, 10);</div></pre></td></tr></table></figure>
+</li>
+<li><p>如果因为某些原因 parseInt 成为你所做的事的瓶颈而需要使用位操作解决性能问题时，留个注释说清楚原因和你的目的。</p>
+</li>
+<li>小心使用位操作运算符。数字会被当成 64 位值，但是位操作运算符总是返回 32 位的整数。<br>位操作处理大于 32 位的整数值时还会导致意料之外的行为。</li>
+<li>转换为buer。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">const age = 0;</div><div class="line">const hasAge = Boolean(age);</div><div class="line">const hasAge = !!age;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="命名规则"><a href="#命名规则" class="headerlink" title="命名规则"></a>命名规则</h2><ol>
+<li>避免单字母命名。命名应具备描述性。</li>
+<li>使用驼峰式命名对象、函数和实例。</li>
+<li>使用帕斯卡（大驼峰）式命名构造函数或类。</li>
+<li>使用下划线 _ 开头命名私有属性。</li>
+<li><p>别保存 this 的引用。使用箭头函数或 Function#bind。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">function foo() &#123;</div><div class="line">  return () =&gt; &#123;</div><div class="line">	console.log(this);</div><div class="line">  &#125;;</div><div class="line">&#125;</div><div class="line"></div><div class="line">function foo() &#123;</div><div class="line">	return function() &#123;</div><div class="line">		console.log(this);</div><div class="line">	&#125;.bind(this)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>如果你的文件只输出一个类，那你的文件名必须和类名完全保持一致。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// file contents</div><div class="line">class CheckBox &#123;</div><div class="line">  // ...</div><div class="line">&#125;</div><div class="line">export default CheckBox;</div><div class="line"></div><div class="line">import CheckBox from &apos;./CheckBox&apos;;</div></pre></td></tr></table></figure>
+</li>
+<li><p>当你导出默认的函数时使用驼峰式命名。<br>你的文件名必须和函数名完全保持一致。</p>
+</li>
+<li>当你导出单例、函数库、空对象时使用帕斯卡式命名。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">const AirbnbStyleGuide = &#123;</div><div class="line">  es6: &#123;</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">export default AirbnbStyleGuide;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="存取器"><a href="#存取器" class="headerlink" title="存取器"></a>存取器</h2><ol>
+<li>属性的存取函数不是必须的。    </li>
+<li><p>如果你需要存取函数时使用 getVal() 和 setVal(‘hello’)。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">dragon.getAge();</div><div class="line">dragon.setAge(25);</div></pre></td></tr></table></figure>
+</li>
+<li><p>如果属性是布尔值，使用 isVal() 或 hasVal()。</p>
+</li>
+<li>创建 get() 和 set() 函数是可以的，但要保持一致。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">class Jedi &#123;</div><div class="line">  constructor(options = &#123;&#125;) &#123;</div><div class="line">	const lightsaber = options.lightsaber || &apos;blue&apos;;</div><div class="line">	this.set(&apos;lightsaber&apos;, lightsaber);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  set(key, val) &#123;</div><div class="line">	this[key] = val;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  get(key) &#123;</div><div class="line">	return this[key];</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h2><ol>
+<li>当给事件附加数据时（无论是 DOM 事件还是私有事件），传入一个哈希而不是原始值。<br>这样可以让后面的贡献者增加更多数据到事件数据而无需找出并更新事件的每一个处理器。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$(this).trigger(&apos;listingUpdated&apos;, &#123; listingId : listing.id &#125;);</div><div class="line"></div><div class="line">$(this).on(&apos;listingUpdated&apos;, function(e, data) &#123;</div><div class="line">  // do something with data.listingId</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="Jquery"><a href="#Jquery" class="headerlink" title="Jquery"></a>Jquery</h2><ol>
+<li>使用 $ 作为存储 jQuery 对象的变量名前缀。<br>const $sidebar = $(‘.sidebar’);</li>
+<li><p>缓存 jQuery 查询。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">function setSidebar() &#123;</div><div class="line">  const $sidebar = $(&apos;.sidebar&apos;);</div><div class="line">  $sidebar.hide();</div><div class="line"></div><div class="line">  $sidebar.css(&#123;</div><div class="line">	&apos;background-color&apos;: &apos;pink&apos;</div><div class="line">  &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>对 DOM 查询使用层叠 $(‘.sidebar ul’) 或 父元素 &gt; 子元素 $(‘.sidebar &gt; ul’)。</p>
+</li>
+<li>对有作用域的 jQuery 对象查询使用 find。<blockquote>
+<p>   参考文档：<br><a href="https://www.kancloud.cn/kancloud/javascript-style-guide/43153" target="_blank" rel="external">Airbnb JavaScript 代码规范（ES6）</a><br><a href="https://github.com/airbnb/javascript#airbnb-javascript-style-guide-" target="_blank" rel="external">Airbnb JavaScript Style Guide</a></p>
+</blockquote>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/10/深入浅出Node-js-读书笔记（下）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2759,605 +3363,6 @@ postman允许你运行collection，你可以运行任意的次数。
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/25/jsDoc学习-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/25/jsDoc学习-2/" itemprop="url">
-                  jsDoc学习-标签1
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-25T21:03:22+08:00">
-                2017-09-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/代码规范/" itemprop="url" rel="index">
-                    <span itemprop="name">代码规范</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/25/jsDoc学习-2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/25/jsDoc学习-2/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  1,989
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  9
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>块标签（Block Tags）</p>
-<h3 id="abstract"><a href="#abstract" class="headerlink" title="@abstract"></a>@abstract</h3><pre><code>该成员（一般指父类的方法）必须在继承的子类中实现（或重写）。
-别名：@virtual
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * 奶制品</div><div class="line"> * @constructor</div><div class="line"> */</div><div class="line">function DairyProduct () &#123;&#125;</div><div class="line">/**</div><div class="line"> * 检查奶制品的状态</div><div class="line"> * @abstract</div><div class="line"> * @return &#123;boolean&#125;</div><div class="line"> */</div><div class="line">DairyProduct.prototype.isSolid = function () &#123;</div><div class="line">  throw new Error(&apos;must be implemented by subclass!&apos;);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">/**</div><div class="line"> * 牛奶</div><div class="line"> * @constructor</div><div class="line"> */</div><div class="line">function Milk () &#123;&#125;</div><div class="line">Milk.prototype = new DairyProduct();</div><div class="line">// 这里重写了父类的isSolid方法</div><div class="line">Milk.prototype.isSolid = function () &#123;</div><div class="line">	return false;</div><div class="line">&#125;;</div><div class="line">var dd = new Milk();</div><div class="line">console.log(dd.isSolid()); // false</div></pre></td></tr></table></figure>
-</code></pre><h3 id="access"><a href="#access" class="headerlink" title="@access"></a>@access</h3><pre><code>指定该成员的访问级别（私有 private，公共 public，或保护 protected）
-语法：@access &lt;private|protected|public&gt;
-    @access private 等价于 @private;
-    @access protected 等价于 @protected;
-    @access public 等价于 @public;
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @constructor</div><div class="line"> */</div><div class="line">function Thingy () &#123;</div><div class="line">	/** @access private */</div><div class="line">	var foo = 0;</div><div class="line">	/** @access protected */</div><div class="line">	this._bar = 1;</div><div class="line">	/** @access public */</div><div class="line">	this.pez = 2;</div><div class="line">&#125;</div><div class="line">OR</div><div class="line">/**</div><div class="line"> * @constructor</div><div class="line"> */</div><div class="line">function Thingy () &#123;</div><div class="line">	/** @private */</div><div class="line">	var foo = 0;</div><div class="line">	/** @protected */</div><div class="line">	this._bar = 1;</div><div class="line">	/** @public */</div><div class="line">	this.pez = 2;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="alias"><a href="#alias" class="headerlink" title="alias"></a>alias</h3><pre><code>标记成员有一个别名
-语法：@alias &lt;aliasNamepath&gt;
-例如，匿名的构造函数使用@alias。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">Klass(&apos;trackr.CookieManager&apos;,</div><div class="line">	/**</div><div class="line">	 * 匿名函数</div><div class="line">	 * @alias trackr.CookieManager</div><div class="line">	 * @param kv</div><div class="line">	 */</div><div class="line">	function (kv) &#123;</div><div class="line">		/** trackr.CookieManager＃value */</div><div class="line">		this.value = kv;</div><div class="line">	&#125;</div><div class="line">)</div></pre></td></tr></table></figure>
-
-您也可以在一个立即调用的函数表达式（IIFE）中创建的成员中使用@alias标签。
-@alias标签告诉JSDoc，这些成员都暴露在IIFE作用域之外的。
-例如，命名空间的静态方法使用@alias。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">/** @namespace */</div><div class="line">var Apple = &#123;&#125;;</div><div class="line">(function (ns) &#123;</div><div class="line">	/**</div><div class="line">	 * @namespace</div><div class="line">	 * @alias Apple.Core</div><div class="line">	 */</div><div class="line">	var core = &#123;&#125;;</div><div class="line">	/** Documented as Apple.Core.seed */</div><div class="line">	core.speed = function () &#123;&#125;;</div><div class="line">	ns.Core = core;</div><div class="line">&#125;)(Apple);</div></pre></td></tr></table></figure>
-
-对于那些对象字面量中定义的成员，可以使用@alias标签替代的@lends标记。
-例如，对象常量使用@alias。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">// Documenting objectA with @alias</div><div class="line">var objectA = (function() &#123;</div><div class="line">	/**</div><div class="line">	 * Documented as objectA</div><div class="line">	 * @alias objectA</div><div class="line">	 * @namespace</div><div class="line">	 */</div><div class="line">	 /** @lends objectA */</div><div class="line">	var x = &#123;</div><div class="line">		/**</div><div class="line">		 * Documented as objectA.myProperty</div><div class="line">		 * @member</div><div class="line">		 */</div><div class="line">		myProperty: &apos;foo&apos;</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">	return x;</div><div class="line">&#125;)();</div></pre></td></tr></table></figure>
-</code></pre><h3 id="auguments"><a href="#auguments" class="headerlink" title="@auguments"></a>@auguments</h3><pre><code>@augments or@extends标签指明标识符继承自哪个父类，后面需要加父类名。
-你可以使用这个标签来记录基于类和并基于原型的继承。
-别名：@extends
-语法：@auguments &lt;namepath&gt;
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * 动物</div><div class="line"> * @constructor</div><div class="line"> */</div><div class="line">function Animal () &#123;</div><div class="line">	this.alive = true;</div><div class="line">&#125;</div><div class="line"></div><div class="line">/**</div><div class="line"> * 鸭子</div><div class="line"> * @constructor</div><div class="line"> * @auguments Animal</div><div class="line"> */</div><div class="line">function Duck () &#123;&#125;</div><div class="line">Duck.prototype = new Animal();</div><div class="line">Duck.prototype.speak = function () &#123;</div><div class="line">	if (this.alive) &#123;</div><div class="line">		alert(&apos;Quack!&apos;);</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line">var d = new Duck();</div><div class="line">d.speak();</div></pre></td></tr></table></figure>
-</code></pre><h3 id="author"><a href="#author" class="headerlink" title="@author"></a>@author</h3><pre><code>@author标签标识一个项目的作者。
-语法：@author &lt;name&gt; [&lt;emailAddress&gt;]
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line">* @author fanerge &lt;fanerge@qq.com&gt;</div><div class="line">*/</div><div class="line">function MyClass () &#123;&#125;;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="borrows"><a href="#borrows" class="headerlink" title="@borrows"></a>@borrows</h3><pre><code>@borrows标签允许您将另一个标识符的描述添加到你的当前描述。
-语法：@borrows &lt;that namepath&gt; as &lt;this namepath&gt;
-在这个例子中，&quot;trstr&quot;函数存在文档，但&quot;util.trim&quot;只是使用不同的名称引用相同的功能。
-例如，复制trstr的文档描述给util.trim。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @namespace</div><div class="line"> * @borrows trstr as trim</div><div class="line"> */</div><div class="line">var util = &#123;</div><div class="line">	trim: trstr</div><div class="line">&#125;;</div><div class="line"></div><div class="line">/**</div><div class="line"> * Remove whitespace from around a string.</div><div class="line"> * @param &#123;string&#125; str</div><div class="line"> */</div><div class="line">function trstr(str) &#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="callback"><a href="#callback" class="headerlink" title="@callback"></a>@callback</h3><pre><code>描述一个回调函数。@Callback标签提供回调函数（可传递给其他函数）的描述，包括回调的参数和返回值。
-你可以包涵任何一个你能提供给@method标签。
-语法：@callback &lt;namepath&gt;
-例如,描述一个指定类回调。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @class</div><div class="line"> */</div><div class="line">function Requester() &#123;&#125;</div><div class="line"></div><div class="line">/**</div><div class="line"> * Send a request.</div><div class="line"> * @param &#123;Requester~requestCallback&#125; cb - The callback that handles the response.</div><div class="line"> */</div><div class="line">Requester.prototype.send = function(cb) &#123;</div><div class="line">	// code</div><div class="line">&#125;;</div><div class="line"></div><div class="line">/**</div><div class="line"> * This callback is displayed as part of the Requester class.</div><div class="line"> * @callback Requester~requestCallback</div><div class="line"> * @param &#123;number&#125; responseCode</div><div class="line"> * @param &#123;string&#125; responseMessage</div><div class="line"> */</div></pre></td></tr></table></figure>
-</code></pre><h3 id="class"><a href="#class" class="headerlink" title="@class"></a>@class</h3><pre><code>@class标签标明函数是一个构造器函数，意味着需要使用 new 关键字来返回一个实例，即使用 new 关键字实例化。
-别名：@constructor
-语法：@class [&lt;type&gt; &lt;name&gt;]
-例如，一个函数构建一个Person实例
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * 创建一个人</div><div class="line"> * @class</div><div class="line"> */</div><div class="line">function Person () &#123;&#125;</div><div class="line">var p = new Person();</div></pre></td></tr></table></figure>
-</code></pre><h3 id="classdesc"><a href="#classdesc" class="headerlink" title="@classdesc"></a>@classdesc</h3><pre><code>@classdesc标签用于为类提供一个描述，这样和构造函数的描述区分开来。
-@classdesc标签应该与 @class (或 @constructor)标签结合使用。
-语法：@classdesc &lt;some description&gt;
-如下所示，一个类有两个添加描述的地方，一个适用于函数本身，而另一个一般适用于类。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * This is a description of the MyClass constructor function.</div><div class="line"> * @class</div><div class="line"> * @classdesc This is a description of the MyClass class.</div><div class="line"> */</div><div class="line">function MyClass() &#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="constant"><a href="#constant" class="headerlink" title="@constant"></a>@constant</h3><pre><code>@constant 标签指明这个对象是一个常量。
-语法：@constant [&lt;type&gt; &lt;name&gt;]    
-例如，一个字符串常量表示红色。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">/** @constant</div><div class="line">	@type &#123;string&#125;</div><div class="line">	@default</div><div class="line">*/</div><div class="line">const RED = &apos;FF0000&apos;;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="constructs"><a href="#constructs" class="headerlink" title="@constructs"></a>@constructs</h3><pre><code>当使用对象字面量形式定义类（例如使用@lends标签）时，可使用@constructs标签标明这个函数用来作为类的构造实例。
-语法：＠constructs [name]
-例如， @constructs 和 @lends 结合使用
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">var Person = makeClass(</div><div class="line">   /** @lends Person.prototype */</div><div class="line">   &#123;</div><div class="line">       /**</div><div class="line">        * @constructs</div><div class="line">        * @param name</div><div class="line">        */</div><div class="line">       initialize: function (name) &#123;</div><div class="line">           this.name = name;</div><div class="line">       &#125;,</div><div class="line">       /**</div><div class="line">        * @param msg</div><div class="line">        * @returns &#123;*&#125;</div><div class="line">        */</div><div class="line">       say: function (msg) &#123;</div><div class="line">           return `$&#123;this.name&#125;says:$&#123;msg&#125;`;</div><div class="line">       &#125;</div><div class="line">   &#125;);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="copyright"><a href="#copyright" class="headerlink" title="@copyright"></a>@copyright</h3><pre><code>@copyright标签是用来描述一个文件的版权信息。一般和@file 标签结合使用。
-语法：@copyright &lt;some copyright text&gt;
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line">* @file this is javascript</div><div class="line">* @copyright fanerge 2017</div><div class="line">*/</div></pre></td></tr></table></figure>
-</code></pre><h3 id="default"><a href="#default" class="headerlink" title="@default"></a>@default</h3><pre><code>@default标签可以让你记录标识的赋值。
-可以在标签后面跟上他的值，或者当值是一个唯一被分配的简单值(可以是：一个字符串，数字，布尔值或null)的时候，你可以让JSDoc从源代码中获取值，自动记录 。
-别名：defaultvalue
-语法：@default [&lt;some value&gt;]
-在本实例中,一个常量被记录。该常数的值为0xff0000。通过添加@default标签，这个值将自动添加到文档。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line">* @constant</div><div class="line">* @default</div><div class="line">*/</div><div class="line">const RED = &apos;0xff0000&apos;;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="deprecated"><a href="#deprecated" class="headerlink" title="@deprecated"></a>@deprecated</h3><pre><code>@deprecated 标签指明一个标识在你代码中已经被弃用。
-语法：@deprecated [&lt;some text&gt;]
-例如，描述一个old函数从2.0版本开始已经被弃用
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line">* @deprecated since version 2.0</div><div class="line">*/</div><div class="line">function old () &#123;&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="description"><a href="#description" class="headerlink" title="@description"></a>@description</h3><pre><code>@description标签允许您提供一般描述。
-该说明可能包括HTML标签。如果Markdown 插件启用的话，它也可包括Markdown格式。
-别名：@desc
-语法：@description &lt;some description&gt;
-例如，不用@description标签描述一个标识
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Add two numbers.</div><div class="line"> * @param &#123;number&#125; a</div><div class="line"> * @param &#123;number&#125; b</div><div class="line"> * @returns &#123;number&#125;</div><div class="line"> */</div><div class="line">function add(a, b) &#123;</div><div class="line">	return a + b;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-例如，用@description标签描述一个标识
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @param &#123;number&#125; a</div><div class="line"> * @param &#123;number&#125; b</div><div class="line"> * @returns &#123;number&#125;</div><div class="line"> * @description Add two numbers.</div><div class="line"> */</div><div class="line">function add(a, b) &#123;</div><div class="line">	return a + b;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="enum"><a href="#enum" class="headerlink" title="@enum"></a>@enum</h3><pre><code>@enum标签描述一个静态属性值的全部相同的集合。
-枚举类似一个属性的集合，除了枚举自己的描述注释之外，属性都记录在容器内部的注释中。
-通常这种标签是与@ReadOnly结合使用，作为一个枚举通常表示常量的集合。
-语法：@enum [&lt;type&gt;]
-例如，一个数字枚举，表示的3种状态
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Enum for tri-state values.</div><div class="line"> * @readonly</div><div class="line"> * @enum &#123;number&#125;</div><div class="line"> */</div><div class="line">var triState = &#123;</div><div class="line">	/** The true value */</div><div class="line">	TRUE: 1,</div><div class="line">	FALSE: -1,</div><div class="line">	/** @type &#123;boolean&#125; */</div><div class="line">	MAYBE: true</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="event"><a href="#event" class="headerlink" title="@event"></a>@event</h3><pre><code>描述一个事件。@event标签允许您描述一个可触发的事件，一个典型的事件是由对象定义的一组属性来表示。
-标签来定义事件的具体类型，您可以使用@fires标记，以表明这个种方法可以触发该事件。
-你还可以使用@listens标签，以指示表明用这个表示来侦听该事件。    
-语法：@event &lt;className&gt;#[event:]&lt;eventName&gt;
-例如，描述一个作为事件的行数
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Throw a snowball.</div><div class="line"> *</div><div class="line"> * @fires Hurl#snowball</div><div class="line"> */</div><div class="line">Hurl.prototype.snowball = function() &#123;</div><div class="line">	/**</div><div class="line">	 * Snowball event.</div><div class="line">	 *</div><div class="line">	 * @event Hurl#snowball</div><div class="line">	 * @type &#123;object&#125;</div><div class="line">	 * @property &#123;boolean&#125; isPacked - Indicates whether the snowball is tightly packed.</div><div class="line">	 */</div><div class="line">	this.emit(&apos;snowball&apos;, &#123;</div><div class="line">		isPacked: this._snowball.isPacked</div><div class="line">	&#125;);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="example"><a href="#example" class="headerlink" title="@example"></a>@example</h3><pre><code>提供一个如何使用描述项的例子。跟随此标签的文字将显示为高亮代码。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Solves equations of the form a * x = b</div><div class="line"> * @example</div><div class="line"> * // returns 2</div><div class="line"> * globalNS.method1(5, 10);</div><div class="line"> * @example</div><div class="line"> * // returns 3</div><div class="line"> * globalNS.method(5, 15);</div><div class="line"> * @returns &#123;Number&#125; Returns the value of x for the equation.</div><div class="line"> */</div><div class="line">globalNS.method1 = function (a, b) &#123;</div><div class="line">	return b / a;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="exports"><a href="#exports" class="headerlink" title="@exports"></a>@exports</h3><pre><code>@exports标签描述由JavaScript模块的exports或module.exports属性导出的任何内容。
-语法：@exports &lt;moduleName&gt;
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * A module that says hello!</div><div class="line"> * @module hello/world</div><div class="line"> */</div><div class="line"></div><div class="line">/** Say hello. */</div><div class="line">exports.sayHello = function() &#123;</div><div class="line">	return &apos;Hello world&apos;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="external"><a href="#external" class="headerlink" title="@external"></a>@external</h3><pre><code>@external标签用来标识一个在当前包外部定义的类，命名空间，或模块。
-通过使用这个标签，你可以描述你的包的外部标识的扩展，或者您也可以提供关于 外部标识的相关信息给你的包的使用者。
-你也可以在任何其他JSDoc标签中引用外部标识的namepath（名称路径）。
-外部标识引用的路径名 始终需要使用external:前缀：（例如{@link external:Foo}或@augments external:Foo）。 但是，你可以省略@external标记的这个前缀。
-别名：@host
-下面的示例演示如何描述内置的String对象作为external，新的实例方法external:String#rot13
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * The built in string object.</div><div class="line"> * @external String</div><div class="line"> * @see &#123;@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String|String&#125;</div><div class="line"> */</div><div class="line"></div><div class="line">/**</div><div class="line"> * Create a ROT13-encoded version of the string. Added by the `foo` package.</div><div class="line"> * @function external:String#rot13</div><div class="line"> * @example</div><div class="line"> * var greeting = new String(&apos;hello world&apos;);</div><div class="line"> * console.log( greeting.rot13() ); // uryyb jbeyq</div><div class="line"> */</div></pre></td></tr></table></figure>
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="http://www.css88.com/doc/jsdoc/" target="_blank" rel="external">jsDoc文档</a>    </p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/25/jsDoc学习-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/25/jsDoc学习-1/" itemprop="url">
-                  jsDoc学习-常用示例
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-25T19:51:34+08:00">
-                2017-09-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/代码规范/" itemprop="url" rel="index">
-                    <span itemprop="name">代码规范</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/25/jsDoc学习-1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/25/jsDoc学习-1/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  1,388
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  7
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="jsDoc-示例"><a href="#jsDoc-示例" class="headerlink" title="jsDoc 示例"></a>jsDoc 示例</h2><h3 id="ES-2015-Classes"><a href="#ES-2015-Classes" class="headerlink" title="ES 2015 Classes"></a>ES 2015 Classes</h3><pre><code>Documenting a simple class（文档化一个简单的类）    
-    演示了如何通过一个构造函数，两个实例方法和一个静态方法文档化一个简单的类
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">class Point &#123;</div><div class="line">	/**</div><div class="line">	 * 构造函数</div><div class="line">	 * @param x</div><div class="line">	 * @param y</div><div class="line">	 */</div><div class="line">	constructor (x, y) &#123;</div><div class="line">		this.x = x;</div><div class="line">		this.y = y;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	/**</div><div class="line">	 * 实例方法</div><div class="line">	 * @returns &#123;*&#125;</div><div class="line">	 */</div><div class="line">	getX () &#123;</div><div class="line">		return this.x;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	/**</div><div class="line">	 * 实例方法</div><div class="line">	 * @returns &#123;*&#125;</div><div class="line">	 */</div><div class="line">	getY () &#123;</div><div class="line">		return this.y;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	/**</div><div class="line">	 * 静态方法</div><div class="line">	 * @param str</div><div class="line">	 */</div><div class="line">	static fromString (str) &#123;</div><div class="line">		// ...</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">var de = new Point(&apos;1&apos;,&apos;2&apos;);</div><div class="line">console.log(de.getX()); // &apos;1&apos;</div></pre></td></tr></table></figure>
-
-Extending classes（扩展类）
-    当您使用 extends关键字来扩展一个现有的类的时候，你还需要告诉JSDoc哪个类是你要扩展的。
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line">/** Class representing a point. */</div><div class="line">class Point &#123;</div><div class="line">	/**</div><div class="line">	 * 构造函数</div><div class="line">	 * @param x</div><div class="line">	 * @param y</div><div class="line">	 */</div><div class="line">	constructor (x, y) &#123;</div><div class="line">		this.x = x;</div><div class="line">		this.y = y;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	/**</div><div class="line">	 * 实例方法</div><div class="line">	 * @returns &#123;*&#125;</div><div class="line">	 */</div><div class="line">	getX () &#123;</div><div class="line">		return this.x;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	/**</div><div class="line">	 * 实例方法</div><div class="line">	 * @returns &#123;*&#125;</div><div class="line">	 */</div><div class="line">	getY () &#123;</div><div class="line">		return this.y;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	/**</div><div class="line">	 * 静态方法</div><div class="line">	 * @param str</div><div class="line">	 */</div><div class="line">	static fromString (str) &#123;</div><div class="line">		// ...</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">/** Class representing a point</div><div class="line"> * @extends Point</div><div class="line"> */</div><div class="line">class Dot extends  Point &#123;</div><div class="line">	/**</div><div class="line">	 * 构造函数</div><div class="line">	 * @param x</div><div class="line">	 * @param y</div><div class="line">	 * @param width</div><div class="line">	 */</div><div class="line">	constructor (x, y, width) &#123;</div><div class="line">		super(x,y);</div><div class="line">		this.width = width;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	/**</div><div class="line">	 * 实例方法</div><div class="line">	 * @returns &#123;*&#125;</div><div class="line">	 */</div><div class="line">	getWidth () &#123;</div><div class="line">		return this.width;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">var dd = new Dot(1, 2, 3);</div><div class="line">console.log(dd.getX()); // 1</div></pre></td></tr></table></figure>
-</code></pre><h3 id="ES-2015-Modules"><a href="#ES-2015-Modules" class="headerlink" title="ES 2015 Modules"></a>ES 2015 Modules</h3><pre><code>Module identifiers（模块标识符）
-    当你描述一个 ES 2015 module（模块）时，您将使用@module 标签来描述模块的标识符。
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @module my/shirt</div><div class="line"> */</div><div class="line">import * as myShirt from &apos;my/shirt&apos;;</div></pre></td></tr></table></figure>
-
-    当您使用一个 JSDoc namepath（名称路径）从另一个JSDoc注释中引用一个模块，您必须添加前缀module:。
-    例如，如果你想模块my/pants的文档 连接到模块my/shirt，您可以使用@see 标签来描述my/pants。
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Pants module.</div><div class="line"> * @module my/pants</div><div class="line"> * @see module:my/shirt</div><div class="line"> */</div></pre></td></tr></table></figure>
-
-    同样，模块中每个成员的namepath （名称路径）将以module: 开始，后面跟模块名字。
-    例如，如果你的my/pants模块输出一个Jeans类，并且Jeans 有一个名为hem的实例方法，
-    那么这个实例方法longname（长名称）是module:my/pants.Jeans#hem。
-Exported values （导出值）
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">/** The name of the module. */</div><div class="line">export const name = &apos;mixer&apos;;</div><div class="line"></div><div class="line">/** The most recent blended color. */</div><div class="line">export var lastColor = null;</div><div class="line"></div><div class="line">/**</div><div class="line"> * Blend two colors together.</div><div class="line"> * @param &#123;string&#125; color1 - The first color, in hexidecimal format.</div><div class="line"> * @param &#123;string&#125; color2 - The second color, in hexidecimal format.</div><div class="line"> * @return &#123;string&#125; The blended color.</div><div class="line"> */</div><div class="line">export function blend(color1, color2) &#123;&#125;</div><div class="line"></div><div class="line">// convert color to array of RGB values (0-255)</div><div class="line">function rgbify(color) &#123;&#125;</div><div class="line"></div><div class="line">export &#123;</div><div class="line">	/**</div><div class="line">	 * Get the red, green, and blue values of a color.</div><div class="line">	 * @function</div><div class="line">	 * @param &#123;string&#125; color - A color, in hexidecimal format.</div><div class="line">	 * @returns &#123;Array.&lt;number&gt;&#125; An array of the red, green, and blue values,</div><div class="line">	 * each ranging from 0 to 255.</div><div class="line">	 */</div><div class="line">	rgbify as toRgb</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="CommonJS-Modules"><a href="#CommonJS-Modules" class="headerlink" title="CommonJS Modules"></a>CommonJS Modules</h3><pre><code>Module identifiers（模块标识符）    
-    例如，如果你想模块my/pants的文档 连接到模块my/shirt，您可以使用@see 标签来描述my/pants。
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Pants module.</div><div class="line"> * @module my/pants</div><div class="line"> * @see module:my/shirt</div><div class="line"> */</div></pre></td></tr></table></figure>
-
-Properties of the &apos;exports&apos; object（&apos;exports&apos;对象的属性）
-    例如，方法添加到导出对象。
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Shirt module.</div><div class="line"> * @module my/shirt</div><div class="line"> */</div><div class="line"></div><div class="line">/** Button the shirt. */</div><div class="line">exports.button = function() &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div><div class="line"></div><div class="line">/** Unbutton the shirt. */</div><div class="line">exports.unbutton = function() &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-
-Values assigned to local variables （值分配给局部变量）
-    例如，longname（长名称）定义在 @alias 标签中。
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Shirt module.</div><div class="line"> * @module my/shirt</div><div class="line"> */</div><div class="line"></div><div class="line">/**</div><div class="line"> * Wash the shirt.</div><div class="line"> * @alias module:my/shirt.wash</div><div class="line"> */</div><div class="line">var wash = exports.wash = function() &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-
-    例如，JSDoc注释放在exports.wash之前。
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Shirt module.</div><div class="line"> * @module my/shirt</div><div class="line"> */</div><div class="line"></div><div class="line">var wash =</div><div class="line">/** Wash the shirt. */</div><div class="line">exports.wash = function() &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-
-Values assigned to &apos;module.exports&apos; （值分配给&apos;module.exports&apos;）
-    Object literal assigned to &apos;module.exports&apos;（对象字面量分配给&apos;module.exports&apos;）
-    例如：对象字面量分配给&apos;module.exports&apos;。
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Color mixer.</div><div class="line"> * @module color/mixer</div><div class="line"> */</div><div class="line"></div><div class="line">module.exports = &#123;</div><div class="line">	/** Blend two colors together. */</div><div class="line">	blend: function(color1, color2) &#123;</div><div class="line">		// ...</div><div class="line">	&#125;,</div><div class="line"></div><div class="line">	/** Darken a color by the given percentage. */</div><div class="line">	darken: function(color, percent) &#123;</div><div class="line">		// ..</div><div class="line">	&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-
-    例如，通过属性定义，分配给module.exports。
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Color mixer.</div><div class="line"> * @module color/mixer</div><div class="line"> */</div><div class="line"></div><div class="line">module.exports = &#123;</div><div class="line">	/** Blend two colors together. */</div><div class="line">	blend: function(color1, color2) &#123;</div><div class="line">		// ...</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">/** Darken a color by the given percentage. */</div><div class="line">module.exports.darken = function(color, percent) &#123;</div><div class="line">	// ..</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-
-    Function assigned to &apos;module.exports&apos;（函数分配给&apos;module.exports&apos;）
-    例如，函数分配给&apos;module.exports&apos;。
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Color mixer.</div><div class="line"> * @module color/mixer</div><div class="line"> */</div><div class="line"></div><div class="line">/** Blend two colors together. */</div><div class="line">module.exports = function(color1, color2) &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-
-    例如，构造函数分配给&apos;module.exports&apos;。
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Color mixer.</div><div class="line"> * @module color/mixer</div><div class="line"> */</div><div class="line"></div><div class="line">/** Create a color mixer. */</div><div class="line">module.exports = function ColorMixer() &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-
-    String, number, or boolean assigned to &apos;module.exports&apos;（字符串，数字，或布尔值分配给&apos;module.exports&apos;）
-    例如，字符串分配给&apos;module.exports&apos;。
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Module representing the word of the day.</div><div class="line"> * @module wotd</div><div class="line"> * @type &#123;string&#125;</div><div class="line"> */</div><div class="line"></div><div class="line">module.exports = &apos;perniciousness&apos;;</div></pre></td></tr></table></figure>
-
-    Values assigned to &apos;module.exports&apos; and local variables （值分配给&apos;module.exports&apos;和局部变量）
-    例如，对象字面量分配给一个局部变量和module.export。
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Color mixer.</div><div class="line"> * @exports color/mixer</div><div class="line"> */</div><div class="line">var mixer = module.exports = &#123;</div><div class="line">	/** Blend two colors together. */</div><div class="line">	blend: function(color1, color2) &#123;</div><div class="line">		// ...</div><div class="line">	&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-
-    Properties added to &apos;this&apos;（属性添加到&apos;this&apos;）
-    例如，属性添加到一个模块的&apos;this&apos;对象。
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">/** @module bookshelf */</div><div class="line"></div><div class="line">/** @class */</div><div class="line">this.Book = function(title) &#123;</div><div class="line">	/** The title of the book. */</div><div class="line">	this.title = title;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="AMD-Modules"><a href="#AMD-Modules" class="headerlink" title="AMD Modules"></a>AMD Modules</h3><pre><code>Module identifiers（模块标识符）
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Pants module.</div><div class="line"> * @module my/pants</div><div class="line"> * @see module:my/shirt</div><div class="line"> */</div></pre></td></tr></table></figure>
-
-Function that returns an object literal（函数返回一个对象字面量）
-    例如，函数返回一个对象字面量。
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">define(&apos;my/shirt&apos;, function() &#123;</div><div class="line">   /**</div><div class="line">	* A module representing a shirt.</div><div class="line">	* @exports my/shirt</div><div class="line">	*/</div><div class="line">	var shirt = &#123;</div><div class="line">		/** The module&apos;s `color` property. */</div><div class="line">		color: &apos;black&apos;,</div><div class="line"></div><div class="line">		/** @constructor */</div><div class="line">		Turtleneck: function(size) &#123;</div><div class="line">			/** The class&apos; `size` property. */</div><div class="line">			this.size = size;</div><div class="line">		&#125;</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">	return shirt;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-
-Function that returns another function（函数返回另一个函数）
-    例如，函数返回另一个函数。
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * A module representing a jacket.</div><div class="line"> * @module my/jacket</div><div class="line"> */</div><div class="line">define(&apos;my/jacket&apos;, function() &#123;</div><div class="line">	/**</div><div class="line">	 * @constructor</div><div class="line">	 * @alias module:my/jacket</div><div class="line">	 */</div><div class="line">	var Jacket = function() &#123;</div><div class="line">		// ...</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">	/** Zip up the jacket. */</div><div class="line">	Jacket.prototype.zip = function() &#123;</div><div class="line">		// ...</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">	return Jacket;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-
-Module declared in a return statement （模块声明在return语句中）
-    例如，模块声明在return语句中。
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Module representing a shirt.</div><div class="line"> * @module my/shirt</div><div class="line"> */</div><div class="line"></div><div class="line">define(&apos;my/shirt&apos;, function() &#123;</div><div class="line">	// Do setup work here.</div><div class="line"></div><div class="line">	return /** @alias module:my/shirt */ &#123;</div><div class="line">		/** Color. */</div><div class="line">		color: &apos;black&apos;,</div><div class="line">		/** Size. */</div><div class="line">		size: &apos;unisize&apos;</div><div class="line">	&#125;;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-
-Module object passed to a function（模块对象传递给一个函数）
-    例如，模块对象传递给一个函数。
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">define(&apos;my/jacket&apos;, function(</div><div class="line">	/**</div><div class="line">	 * Utility functions for jackets.</div><div class="line">	 * @exports my/jacket</div><div class="line">	 */</div><div class="line">	module) &#123;</div><div class="line"></div><div class="line">	/**</div><div class="line">	 * Zip up a jacket.</div><div class="line">	 * @param &#123;Jacket&#125; jacket - The jacket to zip up.</div><div class="line">	 */</div><div class="line">	module.zip = function(jacket) &#123;</div><div class="line">		// ...</div><div class="line">	&#125;;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-
-Multiple modules defined in one file（多模块定义在一个文件中）
-    例如，多模块定义在一个文件中。
-    ```
-    // one module
-    define(&apos;html/utils&apos;, function() {
-        /**
-         * Utility functions to ease working with DOM elements.
-         * @exports html/utils
-         */
-        var utils = {
-            /** Get the value of a property on an element. */
-            getStyleProperty: function(element, propertyName) { }
-        };
-
-        /** Determine if an element is in the document head. */
-        utils.isInHead = function(element) { }
-
-        return utils;
-        }
-    );
-
-    // another module
-    define(&apos;tag&apos;, function() {
-        /** @exports tag */
-        var tag = {
-            /** @class */
-            Tag: function(tagName) {
-                // ...
-            }
-        };
-
-        return tag;
-    });
-    ```        
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="http://www.css88.com/doc/jsdoc/" target="_blank" rel="external">jsDoc文档</a>    </p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -3407,7 +3412,7 @@ Multiple modules defined in one file（多模块定义在一个文件中）
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">114</span>
+                <span class="site-state-item-count">116</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -3546,7 +3551,7 @@ Multiple modules defined in one file（多模块定义在一个文件中）
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共143.0k字</span>
+  <span class="post-count">博客全站共145.6k字</span>
 </div>
         
 

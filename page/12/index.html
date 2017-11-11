@@ -306,6 +306,430 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/07/21/js函数式编程-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/21/js函数式编程-3/" itemprop="url">
+                  js函数式编程-3
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-21T19:11:19+08:00">
+                2017-07-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
+                    <span itemprop="name">函数式编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/21/js函数式编程-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/07/21/js函数式编程-3/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  636
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  3
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="实例应用"><a href="#实例应用" class="headerlink" title="实例应用"></a>实例应用</h2><p><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
+<h3 id="声明式代码"><a href="#声明式代码" class="headerlink" title="声明式代码"></a>声明式代码</h3><ol>
+<li><p>理解命令式与声明式</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// 命令式</div><div class="line">var makes = [];</div><div class="line">for (let i, len = cars.length; i++) &#123;</div><div class="line">	makes.push(cars[i]make)	</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 声明式</div><div class="line">var makes = cars.map((car) =&gt; &#123; return car.make; &#125;)</div><div class="line">总结：</div><div class="line">命令式的循环要求你必须先实例化一个数组，而且执行完这个实例化语句之后，解释器才继续执行后面的代码。然后再直接迭代 cars 列表，手动增加计数器，把各种零零散散的东西都展示出来...实在是直白得有些露骨。</div><div class="line">何收集，都有很大的自由度。它指明的是做什么，不是怎么做。因此，它是正儿八经的声明式代码。</div></pre></td></tr></table></figure>
+</li>
+<li><p>例子</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// 命令式 --- 硬编码了那种一步接一步的执行方式。</div><div class="line">var authenticate = function (form) &#123;</div><div class="line">	var user = toUser(form);</div><div class="line">	return logIn(user);</div><div class="line">&#125;</div><div class="line">// 声明式 --- 用户验证是 toUser 和 logIn 两个行为的组合。</div><div class="line">var authenticate = compose(logIn, toUser)</div></pre></td></tr></table></figure>
+</li>
+<li><p>示例<a href="https://github.com/fanerge/Functional-Programming" target="_blank" rel="external">函数式编程demo</a><br> 1.根据特定搜索关键字构造 url<br> 2.向 flickr 发送 api 请求 （不纯）<br> 3.把返回的 json 转为 html 图片<br> 4.把图片放到屏幕上 （不纯）</p>
+</li>
+<li>有原则的重构<br> // map 的组合律<br> var law = compose(map(f), map(g)) === map(compose(f, g))</li>
+</ol>
+<h3 id="Hindley-Milner-类型签名"><a href="#Hindley-Milner-类型签名" class="headerlink" title="Hindley-Milner 类型签名"></a>Hindley-Milner 类型签名</h3><ol>
+<li>初始类型<br> 类型签名作用：短短一行，就能暴露函数的行为和目的，可以用类型签名生成文档，也可以用注释来达到区分类型的目的。</li>
+<li><p>Hindley-Milner 系统</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">// capitalize :: String -&gt; String （表示输入为string，输出也为string）</div><div class="line">var capitalize = function (s) &#123;</div><div class="line">	return toUpperCase(head(s)) + toLowerCase(tail(s));</div><div class="line">&#125;</div><div class="line">// 使用</div><div class="line">capitalize(&apos;fanerge&apos;) // &apos;Fanerge&apos;</div><div class="line"></div><div class="line">//  id :: a -&gt; a （同一类型的）</div><div class="line">var id = function(x)&#123; return x; &#125;</div><div class="line"></div><div class="line">//  map :: (a -&gt; b) -&gt; [a] -&gt; [b]</div><div class="line">var map = curry(function(f, xs)&#123;</div><div class="line">  return xs.map(f);</div><div class="line">&#125;);</div><div class="line">// 说明</div><div class="line">给定一个从 a 到 b 的函数和一个 a 类型的数组作为参数，它就能返回一个 b 类型的数组。</div></pre></td></tr></table></figure>
+</li>
+<li><p>缩小可能性范围（parametricity）</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// head :: [a] -&gt; a</div><div class="line">它接受 [a] 返回 a,参数是个数组</div></pre></td></tr></table></figure>
+</li>
+<li><p>自由定理（free theorems）</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">// head :: [a] -&gt; a</div><div class="line">compose(f, head) == compose(head, map(f));</div><div class="line">等式左边说的是，先获取数组的头部（译者注：即第一个元素），然后对它调用函数 f；等式右边说的是，先对数组中的每一个元素调用 f，然后再取其返回结果的头部。这两个表达式的作用是相等的，但是前者要快得多。</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>参考：</p>
+<blockquote>
+<p><a href="https://llh911001.gitbooks.io/mostly-adequate-guide-chinese/content/ch7.html#自由定理" target="_blank" rel="external">js函数式编程</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/07/20/js函数式编程-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/20/js函数式编程-2/" itemprop="url">
+                  js函数式编程-2
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-20T19:11:05+08:00">
+                2017-07-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
+                    <span itemprop="name">函数式编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/20/js函数式编程-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/07/20/js函数式编程-2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  576
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  3
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="代码组合（compose）"><a href="#代码组合（compose）" class="headerlink" title="代码组合（compose）"></a>代码组合（compose）</h2><p><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
+<h3 id="先上手一个组合函数的例子"><a href="#先上手一个组合函数的例子" class="headerlink" title="先上手一个组合函数的例子"></a>先上手一个组合函数的例子</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">var compose = function (f, g) &#123; // 执行顺序为从右到左</div><div class="line">	return function (x) &#123;</div><div class="line">		return f(g(x));</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">// f 和 g 都是函数，x 是在它们之间通过“管道”传输的值。</div><div class="line">var toUppercase = function (x) &#123; return x.toUpperCase() &#125;;</div><div class="line">var exclaim = function (x) &#123; return `$&#123;x&#125;!` &#125;;</div><div class="line">var shout = compose(exclaim, toUppercase);</div><div class="line">var test = shout(&apos;I am fanerge&apos;)</div><div class="line">console.log(test) // I AM FANERGE!</div></pre></td></tr></table></figure>
+</code></pre><h3 id="组合的特性"><a href="#组合的特性" class="headerlink" title="组合的特性"></a>组合的特性</h3><pre><code>1. 结合律（associativity）    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">var associative = compose(f, compose(g, h)) === compose(compose(f, g), h)</div><div class="line">// 必须满足相同的执行顺序及h-g-f（从右到左）</div><div class="line">var loudLastUpper = compose(exclaim, toUpperCase, head, reverse);</div><div class="line">// 或</div><div class="line">var last = compose(head, reverse);</div><div class="line">var loudLastUpper = compose(exclaim, toUpperCase, last);</div><div class="line">// 或</div><div class="line">var last = compose(head, reverse);</div><div class="line">var angry = compose(exclaim, toUpperCase);</div><div class="line">var loudLastUpper = compose(angry, last);</div></pre></td></tr></table></figure>
+
+**其实只要把握好（从右向左执行的顺序即可）**
+2. pointfree模式
+定义：永远不必说出你的数据，函数无须提及将要操作的数据是什么样的。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">//非 pointfree，因为提到了数据：word</div><div class="line">var snakeCase = function (word) &#123;</div><div class="line">	return word.toLowerCase().replace(/\s+/ig, &apos;_&apos;);</div><div class="line">&#125;</div><div class="line">// pointfree</div><div class="line">var snakeCase = compose(replace(/\s+/ig, &apos;_&apos;), toLowerCase)</div></pre></td></tr></table></figure>
+</code></pre><h3 id="debug"><a href="#debug" class="headerlink" title="debug"></a>debug</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">	// 正确做法：每个函数都接受一个实际的参数</div><div class="line">	var latin = compose(map(angry), reverse) // angry = compose(exclaim, toUpperCase)</div><div class="line">	latin([&quot;frog&quot;, &quot;eyes&quot;]) // [&apos;EYES!&apos;,&apos;FROG!&apos;]</div><div class="line"></div><div class="line">	// 不纯的 trace 函数来追踪代码的执行情况。</div><div class="line">	var trace = curry(function(tag, x)&#123;</div><div class="line">	  console.log(tag, x);</div><div class="line">	  return x;</div><div class="line">	&#125;);</div><div class="line">	// 使用</div><div class="line">	var dasherize = compose(join(&apos;-&apos;), toLower, trace(&quot;after split&quot;), split(&apos; &apos;), replace(/\s&#123;2,&#125;/ig, &apos; &apos;));</div><div class="line">	// after split [ &apos;The&apos;, &apos;world&apos;, &apos;is&apos;, &apos;a&apos;, &apos;vampire&apos; ]</div><div class="line"></div><div class="line">### 组合背后的理论 --- 范畴学（category theory）</div><div class="line">	作用：范畴学主要处理对象（object）、态射（morphism）和变化式（transformation）</div><div class="line">	**对象的搜集**</div><div class="line">	对象就是数据类型，例如 String、Boolean、Number 和 Object 等等。</div><div class="line">	通常我们把数据类型视作所有可能的值的一个集合（set）。</div><div class="line">	**态射的搜集**</div><div class="line">	态射是标准的、普通的纯函数。</div><div class="line">	**态射的组合**</div><div class="line">	var g = function(x)&#123; return x.length; &#125;;</div><div class="line">	var f = function(x)&#123; return x === 4; &#125;;</div><div class="line">	var isFourLetterWord = compose(f, g);</div><div class="line">	var test = isFourLetterWord(&apos;fanerge&apos;) // false</div><div class="line">	**identity 这个独特的态射**</div><div class="line">	identity 这个独特的态射</div></pre></td></tr></table></figure>
+
+// id 的实用函数
+var id = function (x) { return x };
+// 结论成立
+compose(id, f) === compose(f, id) === f;
+总结：组合像一系列管道那样把不同的函数联系在一起，数据就可以也必须在其中流动——毕竟纯函数就是输入对输出
+
+```
+</code></pre><p>参考：</p>
+<blockquote>
+<p><a href="https://llh911001.gitbooks.io/mostly-adequate-guide-chinese/content/ch7.html#自由定理" target="_blank" rel="external">js函数式编程</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/07/18/js函数式编程-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1188,7 +1612,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">114</span>
+                <span class="site-state-item-count">116</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1327,7 +1751,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共143.0k字</span>
+  <span class="post-count">博客全站共145.6k字</span>
 </div>
         
 

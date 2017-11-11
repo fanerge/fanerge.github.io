@@ -306,6 +306,439 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/11/11/Generator函数的用法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/11/11/Generator函数的用法/" itemprop="url">
+                  Generator函数的用法
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-11T15:48:46+08:00">
+                2017-11-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/js/" itemprop="url" rel="index">
+                    <span itemprop="name">js</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/11/11/Generator函数的用法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/11/11/Generator函数的用法/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,088
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  5
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Generator函数的定义"><a href="#Generator函数的定义" class="headerlink" title="Generator函数的定义"></a>Generator函数的定义</h1><p>从语法上，首先可以把它理解成，Generator 函数是一个状态机，封装了多个内部状态。<br>执行 Generator 函数会返回一个遍历器对象，也就是说，Generator 函数除了状态机，还是一个遍历器对象生成函数。返回的遍历器对象，可以依次遍历 Generator 函数内部的每一个状态。<br>形式上，Generator 函数是一个普通函数，但是有两个特征。一是，function关键字与函数名之间有一个星号；二是，函数体内部使用yield表达式，定义不同的内部状态（yield在英语里的意思就是“产出”）。</p>
+<h1 id="Generator函数的简单示例"><a href="#Generator函数的简单示例" class="headerlink" title="Generator函数的简单示例"></a>Generator函数的简单示例</h1><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">function* g() &#123;</div><div class="line">  yield &apos;hello&apos;;</div><div class="line">  yield &apos;world&apos;;</div><div class="line">  return &apos;ending&apos;;</div><div class="line">&#125;</div><div class="line"></div><div class="line">var demo = g();</div></pre></td></tr></table></figure>
+</code></pre><p>PS：上面代码定义了一个 Generator 函数g，它内部有两个yield表达式（hello和world），即该函数有三个状态：hello，world 和 return 语句（结束执行）。<br><span style="color: red">返回的是，遍历器对象（Iterator Object）。例如这里，{ value: ‘hello’, done: false }</span></p>
+<h1 id="yield-表达式"><a href="#yield-表达式" class="headerlink" title="yield 表达式"></a>yield 表达式</h1><p>由于 Generator 函数返回的遍历器对象，只有调用next方法才会遍历下一个内部状态，所以其实提供了一种可以暂停执行的函数。yield表达式就是暂停标志。<br>    （1）遇到yield表达式，就暂停执行后面的操作，并将紧跟在yield后面的那个表达式的值，作为返回的对象的value属性值。<br>    （2）下一次调用next方法时，再继续往下执行，直到遇到下一个yield表达式。<br>    （3）如果没有再遇到新的yield表达式，就一直运行到函数结束，直到return语句为止，并将return语句后面的表达式的值，作为返回的对象的value属性值。<br>    （4）如果该函数没有return语句，则返回的对象的value属性值为undefined。</p>
+<h1 id="for…of-循环"><a href="#for…of-循环" class="headerlink" title="for…of 循环"></a>for…of 循环</h1><pre><code>可以遍历 数组 和 实现了 Symbol.iterator 方法的对象。
+</code></pre><p>for…of循环可以自动遍历 Generator 函数时生成的Iterator对象，且此时不再需要调用next方法。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">function *foo() &#123;</div><div class="line">  yield 1;</div><div class="line">  yield 2;</div><div class="line">  yield 3;</div><div class="line">  yield 4;</div><div class="line">  yield 5;</div><div class="line">  return 6;</div><div class="line">&#125;</div><div class="line"></div><div class="line">for (let v of foo()) &#123;</div><div class="line">  console.log(v);</div><div class="line">&#125;</div><div class="line">// 1 2 3 4 5</div></pre></td></tr></table></figure></p>
+<h1 id="Generator-prototype-next"><a href="#Generator-prototype-next" class="headerlink" title="Generator.prototype.next()"></a>Generator.prototype.next()</h1><p>yield表达式本身没有返回值，或者说总是返回undefined。next方法可以带一个参数，该参数就会被当作上一个yield表达式的返回值。<br>next() 方法返回一个包含属性 done 和 value 的对象。该方法也可以通过接受一个参数用以向生成器传值。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">function* gen() &#123; </div><div class="line">  yield 1;</div><div class="line">  yield 2;</div><div class="line">  yield 3;</div><div class="line">&#125;</div><div class="line"></div><div class="line">var g = gen(); // &quot;Generator &#123; &#125;&quot;</div><div class="line">g.next();      // &quot;Object &#123; value: 1, done: false &#125;&quot;</div><div class="line">g.next();      // &quot;Object &#123; value: 2, done: false &#125;&quot;</div><div class="line">g.next();      // &quot;Object &#123; value: 3, done: false &#125;&quot;</div><div class="line">g.next();      // &quot;Object &#123; value: undefined, done: true &#125;&quot;</div></pre></td></tr></table></figure></p>
+<h1 id="Generator-prototype-throw"><a href="#Generator-prototype-throw" class="headerlink" title="Generator.prototype.throw()"></a>Generator.prototype.throw()</h1><p>Generator 函数返回的遍历器对象，都有一个throw方法，可以在函数体外抛出错误，然后在 Generator 函数体内捕获。    </p>
+<h1 id="Generator-prototype-return"><a href="#Generator-prototype-return" class="headerlink" title="Generator.prototype.return()"></a>Generator.prototype.return()</h1><p>Generator 函数返回的遍历器对象，还有一个return方法，可以返回给定的值，并且终结遍历 Generator 函数。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">function* gen() &#123;</div><div class="line">  yield 1;</div><div class="line">  yield 2;</div><div class="line">  yield 3;</div><div class="line">&#125;</div><div class="line"></div><div class="line">var g = gen();</div><div class="line"></div><div class="line">g.next()        // &#123; value: 1, done: false &#125;</div><div class="line">g.return(&apos;foo&apos;) // &#123; value: &quot;foo&quot;, done: true &#125;</div><div class="line">g.next()        // &#123; value: undefined, done: true &#125;</div></pre></td></tr></table></figure></p>
+<p>PS：遍历器对象g调用return方法后，返回值的value属性就是return方法的参数foo。并且，Generator函数的遍历就终止了，返回值的done属性为true，以后再调用next方法，done属性总是返回true。<br>如果return方法调用时，不提供参数，则返回值的value属性为undefined。</p>
+<h1 id="比较一下多个异步操作的编码"><a href="#比较一下多个异步操作的编码" class="headerlink" title="比较一下多个异步操作的编码"></a>比较一下多个异步操作的编码</h1><p>step1完成才能做step2，step2完成才能做step3，step3完成才能做step4</p>
+<h2 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数("></a>回调函数(</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">step1(function (value1) &#123;</div><div class="line">  step2(value1, function(value2) &#123;</div><div class="line">	step3(value2, function(value3) &#123;</div><div class="line">	  step4(value3, function(value4) &#123;</div><div class="line">		// Do something with value4</div><div class="line">	  &#125;);</div><div class="line">	&#125;);</div><div class="line">  &#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><p>PS：层数多了就形成了回调地狱。</p>
+<h2 id="Promise-组织代码"><a href="#Promise-组织代码" class="headerlink" title="Promise 组织代码"></a>Promise 组织代码</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Q.fcall(step1)</div><div class="line">  .then(step2)</div><div class="line">  .then(step3)</div><div class="line">  .then(step4)</div><div class="line">  .then(function (value4) &#123;</div><div class="line">	// Do something with value4</div><div class="line">  &#125;, function (error) &#123;</div><div class="line">	// Handle any error from step1 through step4</div><div class="line">  &#125;)</div><div class="line">  .done();</div></pre></td></tr></table></figure>
+</code></pre><p>PS：是不是代码稍微要清晰一些了。</p>
+<h2 id="Generator-组织代码"><a href="#Generator-组织代码" class="headerlink" title="Generator 组织代码"></a>Generator 组织代码</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">function* longRunningTask() &#123;</div><div class="line">  try &#123;</div><div class="line">	var value1 = yield step1();</div><div class="line">	var value2 = yield step2(value1);</div><div class="line">	var value3 = yield step3(value2);</div><div class="line">	var value4 = yield step4(value3);</div><div class="line">	// Do something with value4</div><div class="line">  &#125; catch (e) &#123;</div><div class="line">	// Handle any error from step1 through step4</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">function scheduler(task) &#123;</div><div class="line">  setTimeout(function() &#123;</div><div class="line">	var taskObj = task.next(task.value);</div><div class="line">	// 如果Generator函数未结束，就继续调用</div><div class="line">	if (!taskObj.done) &#123;</div><div class="line">	  task.value = taskObj.value</div><div class="line">	  scheduler(task);</div><div class="line">	&#125;</div><div class="line">  &#125;, 0);</div><div class="line">&#125;</div><div class="line"></div><div class="line">scheduler(longRunningTask());</div></pre></td></tr></table></figure>
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="http://es6.ruanyifeng.com/#docs/generator" target="_blank" rel="external">Generator 函数的语法</a><br>    <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Generator" target="_blank" rel="external">MDN-Generator</a><br>    <a href="http://blog.csdn.net/jiangbo_phd/article/details/51820642" target="_blank" rel="external">ES6 Generator 函数的使用</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/11/11/Promise的用法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/11/11/Promise的用法/" itemprop="url">
+                  Promise的用法
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-11T10:31:27+08:00">
+                2017-11-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/js/" itemprop="url" rel="index">
+                    <span itemprop="name">js</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/11/11/Promise的用法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/11/11/Promise的用法/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,535
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  6
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>ES6出来了很久，Promise也一直在用，现在总结一下具体用法。</p>
+<h1 id="Promise-定义"><a href="#Promise-定义" class="headerlink" title="Promise 定义"></a>Promise 定义</h1><p>Promise 对象用于一个异步操作的最终完成（或失败）及其结果值的表示。所谓Promise，简单说就是一个容器，里面保存着某个未来才会结束的事件（通常是一个异步操作）的结果。<br><img src="https://mdn.mozillademos.org/files/8633/promises.png" alt="MDN"><br>    这里使用MDN的图片</p>
+<h1 id="基本方法"><a href="#基本方法" class="headerlink" title="基本方法"></a>基本方法</h1><h2 id="创造了一个-Promise-实例"><a href="#创造了一个-Promise-实例" class="headerlink" title="创造了一个 Promise 实例"></a>创造了一个 Promise 实例</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">const promise = new Promise(function(resolve, reject) &#123;</div><div class="line">  // ... some code</div><div class="line"></div><div class="line">  if (/* 异步操作成功 */)&#123;</div><div class="line">	resolve(value);</div><div class="line">  &#125; else &#123;</div><div class="line">	reject(error);</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h2 id="对-Promise-实例成功-或-失败-做相应的处理"><a href="#对-Promise-实例成功-或-失败-做相应的处理" class="headerlink" title="对 Promise 实例成功 或 失败 做相应的处理"></a>对 Promise 实例成功 或 失败 做相应的处理</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">promise.then(function(value) &#123;</div><div class="line">  // success</div><div class="line">&#125;, function(error) &#123;</div><div class="line">  // failure</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h1 id="Promise-prototype-then"><a href="#Promise-prototype-then" class="headerlink" title="Promise.prototype.then()"></a>Promise.prototype.then()</h1><p>Promise 实例具有then方法，也就是说，then方法是定义在原型对象Promise.prototype上的。它的作用是为 Promise 实例添加状态改变时的回调函数。then方法的第一个参数是resolved状态的回调函数，第二个参数（可选）是rejected状态的回调函数。</p>
+<h2 id="分为三种调用形式（注意最后面需要带着错误处理函数）"><a href="#分为三种调用形式（注意最后面需要带着错误处理函数）" class="headerlink" title="分为三种调用形式（注意最后面需要带着错误处理函数）"></a>分为三种调用形式（注意最后面需要带着错误处理函数）</h2><ol>
+<li>promise.then((resolve) =&gt; { // 成功的处理函数 }, (reject) =&gt; { // 错误的处理函数 })</li>
+<li>promise.then((resolve) =&gt; { // 成功的处理函数 }).then((resolve) =&gt; { // 成功的处理函数 }, (reject) =&gt; { // 错误的处理函数 })</li>
+<li>promise.then(null, (reject) =&gt; { // 错误的处理函数 })</li>
+</ol>
+<h2 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h2><p>返回一个<span style="color: red">新的</span>Promise 对象，从而达到链式调用。</p>
+<h1 id="Promise-prototype-catch"><a href="#Promise-prototype-catch" class="headerlink" title="Promise.prototype.catch()"></a>Promise.prototype.catch()</h1><p>Promise.prototype.catch方法是.then(null, rejection)的别名，用于指定发生错误时的回调函数。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">promise.then(function(resolve) &#123;</div><div class="line">  // 成功的处理函数</div><div class="line">&#125;).catch(function(error) &#123;</div><div class="line">  console.log(error);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<h1 id="Promise-all"><a href="#Promise-all" class="headerlink" title="Promise.all()"></a>Promise.all()</h1><h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><p>Promise.all方法用于将多个 Promise 实例，包装成一个新的 Promise 实例。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">const p = Promise.all([p1, p2, p3]);</div></pre></td></tr></table></figure></p>
+<p>PS：Promise.all方法接受一个数组或具有Iterator 接口的对象作为参数，p1、p2、p3都是 Promise 实例，如果不是，就会先调用Promise.resolve方法，将参数转为 Promise 实例，再进一步处理。</p>
+<h2 id="返回值-1"><a href="#返回值-1" class="headerlink" title="返回值"></a>返回值</h2><p>（1）只有p1、p2、p3的状态都变成resolved，p的状态才会变成resolved，此时p1、p2、p3的返回值组成一个数组，传递给p的回调函数。<br>（2）只要p1、p2、p3之中有一个被rejected，p的状态就变成rejected，此时第一个被reject的实例的返回值，会传递给p的回调函数。</p>
+<h1 id="Promise-race"><a href="#Promise-race" class="headerlink" title="Promise.race()"></a>Promise.race()</h1><h2 id="用法-1"><a href="#用法-1" class="headerlink" title="用法"></a>用法</h2><p>Promise.race方法同样是将多个Promise实例，包装成一个新的Promise实例。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">const p = Promise.race([p1, p2, p3]);</div></pre></td></tr></table></figure></p>
+<p>PS：Promise.race方法的参数与Promise.all方法一样，如果不是 Promise 实例，就会先调用下面讲到的Promise.resolve方法，将参数转为 Promise 实例，再进一步处理。</p>
+<h2 id="返回值-2"><a href="#返回值-2" class="headerlink" title="返回值"></a>返回值</h2><p>只要p1、p2、p3之中有一个实例率先改变状态，p的状态就跟着改变。那个率先改变的 Promise 实例的返回值，就传递给p的回调函数。</p>
+<h1 id="Promise-resolve"><a href="#Promise-resolve" class="headerlink" title="Promise.resolve()"></a>Promise.resolve()</h1><p>有时需要将现有对象转为Promise对象，Promise.resolve方法就起到这个作用。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">const jsPromise = Promise.resolve($.ajax(&apos;/whatever.json&apos;));</div></pre></td></tr></table></figure></p>
+<p>PS：将jQuery生成的deferred对象，转为一个新的Promise对象。</p>
+<h2 id="根据不同参数，返回结果情况"><a href="#根据不同参数，返回结果情况" class="headerlink" title="根据不同参数，返回结果情况"></a>根据不同参数，返回结果情况</h2><ol>
+<li>参数是一个Promise实例<br>如果参数是Promise实例，那么Promise.resolve将不做任何修改、原封不动地返回这个实例。</li>
+<li>参数是一个thenable对象（thenable对象指的是具有then方法的对象）<br>Promise.resolve方法会将这个对象转为Promise对象，然后就立即执行thenable对象的then方法。</li>
+<li>参数不是具有then方法的对象，或根本就不是对象<br>如果参数是一个原始值，或者是一个不具有then方法的对象，则Promise.resolve方法返回一个新的Promise对象，状态为resolved。</li>
+<li>不带有任何参数<br>Promise.resolve方法允许调用时不带参数，直接返回一个resolved状态的Promise对象。</li>
+</ol>
+<h1 id="Promise-reject"><a href="#Promise-reject" class="headerlink" title="Promise.reject()"></a>Promise.reject()</h1><p>Promise.reject(reason)方法也会返回一个新的 Promise 实例，该实例的状态为rejected。<br>下面两种形式一样：<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">const p = Promise.reject(&apos;出错了&apos;);</div><div class="line">// 等同于</div><div class="line">const p = new Promise((resolve, reject) =&gt; reject(&apos;出错了&apos;))</div><div class="line"></div><div class="line">p.then(null, function (s) &#123;</div><div class="line">  console.log(s)</div><div class="line">&#125;);</div><div class="line">// 出错了</div></pre></td></tr></table></figure></p>
+<h1 id="自己部署有用的方法"><a href="#自己部署有用的方法" class="headerlink" title="自己部署有用的方法"></a>自己部署有用的方法</h1><h2 id="done"><a href="#done" class="headerlink" title="done()"></a>done()</h2><h3 id="解决的问题"><a href="#解决的问题" class="headerlink" title="解决的问题"></a>解决的问题</h3><p>Promise对象的回调链，不管以then方法或catch方法结尾，要是最后一个方法抛出错误，都有可能无法捕捉到（因为Promise内部的错误不会冒泡到全局）。因此，我们可以提供一个done方法，总是处于回调链的尾端，保证抛出任何可能出现的错误。</p>
+<h3 id="部署-done-方法"><a href="#部署-done-方法" class="headerlink" title="部署 done 方法"></a>部署 done 方法</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Promise.prototype.done = function (onFulfilled, onRejected) &#123;</div><div class="line">  this.then(onFulfilled, onRejected)</div><div class="line">	.catch(function (reason) &#123;</div><div class="line">	  // 抛出一个全局错误</div><div class="line">	  setTimeout(() =&gt; &#123; throw reason &#125;, 0);</div><div class="line">	&#125;);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">asyncFunc()</div><div class="line">	.then(f1)</div><div class="line">	.catch(r1)</div><div class="line">	.then(f2)</div><div class="line">	.done();</div></pre></td></tr></table></figure>
+</code></pre><h2 id="finally"><a href="#finally" class="headerlink" title="finally()"></a>finally()</h2><h3 id="解决的问题-1"><a href="#解决的问题-1" class="headerlink" title="解决的问题"></a>解决的问题</h3><p>finally方法用于指定不管Promise对象最后状态如何，都会执行的操作。它与done方法的最大区别，它接受一个普通的回调函数作为参数，该函数不管怎样都必须执行。</p>
+<h3 id="部署finally方法"><a href="#部署finally方法" class="headerlink" title="部署finally方法"></a>部署finally方法</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Promise.prototype.finally = function (callback) &#123;</div><div class="line">  let P = this.constructor;</div><div class="line">  return this.then(</div><div class="line">	value  =&gt; P.resolve(callback()).then(() =&gt; value),</div><div class="line">	reason =&gt; P.resolve(callback()).then(() =&gt; &#123; throw reason &#125;)</div><div class="line">  );</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="使用-1"><a href="#使用-1" class="headerlink" title="使用"></a>使用</h3><p>下面是一个例子，服务器使用Promise处理请求，然后使用finally方法关掉服务器。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">server.listen(0)</div><div class="line">	.then(function () &#123;</div><div class="line">	// run test</div><div class="line">	&#125;)</div><div class="line">	.finally(server.stop);</div></pre></td></tr></table></figure></p>
+<h1 id="Promise-try"><a href="#Promise-try" class="headerlink" title="Promise.try()"></a>Promise.try()</h1><p><span style="color: red">目前还为提案，Promise 库Bluebird、Q和when，提供了这个方法。</span></p>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><p>实际开发中，经常遇到一种情况：不知道或者不想区分，函数f是同步函数还是异步操作，但是想用 Promise 来处理它。因为这样就可以不管f是否包含异步操作，都用then方法指定下一步流程，用catch方法处理f抛出的错误。    </p>
+<h2 id="使用-2"><a href="#使用-2" class="headerlink" title="使用"></a>使用</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Promise.try(f) // 这里不需要管 f 是同步还是异步函数。</div><div class="line">  .then(...)</div><div class="line">  .catch(...)</div></pre></td></tr></table></figure>
+</code></pre><h1 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h1><p>我们可以将图片的加载写成一个Promise，一旦加载完成，Promise的状态就发生变化。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">const preloadImage = function (path) &#123;</div><div class="line">  return new Promise(function (resolve, reject) &#123;</div><div class="line">	const image = new Image();</div><div class="line">	image.onload  = resolve;</div><div class="line">	image.onerror = reject;</div><div class="line">	image.src = path;</div><div class="line">  &#125;);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">preloadImage</div><div class="line">	.then((reslove) =&gt; &#123; console.log(&apos;图片加载成功了哦！&apos;) &#125;)</div><div class="line">	.catch((reject) =&gt; &#123; console.log(&apos;图片加载失败了哦！&apos;) &#125;)</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>   参考文档：<br>    <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank" rel="external">MDN–Promiese</a><br>    <a href="http://es6.ruanyifeng.com/#docs/promise" target="_blank" rel="external">阮一峰–Promise</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/11/10/排序算法-插入排序/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2001,502 +2434,6 @@ PS：这个例子里面Originator称为原发器，可以通过saveStateToMement
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/11/05/前端同学需要了解通信知识/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/11/05/前端同学需要了解通信知识/" itemprop="url">
-                  前端同学需要了解的通信知识
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-05T18:15:14+08:00">
-                2017-11-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/通信协议/" itemprop="url" rel="index">
-                    <span itemprop="name">通信协议</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/11/05/前端同学需要了解通信知识/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/11/05/前端同学需要了解通信知识/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  3,456
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  13
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="head、options、get、put、post、delete含义与区别"><a href="#head、options、get、put、post、delete含义与区别" class="headerlink" title="head、options、get、put、post、delete含义与区别"></a>head、options、get、put、post、delete含义与区别</h1><pre><code>了解它们的区别，这对于 RESTful架构 来说非常有意义。
-</code></pre><p>如果你还不知道什么叫 <a href="https://fanerge.github.io/2017/10/13/RESTful-API-%E8%AE%BE%E8%AE%A1%E6%8C%87%E5%8D%97/">RESTful架构</a>？</p>
-<h2 id="HEAD请求（判断资源是否存在）"><a href="#HEAD请求（判断资源是否存在）" class="headerlink" title="HEAD请求（判断资源是否存在）"></a>HEAD请求（判断资源是否存在）</h2><pre><code>HEAD和GET本质是一样的，区别在于HEAD不含有呈现数据，而仅仅是HTTP头信息。
-有的人可能觉得这个方法没什么用，其实不是这样的。想象一个业务情景：欲判断某个资源是否存在，
-我们通常使用GET，但这里用HEAD则意义更加明确。
-</code></pre><h2 id="OPTIONS请求（获取当前URL支持的方法）"><a href="#OPTIONS请求（获取当前URL支持的方法）" class="headerlink" title="OPTIONS请求（获取当前URL支持的方法）"></a>OPTIONS请求（获取当前URL支持的方法）</h2><pre><code>这个方法很有趣，但极少使用。它用于获取当前URL所支持的方法。
-若请求成功，则它会在HTTP头中包含一个名为“Allow”的头，值是所支持的方法，如“GET, POST”。
-</code></pre><h2 id="POST请求（相当于数据库操作–增）"><a href="#POST请求（相当于数据库操作–增）" class="headerlink" title="POST请求（相当于数据库操作–增）"></a>POST请求（相当于数据库操作–增）</h2><pre><code>POST请求同PUT请求类似，都是向服务器端发送数据的，但是该请求会改变数据的种类等资源，
-就像数据库的insert操作一样，会创建新的内容。几乎目前所有的提交操作都是用POST请求的。
-</code></pre><h2 id="DELETE请求（相当于数据库操作–删）"><a href="#DELETE请求（相当于数据库操作–删）" class="headerlink" title="DELETE请求（相当于数据库操作–删）"></a>DELETE请求（相当于数据库操作–删）</h2><pre><code>DELETE请求顾名思义，就是用来删除某一个资源的，该请求就像数据库的delete操作。
-</code></pre><h2 id="PUT请求（相当于数据库操作–改）"><a href="#PUT请求（相当于数据库操作–改）" class="headerlink" title="PUT请求（相当于数据库操作–改）"></a>PUT请求（相当于数据库操作–改）</h2><pre><code>PUT请求是向服务器端发送数据的，从而改变信息，该请求就像数据库的update操作一样，
-用来修改数据的内容，但是不会增加数据的种类等，也就是说无论进行多少次PUT操作，其结果并没有不同。
-</code></pre><h2 id="GET请求（相当于数据库操作–查）"><a href="#GET请求（相当于数据库操作–查）" class="headerlink" title="GET请求（相当于数据库操作–查）"></a>GET请求（相当于数据库操作–查）</h2><pre><code>GET请求会向数据库发索取数据的请求，从而来获取信息，该请求就像数据库的select操作一样，
-只是用来查询一下数据，不会修改、增加数据，不会影响资源的内容，即该请求不会产生副作用。
-无论进行多少次操作，结果都是一样的。
-</code></pre><h1 id="常见的-GET-和-POST-的区别（浅比较）"><a href="#常见的-GET-和-POST-的区别（浅比较）" class="headerlink" title="常见的 GET 和 POST 的区别（浅比较）"></a>常见的 GET 和 POST 的区别（浅比较）</h1><p><img src="http://oxpnrlb4j.bkt.clouddn.com/get%E5%92%8Cpost.png" alt="get和post的区别"><br>    这些都是比较常见的，我就直接借用下<a href="https://sunshinevvv.coding.me/blog/2017/02/09/HttpGETv.s.POST/" target="_blank" rel="external">杨光</a>的总结。</p>
-<h1 id="也许这才是面试官想要的"><a href="#也许这才是面试官想要的" class="headerlink" title="也许这才是面试官想要的"></a>也许这才是面试官想要的</h1><p>上面我们的分析都是从<a href="https://fanerge.github.io/2017/10/14/OSI%E4%B8%83%E5%B1%82%E4%B8%8ETCP-IP%E4%BA%94%E5%B1%82%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84/">TCP/IP五层网络架构</a>中的 <span style="color: red;">应用层</span> 和 生产使用时做了区别，<br>这里我们就进入更底层的 <span style="color: red;">传输层 </span>的分析吧！</p>
-<blockquote>
-<p>GET和POST本质上就是TCP链接，并无差别。但是由于HTTP的规定和浏览器/服务器的限制，导致他们在应用过程中体现出一些不同。 GET和POST还有一个重大区别，简单的说：GET产生一个TCP数据包；POST产生两个TCP数据包。<br>对于GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200（返回数据）； 而对于POST，浏览器先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200 ok（返回数据）。<br>这里你只需要知道这个就好了，更详细请访问<a href="http://www.techweb.com.cn/network/system/2016-10-11/2407736.shtml" target="_blank" rel="external">get与post的区别</a>。    </p>
-</blockquote>
-<h1 id="总结一下-http-状态码"><a href="#总结一下-http-状态码" class="headerlink" title="总结一下 http 状态码"></a>总结一下 http 状态码</h1><p><img src="http://oxpnrlb4j.bkt.clouddn.com/http%E7%8A%B6%E6%80%81%E7%A0%81%E6%B1%87%E6%80%BB.png" alt="通用的http状态码"><br>    看着这些是不是有些头大，下面我为大家总结一些通用的状态码。<br>    100-199 用于指定客户端应相应的某些动作。<br>    200-299 用于表示请求成功。<br>    300-399 用于已经移动的文件并且常被包含在定位头信息中指定新的地址信息。<br>    400-499 用于指出客户端的错误。<br>    500-599 用于支持服务器错误。</p>
-<h2 id="1"><a href="#1" class="headerlink" title="1**"></a>1**</h2><h3 id="100-Continue-继续"><a href="#100-Continue-继续" class="headerlink" title="100 (Continue/继续)"></a>100 (Continue/继续)</h3><pre><code>如果服务器收到头信息中带有100-continue的请求，这是指客户端询问是否可以在后续的请求中发送附件。
-在这种情况下，服务器用100(SC_CONTINUE)允许客户端继续或用417 (Expectation Failed)告诉客户端
-不同意接受附件。这个状态码是 HTTP 1.1中新加入的。 
-</code></pre><h3 id="101-Switching-Protocols-转换协议"><a href="#101-Switching-Protocols-转换协议" class="headerlink" title="101 (Switching Protocols/转换协议)"></a>101 (Switching Protocols/转换协议)</h3><pre><code>指服务器将按照其上的头信息变为一个不同的协议。这是 HTTP 1.1中新加入的。 
-</code></pre><h2 id="2"><a href="#2" class="headerlink" title="2**"></a>2**</h2><h3 id="200-OK-正常"><a href="#200-OK-正常" class="headerlink" title="200 (OK/正常)"></a>200 (OK/正常)</h3><pre><code>200 (SC_OK)的意思是一切正常。一般用于相应GET和POST请求。这个状态码对servlet是缺省的；
-如果没有调用setStatus方法的话，就会得到200。 
-</code></pre><h3 id="201-Created-已创建"><a href="#201-Created-已创建" class="headerlink" title="201 (Created/已创建)"></a>201 (Created/已创建)</h3><pre><code>201 (SC_CREATED)表示服务器在请求的响应中建立了新文档；应在定位头信息中给出它的URL。
-</code></pre><h3 id="202-Accepted-接受"><a href="#202-Accepted-接受" class="headerlink" title="202 (Accepted/接受)"></a>202 (Accepted/接受)</h3><pre><code>202 (SC_ACCEPTED)告诉客户端请求正在被执行，但还没有处理完。 
-</code></pre><h3 id="203-Non-Authoritative-Information-非官方信息"><a href="#203-Non-Authoritative-Information-非官方信息" class="headerlink" title="203 (Non-Authoritative Information/非官方信息)"></a>203 (Non-Authoritative Information/非官方信息)</h3><pre><code>状态码203 (SC_NON_AUTHORITATIVE_INFORMATION)是表示文档被正常的返回，但是由于正在使用的
-是文档副本所以某些响应头信息可能不正确。这是 HTTP 1.1中新加入的。 
-</code></pre><h3 id="204-No-Content-无内容"><a href="#204-No-Content-无内容" class="headerlink" title="204 (No Content/无内容)"></a>204 (No Content/无内容)</h3><pre><code>在并没有新文档的情况下，204 (SC_NO_CONTENT)确保浏览器继续显示先前的文档。这各状态码对于
-用户周期性的重载某一页非常有用，并且你可以确定先前的页面是否已经更新。例如，某个servlet
-可能作如下操作： 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">int pageVersion =Integer.parseInt(request.getParameter(&quot;pageVersion&quot;));</div><div class="line">if (pageVersion &gt;;= currentVersion) &#123;</div><div class="line">   response.setStatus(response.SC_NO_CONTENT);</div><div class="line">&#125; else &#123;</div><div class="line">	   // Create regular page</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="205-Reset-Content-重置内容"><a href="#205-Reset-Content-重置内容" class="headerlink" title="205 (Reset Content/重置内容)"></a>205 (Reset Content/重置内容)</h3><pre><code>重置内容205 (SC_RESET_CONTENT)的意思是虽然没有新文档但浏览器要重置文档显示。这个状态码用
-于强迫浏览器清除表单域。这是 HTTP 1.1中新加入的。 
-</code></pre><h3 id="206-Partial-Content-局部内容"><a href="#206-Partial-Content-局部内容" class="headerlink" title="206 (Partial Content/局部内容)"></a>206 (Partial Content/局部内容)</h3><pre><code>206 (SC_PARTIAL_CONTENT)是在服务器完成了一个包含Range头信息的局部请求时被发送的。
-这是 HTTP 1.1中新加入的。 
-</code></pre><h2 id="3"><a href="#3" class="headerlink" title="3**"></a>3**</h2><h3 id="300-Multiple-Choices-多重选择"><a href="#300-Multiple-Choices-多重选择" class="headerlink" title="300 (Multiple Choices/多重选择)"></a>300 (Multiple Choices/多重选择)</h3><pre><code>300 (SC_MULTIPLE_CHOICES)表示被请求的文档可以在多个地方找到，并将在返回的文档中列出来。
-如果服务器有首选设置，首选项将会被列于定位响应头信息中。 
-</code></pre><h3 id="301-Moved-Permanently"><a href="#301-Moved-Permanently" class="headerlink" title="301 (Moved Permanently)"></a>301 (Moved Permanently)</h3><pre><code>永久性重定向。 
-</code></pre><h3 id="302-Move-temporarily"><a href="#302-Move-temporarily" class="headerlink" title="302 (Move temporarily)"></a>302 (Move temporarily)</h3><pre><code>临时性重定向。
-</code></pre><h3 id="303-See-Other-参见其他信息"><a href="#303-See-Other-参见其他信息" class="headerlink" title="303 (See Other/参见其他信息)"></a>303 (See Other/参见其他信息)</h3><pre><code>与301类似，使用GET和POST请求查看
-</code></pre><h3 id="304-Not-Modified-未更改"><a href="#304-Not-Modified-未更改" class="headerlink" title="304 (Not Modified/未更改)"></a>304 (Not Modified/未更改)</h3><pre><code>当客户端有一个缓存的文档，通过提供一个 If-Modified-Since 头信息可指出客户端只希望文档在指定日期之后
-有所修改时才会重载此文档，用这种方式可以进行有条件的请求。304 (SC_NOT_MODIFIED)是指缓冲的版本已经被
-更新并且客户端应刷新文档。另外，服务器将返回请求的文档及状态码 200。servlet一般情况下不会直接设置这
-个状态码。它们会实现getLastModified方法并根据修正日期让默认服务方法处理有条件的请求。这个方法的例程
-已在2.8部分(An Example Using Servlet Initialization and Page Modification Dates/一个使用servlet初始化
-和页面修正日期的例子)给出。 
-</code></pre><h3 id="305-Use-Proxy-使用代理"><a href="#305-Use-Proxy-使用代理" class="headerlink" title="305 (Use Proxy/使用代理)"></a>305 (Use Proxy/使用代理)</h3><pre><code>305 (SC_USE_PROXY)表示所请求的文档要通过定位头信息中的代理服务器获得。这个状态码是新加入 HTTP 1.1中的。 
-</code></pre><h3 id="307-Temporary-Redirect-临时重定向"><a href="#307-Temporary-Redirect-临时重定向" class="headerlink" title="307 (Temporary Redirect/临时重定向)"></a>307 (Temporary Redirect/临时重定向)</h3><pre><code>与302类似，使用GET请求重定向。 
-</code></pre><h2 id="4"><a href="#4" class="headerlink" title="4**"></a>4**</h2><h3 id="400-Bad-Request-错误请求"><a href="#400-Bad-Request-错误请求" class="headerlink" title="400 (Bad Request/错误请求)"></a>400 (Bad Request/错误请求)</h3><pre><code>400 (SC_BAD_REQUEST)指出客户端请求中的语法错误。 
-</code></pre><h3 id="401-Unauthorized-未授权"><a href="#401-Unauthorized-未授权" class="headerlink" title="401 (Unauthorized/未授权)"></a>401 (Unauthorized/未授权)</h3><pre><code>401 (SC_UNAUTHORIZED)表示客户端在授权头信息中没有有效的身份信息时访问受到密码保护的页面。
-这个响应必须包含一个WWW-Authenticate的授权信息头。例如，在本书4.5部分中的“Restricting Access to Web Pages./限制访问Web页。” 
-</code></pre><h3 id="403-Forbidden-禁止"><a href="#403-Forbidden-禁止" class="headerlink" title="403 (Forbidden/禁止)"></a>403 (Forbidden/禁止)</h3><pre><code>403 (SC_FORBIDDEN)的意思是除非拥有授权否则服务器拒绝提供所请求的资源。这个状态经常会由于
-服务器上的损坏文件或目录许可而引起。 
-</code></pre><h3 id="404-Not-Found-未找到"><a href="#404-Not-Found-未找到" class="headerlink" title="404 (Not Found/未找到)"></a>404 (Not Found/未找到)</h3><pre><code>404 (SC_NOT_FOUND)状态每个网络程序员可能都遇到过，他告诉客户端所给的地址无法找到任何资源。
-它是表示“没有所访问页面”的标准方式。这个状态码是常用的响应并且在HttpServletResponse类中有
-专门的方法实现它：sendError(&quot;message&quot;)。相对于setStatus使用sendError得好处是：服务器会自动
-生成一个错误页来显示错误信息。
-</code></pre><h3 id="405-Method-Not-Allowed-方法未允许"><a href="#405-Method-Not-Allowed-方法未允许" class="headerlink" title="405 (Method Not Allowed/方法未允许)"></a>405 (Method Not Allowed/方法未允许)</h3><pre><code>405 (SC_METHOD_NOT_ALLOWED)指出请求方法(GET, POST, HEAD, PUT, DELETE, 等)对某些特定的资源
-不允许使用。该状态码是新加入 HTTP 1.1中的。 
-</code></pre><h3 id="406-Not-Acceptable-无法访问"><a href="#406-Not-Acceptable-无法访问" class="headerlink" title="406 (Not Acceptable/无法访问)"></a>406 (Not Acceptable/无法访问)</h3><pre><code>406 (SC_NOT_ACCEPTABLE)表示请求资源的MIME类型与客户端中Accept头信息中指定的类型不一致。
-406是新加入 HTTP 1.1中的。 
-</code></pre><h3 id="407-Proxy-Authentication-Required-代理服务器认证要求"><a href="#407-Proxy-Authentication-Required-代理服务器认证要求" class="headerlink" title="407 (Proxy Authentication Required/代理服务器认证要求)"></a>407 (Proxy Authentication Required/代理服务器认证要求)</h3><pre><code>407 (SC_PROXY_AUTHENTICATION_REQUIRED)与401状态有些相似，只是这个状态用于代理服务器。
-该状态指出客户端必须通过代理服务器的认证。代理服务器返回一个Proxy-Authenticate响应头
-信息给客户端，这会引起客户端使用带有Proxy-Authorization请求的头信息重新连接。
-该状态码是新加入 HTTP 1.1中的。 
-</code></pre><h3 id="408-Request-Timeout-请求超时"><a href="#408-Request-Timeout-请求超时" class="headerlink" title="408 (Request Timeout/请求超时)"></a>408 (Request Timeout/请求超时)</h3><pre><code>408 (SC_REQUEST_TIMEOUT)是指服务端等待客户端发送请求的时间过长。该状态码是新加入 HTTP 1.1中的。 
-</code></pre><h3 id="409-Conflict-冲突"><a href="#409-Conflict-冲突" class="headerlink" title="409 (Conflict/冲突)"></a>409 (Conflict/冲突)</h3><pre><code>该状态通常与PUT请求一同使用，409 (SC_CONFLICT)状态常被用于试图上传版本不正确的文件时。
-该状态码是新加入 HTTP 1.1中的。 
-</code></pre><h3 id="410-Gone-已经不存在"><a href="#410-Gone-已经不存在" class="headerlink" title="410 (Gone/已经不存在)"></a>410 (Gone/已经不存在)</h3><pre><code>410 (SC_GONE)告诉客户端所请求的文档已经不存在并且没有更新的地址。
-410状态不同于404，410是在指导文档已被移走的情况下使用，而404则用于未知原因的无法访问。
-该状态码是新加入 HTTP 1.1中的。 
-</code></pre><h3 id="411-Length-Required-需要数据长度"><a href="#411-Length-Required-需要数据长度" class="headerlink" title="411 (Length Required/需要数据长度)"></a>411 (Length Required/需要数据长度)</h3><pre><code>411 (SC_LENGTH_REQUIRED)表示服务器不能处理请求（假设为带有附件的POST请求），除非客户端
-发送Content-Length头信息指出发送给服务器的数据的大小。该状态是新加入 HTTP 1.1的。 
-</code></pre><h3 id="412-Precondition-Failed-先决条件错误"><a href="#412-Precondition-Failed-先决条件错误" class="headerlink" title="412 (Precondition Failed/先决条件错误)"></a>412 (Precondition Failed/先决条件错误)</h3><pre><code>412 (SC_PRECONDITION_FAILED)状态指出请求头信息中的某些先决条件是错误的。该状态是新加入 HTTP 1.1的。 
-</code></pre><h3 id="413-Request-Entity-Too-Large-请求实体过大"><a href="#413-Request-Entity-Too-Large-请求实体过大" class="headerlink" title="413 (Request Entity Too Large/请求实体过大)"></a>413 (Request Entity Too Large/请求实体过大)</h3><pre><code>413 (SC_REQUEST_ENTITY_TOO_LARGE)告诉客户端现在所请求的文档比服务器现在想要处理的要大。
-如果服务器认为能够过一段时间处理，则会包含一个Retry-After的响应头信息。该状态是新加入 HTTP 1.1的。 
-</code></pre><h3 id="414-Request-URI-Too-Long-请求URI过长"><a href="#414-Request-URI-Too-Long-请求URI过长" class="headerlink" title="414 (Request URI Too Long/请求URI过长)"></a>414 (Request URI Too Long/请求URI过长)</h3><pre><code>414 (SC_REQUEST_URI_TOO_LONG)状态用于在URI过长的情况时。这里所指的“URI”是指URL中主机、
-域名及端口号之后的内容。例如：在URL--http://www.y2k-disaster.com:8080/we/look/silly/now/中URI是指/we/look/silly/now/。
-该状态是新加入 HTTP 1.1的。 
-</code></pre><h3 id="415-Unsupported-Media-Type-不支持的媒体格式"><a href="#415-Unsupported-Media-Type-不支持的媒体格式" class="headerlink" title="415 (Unsupported Media Type/不支持的媒体格式)"></a>415 (Unsupported Media Type/不支持的媒体格式)</h3><pre><code>415 (SC_UNSUPPORTED_MEDIA_TYPE)意味着请求所带的附件的格式类型服务器不知道如何处理。该状态是新加入 HTTP 1.1的。 
-</code></pre><h3 id="416-Requested-Range-Not-Satisfiable-请求范围无法满足"><a href="#416-Requested-Range-Not-Satisfiable-请求范围无法满足" class="headerlink" title="416 (Requested Range Not Satisfiable/请求范围无法满足)"></a>416 (Requested Range Not Satisfiable/请求范围无法满足)</h3><pre><code>416表示客户端包含了一个服务器无法满足的Range头信息的请求。该状态是新加入 HTTP 1.1的。
-奇怪的是，在servlet 2.1版本API的HttpServletResponse中并没有相应的常量代表该状态。 
-</code></pre><h3 id="417-Expectation-Failed-期望失败"><a href="#417-Expectation-Failed-期望失败" class="headerlink" title="417 (Expectation Failed/期望失败)"></a>417 (Expectation Failed/期望失败)</h3><pre><code>如果服务器得到一个带有100-continue值的Expect请求头信息，这是指客户端正在询问是否可以在后面的
-请求中发送附件。在这种情况下，服务器也会用该状态(417)告诉浏览器服务器不接收该附件或用100 (SC_CONTINUE)状态
-告诉客户端可以继续发送附件。该状态是新加入 HTTP 1.1的。 
-</code></pre><h2 id="5"><a href="#5" class="headerlink" title="5**"></a>5**</h2><h3 id="500-Internal-Server-Error-内部服务器错误"><a href="#500-Internal-Server-Error-内部服务器错误" class="headerlink" title="500 (Internal Server Error/内部服务器错误)"></a>500 (Internal Server Error/内部服务器错误)</h3><pre><code>500 (SC_INTERNAL_SERVER_ERROR) 是常用的“服务器错误”状态。该状态经常由CGI程序引起也可能
-（但愿不会如此！）由无法正常运行的或返回头信息格式不正确的servlet引起。 
-</code></pre><h3 id="501-Not-Implemented-未实现"><a href="#501-Not-Implemented-未实现" class="headerlink" title="501 (Not Implemented/未实现)"></a>501 (Not Implemented/未实现)</h3><pre><code>501 (SC_NOT_IMPLEMENTED)状态告诉客户端服务器不支持请求中要求的功能。例如，客户端执行了如PUT
-这样的服务器并不支持的命令。 
-</code></pre><h3 id="502-Bad-Gateway-错误的网关"><a href="#502-Bad-Gateway-错误的网关" class="headerlink" title="502 (Bad Gateway/错误的网关)"></a>502 (Bad Gateway/错误的网关)</h3><pre><code>502 (SC_BAD_GATEWAY)被用于充当代理或网关的服务器；该状态指出接收服务器接收到远端服务器的错误响应。 
-</code></pre><h3 id="503-Service-Unavailable-服务无法获得"><a href="#503-Service-Unavailable-服务无法获得" class="headerlink" title="503 (Service Unavailable/服务无法获得)"></a>503 (Service Unavailable/服务无法获得)</h3><pre><code>状态码503 (SC_SERVICE_UNAVAILABLE)表示服务器由于在维护或已经超载而无法响应。例如，如果某些线程
-或数据库连接池已经没有空闲则servlet会返回这个头信息。服务器可提供一个Retry-After头信息告诉客户
-端什么时候可以在试一次。 
-</code></pre><h3 id="504-Gateway-Timeout-网关超时"><a href="#504-Gateway-Timeout-网关超时" class="headerlink" title="504 (Gateway Timeout/网关超时)"></a>504 (Gateway Timeout/网关超时)</h3><pre><code>该状态也用于充当代理或网关的服务器；它指出接收服务器没有从远端服务器得到及时的响应。
-该状态是新加入 HTTP 1.1的。 
-</code></pre><h3 id="505-HTTP-Version-Not-Supported-不支持的-HTTP-版本"><a href="#505-HTTP-Version-Not-Supported-不支持的-HTTP-版本" class="headerlink" title="505 (HTTP Version Not Supported/不支持的 HTTP 版本)"></a>505 (HTTP Version Not Supported/不支持的 HTTP 版本)</h3><pre><code>505 (SC_HTTP_VERSION_NOT_SUPPORTED)状态码是说服务器并不支持在请求中所标明 HTTP 版本。
-该状态是新加入 HTTP 1.1的。
-</code></pre><h1 id="http-缓存相关"><a href="#http-缓存相关" class="headerlink" title="http 缓存相关"></a>http 缓存相关</h1><p>这里关于前端仔 http缓存相关的知识，我就不再总结了，有兴趣的同学可以访问我<a href="https://fanerge.github.io/2017/09/01/http%E7%BC%93%E5%AD%98%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/">http缓存相关的知识</a>。</p>
-<blockquote>
-<p>   参考文档：<br>    <a href="http://www.cnblogs.com/testcoffee/p/6295970.html" target="_blank" rel="external">get、put、post、delete含义与区别</a><br>    <a href="https://sunshinevvv.coding.me/blog/2017/02/09/HttpGETv.s.POST/" target="_blank" rel="external">HTTP协议中GET和POST方法的区别</a><br>    <a href="http://www.techweb.com.cn/network/system/2016-10-11/2407736.shtml" target="_blank" rel="external">99%的人都理解错了HTTP中GET与POST的区别</a><br>    <a href="https://baike.baidu.com/item/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/5053660?fr=aladdin" target="_blank" rel="external">有同学不好翻墙，就看百度的http状态码吧</a><br>    <a href="http://www.cnblogs.com/lxinxuan/archive/2009/10/22/1588053.html" target="_blank" rel="external">HTTP状态码大全</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/11/02/js设计模式-组合模式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/11/02/js设计模式-组合模式/" itemprop="url">
-                  js设计模式-组合模式
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-02T19:57:34+08:00">
-                2017-11-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">设计模式</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/11/02/js设计模式-组合模式/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/11/02/js设计模式-组合模式/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  546
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  2
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="组合模式的基础"><a href="#组合模式的基础" class="headerlink" title="组合模式的基础"></a>组合模式的基础</h1><pre><code>定义：组合模式（Composite）将对象组合成树形结构以表示“部分-整体”的层次结构，
-    组合模式使得用户对单个对象和组合对象的使用具有一致性。
-作用：组合模式让你可以优化处理递归或分级数据结构。
-使用场景：系统目录结构、网站导航结构、文件扫描、DOM的机制，一个DOM节点可以包含子节点，不管是父节点还是子节点都有添加、
-    删除、遍历子节点的通用功能。
-该模式由两部分构成：
-    1.子对象（Leaf）：组成组合对象的最基本对象。
-    2.组合对象（Composite）：由子对象组合起来的复杂对象。
-</code></pre><h1 id="组合模式的例子"><a href="#组合模式的例子" class="headerlink" title="组合模式的例子"></a>组合模式的例子</h1><pre><code>文件扫描
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line">// 定义组合对象（文件夹）</div><div class="line">let Folder = function( name )&#123;</div><div class="line">	this.name = name;</div><div class="line">	this.files = [];</div><div class="line">&#125;;</div><div class="line">Folder.prototype.add = function( file )&#123;</div><div class="line">	this.files.push( file );</div><div class="line">&#125;;</div><div class="line">Folder.prototype.scan = function()&#123;</div><div class="line">	console.log(&apos;开始文件扫描:&apos; + this.name);</div><div class="line">	for( let i = 0, file, files = this.files; file = files[i++]; )&#123;</div><div class="line">		file.scan();</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">//定义叶子对象（文件）</div><div class="line">let File = function( name )&#123;</div><div class="line">	this.name = name;</div><div class="line">&#125;;</div><div class="line">File.prototype.add = function()&#123;</div><div class="line">	throw new Error(&apos;文件下面不能再添加文件&apos;);</div><div class="line">&#125;;</div><div class="line">File.prototype.scan = function()&#123;</div><div class="line">	console.log(&apos;开始扫瞄：&apos; + this.name);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">let folder = new Folder(&apos;前端学习&apos;);</div><div class="line">let folder1 = new Folder(&apos;JS学习&apos;);</div><div class="line">let folder2 = new Folder(&apos;JQ学习&apos;);</div><div class="line"></div><div class="line">let file1 = new File(&apos;JS设计模式&apos;);</div><div class="line">let file2 = new File(&apos;JQ实战&apos;);</div><div class="line">let file3 = new File(&apos;前端性能&apos;);</div><div class="line"></div><div class="line">folder1.add(file1);</div><div class="line">folder2.add(file2);</div><div class="line">folder.add(folder1);</div><div class="line">folder.add(folder2);</div><div class="line">folder.add(file3);</div><div class="line">folder.scan();</div><div class="line"></div><div class="line">// 输出</div><div class="line">开始文件扫描：前端学习</div><div class="line">开始文件扫描：JS学习</div><div class="line">开始扫瞄：JS设计模式</div><div class="line">开始文件扫描：JQ学习</div><div class="line">开始扫瞄：JQ实战</div><div class="line">开始扫瞄：前端性能</div></pre></td></tr></table></figure>
-
-PS：父类和子类必须具有相同的接口（方法），只不过它们相同的方法具有的功能不相同，
-    例如父类的实例具有 add 方法作用是，可以添加文件夹 或者 文件。子类的实例具有 
-    add 方法则不能添加文件夹 或者 文件，却抛出一个错误（子类重写父类的方法）。 
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="https://github.com/fanerge/Study-Notes/blob/master/2017%E5%B9%B4/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E9%9B%86%E5%90%88/0521%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F.txt" target="_blank" rel="external">0521组合模式</a><br>    <a href="http://www.cnblogs.com/TomXu/archive/2012/04/12/2435530.html" target="_blank" rel="external">深入理解JavaScript系列（40）：设计模式之组合模式</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2546,7 +2483,7 @@ PS：父类和子类必须具有相同的接口（方法），只不过它们相
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">114</span>
+                <span class="site-state-item-count">116</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2685,7 +2622,7 @@ PS：父类和子类必须具有相同的接口（方法），只不过它们相
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共143.0k字</span>
+  <span class="post-count">博客全站共145.6k字</span>
 </div>
         
 
