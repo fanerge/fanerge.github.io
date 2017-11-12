@@ -306,6 +306,1486 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/29/React-routerV4总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/29/React-routerV4总结/" itemprop="url">
+                  React-routerV4总结
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-29T20:01:36+08:00">
+                2017-10-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React/" itemprop="url" rel="index">
+                    <span itemprop="name">React</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/29/React-routerV4总结/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/29/React-routerV4总结/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,521
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  6
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="BrowserRouter"><a href="#BrowserRouter" class="headerlink" title="BrowserRouter"></a>BrowserRouter</h1><pre><code>作用：
+    &lt;Router&gt; 使用 HTML5 提供的 history API (pushState, replaceState 和 popstate 事件) 来保持 UI 和 URL 的同步。
+属性：
+    basename: string
+        当前位置的基准 URL。如果你的页面部署在服务器的二级（子）目录，你需要将 basename 设置到此子目录。 正确的 URL 格式是前面有一个前导斜杠，但不能有尾部斜杠。
+    getUserConfirmation: func
+        当导航需要确认时执行的函数。默认使用 window.confirm。
+    forceRefresh: bool
+        当设置为 true 时，在导航的过程中整个页面将会刷新。 只有当浏览器不支持 HTML5 的 history API 时，才设置为 true。
+    keyLength: number
+        location.key 的长度。默认是 6。
+    children: node
+        渲染单一子组件（元素）。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">import &#123; BrowserRouter &#125; from &apos;react-router-dom&apos;</div><div class="line"></div><div class="line">&lt;BrowserRouter</div><div class="line">  basename=&quot;/calendar&quot;</div><div class="line">  forceRefresh=&quot;false&quot;</div><div class="line">  getUserConfirmation=&#123;optionalFunc&#125;</div><div class="line">  keyLength=&quot;10&quot;</div><div class="line">&gt;</div><div class="line">  &lt;Link to=&quot;/today&quot; /&gt; // 渲染为 &lt;a href=&quot;/calendar/today&quot;&gt;</div><div class="line">&lt;/BrowserRouter&gt;</div></pre></td></tr></table></figure>
+</code></pre><h1 id="HashRouter"><a href="#HashRouter" class="headerlink" title="HashRouter"></a>HashRouter</h1><pre><code>作用：
+    HashRouter 是一种特定的 &lt;Router&gt;， HashRouter 使用 URL 的 hash (例如：window.location.hash) 来保持 UI 和 URL 的同步。
+属性：
+    basename: string
+        当前位置的基准 URL。正确的 URL 格式是前面有一个前导斜杠，但不能有尾部斜杠。
+    getUserConfirmation: func
+        当导航需要确认时执行的函数。默认使用 window.confirm。
+    hashType: string
+        window.location.hash 使用的 hash 类型。有如下几种：
+        &quot;slash&quot; - 后面跟一个斜杠，例如 #/ 和 #/sunshine/lollipops
+        &quot;noslash&quot; - 后面没有斜杠，例如 # 和 #sunshine/lollipops
+        &quot;hashbang&quot; - Google 风格的 “ajax crawlable”，例如 #!/ 和 #!/sunshine/lollipops
+        默认为 &quot;slash&quot;。
+    children: node
+        渲染单一子组件（元素）。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">import &#123; HashRouter &#125; from &apos;react-router-dom&apos;</div><div class="line"></div><div class="line">&lt;HashRouter&gt;</div><div class="line">  &lt;App/&gt;</div><div class="line">&lt;/HashRouter&gt;</div></pre></td></tr></table></figure>
+</code></pre><h1 id="Link"><a href="#Link" class="headerlink" title="Link"></a>Link</h1><pre><code>作用：
+    为您的应用提供声明式的、无障碍导航。        
+属性：    
+    to: string/object
+        需要跳转到的路径(pathname)或地址（location）。
+        需要跳转到的地址（location）。
+    replace: bool
+        当设置为 true 时，点击链接后将使用新地址替换掉访问历史记录里面的原地址。
+        当设置为 false 时，点击链接后将在原有访问历史记录的基础上添加一个新的纪录。默认为 false。    
+</code></pre><pre><code>&lt;Link to=&quot;/about&quot;&gt;关于&lt;/Link&gt;
+&lt;Link to={{
+  pathname: '/courses',
+  search: '?sort=name',
+  hash: '#the-hash',
+  state: { fromDashboard: true }
+}}/&gt;
+</code></pre><h1 id="NavLink"><a href="#NavLink" class="headerlink" title="NavLink"></a>NavLink</h1><pre><code>作用：    
+    为当前 URL 添加 class 和 style。
+属性：
+    activeClassName: string
+        选中 URL 是添加的class。
+    activeStyle：object
+        选中 URL 是添加的style。
+    exact: bool    
+        如果为 true，path 为 &apos;/one&apos; 的路由将不能匹配 &apos;/one/two&apos;，反之，亦然。    
+    strict: bool
+        对路径末尾斜杠的匹配。如果为 true。path 为 &apos;/one/&apos; 将不能匹配 &apos;/one&apos; 但可以匹配 &apos;/one/two&apos;。
+    isActive: func    
+        为URL匹配添加更严谨的逻辑函数。    
+</code></pre><h1 id="Prompt"><a href="#Prompt" class="headerlink" title="Prompt"></a>Prompt</h1><pre><code>作用：    
+    当用户离开当前页面前做出一些提示。
+属性：
+    message: string/func
+        当用户离开当前页面时，设置的提示信息。
+        当用户离开当前页面时，设置的回掉函数
+    when: bool
+        通过设置一定条件要决定是否启用 Prompt
+</code></pre><h1 id="MemoryRouter"><a href="#MemoryRouter" class="headerlink" title="MemoryRouter"></a>MemoryRouter</h1><pre><code>作用：
+    无 DOM 的环境。
+
+属性：
+    initialEntries: array
+        一个 history 堆栈的数组。
+    initialIndex: number
+        在 initialEntries 数组中的初始index。
+    getUserConfirmation: func
+    keyLength: number
+    children: node
+</code></pre><h1 id="Redirect"><a href="#Redirect" class="headerlink" title="Redirect"></a>Redirect</h1><pre><code>作用：
+    重定向将替代当前的location 中的 history。
+属性：
+    to: string/object
+        重定向string
+        重定向object
+    push: bool
+        当为 true 时，替换掉整个history，而不是当前这一条。
+    from: string    
+        重定向的路径名。
+</code></pre><h1 id="Route"><a href="#Route" class="headerlink" title="Route"></a>Route</h1><pre><code>作用：
+    它最基本的职责就是当页面的访问地址与 Route 上的 path 匹配时，就渲染出对应的 UI 界面。
+属性：
+    component: func
+        只有当访问地址和路由匹配时，一个 React component 才会被渲染，此时此组件接受 route props (match, location, history)。
+    render: func    
+        此方法适用于内联渲染，而且不会产生上文说的重复装载问题。
+    children: func
+        有时候你可能只想知道访问地址是否被匹配，然后改变下别的东西，而不仅仅是对应的页面。
+    path: string
+    exact: bool
+    strict: bool
+</code></pre><h1 id="Router"><a href="#Router" class="headerlink" title="Router"></a>Router</h1><pre><code>作用：底层路由接口组件，使用封装后的组件代替。    
+    &lt;BrowserRouter&gt;
+    &lt;HashRouter&gt;
+    &lt;MemoryRouter&gt;
+    &lt;NativeRouter&gt;
+    &lt;StaticRouter&gt;
+属性：
+    history：object
+        导航的history对象
+    children: node
+</code></pre><h1 id="StaticRouter"><a href="#StaticRouter" class="headerlink" title="StaticRouter"></a>StaticRouter</h1><pre><code>定义：
+    不会更改location的 &lt;Router&gt;，服务端渲染。
+属性：
+    basename: string
+    location: string    
+    context: object    
+    children: node    
+</code></pre><h1 id="Switch"><a href="#Switch" class="headerlink" title="Switch"></a>Switch</h1><pre><code>定义：
+    只渲染出第一个与当前访问地址匹配的 &lt;Route&gt; 或 &lt;Redirect&gt;。
+    我们只想渲染出第一个匹配的路由就可以了，于是 &lt;Switch&gt; 应运而生！
+属性：
+    children: node
+</code></pre><h1 id="对象和方法"><a href="#对象和方法" class="headerlink" title="对象和方法"></a>对象和方法</h1><h2 id="history"><a href="#history" class="headerlink" title="history"></a>history</h2><h3 id="路由分类"><a href="#路由分类" class="headerlink" title="路由分类"></a>路由分类</h3><pre><code>1.browser history -- HTML5 history API
+2.hash history    -- 低版本浏览器
+3.memory history  -- 无DOM环境（RN 和 Node）
+</code></pre><h3 id="histoty对象详解"><a href="#histoty对象详解" class="headerlink" title="histoty对象详解"></a>histoty对象详解</h3><pre><code>length -- number 浏览历史堆栈中的条目数。        
+action -- string 路由跳转到当前执行页面的动作，分为 PUSH、REPLACE、POP。
+location -- object 当前访问地址信息组成的对象
+    （pathname、search、hash、state）
+
+push(path, [state]) 在历史堆栈信息里加入一个新条目。
+replace(path, [state]) 在历史堆栈信息里替换掉当前的条目
+go(n) 将 history 堆栈中的指针向前移动 n。
+goBack() 等同于 go(-1)
+goForward 等同于 go(1)
+block(prompt) 阻止跳转
+</code></pre><h2 id="location"><a href="#location" class="headerlink" title="location"></a>location</h2><pre><code>location 是指你当前的位置，将要去的位置，或是之前所在的位置
+在以下情境中可以获取 location 对象:
+    1.在 Route component 中，以 this.props.location 获取
+    2.在 Route render 中，以 ({location}) =&gt; () 方式获取
+    3.在 Route children 中，以 ({location}) =&gt; () 方式获取
+    4.在 withRouter 中，以 this.props.location 的方式获取
+可以在不同情境中使用 location：
+    1.&lt;Link to={location} /&gt;
+    2.&lt;NaviveLink to={location} /&gt;
+    3.&lt;Redirect to={location /&gt;
+    4.history.push(location)
+    5.history.replace(location)
+</code></pre><h2 id="match"><a href="#match" class="headerlink" title="match"></a>match</h2><pre><code>match 对象包含了 &lt;Route path&gt; 如何与 URL 匹配的信息，具有以下属性：
+    1.params: object 路径参数，通过解析 URL 中的动态部分获得键值对
+    2.isExact: bool 为 true 时，整个 URL 都需要匹配
+    3.path: string 用来匹配的路径模式，用于创建嵌套的 &lt;Route&gt;
+    4.url: string URL 匹配的部分，用于嵌套的 &lt;Link&gt;
+在以下情境中可以获取 match 对象
+    1.在 Route component 中，以 this.props.match获取
+    2.在 Route render 中，以 ({match}) =&gt; () 方式获取
+    3.在 Route children 中，以 ({match}) =&gt; () 方式获取
+    4.在 withRouter 中，以 this.props.match的方式获取
+    5.matchPath 的返回值
+注：当一个 Route 没有 path 时，它会匹配一切路径。
+</code></pre><h2 id="matchPath"><a href="#matchPath" class="headerlink" title="matchPath"></a>matchPath</h2><pre><code>pathname
+props
+</code></pre><h2 id="withRouter"><a href="#withRouter" class="headerlink" title="withRouter"></a>withRouter</h2><blockquote>
+<p>   参考文档：<br>    <a href="https://developer.mozilla.org/en-US/docs/Web/API/History" target="_blank" rel="external">MDN-history</a><br>    <a href="http://blog.csdn.net/sinat_17775997/article/details/69218382" target="_blank" rel="external">初探 React Router 4.0</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/29/Redux总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/29/Redux总结/" itemprop="url">
+                  Redux总结
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-29T19:53:24+08:00">
+                2017-10-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React/" itemprop="url" rel="index">
+                    <span itemprop="name">React</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/29/Redux总结/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/29/Redux总结/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  998
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  4
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Redux-三大原则"><a href="#Redux-三大原则" class="headerlink" title="Redux 三大原则"></a>Redux 三大原则</h1><h2 id="单一数据源"><a href="#单一数据源" class="headerlink" title="单一数据源"></a>单一数据源</h2><pre><code>整个应用的 state 被储存在一棵 object tree 中，并且这个 object tree 只存在于唯一一个 store 中。
+</code></pre><h2 id="State-是只读的"><a href="#State-是只读的" class="headerlink" title="State 是只读的"></a>State 是只读的</h2><pre><code>惟一改变 state 的方法就是触发 action，action 是一个用于描述已发生事件的普通对象。
+</code></pre><h2 id="使用纯函数来执行修改"><a href="#使用纯函数来执行修改" class="headerlink" title="使用纯函数来执行修改"></a>使用纯函数来执行修改</h2><pre><code>为了描述 action 如何改变 state tree ，你需要编写 reducers。
+</code></pre><p>Immutable 是一个可实现持久数据结构的 JavaScript 库。</p>
+<h1 id="Redux-基本概念"><a href="#Redux-基本概念" class="headerlink" title="Redux 基本概念"></a>Redux 基本概念</h1><h2 id="Action"><a href="#Action" class="headerlink" title="Action"></a>Action</h2><h3 id="Action-1"><a href="#Action-1" class="headerlink" title="Action"></a>Action</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">const ADD_TODO = &apos;ADD_TODO&apos;</div><div class="line">&#123;</div><div class="line">  type: ADD_TODO,</div><div class="line">  text: &apos;Build my first Redux app&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+Action 是把数据从应用传到 store 的有效载荷。它是 store 数据的唯一来源。
+一般来说你会通过 store.dispatch() 将 action 传到 store。    
+Action 本质上是 JavaScript 普通对象。
+我们约定，action 内必须使用一个字符串类型的 type 字段来表示将要执行的动作。
+</code></pre><h3 id="Action-创建函数"><a href="#Action-创建函数" class="headerlink" title="Action 创建函数"></a>Action 创建函数</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">function addTodo(text) &#123;</div><div class="line">  return &#123;</div><div class="line">	type: ADD_TODO,</div><div class="line">	text</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+Action 创建函数 就是生成 action 的方法。“action” 和 “action 创建函数” 这两个概念很容易混在一起，使用时最好注意区分。
+</code></pre><h3 id="分发-Action（此时就新建了一条-todo）"><a href="#分发-Action（此时就新建了一条-todo）" class="headerlink" title="分发 Action（此时就新建了一条 todo）"></a>分发 Action（此时就新建了一条 todo）</h3><pre><code>Redux 中只需把 action 创建函数的结果传给 dispatch() 方法即可发起一次 dispatch 过程。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dispatch(addTodo(&apos;新建的todo&apos;))</div></pre></td></tr></table></figure>
+</code></pre><h2 id="Reducer"><a href="#Reducer" class="headerlink" title="Reducer"></a>Reducer</h2><pre><code>Action 只是描述了有事情发生了这一事实，并没有指明应用如何更新 state。
+而这正是 reducer 要做的事情。
+</code></pre><h3 id="设计-State-结构"><a href="#设计-State-结构" class="headerlink" title="设计 State 结构"></a>设计 State 结构</h3><pre><code>在 Redux 应用中，所有的 state 都被保存在一个单一对象中。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  visibilityFilter: &apos;SHOW_ALL&apos;,</div><div class="line">  todos: [</div><div class="line">	&#123;</div><div class="line">	  text: &apos;Consider using Redux&apos;,</div><div class="line">	  completed: true,</div><div class="line">	&#125;,</div><div class="line">	&#123;</div><div class="line">	  text: &apos;Keep all state in a single tree&apos;,</div><div class="line">	  completed: false</div><div class="line">	&#125;</div><div class="line">  ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="Action-处理（reducer-纯函数）"><a href="#Action-处理（reducer-纯函数）" class="headerlink" title="Action 处理（reducer 纯函数）"></a>Action 处理（reducer 纯函数）</h3><pre><code>reducer 模版（不再reducer中执行有副作用的操作，如 API 请求和路由跳转）
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// 模版(previousState, action) =&gt; newState</div><div class="line"></div><div class="line">function todoApp(state = initialState, action) &#123;</div><div class="line">  // 这里暂不处理任何 action，</div><div class="line">  // 仅返回传入的 state。</div><div class="line">  return state</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="处理多个-action"><a href="#处理多个-action" class="headerlink" title="处理多个 action"></a>处理多个 action</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">function todoApp(state = initialState, action) &#123;</div><div class="line">  switch (action.type) &#123;</div><div class="line">	case SET_VISIBILITY_FILTER:</div><div class="line">	  return Object.assign(&#123;&#125;, state, &#123;</div><div class="line">		visibilityFilter: action.filter</div><div class="line">	  &#125;)</div><div class="line">	case ADD_TODO:</div><div class="line">	  return Object.assign(&#123;&#125;, state, &#123;</div><div class="line">		todos: [</div><div class="line">		  ...state.todos,</div><div class="line">		  &#123;</div><div class="line">			text: action.text,</div><div class="line">			completed: false</div><div class="line">		  &#125;</div><div class="line">		]</div><div class="line">	  &#125;)</div><div class="line">	default:</div><div class="line">	  return state</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="拆分-Reducer"><a href="#拆分-Reducer" class="headerlink" title="拆分 Reducer"></a>拆分 Reducer</h3><pre><code>注意每个 reducer 只负责管理全局 state 中它负责的一部分。
+每个 reducer 的 state 参数都不同，分别对应它管理的那部分 state 数据。
+</code></pre><h2 id="Store"><a href="#Store" class="headerlink" title="Store"></a>Store</h2><pre><code>总结，action 和 reducers。
+action 来描述“发生了什么”，和使用 reducers 来根据 action 更新 state 的用法。
+Store的作用：
+1.维持应用的 state
+2.提供 getState() 方法获取 state    
+3.提供 dispatch(action) 方法更新 state
+4.通过 subscribe(listener) 注册监听器
+5.通过 subscribe(listener) 返回的函数注销监听器
+</code></pre><h3 id="发起-Actions"><a href="#发起-Actions" class="headerlink" title="发起 Actions"></a>发起 Actions</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// 订阅 state 更改</div><div class="line">// 注意 subscribe() 返回一个函数用来注销监听器</div><div class="line">let unsubscribe = store.subscribe(() =&gt;</div><div class="line">  console.log(store.getState())</div><div class="line">)</div><div class="line">// 发起 action</div><div class="line">store.dispatch(reducers)</div></pre></td></tr></table></figure>
+</code></pre><h2 id="数据流动"><a href="#数据流动" class="headerlink" title="数据流动"></a>数据流动</h2><pre><code>Redux 应用中数据的生命周期
+1.调用 store.dispatch(action)
+    你可以在任何地方调用 store.dispatch(action)，包括组件中、XHR 回调中、甚至定时器中。
+2.Redux store 调用传入的 reducer 函数
+    Store 会把两个参数传入 reducer： 当前的 state 树和 action。
+    let nextState = todoApp(previousState, action);
+3.根 reducer 应该把多个子 reducer 输出合并成一个单一的 state 树。    
+    combineReducers() 来把根 reducer 拆分成多个函数，用于分别处理 state 树的一个分支。
+4.Redux store 保存了根 reducer 返回的完整 state 树。    
+</code></pre><h1 id="Redux-高级"><a href="#Redux-高级" class="headerlink" title="Redux 高级"></a>Redux 高级</h1><h2 id="异步-Action"><a href="#异步-Action" class="headerlink" title="异步 Action"></a>异步 Action</h2><pre><code>Action
+    每个 API 请求都需要 dispatch 至少三种 action：    
+    1.一种通知 reducer 请求开始的 action。    
+    2.一种通知 reducer 请求成功结束的 action。    
+    3.一种通知 reducer 请求失败的 action。    
+同步 Action Creator    
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">export const SELECT_SUBREDDIT = &apos;SELECT_SUBREDDIT&apos;</div><div class="line"></div><div class="line">export function selectSubreddit(subreddit) &#123;</div><div class="line">  return &#123;</div><div class="line">	type: SELECT_SUBREDDIT,</div><div class="line">	subreddit</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="设计-state-结构"><a href="#设计-state-结构" class="headerlink" title="设计 state 结构"></a>设计 state 结构</h3><h3 id="处理-Action（reducer）"><a href="#处理-Action（reducer）" class="headerlink" title="处理 Action（reducer）"></a>处理 Action（reducer）</h3><pre><code>处理异步 action：redux-thunk、redux-promise、redux-promise-middleware
+</code></pre><h3 id="异步-Action-Creator"><a href="#异步-Action-Creator" class="headerlink" title="异步 Action Creator"></a>异步 Action Creator</h3><h2 id="Middleware"><a href="#Middleware" class="headerlink" title="Middleware"></a>Middleware</h2><pre><code>你可以利用 Redux middleware 来进行日志记录、创建崩溃报告、调用异步接口或者路由等等。        
+问题: 记录日志    
+问题: 崩溃报告    
+</code></pre><h2 id="搭配-React-Router"><a href="#搭配-React-Router" class="headerlink" title="搭配 React Router"></a>搭配 React Router</h2><pre><code>Redux 和 React Router 将分别成为你数据和 URL 的事实来源。    
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="http://www.redux.org.cn/docs/introduction/Motivation.html" target="_blank" rel="external">Redux 中文文档</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/26/React-API/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/26/React-API/" itemprop="url">
+                  React-API
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-26T20:28:33+08:00">
+                2017-10-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React/" itemprop="url" rel="index">
+                    <span itemprop="name">React</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/26/React-API/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/26/React-API/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,684
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  7
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="React-高阶-API"><a href="#React-高阶-API" class="headerlink" title="React 高阶 API"></a>React 高阶 API</h1><pre><code>Creating React Elements
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">推荐使用 JSX</div><div class="line">createElement() -- 根据给定的类型创建并返回新的 React element。</div><div class="line">createFactory() -- 根据给定的类型返回一个创建React元素的函数。</div></pre></td></tr></table></figure>
+
+Transforming Elements
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">cloneElement() -- 以 element 作为起点，克隆并返回一个新的 React Element。</div><div class="line">isValidElement() -- 验证对象是否是一个React元素。返回 true 或 false 。</div><div class="line">React.Children() -- React.Children 提供了处理 this.props.children 这个不透明数据结构的工具。</div><div class="line">	React.Children.map(children, function[(thisArg)]) -- 返回数组</div><div class="line">	React.Children.forEach(children, function[(thisArg)]) -- 对数组每项进行操作</div><div class="line">	React.Children.count(children) -- 返回组件总数</div><div class="line">	React.Children.only(children) -- 返回仅有的子级</div><div class="line">	React.Children.toArray(children) -- 返回扁平数组</div></pre></td></tr></table></figure>
+</code></pre><h1 id="Components"><a href="#Components" class="headerlink" title="Components"></a>Components</h1><pre><code>React 组件可以让你把UI分割为独立、可复用的片段，并将每一片段视为相互独立的部分。
+React组件可以通过继承 React.Component 或 React.PureComponent 来定义。
+</code></pre><h2 id="React-Component"><a href="#React-Component" class="headerlink" title="React.Component"></a>React.Component</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">class Greeting extends React.Component &#123;</div><div class="line">  render() &#123;</div><div class="line">	return &lt;h1&gt;Hello, &#123;this.props.name&#125;&lt;/h1&gt;;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+组件生命周期
+    装配 -- 这些方法会在组件实例被创建和插入DOM中时被调用
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">constructor()</div><div class="line">componentWillMount()</div><div class="line">render()</div><div class="line">componentDidMount()</div></pre></td></tr></table></figure>
+
+    更新 -- 属性或状态的改变会触发一次更新。当一个组件在被重渲时，这些方法将会被调用
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">componentWillReceiveProps()</div><div class="line">shouldComponentUpdate()</div><div class="line">componentWillUpdate()</div><div class="line">render()</div><div class="line">componentDidUpdate()</div></pre></td></tr></table></figure>
+
+    卸载 -- 当一个组件被从DOM中移除时，该方法被调用
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">componentWillUnmount()</div></pre></td></tr></table></figure>
+
+其他API
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">setState() 参数为对象或函数</div><div class="line">forceUpdate()</div></pre></td></tr></table></figure>
+
+类属性
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">defaultProps</div><div class="line">	defaultProps可以被定义为组件类的一个属性，用以为类设置默认的属性。</div><div class="line">displayName</div><div class="line">	displayName被用在调试信息中。</div></pre></td></tr></table></figure>
+
+实例属性
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">props</div><div class="line">	this.props包含了组件该调用者定义的属性。</div><div class="line">state</div><div class="line">	状态是该组件的特定数据，其可能改变多次。</div></pre></td></tr></table></figure>
+
+参考
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">render()</div><div class="line">	可以返回：React元素、字符串和数字、Portals、null、布尔值（null和布尔值什么都不渲染）</div><div class="line">constructor(props)</div><div class="line">	super(props) 有两个作用：</div><div class="line">		this 指向（子类的实例）</div><div class="line">		在构造函数中使用 this.props  </div><div class="line">componentWillMount()		</div><div class="line">	在装配发生前被立刻调用。</div><div class="line">	其在render()之前被调用。</div><div class="line">componentDidMount()	</div><div class="line">	在组件被装配后立即调用。	</div><div class="line">	初始化使得DOM节点应该进行到这里。ajax 和 定时器</div><div class="line">componentWillReceiveProps(nextProps)	</div><div class="line">	在装配了的组件接收到新属性前调用。</div><div class="line">shouldComponentUpdate(nextProps, nextState)	</div><div class="line">	使用shouldComponentUpdate()以让React知道当前状态或属性的改变是否不影响组件的输出。</div><div class="line">componentWillUpdate(nextProps, nextState)	</div><div class="line">	当接收到新属性或状态时，componentWillUpdate()为在渲染前被立即调用。</div><div class="line">componentDidUpdate(prevProps, prevState)	</div><div class="line">	在更新发生后立即被调用。该方法并不会在初始化渲染时调用。</div><div class="line">componentWillUnmount()	</div><div class="line">	在组件被卸载和销毁之前立刻调用。	</div><div class="line">	可以在该方法里处理任何必要的清理工作，例如解绑定时器，取消网络请求，清理任何在componentDidMount环节创建的DOM元素。</div><div class="line">setState(updater, [callback])</div><div class="line">	参数为对象 &#123;name: &apos;fanerge&apos;&#125;</div><div class="line">	参数为函数(prevState, props) =&gt; stateChange</div><div class="line">component.forceUpdate(callback)	</div><div class="line">	调用forceUpdate()将会导致组件的 render()方法被调用，并忽略shouldComponentUpdate()。</div></pre></td></tr></table></figure>
+</code></pre><h2 id="React-PureComponent"><a href="#React-PureComponent" class="headerlink" title="React.PureComponent"></a>React.PureComponent</h2><pre><code>浅对比继承该类来对 prop 和 state 进行比较，并调用 shouldComponentUpate()。 
+深对比使用 forceUpdate() 和 不可变对象 来促进嵌套数据的快速比较。        
+</code></pre><h1 id="ReactDOM"><a href="#ReactDOM" class="headerlink" title="ReactDOM"></a>ReactDOM</h1><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">react-dom这个软件包提供了针对DOM的方法，可以在你应用的顶级域中调用，也可以在有需要的情况下用作跳出React模型的出口。</div><div class="line">render()</div><div class="line">	渲染一个React元素，添加到位于提供的container里的DOM元素中，并返回这个组件的一个引用 (或者对于无状态组件返回null).</div></pre></td></tr></table></figure>
+
+    ReactDOM.render(
+      element,
+      container,
+      [callback]
+    )
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ReactDOM.unmountComponentAtNode(container)</div><div class="line">	从DOM元素中移除已挂载的React组件，清除它的事件处理器和state。</div><div class="line">	有组件被卸载的时候返回true，没有组件可供卸载时返回 false。</div><div class="line">ReactDOM.findDOMNode(component)</div><div class="line">	如果这个组件已经被挂载到DOM中，函数会返回对应的浏览器中生成的DOM元素 。</div><div class="line">	大多数情况下，你可以添加一个指向DOM节点的引用，从而完全避免使用 findDOMNode 这个函数.</div></pre></td></tr></table></figure>
+</code></pre><h1 id="ReactDOMServer"><a href="#ReactDOMServer" class="headerlink" title="ReactDOMServer"></a>ReactDOMServer</h1><pre><code>ReactDOMServer 类可以让你在服务端渲染你的组件。
+</code></pre><h2 id="ReactDOMServer-renderToString-element"><a href="#ReactDOMServer-renderToString-element" class="headerlink" title="ReactDOMServer.renderToString(element)"></a>ReactDOMServer.renderToString(element)</h2><pre><code>把一个React元素渲染为原始的HTML。
+你可以用这个方法在服务端生成HTML，并根据初始请求发送标记来加快页面的加载速度，
+同时让搜索引擎可以抓取你的页面来达到优化SEO的目的。    
+</code></pre><h2 id="ReactDOMServer-renderToStaticMarkup-element"><a href="#ReactDOMServer-renderToStaticMarkup-element" class="headerlink" title="ReactDOMServer.renderToStaticMarkup(element)"></a>ReactDOMServer.renderToStaticMarkup(element)</h2><pre><code>类似 renderToString，但是不会创建额外的DOM属性，例如 data-reactid 这些仅在React内部使用的属性。
+如果你希望把React当作一个简单的静态页面生成器来使用，这很有用，因为去掉
+</code></pre><h1 id="DOM-Elements"><a href="#DOM-Elements" class="headerlink" title="DOM Elements"></a>DOM Elements</h1><h2 id="React实现了一套与浏览器无关的DOM系统，兼顾了性能和跨浏览器的兼容性。"><a href="#React实现了一套与浏览器无关的DOM系统，兼顾了性能和跨浏览器的兼容性。" class="headerlink" title="React实现了一套与浏览器无关的DOM系统，兼顾了性能和跨浏览器的兼容性。"></a>React实现了一套与浏览器无关的DOM系统，兼顾了性能和跨浏览器的兼容性。</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">class -- className</div><div class="line">for -- htmlFor</div><div class="line">tabindex -- tabIndex</div><div class="line">aria-* （对于残障人士更易使用的各种机制）小写字母命名 </div><div class="line">data-* （自定义属性）小写字母命名</div></pre></td></tr></table></figure>
+</code></pre><h2 id="React和HTML-DOM属性的区别"><a href="#React和HTML-DOM属性的区别" class="headerlink" title="React和HTML DOM属性的区别"></a>React和HTML DOM属性的区别</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">checked属性</div><div class="line">	受控组件 -- &lt;input&gt;标签type属性值为checkbox或radio时，支持checked属性。</div><div class="line">	非受控组件 -- defaultChecked这是非受控组件的属性</div><div class="line">类名属性</div><div class="line">	class -- className</div><div class="line">dangerouslySetInnerHTML函数</div><div class="line">	处理Cross-site scripting (XSS) </div><div class="line">	dangerouslySetInnerHTML是React提供的替换浏览器DOM中的innerHTML接口的一个函数。</div><div class="line">htmlFor</div><div class="line">	for -- htmlFor</div><div class="line">绑定事件</div><div class="line">	onchange -- onChange</div><div class="line">selected</div><div class="line">	受控组件 -- 使用selected属性，设定组件是否选中的状态。</div><div class="line">style属性</div><div class="line">	&lt;Hello style=&#123;&#123;color: &apos;blue&apos;&#125;&#125; /&gt;</div><div class="line">	浏览器后缀除了ms以外，都应该以大写字母开头。</div><div class="line">	这就是为什么WebkitTransition有一个大写字母W。</div><div class="line">suppressContentEditableWarning</div><div class="line">	contentEditable 该属性少使用。</div><div class="line">value</div><div class="line">	受控组件 -- &lt;input&gt; 和 &lt;textarea&gt; 组件都支持value属性。</div><div class="line">	非受控组件 -- defaultValue属性对应的是非受控组件的属性，用来设置组件第一次加载时的值。</div><div class="line">支持所有的HTMl属性</div></pre></td></tr></table></figure>
+</code></pre><h1 id="SyntheticEvent"><a href="#SyntheticEvent" class="headerlink" title="SyntheticEvent"></a>SyntheticEvent</h1><h2 id="您的事件处理函数将会接收SyntheticEvent的实例，一个基于浏览器原生事件的跨浏览器实现。"><a href="#您的事件处理函数将会接收SyntheticEvent的实例，一个基于浏览器原生事件的跨浏览器实现。" class="headerlink" title="您的事件处理函数将会接收SyntheticEvent的实例，一个基于浏览器原生事件的跨浏览器实现。"></a>您的事件处理函数将会接收SyntheticEvent的实例，一个基于浏览器原生事件的跨浏览器实现。</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">boolean bubbles</div><div class="line">boolean cancelable</div><div class="line">DOMEventTarget currentTarget</div><div class="line">boolean defaultPrevented</div><div class="line">number eventPhase</div><div class="line">boolean isTrusted</div><div class="line">DOMEvent nativeEvent</div><div class="line">void preventDefault()</div><div class="line">boolean isDefaultPrevented()</div><div class="line">void stopPropagation()</div><div class="line">boolean isPropagationStopped()</div><div class="line">DOMEventTarget target</div><div class="line">number timeStamp</div><div class="line">string type</div></pre></td></tr></table></figure>
+</code></pre><h2 id="事件池"><a href="#事件池" class="headerlink" title="事件池"></a>事件池</h2><pre><code>SyntheticEvent是共享的。那就意味着在调用事件回调之后，SyntheticEvent对象将会被重用，并且所有属性会被置空。
+</code></pre><h2 id="支持的事件"><a href="#支持的事件" class="headerlink" title="支持的事件"></a>支持的事件</h2><pre><code>在事件名后面加Capture就能在事件捕获阶段注册事件处理函数。
+你可以使用onClickCapture代替onClick在事件捕获阶段来处理点击事件。
+[查看所有支持的事件](https://doc.react-china.org/docs/events.html)
+</code></pre><h1 id="Test-Utilities"><a href="#Test-Utilities" class="headerlink" title="Test Utilities"></a>Test Utilities</h1><pre><code>导入 -- import ReactTestUtils from &apos;react-dom/test-utils&apos;;
+[单元测试](https://doc.react-china.org/docs/test-utils.html)
+</code></pre><h1 id="浅层渲染"><a href="#浅层渲染" class="headerlink" title="浅层渲染"></a>浅层渲染</h1><pre><code>[浅层渲染](https://doc.react-china.org/docs/shallow-renderer.html)
+</code></pre><h1 id="Test-Renderer"><a href="#Test-Renderer" class="headerlink" title="Test Renderer"></a>Test Renderer</h1><pre><code>[Test Renderer](https://doc.react-china.org/docs/test-renderer.html)        
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="https://doc.react-china.org/docs/react-api.html" target="_blank" rel="external">React官方API</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/26/web常见的安全问题及解决方法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/26/web常见的安全问题及解决方法/" itemprop="url">
+                  web常见的安全问题及解决方法
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-26T19:48:33+08:00">
+                2017-10-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/安全/" itemprop="url" rel="index">
+                    <span itemprop="name">安全</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/26/web常见的安全问题及解决方法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/26/web常见的安全问题及解决方法/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,938
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  7
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="前端安全问题"><a href="#前端安全问题" class="headerlink" title="前端安全问题"></a>前端安全问题</h1><h2 id="XSS-漏洞"><a href="#XSS-漏洞" class="headerlink" title="XSS 漏洞"></a>XSS 漏洞</h2><pre><code>定义：
+    跨站脚本攻击(Cross Site Scripting)，为了不和层叠样式表(Cascading Style Sheets, CSS)的缩写混淆，故将跨站脚本攻击缩写为XSS。
+    恶意攻击者往Web页面里插入恶意Script代码，当用户浏览该页之时，嵌入其中Web里面的Script代码会被执行，从而达到恶意攻击用户的目的。
+举例：
+1.HTML DOM
+    视图（textContent）
+        &lt;a href=&quot;/user/1&quot;&gt;{{ user_name }}&lt;/a&gt;
+    数据
+        &lt;script&gt;alert(1)&lt;/script&gt;
+    结果
+        &lt;a href=&quot;/user/1&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;&lt;/a&gt;
+    最基本的例子，如果此处不对 user_name 中的特殊符号进行 escape，就会造成 XSS。
+2.HTML Attribute
+    视图（attribute）
+        &lt;img src=&quot;{{ image_url }}&quot;&gt;
+    数据
+        onerror=&quot;alert(1)&quot;
+    结果
+        &lt;img src=&quot;&quot; onerror=&quot;alert(1)&quot;&gt;
+    这个例子表明，如果只对尖括号进行 escape 是不够的，很多时候引号也需要被 escape。
+    简单来说，对不同输出场景，需要使用不同的 escape 规则。
+3.Javascript
+        &lt;script&gt;var user_data = {{ user_data|json_encode }};&lt;/script&gt;
+    数据
+        {&quot;exploit&quot;: &quot;&lt;/script&gt;&lt;script&gt;alert(1);//&quot;}
+    结果
+        &lt;script&gt;var user_data = {&quot;exploit&quot;: &quot;&lt;/script&gt;&lt;script&gt;alert(1);//&quot;};&lt;/script&gt;
+    这是一个特别的例子，大多数人觉得，对于输出在 &lt;script&gt; 中的内容，json_encode 一下就安全了，其实不然。在这个例子中，XSS 仍然发生了。
+解决方案：
+    1.在不同上下文中，使用合适的 escape 方式
+    2.不要相信任何来自用户的输入，（不仅限于 POST Body，还包括 QueryString，甚至是 Headers）
+</code></pre><h2 id="CSRF-漏洞"><a href="#CSRF-漏洞" class="headerlink" title="CSRF 漏洞"></a>CSRF 漏洞</h2><pre><code>定义：    
+    CSRF（Cross-site request forgery）跨站请求伪造通常缩写为CSRF或者XSRF，是一种对网站的恶意利用。
+    它与XSS非常不同，XSS利用站点内的信任用户，而CSRF则通过伪装来自受信任用户的请求来利用受信任的网站。
+    与XSS攻击相比，CSRF攻击往往不大流行（因此对其进行防范的资源也相当稀少）和难以防范，所以被认为比XSS更具危险性。
+理解CSRF攻击：攻击者盗用了你的身份，以你的名义发送恶意请求。
+    CSRF能够做的事情包括：以你名义发送邮件，发消息，盗取你的账号，甚至于购买商品，虚拟货币转账......
+    造成的问题包括：个人隐私泄露以及财产安全。    
+CSRF攻击攻击原理及过程如下：
+   1. 用户C打开浏览器，访问受信任网站A，输入用户名和密码请求登录网站A；
+   2. 在用户信息通过验证后，网站A产生Cookie信息并返回给浏览器，此时用户登录网站A成功，可以正常发送请求到网站A；
+   3. 用户未退出网站A之前，在同一浏览器中，打开一个TAB页访问网站B；
+   4. 网站B接收到用户请求后，返回一些攻击性代码，并发出一个请求要求访问第三方站点A；
+   5. 浏览器在接收到这些攻击性代码后，根据网站B的请求，在用户不知情的情况下携带Cookie信息，向网站A发出请求。
+   网站A并不知道该请求其实是由B发起的，所以会根据用户C的Cookie信息以C的权限处理该请求，导致来自网站B的恶意代码被执行。 
+举例：    
+1.跨站转账
+    银行网站A，它以GET请求来完成银行转账的操作，如：http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000
+　　危险网站B，它里面有一段HTML的代码如下：
+　　&lt;img src=http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000&gt;
+　　首先，你登录了银行网站A保存了cookie，然后访问危险网站B，噢，这时你会发现你的银行账户少了1000块......
+　　为什么会这样呢？原因是银行网站A违反了HTTP规范，使用GET请求更新资源。
+    在访问危险网站B的之前，你已经登录了银行网站A，而B中的&lt;img&gt;以GET的方式请求第三方资源（这里的第三方就是指银行网站了，
+    原本这是一个合法的请求，但这里被不法分子利用了），所以你的浏览器会带上你的银行网站A的Cookie发出Get请求，
+    去获取资源“http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000”，结果银行网站服务器收到请求后，
+    认为这是一个更新资源操作（转账操作），所以就立刻进行转账操作......    
+解决方案：（让服务器分辨出是真实用户还是攻击者）    
+    1.为请求带上 token
+    2.验证HTTP Referer字段
+        根据HTTP协议，在HTTP头中有一个字段叫Referer，它记录了该HTTP请求的来源地址。
+    3.在HTTP头中自定义属性并验证
+</code></pre><h1 id="后端安全问题"><a href="#后端安全问题" class="headerlink" title="后端安全问题"></a>后端安全问题</h1><h2 id="SQL-注入漏洞"><a href="#SQL-注入漏洞" class="headerlink" title="SQL 注入漏洞"></a>SQL 注入漏洞</h2><pre><code>问题展示：
+    &lt;?php $user = mysql_query(&apos;SELECT * FROM USERS WHERE UserName=&quot;&apos;.$_GET[&apos;user&apos;].&apos;&quot;&apos;); ?&gt;
+    那么当请求中 user 参数为 &quot;;DROP TABLE USERS;-- 时，合成的 SQL 语句是：
+    SELECT * FROM USERS WHERE UserName=&quot;&quot;;DROP TABLE USERS;--&quot;
+    // 这样将删除表 users
+解决方案：
+    所有 SQL 语句都使用参数化查询（推荐）或对参数进行 escape（不推荐）
+</code></pre><h2 id="权限控制漏洞"><a href="#权限控制漏洞" class="headerlink" title="权限控制漏洞"></a>权限控制漏洞</h2><pre><code>问题展示：
+    未经授权可以进行的操作都是权限控制漏洞。
+    例如，某些网站的后台操作就仗着「以为用户不知道入口地址」不进行任何权限检查，
+    又例如，某些操作可能出现不允许更改的字段被用户递交更改（往往是那些网页上标记为 disabled 或者 hidden 的字段），
+    再例如，允许通过 ../ 访问到不应该被访问的文件等（一般存在于 include 中）。
+解决方案：
+    所有地方都要进行权限检查（如是否已登录、当前用户是否有足够权限、该项是否可修改等），
+    总之，不要相信任何来自用户的数据，URL 当然也是。
+</code></pre><h2 id="SESSION-与-COOKIE"><a href="#SESSION-与-COOKIE" class="headerlink" title="SESSION 与 COOKIE"></a>SESSION 与 COOKIE</h2><pre><code>问题展示：
+    Session 和 Cookie 是两种用于存储用户当前状态的工具。
+    某些开发者不了解 Session 与 Cookie 的区别，误用或者混用，导致敏感信息泄露或者信息篡改。
+    Cookie 存储在浏览器上，用户可以查看和修改 Cookie。
+解决方案：
+    Session 是存储在服务端的数据，一般来说安全可靠；大多数 Session 都是基于 Cookie 实现的
+    （在 Cookie 中存储一串 SESSION_ID，在服务器上存储该 SESSION_ID 对应的内容）。
+</code></pre><h2 id="IP-地址"><a href="#IP-地址" class="headerlink" title="IP 地址"></a>IP 地址</h2><pre><code>问题展示：
+    首先，用户的 IP 地址一般存储在 REMOTE_ADDR 中，这是唯一的可信的 IP 地址数据（视不同语言而定）。
+    然后某些代理服务器，会将用户的真实 IP 地址附加在 header 的 VIA 或 X_FORWARDED_FOR 中（因为REMOTE_ADDR 是代理服务器自身的 IP）。
+    所以，要获取用户 IP 地址，一般做法是，判断是否存在 VIA 或者 X_FORWARDED_FOR 头，
+    如果存在，则使用它们，如果不存在则使用 REMOTE_ADDR。
+    这就产生问题了，X_FORWARDED_FOR 或 VIA 是 HTTP Header，换句话说，它们是可以被伪造的。
+    例如，在投票中，如果采信了 X_FORWARDED_FOR，往往意味着被刷票。
+解决方案：
+    只使用 REMOTE_ADDR 作为获取 IP 的手段。
+</code></pre><h2 id="验证码"><a href="#验证码" class="headerlink" title="验证码"></a>验证码</h2><pre><code>问题展示：
+    验证码里常见的问题有：非一次性、容易被识别。
+解决方案：
+    非一次性指的是，同一个验证码可以一直被用下去。一般来说，每进行一次验证码校对（无论正确与否），
+    都应该强制更换或清除 Session 中的验证码。
+    关于识别问题，在当前科技水平下，不加噪点不加扭曲的验证码几乎是 100% 可识别的。
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="http://blog.csdn.net/fengyinchao/article/details/50775121" target="_blank" rel="external">Web 开发常见安全问题</a><br>    <a href="http://www.cnblogs.com/hyddd/archive/2009/04/09/1432744.html" target="_blank" rel="external">浅谈CSRF攻击方式</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/25/React-基础知识整理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/25/React-基础知识整理/" itemprop="url">
+                  React-基础知识整理
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-25T20:17:11+08:00">
+                2017-10-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React/" itemprop="url" rel="index">
+                    <span itemprop="name">React</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/25/React-基础知识整理/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/25/React-基础知识整理/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  2,971
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  11
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="父组件给子组件传递数据时"><a href="#父组件给子组件传递数据时" class="headerlink" title="父组件给子组件传递数据时"></a>父组件给子组件传递数据时</h1><pre><code>向下 -- 通过 Props 传递数据
+向上 -- 通过 Props 传递事件    
+</code></pre><h1 id="在使用-ES6-的-classes-创建组件时"><a href="#在使用-ES6-的-classes-创建组件时" class="headerlink" title="在使用 ES6 的 classes 创建组件时"></a>在使用 ES6 的 classes 创建组件时</h1><pre><code>构造方法 constructor 中包含：参数为 props
+    1.super(props);
+        在ES6中 只有使用 super() 方法才能在继承父类的子类中正确获取到子类的 this 。
+        super(props)的目的：在constructor中可以使用this.props
+    2.this.state = {name: &apos;fanerge&apos;}; // 定义组件状态
+    3.this.handleClick = this.handleClick.bind(this); // 为事件处理函数绑定this    
+</code></pre><h1 id="状态提升"><a href="#状态提升" class="headerlink" title="状态提升"></a>状态提升</h1><pre><code>当你遇到需要同时获取多个子组件数据，或者两个组件之间需要相互通讯的情况时，
+把子组件的 state 数据提升至其共同的父组件当中保存。
+之后父组件可以通过 props 将状态数据传递到子组件当中。
+这样应用当中的状态数据就能够更方便地交流共享了。
+</code></pre><h1 id="组件通信"><a href="#组件通信" class="headerlink" title="组件通信"></a>组件通信</h1><pre><code>父组件 &gt;&gt; 子组件 （通过 props 来传递）
+子组件 &gt;&gt; 父组件 （我们再通过 props 传递一个父组件当中的事件处理函数到子组件当中。）
+</code></pre><h1 id="为什么不可变性在React当中非常重要"><a href="#为什么不可变性在React当中非常重要" class="headerlink" title="为什么不可变性在React当中非常重要"></a>为什么不可变性在React当中非常重要</h1><pre><code>Array(9).fill(null); // 定义一个长度为9的空数组。
+this.state.squares.slice(); // 对数组this.state.squares的拷贝，返回一个新数组。（不可变数据）
+改变应用数据的方式一般分为两种。
+    第一种是直接修改已有的变量的值。
+    第二种则是将已有的变量替换为一个新的变量。
+    Object.assign(target, ...sources) 将源对象复制到目标对象。    
+</code></pre><h1 id="函数定义组件（无state和生命周期）"><a href="#函数定义组件（无state和生命周期）" class="headerlink" title="函数定义组件（无state和生命周期）"></a>函数定义组件（无state和生命周期）</h1><h1 id="Keys"><a href="#Keys" class="headerlink" title="Keys"></a>Keys</h1><pre><code>强烈建议你在渲染列表项时添加 keys 值。 
+</code></pre><h1 id="JSX-基础"><a href="#JSX-基础" class="headerlink" title="JSX 基础"></a>JSX 基础</h1><pre><code>在 JSX 中使用表达式 -- 你可以任意地在 JSX 当中使用 JavaScript 表达式，在 JSX 当中的表达式要包含在大括号里。
+    {formatName(user)}; // 运行方法
+JSX 本身其实也是一种表达式
+    在编译之后，JSX 其实会被转化为普通的 JavaScript 对象。
+JSX 属性
+    class &gt;&gt; className
+    tableindex &gt;&gt; tableIndex
+    for &gt;&gt; htmlFor
+    你可以使用引号来定义以字符串为值的属性
+    也可以使用大括号来定义以 JavaScript 表达式为值的属性    
+JSX 嵌套
+    如果 JSX 标签是闭合式的，那么你需要在结尾处用 /&gt;, 就好像 XML/HTML 一样
+JSX 防注入攻击
+    所有的内容在渲染之前都被转换成了字符串。这样可以有效地防止 XSS(跨站脚本) 攻击。
+JSX 代表 Objects
+</code></pre><h1 id="元素渲染"><a href="#元素渲染" class="headerlink" title="元素渲染"></a>元素渲染</h1><pre><code>将元素渲染到 DOM 中
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ReactDOM.render(</div><div class="line">  element,</div><div class="line">  document.getElementById(&apos;root&apos;)</div><div class="line">);</div></pre></td></tr></table></figure>
+
+更新元素渲染
+    this.setState({}); / this.setState((prevState, props) =&gt; {...});    
+</code></pre><h1 id="组件-amp-Props"><a href="#组件-amp-Props" class="headerlink" title="组件 &amp; Props"></a>组件 &amp; Props</h1><pre><code>函数定义组件
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">function Welcome(props) &#123;</div><div class="line">	return (&lt;h1&gt;Hlleo, &#123;props.name&#125;&lt;/h1&gt;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+类定义组件
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">	class Welcome extends React.Component &#123;</div><div class="line">		constructor(props) &#123;</div><div class="line">			super(props);</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		render() &#123;</div><div class="line">			return (&lt;h1&gt;Hlleo, &#123;this.props.name&#125;&lt;/h1&gt;);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	```	</div><div class="line">	组件渲染（使用）</div><div class="line">	&lt;Welcome name=&quot;fanerge&quot; /&gt;</div><div class="line">	组件名称必须以大写字母开头。</div><div class="line">	提取组件 -- 尽量划分为小组件，更利于复用。</div><div class="line">	Props的只读性</div><div class="line">	</div><div class="line">#	State &amp; 生命周期</div><div class="line">	state</div><div class="line">		正确地使用状态</div><div class="line">			this.setState(&#123;comment: &apos;hello&apos;&#125;);</div><div class="line">		状态更新可能是异步的,使用函数来处理。</div><div class="line">			this.setState((prevState, prop) =&gt; (&#123;</div><div class="line">				counter: prevState.counter + prop.increment</div><div class="line">			&#125;));</div><div class="line">		状态更新合并</div><div class="line">			当你调用 setState() 时，React 将你提供的对象合并到当前状态。</div><div class="line">		数据自顶向下流动（单向流动）			</div><div class="line">	生命周期方法</div><div class="line">		componentDidMount ajax、定时器</div><div class="line">		componentWillUnmount </div><div class="line">	</div><div class="line">#	事件处理		</div><div class="line">	与DOM事件区别：绑定属性的命名采用驼峰式写法。</div></pre></td></tr></table></figure>
+
+    &lt;button onClick={activateLasers}&gt;
+      Activate Lasers
+    &lt;/button&gt;
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">我们通常建议在构造函数中绑定或使用属性初始化器语法来避免 this 的问题。</div></pre></td></tr></table></figure>
+
+    1.this.handleClick = this.handleClick.bind(this);
+    2.handleClick = () =&gt; {
+        console.log(&apos;this is:&apos;, this);
+      }
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#	条件渲染</div><div class="line">	操作符 if 或条件运算符</div><div class="line">	元素变量</div></pre></td></tr></table></figure>
+
+let button = null;
+button = &lt;LogoutButton onClick={this.handleLogoutClick} /&gt;;    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">	与运算符 &amp;&amp;（短路）</div><div class="line">	三目运算符（condition ? true : false）</div><div class="line">	阻止组件渲染</div><div class="line">		让 render 方法 return null 即可实现阻止组件渲染。</div><div class="line"></div><div class="line">#	列表 &amp; Keys（map方法）</div><div class="line">	渲染多样的组件</div><div class="line">	基础列表组件</div></pre></td></tr></table></figure>
+
+    function NumberList(props) {
+      const numbers = props.numbers;
+      const listItems = numbers.map((number) =&gt;
+        &lt;li key={number.toString()}&gt;{number}&lt;/li&gt;
+      );
+      return (
+        &lt;ul&gt;{listItems}&lt;/ul&gt;
+      );
+    }
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">	keys（列表中拥有的一个独一无二的字符串）</div><div class="line">	用keys提取组件（与数组一起使用）</div><div class="line">	元素的key在他的兄弟元素之间应该唯一</div><div class="line">	在jsx中嵌入map()</div><div class="line"></div><div class="line">#	表单</div><div class="line">	&lt;input&gt;,&lt;textarea&gt;, 和 &lt;select&gt;</div><div class="line">	受控组件</div><div class="line">		可变的状态通常保存在组件的 state 中，并且只能用 setState()方法进行更新。</div><div class="line">	textarea标签 -- value属性</div><div class="line">	select标签	</div><div class="line">	多个输入的解决方法</div><div class="line">		你可以通过给每个元素添加一个name属性，来让处理函数根据 event.target.name的值来选择做什么。</div></pre></td></tr></table></figure>
+
+ES6当中的计算属性名语法来更新与给定输入名称相对应的状态键
+this.setState({
+  [name]: value
+});
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line">	受控组件的替代方法 -- 非受控组件</div><div class="line"></div><div class="line">#	状态提升（state）</div><div class="line">	使用 react 经常会遇到几个组件需要共用状态数据的情况。</div><div class="line">	这种情况下，我们最好将这部分共享的状态提升至他们最近的父组件当中进行管理。</div><div class="line">	始终保持 -- 自上而下的数据流。</div><div class="line"></div><div class="line">#	组合 vs 继承</div><div class="line">	React 具有强大的组合模型，我们建议使用组合而不是继承来复用组件之间的代码。</div><div class="line">	包含关系</div><div class="line">		当有少量子元素时 -- 我们建议这些组件使用 children 属性将子元素直接传递到输出。</div><div class="line">		当你可能需要在组件中有多个入口，这种情况下你可以使用自己约定的属性（left、right、header等等）而不是 children</div><div class="line">	特殊实例</div><div class="line">		有时我们认为组件是其他组件的特殊实例。例如，我们会说 WelcomeDialog 是 Dialog 的特殊实例。</div><div class="line"></div><div class="line">#	React 理念</div><div class="line">	第一步：把 UI 划分出组件层级</div><div class="line">		（单一功能原则）</div><div class="line">	第二步：用 React 创建一个静态版本</div><div class="line">		静态版本 -- 码代码</div><div class="line">		交互 -- 逻辑思考</div><div class="line">	第三步：定义 UI 状态的最小(但完整)表示</div><div class="line">		定义 state</div><div class="line">	第四步：确定你的 State 应该位于哪里	</div><div class="line">		是否提升 state</div><div class="line">	第五步：添加反向数据流	</div><div class="line">		执行父级组件传递过来的事件函数</div><div class="line">	</div><div class="line">#	深入 JSX</div><div class="line">	JSX 只是为 React.createElement(component, props, ...children) 方法提供的语法糖。</div><div class="line">	指定 React 元素类型	</div><div class="line">		React 必须声明</div><div class="line">			import Dialog from &apos;./Dialog&apos;;</div><div class="line">		点表示法</div><div class="line">			MyComponents.DataPicker</div><div class="line">		首字母大写</div><div class="line">			组件名为大写，单页面组件文件也为大写。</div><div class="line">		在运行时选择类型</div><div class="line">	属性		</div><div class="line">		使用 JavaScript 表达式</div><div class="line">		字符串常量 </div><div class="line">			你可以将字符串常量作为属性值传递。</div><div class="line">		默认为 True</div><div class="line">			如果你没有给属性传值，它默认为 true。</div><div class="line">		扩展属性</div><div class="line">			使用 ... 作为扩展操作符来传递整个属性对象。</div><div class="line">	子代	</div><div class="line">		字符串常量（props.children）</div><div class="line">			&lt;MyComponent&gt;Hello world!&lt;/MyComponent&gt;	</div><div class="line">		JSX</div></pre></td></tr></table></figure>
+
+        &lt;MyContainer&gt;
+          &lt;MyFirstComponent /&gt;
+          &lt;MySecondComponent /&gt;
+        &lt;/MyContainer&gt;
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">JavsScript 表达式</div><div class="line">	&lt;MyComponent&gt;&#123;&apos;foo&apos;&#125;&lt;/MyComponent&gt;</div><div class="line">函数</div></pre></td></tr></table></figure>
+
+        &lt;Repeat numTimes={10}&gt;
+          {(index) =&gt; &lt;div key={index}&gt;This is item {index} in the list&lt;/div&gt;}
+        &lt;/Repeat&gt;
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">		布尔值、Null 和 Undefined 被忽略</div><div class="line">	</div><div class="line">#	使用 PropTypes 进行类型检查</div><div class="line">	注意: React.PropTypes 自 React v15.5 起已弃用。请使用 prop-types 库代替。	</div><div class="line">	import PropTypes from &apos;prop-types&apos;;	</div><div class="line">	optionalArray: PropTypes.array</div><div class="line">	JS 原生类型（七种）</div><div class="line">		number、string、bool、symbol、object、array、func</div><div class="line">	元素和节点和类的实例	</div><div class="line">		node、element、PropTypes.instanceOf(Message)</div><div class="line">	限制你的属性值是某个特定值之一	</div><div class="line">		PropTypes.oneOf([&apos;News&apos;, &apos;Photos&apos;])	</div><div class="line">	限制它为列举类型之一的对象</div></pre></td></tr></table></figure>
+
+    optionalUnion: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+        PropTypes.instanceOf(Message)
+    ])
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">指定元素类型的数组	</div><div class="line">	PropTypes.arrayOf(PropTypes.number)</div><div class="line">指定类型的对象	</div><div class="line">	PropTypes.objectOf(PropTypes.number)</div><div class="line">指定属性及其类型的对象</div></pre></td></tr></table></figure>
+
+    PropTypes.shape({
+        color: PropTypes.string,
+        fontSize: PropTypes.number
+    })
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">限制为必填（可以加载其他限制后面）	</div><div class="line">	PropTypes.func.isRequired</div><div class="line">限制单个子代</div><div class="line">	PropTypes.element.isRequired</div><div class="line">属性默认值</div></pre></td></tr></table></figure>
+
+    Greeting.defaultProps = {
+      name: &apos;Stranger&apos;
+    }
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">		</div><div class="line">#	Refs &amp; DOM	</div><div class="line">	在典型的 React 数据流中, 属性（props）是父组件与子代交互的唯一方式。</div><div class="line">	要修改子组件，你需要通用新的 props 重新渲染它。</div><div class="line">	但是，某些情况下你需要在典型数据流外强制修改子代。</div><div class="line">	要修改的子代可以是 React 组件实例，也可以是 DOM 元素。</div><div class="line">	何时使用 Refs</div><div class="line">		1.处理焦点、文本选择或媒体控制。</div><div class="line">		2.触发强制动画。</div><div class="line">		3.集成第三方 DOM 库</div><div class="line">	为 DOM 元素添加 Ref</div><div class="line">		当给 HTML 元素添加 ref 属性时，ref 回调接收了底层的 DOM 元素作为参数。</div><div class="line">		&lt;input type=&quot;text&quot; ref=&#123;(input) =&gt; &#123; this.textInput = input; &#125;&#125; /&gt;</div><div class="line">		这里将该DOM元素赋值给this.textInput，通过其能访问到该DOM元素。</div><div class="line">	为类组件添加 Ref</div><div class="line">		当 ref 属性用于使用 class 声明的自定义组件时，ref 的回调接收的是已经加载的 React 实例。</div><div class="line">	Refs 与函数式组件</div><div class="line">		你可以在函数式组件内部使用 ref，只要它指向一个 DOM 元素或者 class 组件。</div><div class="line">	对父组件暴露 DOM 节点</div></pre></td></tr></table></figure>
+
+    // 子组件
+    function CustomTextInput(props) {
+      return (
+        &lt;div&gt;
+          &lt;input ref={props.inputRef} /&gt;
+        &lt;/div&gt;
+      );
+    }
+    // 父组件
+    class Parent extends React.Component {
+      render() {
+        return (
+          &lt;CustomTextInput
+            inputRef={el =&gt; this.inputElement = el}
+          /&gt;
+        );
+      }
+    }
+    // 这时在父组件中的 this.inputElement 即可获得input DOM节点的引用。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">	findDOMNode()</div><div class="line">		ReactDOM.findDOMNode(component); // 前提是组件已经挂载到DOM中</div><div class="line">	</div><div class="line">#	非受控组件</div><div class="line">		在大多数情况下，我们推荐使用 受控组件 来实现表单。</div><div class="line">		在受控组件中，表单数据由 React 组件处理。</div><div class="line">		如果让表单数据由 DOM 处理时，替代方案为使用非受控组件。</div><div class="line">	默认值</div><div class="line">		&lt;input type=&quot;checkbox&quot;&gt; 和 &lt;input type=&quot;radio&quot;&gt; 支持 defaultChecked，</div><div class="line">		&lt;input&gt; 和 &lt;select&gt; 和 &lt;textarea&gt; 支持 defaultValue.</div><div class="line">	</div><div class="line">#	性能优化	</div><div class="line">	使用生产版本	</div><div class="line">	Create React App方式	</div><div class="line">	避免重复渲染	</div><div class="line">		shouldComponentUpdate(nextProps, nextState)</div><div class="line">		继承React.PureComponent来定义组件</div><div class="line">	不会突变的数据的力量（不可变数据）	</div><div class="line">		Array -- concat()、slice()</div><div class="line">		Object -- Object.assign(&#123;&#125;, obj)、&#123;...obj, right: &apos;blue&apos;&#125;;</div><div class="line">	使用不可突变的数据结构	</div><div class="line">		Immutable.js</div><div class="line">		seamless-immutable.js</div><div class="line">		immutability-helper.js</div><div class="line">	</div><div class="line">#	使用 ES6</div><div class="line">	声明默认属性（静态属性）</div><div class="line">		如果使用 class 关键字创建组件，可以直接把自定义属性对象写到类的 defaultProps 属性中</div><div class="line">	设置初始状态</div><div class="line">		如果使用 class 关键字创建组件，你可以通过在 constructor 中给 this.state 赋值的方式来定义组件的初始状态</div><div class="line">	自动绑定（方法）</div><div class="line">		你需要在 constructor 中为方法手动添加 .bind(this)。</div><div class="line">		Class Properties</div></pre></td></tr></table></figure>
+
+        handleClick = () =&gt; {
+            alert(this.state.message);
+        }
+        ```
+</code></pre><h1 id="Mixin-混入"><a href="#Mixin-混入" class="headerlink" title="Mixin(混入)"></a>Mixin(混入)</h1><pre><code>多个组件需要使用同样的逻辑时使用。
+</code></pre><h1 id="协调（Reconciliation）"><a href="#协调（Reconciliation）" class="headerlink" title="协调（Reconciliation）"></a>协调（Reconciliation）</h1><pre><code>对比算法
+    元素的不同类型（移出旧的DOM树）
+    相同类型的DOM元素（只更改部分属性）
+    相同类型的组件元素（只更改部分样式）
+递归子节点
+    Keys（处理循环比对时性能）
+</code></pre><h1 id="Context（不建议使用）"><a href="#Context（不建议使用）" class="headerlink" title="Context（不建议使用）"></a>Context（不建议使用）</h1><pre><code>在有些场景中，你不想要向下每层都手动地传递你需要的 props. 这就需要强大的 context API了。
+    Redux或Mobx更好的选择。
+如何使用Context
+父子组件耦合
+在生命周期函数中引用Context
+在无状态函数组件中引用Context
+</code></pre><h1 id="Portals"><a href="#Portals" class="headerlink" title="Portals"></a>Portals</h1><pre><code>Portals 提供了一种很好的将子节点渲染到父组件以外的 DOM 节点的方式。
+    ReactDOM.createPortal(child, container)
+    第一个参数（child）是任何可渲染的 React 子元素，例如一个元素，字符串或碎片。
+    第二个参数（container）则是一个 DOM 元素。
+通过 Portals 进行事件冒泡
+</code></pre><h1 id="Web-Components"><a href="#Web-Components" class="headerlink" title="Web Components"></a>Web Components</h1><h1 id="高阶组件（HOC）"><a href="#高阶组件（HOC）" class="headerlink" title="高阶组件（HOC）"></a>高阶组件（HOC）</h1><pre><code>高阶组件（HOC）是react中对组件逻辑进行重用的高级技术。
+高阶组件就是一个函数，且该函数接受一个组件作为参数，并返回一个新的组件。
+使用高阶组件（HOC）解决交叉问题
+</code></pre><h1 id="与第三方库协同"><a href="#与第三方库协同" class="headerlink" title="与第三方库协同"></a>与第三方库协同</h1><pre><code>与 DOM 节点操作类插件结合 -- jquery
+在 React 中使用其他引擎加载页面
+在 React 中使用“字符串替换”类的库
+在 React 中使用 Backbone 的视图
+在 React 中使用其他数据层库和框架
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="https://doc.react-china.org/docs/hello-world.html" target="_blank" rel="external">官网文档</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/23/React-组件书写方式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1375,1356 +2855,11 @@ PS：这里说明一下，如果前面的上传方案可以使用就使用，否
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/20/vue开发规范/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/10/20/vue开发规范/" itemprop="url">
-                  vue开发规范
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-20T21:44:22+08:00">
-                2017-10-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/vue/" itemprop="url" rel="index">
-                    <span itemprop="name">vue</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/20/vue开发规范/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/20/vue开发规范/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  1,770
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  7
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="组件名为多个单词"><a href="#组件名为多个单词" class="headerlink" title="组件名为多个单词"></a>组件名为多个单词</h2><pre><code>组件名应该始终是多个单词的，根组件 App 除外。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Vue.component(&apos;todo-item&apos;, &#123; //  自动将组件的 name 设置为 todo-item</div><div class="line">  // ...</div><div class="line">&#125;)</div><div class="line">export default &#123;</div><div class="line">  name: &apos;TodoItem&apos;, // 最佳实践为组件带上 name 调试有好处 </div><div class="line">  // ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h2 id="组件数据"><a href="#组件数据" class="headerlink" title="组件数据"></a>组件数据</h2><pre><code>组件的 data 必须是一个函数。
-每次返回一个新的纯对象。
-</code></pre><h2 id="Prop定义"><a href="#Prop定义" class="headerlink" title="Prop定义"></a>Prop定义</h2><pre><code>Prop 定义应该尽量详细（至少为其指定 type ）。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">props: &#123;</div><div class="line">  status: &#123;</div><div class="line">	type: String,</div><div class="line">	required: true,</div><div class="line">	validator: function (value) &#123;</div><div class="line">	  return [</div><div class="line">		&apos;syncing&apos;,</div><div class="line">		&apos;synced&apos;,</div><div class="line">		&apos;version-conflict&apos;,</div><div class="line">		&apos;error&apos;</div><div class="line">	  ].indexOf(value) !== -1</div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h2 id="为-v-for-设置键值"><a href="#为-v-for-设置键值" class="headerlink" title="为 v-for 设置键值"></a>为 v-for 设置键值</h2><pre><code>总是用 key 配合 v-for。
-</code></pre><h2 id="为组件样式设置作用域"><a href="#为组件样式设置作用域" class="headerlink" title="为组件样式设置作用域"></a>为组件样式设置作用域</h2><pre><code>下面对于单文件组件。
-对于应用来说，顶级 App 组件和布局组件中的样式可以是全局的，
-但是其它所有组件都应该是有作用域的（3种方式）。
-</code></pre><ol>
-<li>scoped <style scoped></style>    </li>
-<li><p>css Modules</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;button :class=&quot;[$style.button]&quot;&gt;X&lt;/button&gt;</div><div class="line">&lt;style module&gt;</div><div class="line">.button &#123;</div><div class="line">  border: none;</div><div class="line">  border-radius: 2px;</div><div class="line">&#125;</div><div class="line">.buttonClose &#123;</div><div class="line">  background-color: red;</div><div class="line">&#125;</div><div class="line">&lt;/style&gt;</div></pre></td></tr></table></figure>
-</li>
-<li><p>BEM 约定</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;button class=&quot;c-Button c-Button--close&quot;&gt;X&lt;/button&gt;</div><div class="line">&lt;style&gt;</div><div class="line">.c-Button &#123;</div><div class="line">  border: none;</div><div class="line">  border-radius: 2px;</div><div class="line">&#125;</div><div class="line">&lt;/style&gt;</div></pre></td></tr></table></figure>
-</li>
-<li><p>私有属性名 必要<br>在插件、混入等扩展中始终为自定义的私有属性使用 $_ 前缀。<br>并附带一个命名空间以回避和其它作者的冲突 (比如 $<em>yourPluginName</em>)。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">var myGreatMixin = &#123;</div><div class="line">  // ...</div><div class="line">  methods: &#123;</div><div class="line">	$_myGreatMixin_update: function () &#123;</div><div class="line">	  // ...</div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="组件文件"><a href="#组件文件" class="headerlink" title="组件文件"></a>组件文件</h2><pre><code>只要有能够拼接文件的构建系统，就把每个组件单独分成文件。
-components/
-|- TodoList.vue
-|- TodoItem.vue
-</code></pre><h2 id="单文件组件文件的大小写（大驼峰）"><a href="#单文件组件文件的大小写（大驼峰）" class="headerlink" title="单文件组件文件的大小写（大驼峰）"></a>单文件组件文件的大小写（大驼峰）</h2><pre><code>单文件组件的文件名应该要么始终是单词大写开头 (PascalCase)，要么始终是横线连接 (kebab-case)。
-</code></pre><h2 id="基础组件名"><a href="#基础组件名" class="headerlink" title="基础组件名"></a>基础组件名</h2><pre><code>应用特定样式和约定的基础组件 (也就是展示类的、无逻辑的或无状态的组件) 应该全部以一个特定的前缀开头，
-比如 Base、App 或 V。
-components/
-|- BaseButton.vue
-|- BaseTable.vue
-|- BaseIcon.vue
-</code></pre><h2 id="单例组件名"><a href="#单例组件名" class="headerlink" title="单例组件名"></a>单例组件名</h2><pre><code>只应该拥有单个活跃实例的组件应该以 The 前缀命名，以示其唯一性。
-components/
-|- TheHeading.vue
-|- TheSidebar.vue
-</code></pre><h2 id="紧密耦合的组件名"><a href="#紧密耦合的组件名" class="headerlink" title="紧密耦合的组件名"></a>紧密耦合的组件名</h2><pre><code>和父组件紧密耦合的子组件应该以父组件名作为前缀命名。
-components/
-|- TodoList.vue
-|- TodoListItem.vue
-|- TodoListItemButton.vue
-</code></pre><h2 id="组件名中的单词顺序"><a href="#组件名中的单词顺序" class="headerlink" title="组件名中的单词顺序"></a>组件名中的单词顺序</h2><pre><code>组件名应该以高级别的 (通常是一般化描述的) 单词开头，以描述性的修饰词结尾。
-components/
-|- SearchButtonClear.vue
-|- SearchButtonRun.vue
-|- SearchInputQuery.vue
-|- SearchInputExcludeGlob.vue
-|- SettingsCheckboxTerms.vue
-|- SettingsCheckboxLaunchOnStartup.vue
-</code></pre><h2 id="自闭合组件"><a href="#自闭合组件" class="headerlink" title="自闭合组件"></a>自闭合组件</h2><pre><code>在单文件组件、字符串模板和 JSX 中没有内容的组件应该是自闭合的——但在 DOM 模板里永远不要这样做。    
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 在单文件组件、字符串模板和 JSX 中 --&gt;</div><div class="line">&lt;MyComponent/&gt;</div><div class="line">&lt;!-- 在 DOM 模板中 --&gt;</div><div class="line">&lt;my-component&gt;&lt;/my-component&gt;</div></pre></td></tr></table></figure>
-</code></pre><h2 id="模板中的组件名大小写"><a href="#模板中的组件名大小写" class="headerlink" title="模板中的组件名大小写"></a>模板中的组件名大小写</h2><pre><code>对于绝大多数项目来说，在单文件组件和字符串模板中组件名应该总是 PascalCase 的——但是在 DOM 模板中总是 kebab-case 的。
-&lt;!-- 在所有地方 --&gt;
-&lt;my-component&gt;&lt;/my-component&gt;
-</code></pre><h2 id="JS-JSX-中的组件名大小写"><a href="#JS-JSX-中的组件名大小写" class="headerlink" title="JS/JSX 中的组件名大小写"></a>JS/JSX 中的组件名大小写</h2><pre><code>JS/JSX 中的组件名应该始终是 PascalCase 的，尽管在较为简单的应用中只使用 Vue.component 进行全局组件注册时，
-可以使用 kebab-case 字符串。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">Vue.component(&apos;MyComponent&apos;, &#123;</div><div class="line">  // ...</div><div class="line">&#125;)</div><div class="line">Vue.component(&apos;my-component&apos;, &#123;</div><div class="line">  // ...</div><div class="line">&#125;)</div><div class="line">import MyComponent from &apos;./MyComponent.vue&apos;</div><div class="line">export default &#123;</div><div class="line">  name: &apos;MyComponent&apos;,</div><div class="line">  // ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h2 id="完整单词的组件名"><a href="#完整单词的组件名" class="headerlink" title="完整单词的组件名"></a>完整单词的组件名</h2><pre><code>组件名应该倾向于完整单词而不是缩写。
-components/
-|- StudentDashboardSettings.vue 学生面板设置
-|- UserProfileOptions.vue
-</code></pre><h2 id="Prop-名大小写"><a href="#Prop-名大小写" class="headerlink" title="Prop 名大小写"></a>Prop 名大小写</h2><pre><code>在声明 prop 的时候，其命名应该始终使用 camelCase，而在模板和 JSX 中应该始终使用 kebab-case。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">props: &#123;</div><div class="line">  greetingText: String</div><div class="line">&#125;</div><div class="line">// 在 html 中</div><div class="line">&lt;WelcomeMessage greeting-text=&quot;hi&quot;/&gt;</div></pre></td></tr></table></figure>
-</code></pre><h2 id="多个特性的元素"><a href="#多个特性的元素" class="headerlink" title="多个特性的元素"></a>多个特性的元素</h2><pre><code>多个特性的元素应该分多行撰写，每个特性一行。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;img</div><div class="line">  src=&quot;https://vuejs.org/images/logo.png&quot;</div><div class="line">  alt=&quot;Vue Logo&quot;</div><div class="line">&gt;</div></pre></td></tr></table></figure>
-</code></pre><h2 id="模板中简单的表达式"><a href="#模板中简单的表达式" class="headerlink" title="模板中简单的表达式"></a>模板中简单的表达式</h2><pre><code>组件模板应该只包含简单的表达式，复杂的表达式则应该重构为计算属性或方法。
-</code></pre><h2 id="简单的计算属性"><a href="#简单的计算属性" class="headerlink" title="简单的计算属性"></a>简单的计算属性</h2><pre><code>应该把复杂计算属性分割为尽可能多的更简单的属性。
-</code></pre><h2 id="带引号的特性值（双引号）"><a href="#带引号的特性值（双引号）" class="headerlink" title="带引号的特性值（双引号）"></a>带引号的特性值（双引号）</h2><pre><code>非空 HTML 特性值应该始终带引号 (单引号或双引号，选你 JS 里不用的那个)。
-</code></pre><h2 id="指令缩写"><a href="#指令缩写" class="headerlink" title="指令缩写"></a>指令缩写</h2><pre><code>指令缩写 (用 : 表示 v-bind: 和用 @ 表示 v-on:) 应该要么都用要么都不用。
-</code></pre><h2 id="组件-实例的选项的顺序"><a href="#组件-实例的选项的顺序" class="headerlink" title="组件/实例的选项的顺序"></a>组件/实例的选项的顺序</h2><pre><code>组件/实例的选项应该有统一的顺序。
-副作用 (触发组件外的影响)
-    el
-全局感知 (要求组件以外的知识)
-    name
-    parent
-组件类型 (更改组件的类型)
-    functional
-模板修改器 (改变模板的编译方式)
-    delimiters
-    comments
-模板依赖 (模板内使用的资源)
-    components
-    directives
-    filters
-组合 (向选项里合并属性)
-    extends
-    mixins
-接口 (组件的接口)
-    inheritAttrs
-    model
-    props/propsData
-本地状态 (本地的响应式属性)
-    data
-    computed
-事件 (通过响应式事件触发的回调)
-    watch
-生命周期钩子 (按照它们被调用的顺序)
-非响应式的属性 (不依赖响应系统的实例属性)
-    methods
-渲染 (组件输出的声明式描述)
-    template/render
-    renderError
-</code></pre><h2 id="元素特性的顺序"><a href="#元素特性的顺序" class="headerlink" title="元素特性的顺序"></a>元素特性的顺序</h2><pre><code>元素 (包括组件) 的特性应该有统一的顺序。    
-定义 (提供组件的选项)
-    is
-列表渲染 (创建多个变化的相同元素)
-    v-for
-条件渲染 (元素是否渲染/显示)
-    v-if
-    v-else-if
-    v-else
-    v-show
-    v-cloak
-渲染方式 (改变元素的渲染方式)
-    v-pre
-    v-once
-全局感知 (需要超越组件的知识)
-    id
-唯一的特性 (需要唯一值的特性)
-    ref
-    key
-    slot
-双向绑定 (把绑定和事件结合起来)
-    v-model
-其它特性 (所有普通的绑定或未绑定的特性)
-事件 (组件事件监听器)
-    v-on
-内容 (复写元素的内容)
-    v-html
-    v-text
-</code></pre><h2 id="组件-实例选项中的空行"><a href="#组件-实例选项中的空行" class="headerlink" title="组件/实例选项中的空行"></a>组件/实例选项中的空行</h2><pre><code>你可能想在多个属性之间增加一个空行，特别是在这些选项一屏放不下，
-需要滚动才能都看到的时候。
-</code></pre><h2 id="单文件组件的顶级元素的顺序"><a href="#单文件组件的顶级元素的顺序" class="headerlink" title="单文件组件的顶级元素的顺序"></a>单文件组件的顶级元素的顺序</h2><pre><code>单文件组件应该总是让 template、script 和 style 标签的顺序保持一致。
-且 &lt;style&gt; 要放在最后，因为另外两个标签至少要有一个。
-&lt;template&gt;...&lt;/template&gt;
-&lt;script&gt;/* ... */&lt;/script&gt;
-&lt;style&gt;/* ... */&lt;/style&gt;
-</code></pre><h2 id="没有在-v-if-v-if-else-v-else-中使用-key-谨慎使用"><a href="#没有在-v-if-v-if-else-v-else-中使用-key-谨慎使用" class="headerlink" title="没有在 v-if/v-if-else/v-else 中使用 key 谨慎使用"></a>没有在 v-if/v-if-else/v-else 中使用 key 谨慎使用</h2><pre><code>如果一组 v-if + v-else 的元素类型相同，最好使用 key (比如两个 &lt;div&gt; 元素)。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;div v-if=&quot;error&quot; key=&quot;search-status&quot;&gt;</div><div class="line">  错误：&#123;&#123; error &#125;&#125;</div><div class="line">&lt;/div&gt;</div><div class="line">&lt;div v-else key=&quot;search-results&quot;&gt;</div><div class="line">  &#123;&#123; results &#125;&#125;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
-</code></pre><h2 id="scoped-中的元素选择器-谨慎使用"><a href="#scoped-中的元素选择器-谨慎使用" class="headerlink" title="scoped 中的元素选择器 谨慎使用"></a>scoped 中的元素选择器 谨慎使用</h2><pre><code>元素选择器应该避免在 scoped 中出现。
-</code></pre><h2 id="隐性的父子组件通信-谨慎使用"><a href="#隐性的父子组件通信-谨慎使用" class="headerlink" title="隐性的父子组件通信 谨慎使用"></a>隐性的父子组件通信 谨慎使用</h2><pre><code>应该优先通过 prop 和事件进行父子组件之间的通信，而不是 this.$parent 或改变 prop。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Vue.component(&apos;TodoItem&apos;, &#123;</div><div class="line">  props: &#123;</div><div class="line">	todo: &#123;</div><div class="line">	  type: Object,</div><div class="line">	  required: true</div><div class="line">	&#125;</div><div class="line">  &#125;,</div><div class="line">  template: `</div><div class="line">	&lt;input</div><div class="line">	  :value=&quot;todo.text&quot;</div><div class="line">	  @input=&quot;$emit(&apos;input&apos;, $event.target.value)&quot;</div><div class="line">	&gt;</div><div class="line">  `</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
-</code></pre><h2 id="非-Flux-的全局状态管理-谨慎使用"><a href="#非-Flux-的全局状态管理-谨慎使用" class="headerlink" title="非 Flux 的全局状态管理 谨慎使用"></a>非 Flux 的全局状态管理 谨慎使用</h2><pre><code>应该优先通过 Vuex 管理全局状态，而不是通过 this.$root 或一个全局事件总线。
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="https://cn.vuejs.org/v2/style-guide" target="_blank" rel="external">vue代码指南</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/19/css实现水平和垂直居中方案总结/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/10/19/css实现水平和垂直居中方案总结/" itemprop="url">
-                  css实现水平和垂直居中方案总结
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-19T22:20:48+08:00">
-                2017-10-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/css/" itemprop="url" rel="index">
-                    <span itemprop="name">css</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/19/css实现水平和垂直居中方案总结/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/19/css实现水平和垂直居中方案总结/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  613
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  3
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="已知宽高元素水平和垂直居中"><a href="#已知宽高元素水平和垂直居中" class="headerlink" title="已知宽高元素水平和垂直居中"></a>已知宽高元素水平和垂直居中</h1><h2 id="position-absolute、top和left50-和margin-height-2px-0-0-width-2px"><a href="#position-absolute、top和left50-和margin-height-2px-0-0-width-2px" class="headerlink" title="position:absolute、top和left50%和margin:-height/2px 0 0 -width/2px;"></a>position:absolute、top和left50%和margin:-height/2px 0 0 -width/2px;</h2><h3 id="html-代码"><a href="#html-代码" class="headerlink" title="html 代码"></a>html 代码</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;div class=&quot;container&quot;&gt;</div><div class="line"> 123</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="css-代码"><a href="#css-代码" class="headerlink" title="css 代码"></a>css 代码</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">.container &#123;</div><div class="line">   position:absolute;</div><div class="line">   top:50%;</div><div class="line">   left:50%;</div><div class="line">   margin:-25px 0 0 -50px;</div><div class="line">   width: 100px;</div><div class="line">   height: 50px;</div><div class="line">   font-size: 40px;</div><div class="line">   color: #fff;</div><div class="line">   background-color: rgba(0,0,0,.8)</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
-</code></pre><h2 id="position-fixed、top和right和bottom和left0和margin-auto"><a href="#position-fixed、top和right和bottom和left0和margin-auto" class="headerlink" title="position:fixed、top和right和bottom和left0和margin:auto;"></a>position:fixed、top和right和bottom和left0和margin:auto;</h2><h3 id="html-代码-1"><a href="#html-代码-1" class="headerlink" title="html 代码"></a>html 代码</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;div class=&quot;container&quot;&gt;</div><div class="line"> 123</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="css代码"><a href="#css代码" class="headerlink" title="css代码"></a>css代码</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">.container &#123;</div><div class="line">   position:fixed;</div><div class="line">   top:0;</div><div class="line">   right:0;</div><div class="line">   bottom:0;</div><div class="line">   left:0;</div><div class="line">   margin:auto;</div><div class="line">   width: 100px;</div><div class="line">   height: 50px;</div><div class="line">   font-size: 40px;</div><div class="line">   color: #fff;</div><div class="line">   background-color: rgba(0,0,0,.8)</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
-</code></pre><h1 id="未知宽高元素水平和垂直居中"><a href="#未知宽高元素水平和垂直居中" class="headerlink" title="未知宽高元素水平和垂直居中"></a>未知宽高元素水平和垂直居中</h1><pre><code>总结一些常用的不定高宽元素居中的方式，以备使用。
-以下代码均不考虑兼容性，如需使用，请自行处理浏览器兼容性。
-</code></pre><h2 id="display-为-table-布局（父容器为display-table-子元素为display-table-cell-）"><a href="#display-为-table-布局（父容器为display-table-子元素为display-table-cell-）" class="headerlink" title="display 为 table 布局（父容器为display: table; 子元素为display: table-cell;）"></a>display 为 table 布局（父容器为display: table; 子元素为display: table-cell;）</h2><h3 id="html-代码-2"><a href="#html-代码-2" class="headerlink" title="html 代码"></a>html 代码</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;div id=&quot;container&quot;&gt;  </div><div class="line">     &lt;span id=&quot;inner&quot;&gt;  </div><div class="line">      123123</div><div class="line">     &lt;/span&gt;  </div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="css-代码-1"><a href="#css-代码-1" class="headerlink" title="css 代码"></a>css 代码</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">#container&#123;  </div><div class="line">	display: table;  </div><div class="line">	padding: 60% 30%;</div><div class="line">	width: 100vw;</div><div class="line">	height: 100vh;</div><div class="line">	text-align: center;  </div><div class="line">&#125;  </div><div class="line">#inner&#123;  </div><div class="line">	display: table-cell;  </div><div class="line">	vertical-align: middle; </div><div class="line">	font-size: 40px;</div><div class="line">	color: #fff;</div><div class="line">	background-color: rgba(0, 0, 0, .8); </div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-PS：
-水平居中一般采用两种方式:
-    1.块级元素：定宽 + margin:0 auto;（由于是不定宽高，所以这里不适用）；
-    2.行内元素：作用于父级元素 text-algin：center；（可以内联化，视情况而定）    
-垂直方向居中：
-    使用display:table-cell;vertical-algin:middle;
-</code></pre><h2 id="flex-布局实现"><a href="#flex-布局实现" class="headerlink" title="flex 布局实现"></a>flex 布局实现</h2><pre><code>注意：flex 方法兼容 IE10及以上版本
-</code></pre><h3 id="html-代码-3"><a href="#html-代码-3" class="headerlink" title="html 代码"></a>html 代码</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;div class=&quot;container&quot;&gt;</div><div class="line">	&lt;span class=&quot;toast&quot;&gt;上传成功&lt;/span&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="css-代码-2"><a href="#css-代码-2" class="headerlink" title="css 代码"></a>css 代码</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">/*父容器*/</div><div class="line">.container &#123;</div><div class="line">	position: fixed;</div><div class="line">	width: 100vw;</div><div class="line">	height: 100vh;</div><div class="line">	display: flex;</div><div class="line">	justify-content: center;</div><div class="line">	align-items: center;</div><div class="line">&#125; </div><div class="line">/*子项目*/</div><div class="line">.toast &#123;</div><div class="line">	padding: 20px;</div><div class="line">	font-size: 40px;</div><div class="line">	color: #fff;</div><div class="line">	background-color: rgba(0, 0, 0, .8);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-PS：display: flex; // 为父容器使用 flex 布局
-    justify-content: center; // 决定子项目在主轴的对齐方式
-    align-items: center; // 决定子项目在交叉轴轴的对齐方式
-</code></pre><h2 id="position-transform-方法实现"><a href="#position-transform-方法实现" class="headerlink" title="position + transform 方法实现"></a>position + transform 方法实现</h2><pre><code>注意：flex 方法兼容 IE9及以上版本
-</code></pre><h3 id="html-代码-4"><a href="#html-代码-4" class="headerlink" title="html 代码"></a>html 代码</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;span class=&quot;toast&quot;&gt;上传成功&lt;/span&gt;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="css-代码-3"><a href="#css-代码-3" class="headerlink" title="css 代码"></a>css 代码</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">.toast &#123;</div><div class="line">	position: fixed;</div><div class="line">	top: 50%; // 50vh</div><div class="line">	left: 50%; // 50vw</div><div class="line">	transform: translate(-50%, -50%);</div><div class="line">	padding: 20px;</div><div class="line">	font-size: 40px;</div><div class="line">	color: #fff;</div><div class="line">	background-color: rgba(0, 0, 0, .8);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-PS：对于position: fixed; 之后的 top和left都为50%，这个50%为浏览器窗口宽高的50%，
-    对于transform中translate(-50%, -50%)，这个50%为自身元素的宽高的50%。
-    或许上面改写成top: 50vh; left: 50vw; 更容易理解。
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="http://www.tangshuang.net/3197.html" target="_blank" rel="external">不定元素宽高用css实现内容水平和垂直都居中</a><br>    <a href="http://jcao54.iteye.com/blog/2256953" target="_blank" rel="external">不定宽高div水平垂直居中</a><br>    <a href="http://www.runoob.com/w3cnote/flex-grammar.html" target="_blank" rel="external">flex 布局</a><br>    <a href="https://juejin.im/post/586b94e5ac502e12d62d4ab6" target="_blank" rel="external">滴滴出行-再谈自适应垂直居中</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/18/vue官网-全局与实例解读/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/10/18/vue官网-全局与实例解读/" itemprop="url">
-                  vue官网-全局与实例解读
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T22:21:49+08:00">
-                2017-10-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/vue/" itemprop="url" rel="index">
-                    <span itemprop="name">vue</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/18/vue官网-全局与实例解读/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/18/vue官网-全局与实例解读/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  1,648
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  7
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="全局API"><a href="#全局API" class="headerlink" title="全局API"></a>全局API</h1><h2 id="Vue-extend-options"><a href="#Vue-extend-options" class="headerlink" title="Vue.extend( options )"></a>Vue.extend( options )</h2><pre><code>用法：使用基础 Vue 构造器，创建一个“子类”。    
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">// 创建构造器</div><div class="line">var Profile = Vue.extend(&#123;</div><div class="line">  template: &apos;&lt;p&gt;&#123;&#123;firstName&#125;&#125; &#123;&#123;lastName&#125;&#125; aka &#123;&#123;alias&#125;&#125;&lt;/p&gt;&apos;,</div><div class="line">  data: function () &#123;</div><div class="line">	return &#123;</div><div class="line">	  firstName: &apos;Walter&apos;,</div><div class="line">	  lastName: &apos;White&apos;,</div><div class="line">	  alias: &apos;Heisenberg&apos;</div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">&#125;);</div><div class="line">// 创建 Profile 实例，并挂载到一个元素上。</div><div class="line">new Profile().$mount(&apos;#mount-point&apos;)</div></pre></td></tr></table></figure>
-</code></pre><h2 id="Vue-nextTick-callback-context"><a href="#Vue-nextTick-callback-context" class="headerlink" title="Vue.nextTick( [callback, context] )"></a>Vue.nextTick( [callback, context] )</h2><pre><code>用法：在下次 DOM 更新循环结束之后执行延迟回调。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">// 修改数据</div><div class="line">vm.msg = &apos;Hello&apos;</div><div class="line">// DOM 还没有更新</div><div class="line">Vue.nextTick(function () &#123;</div><div class="line">  // DOM 更新之后进行相应的操作</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h2 id="Vue-set-target-key-value"><a href="#Vue-set-target-key-value" class="headerlink" title="Vue.set( target, key, value )"></a>Vue.set( target, key, value )</h2><pre><code>用法：设置对象的属性。
-</code></pre><h2 id="Vue-delete-target-key"><a href="#Vue-delete-target-key" class="headerlink" title="Vue.delete( target, key )"></a>Vue.delete( target, key )</h2><pre><code>用法：删除对象的属性。
-</code></pre><h2 id="Vue-directive-id-definition"><a href="#Vue-directive-id-definition" class="headerlink" title="Vue.directive( id, [definition] )"></a>Vue.directive( id, [definition] )</h2><pre><code>用法：注册或获取全局指令。
-如自定义指令，v-focus
-</code></pre><h2 id="Vue-filter-id-definition"><a href="#Vue-filter-id-definition" class="headerlink" title="Vue.filter( id, [definition] )"></a>Vue.filter( id, [definition] )</h2><pre><code>用法：注册或获取全局过滤器。
-</code></pre><h2 id="Vue-component-id-definition"><a href="#Vue-component-id-definition" class="headerlink" title="Vue.component( id, [definition] )"></a>Vue.component( id, [definition] )</h2><pre><code>用法：注册或获取全局组件。
-</code></pre><h2 id="Vue-use-plugin"><a href="#Vue-use-plugin" class="headerlink" title="Vue.use( plugin )"></a>Vue.use( plugin )</h2><pre><code>用法：安装 Vue.js 插件。
-</code></pre><h2 id="Vue-mixin-mixin"><a href="#Vue-mixin-mixin" class="headerlink" title="Vue.mixin( mixin )"></a>Vue.mixin( mixin )</h2><pre><code>用法：全局注册一个混合，影响注册之后所有创建的每个 Vue 实例。
-</code></pre><h2 id="Vue-compile-template"><a href="#Vue-compile-template" class="headerlink" title="Vue.compile( template )"></a>Vue.compile( template )</h2><pre><code>用法：在 render 函数中编译模板字符串。
-</code></pre><h2 id="Vue-version"><a href="#Vue-version" class="headerlink" title="Vue.version"></a>Vue.version</h2><pre><code>用法：提供字符串形式的 Vue 安装版本号。
-</code></pre><h1 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h1><pre><code>以下实例均为 vm。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var vm = new (&#123;</div><div class="line">	el: &apos;#app&apos;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h2 id="实例属性"><a href="#实例属性" class="headerlink" title="实例属性"></a>实例属性</h2><h3 id="vm-data"><a href="#vm-data" class="headerlink" title="vm.$data"></a>vm.$data</h3><pre><code>作用：Vue 实例代理了对其 data 对象属性的访问。
-</code></pre><h3 id="vm-props"><a href="#vm-props" class="headerlink" title="vm.$props"></a>vm.$props</h3><pre><code>作用：Vue 实例代理了对其 props 对象属性的访问。
-</code></pre><h3 id="vm-el（只读）"><a href="#vm-el（只读）" class="headerlink" title="vm.$el（只读）"></a>vm.$el（只读）</h3><pre><code>作用：Vue 实例使用的根 DOM 元素。
-</code></pre><h3 id="vm-options（只读）"><a href="#vm-options（只读）" class="headerlink" title="vm.$options（只读）"></a>vm.$options（只读）</h3><pre><code>作用：用于当前 Vue 实例的初始化选项。需要在选项中包含自定义属性时会有用处。
-</code></pre><h3 id="vm-parent（只读）"><a href="#vm-parent（只读）" class="headerlink" title="vm.$parent（只读）"></a>vm.$parent（只读）</h3><pre><code>作用：父实例，如果当前实例有的话。
-</code></pre><h3 id="vm-root（只读）"><a href="#vm-root（只读）" class="headerlink" title="vm.$root（只读）"></a>vm.$root（只读）</h3><pre><code>作用：当前组件树的根 Vue 实例。如果当前实例没有父实例，此实例将会是其自己。
-</code></pre><h3 id="vm-children（只读）"><a href="#vm-children（只读）" class="headerlink" title="vm.$children（只读）"></a>vm.$children（只读）</h3><pre><code>作用：当前实例的直接子组件。
-</code></pre><h3 id="vm-slots（只读）"><a href="#vm-slots（只读）" class="headerlink" title="vm.$slots（只读）"></a>vm.$slots（只读）</h3><pre><code>作用：用来访问被插槽分发的内容。每个具名插槽 有其相应的属性 (例如：slot=&quot;foo&quot; 中的内容将会在 vm.$slots.foo 中被找到)。
-</code></pre><h3 id="vm-scopedSlots（只读）"><a href="#vm-scopedSlots（只读）" class="headerlink" title="vm.$scopedSlots（只读）"></a>vm.$scopedSlots（只读）</h3><pre><code>作用：用来访问作用域插槽。
-</code></pre><h3 id="vm-refs（只读）"><a href="#vm-refs（只读）" class="headerlink" title="vm.$refs（只读）"></a>vm.$refs（只读）</h3><pre><code>作用：一个对象，持有已注册过 ref 的所有子组件。
-</code></pre><h3 id="vm-isServer（只读）"><a href="#vm-isServer（只读）" class="headerlink" title="vm.$isServer（只读）"></a>vm.$isServer（只读）</h3><pre><code>作用：当前 Vue 实例是否运行于服务器。
-</code></pre><h3 id="vm-attrs（只读）"><a href="#vm-attrs（只读）" class="headerlink" title="vm.$attrs（只读）"></a>vm.$attrs（只读）</h3><pre><code>作用：包含了父作用域中不被认为 (且不预期为) props 的特性绑定 (class 和 style 除外)。
-</code></pre><h3 id="vm-listeners"><a href="#vm-listeners" class="headerlink" title="vm.$listeners"></a>vm.$listeners</h3><pre><code>作用：包含了父作用域中的 (不含 .native 修饰器的) v-on 事件监听器。
-</code></pre><h2 id="实例方法-数据"><a href="#实例方法-数据" class="headerlink" title="实例方法/数据"></a>实例方法/数据</h2><h3 id="vm-watch-expOrFn-callback-options"><a href="#vm-watch-expOrFn-callback-options" class="headerlink" title="vm.$watch(expOrFn, callback, [options]);"></a>vm.$watch(expOrFn, callback, [options]);</h3><pre><code>作用：观察 Vue 实例变化的一个表达式或计算属性函数。
-返回值：{Function} unwatch
-    vm.$watch 返回一个取消观察函数，用来停止触发回调：
-</code></pre><h3 id="vm-set-target-key-value"><a href="#vm-set-target-key-value" class="headerlink" title="vm.$set( target, key, value )"></a>vm.$set( target, key, value )</h3><pre><code>作用：这是全局 Vue.set 的别名。
-</code></pre><h3 id="vm-delete-target-key"><a href="#vm-delete-target-key" class="headerlink" title="vm.$delete( target, key )"></a>vm.$delete( target, key )</h3><pre><code>作用：这是全局 Vue.delete 的别名。
-</code></pre><h2 id="实例方法-事件"><a href="#实例方法-事件" class="headerlink" title="实例方法/事件"></a>实例方法/事件</h2><h3 id="vm-on-event-callback"><a href="#vm-on-event-callback" class="headerlink" title="vm.$on(event, callback);"></a>vm.$on(event, callback);</h3><pre><code>作用：监听当前实例上的自定义事件。
-</code></pre><h3 id="vm-once-event-callback"><a href="#vm-once-event-callback" class="headerlink" title="vm.$once(event, callback);"></a>vm.$once(event, callback);</h3><pre><code>作用：监听一个自定义事件，但是只触发一次，在第一次触发之后移除监听器。
-</code></pre><h3 id="vm-off-event-callback"><a href="#vm-off-event-callback" class="headerlink" title="vm.$off( [event, callback] )"></a>vm.$off( [event, callback] )</h3><pre><code>作用：移除自定义事件监听器。
-</code></pre><h3 id="vm-emit-event-…args"><a href="#vm-emit-event-…args" class="headerlink" title="vm.$emit(event, […args]);"></a>vm.$emit(event, […args]);</h3><pre><code>作用：触发当前实例上的事件。附加参数都会传给监听器回调。
-</code></pre><h2 id="实例方法-生命周期"><a href="#实例方法-生命周期" class="headerlink" title="实例方法/生命周期"></a>实例方法/生命周期</h2><h3 id="vm-mount-elementOrSelector"><a href="#vm-mount-elementOrSelector" class="headerlink" title="vm.$mount( [elementOrSelector] )"></a>vm.$mount( [elementOrSelector] )</h3><pre><code>作用：如果 Vue 实例在实例化时没有收到 el 选项，则它处于“未挂载”状态，没有关联的 DOM 元素。
-</code></pre><h3 id="vm-forceUpdate"><a href="#vm-forceUpdate" class="headerlink" title="vm.$forceUpdate()"></a>vm.$forceUpdate()</h3><pre><code>作用：迫使 Vue 实例重新渲染。注意它仅仅影响实例本身和插入插槽内容的子组件，而不是所有子组件。
-</code></pre><h3 id="vm-nextTick-callback"><a href="#vm-nextTick-callback" class="headerlink" title="vm.$nextTick( [callback] )"></a>vm.$nextTick( [callback] )</h3><pre><code>作用：将回调延迟到下次 DOM 更新循环之后执行。
-</code></pre><h3 id="vm-destroy"><a href="#vm-destroy" class="headerlink" title="vm.$destroy()"></a>vm.$destroy()</h3><pre><code>作用：完全销毁一个实例。
-</code></pre><h1 id="指令（内置）"><a href="#指令（内置）" class="headerlink" title="指令（内置）"></a>指令（内置）</h1><h2 id="v-text"><a href="#v-text" class="headerlink" title="v-text"></a>v-text</h2><pre><code>作用：更新元素的 textContent。
-    还可以使用 {{ Mustache }}
-</code></pre><h2 id="v-html"><a href="#v-html" class="headerlink" title="v-html"></a>v-html</h2><pre><code>作用：更新元素的 innerHTML 。
-</code></pre><h2 id="v-show"><a href="#v-show" class="headerlink" title="v-show"></a>v-show</h2><pre><code>作用：根据表达式之真假值，切换元素的 display CSS 属性。
-    当条件变化时该指令触发过渡效果。
-</code></pre><h2 id="v-if"><a href="#v-if" class="headerlink" title="v-if"></a>v-if</h2><pre><code>作用：根据表达式的值的真假条件渲染元素。
-    在切换时元素及它的数据绑定 / 组件被销毁并重建。
-</code></pre><h2 id="v-else"><a href="#v-else" class="headerlink" title="v-else"></a>v-else</h2><pre><code>作用：否则，前一兄弟元素必须有 v-if 或 v-else-if。
-</code></pre><h2 id="v-else-if"><a href="#v-else-if" class="headerlink" title="v-else-if"></a>v-else-if</h2><pre><code>作用：表示 v-if 的 “else if 块”。
-</code></pre><h2 id="v-for"><a href="#v-for" class="headerlink" title="v-for"></a>v-for</h2><pre><code>作用：基于源数据多次渲染元素或模板块。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;!--数组--&gt;</div><div class="line">&lt;div v-for=&quot;(item, index) in items&quot; :key=&quot;item.id&quot;&gt;&lt;/div&gt;</div><div class="line">&lt;!--对象--&gt;</div><div class="line">&lt;div v-for=&quot;(val, key, index) in object&quot; :key=&quot;item.id&quot;&gt;&lt;/div&gt;</div></pre></td></tr></table></figure>
-</code></pre><h2 id="v-on（-）"><a href="#v-on（-）" class="headerlink" title="v-on（@）"></a>v-on（@）</h2><pre><code>作用：绑定事件监听器。
-事件修饰符：.stop, .prevent, .capture, .self, {keyCode | keyAlias}
-    .native, .once, .left, .right, .middle, .passive    
-</code></pre><h2 id="v-bind（-）"><a href="#v-bind（-）" class="headerlink" title="v-bind（:）"></a>v-bind（:）</h2><pre><code>作用：绑定属性。
-属性修饰符：.prop, .camel, .sync（会扩展成一个更新父组件绑定值的 v-on 侦听器）    
-</code></pre><h2 id="v-model"><a href="#v-model" class="headerlink" title="v-model"></a>v-model</h2><pre><code>作用：表单和数据的双向绑定。
-表单修饰符：.lazy, .number, .trim
-</code></pre><h2 id="v-pre"><a href="#v-pre" class="headerlink" title="v-pre"></a>v-pre</h2><pre><code>作用：跳过这个元素和它的子元素的编译过程。可以用来显示原始 Mustache 标签。
-</code></pre><h2 id="v-cloak"><a href="#v-cloak" class="headerlink" title="v-cloak"></a>v-cloak</h2><pre><code>作用：这个指令保持在元素上直到关联实例结束编译。    
-    需配合 CSS 规则 [v-cloak] { display: none } 一起使用。
-</code></pre><h2 id="v-once"><a href="#v-once" class="headerlink" title="v-once"></a>v-once</h2><pre><code>作用：只渲染元素和组件一次。
-</code></pre><h1 id="特殊属性"><a href="#特殊属性" class="headerlink" title="特殊属性"></a>特殊属性</h1><h2 id="key"><a href="#key" class="headerlink" title="key"></a>key</h2><pre><code>作用：性能考虑。
-使用场景：v-for, transition-group 过渡组件。
-</code></pre><h2 id="refs"><a href="#refs" class="headerlink" title="refs"></a>refs</h2><pre><code>ref 被用来给元素或子组件注册引用信息。
-</code></pre><h2 id="slot"><a href="#slot" class="headerlink" title="slot"></a>slot</h2><pre><code>作用：用于标记往哪个具名插槽中插入子组件内容。
-</code></pre><h2 id="slot-scoped"><a href="#slot-scoped" class="headerlink" title="slot-scoped"></a>slot-scoped</h2><pre><code>作用：用于将元素或组件表示为作用域插槽。
-</code></pre><h2 id="is"><a href="#is" class="headerlink" title="is"></a>is</h2><pre><code>作用：用于动态组件且基于 DOM 内模板的限制来工作。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;!-- component changes when currentView changes --&gt;</div><div class="line">&lt;component v-bind:is=&quot;currentView&quot;&gt;&lt;/component&gt;</div><div class="line">&lt;!-- necessary because `&lt;my-row&gt;` would be invalid inside --&gt;</div><div class="line">&lt;!-- a `&lt;table&gt;` element and so would be hoisted out      --&gt;</div><div class="line">&lt;table&gt;</div><div class="line">  &lt;tr is=&quot;my-row&quot;&gt;&lt;/tr&gt;</div><div class="line">&lt;/table&gt;</div></pre></td></tr></table></figure>
-</code></pre><h1 id="内置的组件"><a href="#内置的组件" class="headerlink" title="内置的组件"></a>内置的组件</h1><h2 id="component"><a href="#component" class="headerlink" title="component"></a>component</h2><pre><code>用法：渲染一个“元组件”为动态组件。依 is 的值，来决定哪个组件被渲染。
-props: is, inline-template
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 动态组件由 vm 实例的属性值 `componentId` 控制 --&gt;</div><div class="line">&lt;component :is=&quot;componentId&quot;&gt;&lt;/component&gt;</div><div class="line">&lt;!-- 也能够渲染注册过的组件或 prop 传入的组件 --&gt;</div><div class="line">&lt;component :is=&quot;$options.components.child&quot;&gt;&lt;/component&gt;</div></pre></td></tr></table></figure>
-</code></pre><h2 id="transition"><a href="#transition" class="headerlink" title="transition"></a>transition</h2><pre><code>用法：&lt;transition&gt; 元素作为单个元素/组件的过渡效果。
-props：...
-事件：...
-</code></pre><h2 id="transition-group"><a href="#transition-group" class="headerlink" title="transition-group"></a>transition-group</h2><pre><code>用法：&lt;transition-group&gt; 元素作为多个元素/组件的过渡效果。
-props: tag, move-class, mode
-事件：...
-</code></pre><h2 id="keep-alive"><a href="#keep-alive" class="headerlink" title="keep-alive"></a>keep-alive</h2><pre><code>props：include, exclude    
-用法：&lt;keep-alive&gt; 包裹动态组件时，会缓存不活动的组件实例，而不是销毁它们。
-</code></pre><h2 id="slot-1"><a href="#slot-1" class="headerlink" title="slot"></a>slot</h2><pre><code>用法：&lt;slot&gt; 元素作为组件模板之中的内容分发插槽。&lt;slot&gt; 元素自身将被替换。
-props：name
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="https://cn.vuejs.org/v2/api" target="_blank" rel="external">官方api</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/18/vue官网-选项解读/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/10/18/vue官网-选项解读/" itemprop="url">
-                  vue官网-选项解读
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T21:20:15+08:00">
-                2017-10-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/vue/" itemprop="url" rel="index">
-                    <span itemprop="name">vue</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/18/vue官网-选项解读/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/18/vue官网-选项解读/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  2,157
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  9
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="选项-数据"><a href="#选项-数据" class="headerlink" title="选项/数据"></a>选项/数据</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">var app = new Vue(&#123;</div><div class="line">	data() &#123;            // 声明所有的根级响应式属性</div><div class="line">		return &#123;&#125;;</div><div class="line">	&#125;,</div><div class="line">	props: &#123;&#125;,          // 父组件传递过来的属性</div><div class="line">	propsData: &#123;&#125;,      // 只能用于 new 创建的实例时传递 props。主要作用是方便测试</div><div class="line">	methods: &#123;&#125;,		// 组件相关的方法</div><div class="line">	computed: &#123;&#125;,		// 组件的计算属性</div><div class="line">	watch: &#123;&#125;,			// 监听组件的 data 中数据变化执行对应函数	</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="data"><a href="#data" class="headerlink" title="data"></a>data</h3><pre><code>类型：Object | Function（对于组件只是使用这种方式，并且返回一个纯对象）
-作用：Vue 实例的数据对象。
-最佳实践：data中需要声明所有的根级响应式属性。
-    有些时候想为 data 添加新数据。Vue.set( target, key, value )；target 可以是Object 和 Array(多个VUE实例对象)， key 为对应数据的键，value 为对应数据的值。
-    对应还有 Vue.delete( target, key ) 移除VUE实例对象指定key的属性。
-数据驱动的原理：Vue 将会递归将 data 的属性转换为 getter/setter，从而让 data 的属性能够响应数据变化。
-    属性通过 Object.defineProperty(obj, prop, descriptor) 来实现数据驱动。
-</code></pre><h3 id="props"><a href="#props" class="headerlink" title="props"></a>props</h3><pre><code>类型：Array&lt;string&gt; | Object
-作用：用于接收来自父组件的数据。对象允许配置高级选项，如是否必填（required）、
-类型检测（type）、自定义校验（validator函数）和设置默认值（default）。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">// 对象语法，提供校验</div><div class="line">Vue.component(&apos;props-demo-advanced&apos;, &#123;</div><div class="line">  props: &#123;</div><div class="line">	// 检测类型</div><div class="line">	height: Number,</div><div class="line">	// 检测类型 + 其他验证</div><div class="line">	age: &#123;</div><div class="line">	  type: Number,</div><div class="line">	  default: 0,</div><div class="line">	  required: true,</div><div class="line">	  validator: function (value) &#123;</div><div class="line">		return value &gt;= 0</div><div class="line">	  &#125;</div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="propsData"><a href="#propsData" class="headerlink" title="propsData"></a>propsData</h3><pre><code>类型：{ [key: string]: any }
-作用：只能用于 new 创建的实例时传递 props。主要作用是方便测试。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">var vm = new Vue(&#123;</div><div class="line">  propsData: &#123;</div><div class="line">	msg: &apos;hello&apos;</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="computed"><a href="#computed" class="headerlink" title="computed"></a>computed</h3><pre><code>类型：{ [key: string]: Function | { get: Function, set: Function } }
-作用：计算属性的结果会被缓存，除非依赖的响应式属性（data中的数据）变化才会重新计算。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">var vm = new Vue(&#123;</div><div class="line">  data: &#123; a: 1 &#125;,</div><div class="line">  computed: &#123;</div><div class="line">	// 仅读取</div><div class="line">	aDouble: function () &#123;</div><div class="line">	  return this.a * 2</div><div class="line">	&#125;,</div><div class="line">  &#125;,</div><div class="line">&#125;);</div><div class="line"></div><div class="line">// 组件类使用</div><div class="line">this.aDouble</div><div class="line">// 组件外使用</div><div class="line">vm.aDouble</div></pre></td></tr></table></figure>
-</code></pre><h3 id="methods"><a href="#methods" class="headerlink" title="methods"></a>methods</h3><pre><code>类型：{ [key: string]: Function }
-作用：为组件定义方法
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">var vm = new Vue(&#123;</div><div class="line">  data: &#123; a: 1 &#125;,</div><div class="line">  methods: &#123;</div><div class="line">	plus: function () &#123;</div><div class="line">	  this.a++</div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">// 组件内使用</div><div class="line">this.plus()</div><div class="line">// 组件外使用</div><div class="line">vm.plus()</div></pre></td></tr></table></figure>
-</code></pre><h3 id="watch"><a href="#watch" class="headerlink" title="watch"></a>watch</h3><pre><code>类型：{ [key: string]: string | Function | Object }
-作用：键是需要观察的表达式data中的属性，值是对应回调函数。值也可以是方法名，或者包含选项的对象
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">var vm = new Vue(&#123;</div><div class="line">  data: &#123;</div><div class="line">	a: 1,</div><div class="line">	b: 2,</div><div class="line">	c: 3</div><div class="line">  &#125;,</div><div class="line">  watch: &#123;</div><div class="line">	a: function (val, oldVal) &#123;</div><div class="line">	  console.log(&apos;new: %s, old: %s&apos;, val, oldVal)</div><div class="line">	&#125;,</div><div class="line">	// 方法名</div><div class="line">	b: &apos;someMethod&apos;,</div><div class="line">	// 深度 watcher</div><div class="line">	c: &#123;</div><div class="line">	  handler: function (val, oldVal) &#123; /* ... */ &#125;,</div><div class="line">	  deep: true</div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h2 id="选项-DOM"><a href="#选项-DOM" class="headerlink" title="选项/DOM"></a>选项/DOM</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">new Vue(&#123;</div><div class="line">  el: &apos;#app&apos;,</div><div class="line">  template: &apos;&lt;div&gt;我是模板&lt;/div&gt;&apos;,</div><div class="line">  render (h) &#123;</div><div class="line">	throw new Error(&apos;oops&apos;)</div><div class="line">  &#125;,</div><div class="line">  renderError (h, err) &#123;</div><div class="line">	return h(&apos;pre&apos;, &#123; style: &#123; color: &apos;red&apos; &#125;&#125;, err.stack)</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="el"><a href="#el" class="headerlink" title="el"></a>el</h3><pre><code>类型：string | HTMLElement
-作用：提供一个在页面上已存在的 DOM 元素作为 Vue 实例的挂载目标（只在由 new 创建的实例中遵守）。
-</code></pre><h3 id="template"><a href="#template" class="headerlink" title="template"></a>template</h3><pre><code>类型：string    
-作用：一个字符串模板作为 Vue 实例的标识使用。
-</code></pre><h3 id="render"><a href="#render" class="headerlink" title="render"></a>render</h3><pre><code>类型：(createElement: () =&gt; VNode) =&gt; VNode
-作用：字符串模板的代替方案，允许你发挥 JavaScript 最大的编程能力。
-</code></pre><h3 id="renderError"><a href="#renderError" class="headerlink" title="renderError"></a>renderError</h3><pre><code>类型：(createElement: () =&gt; VNode, error: Error) =&gt; VNode
-作用：当 render 函数遭遇错误时，提供另外一种渲染输出。
-</code></pre><h2 id="选项-生命周期钩子（函数）"><a href="#选项-生命周期钩子（函数）" class="headerlink" title="选项/生命周期钩子（函数）"></a>选项/生命周期钩子（函数）</h2><pre><code>在组件的具体某个过程触发相应的函数
-可以理解为：创建 -&gt; 挂载 -&gt; 更新 -&gt; 激活 -&gt; 销毁
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">new Vue(&#123;</div><div class="line">	beforeCreate() &#123;&#125;, // 实例初始化之后</div><div class="line">	created() &#123;&#125;,      // 在实例创建完成后被立即调用</div><div class="line">	beforeMount() &#123;&#125;,  // 在挂载开始之前被调用</div><div class="line">	mounted() &#123;&#125;,      // 实例挂载到 DOM 节点</div><div class="line">	beforeUpdate() &#123;&#125;, // 数据更新时调用</div><div class="line">	updated() &#123;&#125;,      // 数据更新完成后调用</div><div class="line">	activated() &#123;&#125;,    // keep-alive 组件激活时调用</div><div class="line">	deactivated() &#123;&#125;,  // keep-alive 组件停用时调用</div><div class="line">	beforeDestory() &#123;&#125;,// 实例销毁之前调用</div><div class="line">	destoryed() &#123;&#125;     // 实例销毁后调用。</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-
-详细信息请看官网-生命周期图示
-</code></pre><p><img src="https://cn.vuejs.org/images/lifecycle.png" alt="生命周期图示"></p>
-<h3 id="beforeCreate"><a href="#beforeCreate" class="headerlink" title="beforeCreate"></a>beforeCreate</h3><pre><code>执行时机：在实例初始化之后，数据观测 (data observer) 和 event/watcher 事件配置之前被调用。
-</code></pre><h3 id="created"><a href="#created" class="headerlink" title="created"></a>created</h3><pre><code>执行时机：在实例创建完成后被立即调用。完成以下任务：数据观测 (data observer)，属性和方法的运算，watch/event 事件回调，但实例并没有挂载到真实节点。
-</code></pre><h3 id="beforeMount"><a href="#beforeMount" class="headerlink" title="beforeMount"></a>beforeMount</h3><pre><code>执行时机：在挂载开始之前被调用：相关的 render 函数首次被调用。
-</code></pre><h3 id="mounted"><a href="#mounted" class="headerlink" title="mounted"></a>mounted</h3><pre><code>执行时机：当实例挂载到文档 DOM 元素时触发。
-注意 mounted 不会保证所有的子组件也都一起被挂载，下面可以保证所有子组件都一起被挂起。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mounted: function () &#123;</div><div class="line">  this.$nextTick(function () &#123;</div><div class="line">	// 整个视图页面全部渲染时触发，类似于jquery的ready方法。</div><div class="line">  &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="beforeUpdate"><a href="#beforeUpdate" class="headerlink" title="beforeUpdate"></a>beforeUpdate</h3><pre><code>执行时机：数据更新时调用，发生在虚拟 DOM 重新渲染和打补丁之前。
-</code></pre><h3 id="updated"><a href="#updated" class="headerlink" title="updated"></a>updated</h3><pre><code>执行时机：由于数据更改导致的虚拟 DOM 重新渲染和打补丁，在这之后会调用该钩子。
-    此时可以进行 DOM 操作。
-</code></pre><h3 id="activated"><a href="#activated" class="headerlink" title="activated"></a>activated</h3><pre><code>执行时机：keep-alive 组件激活时调用。
-</code></pre><h3 id="deactivated"><a href="#deactivated" class="headerlink" title="deactivated"></a>deactivated</h3><pre><code>执行时机：keep-alive 组件停用时调用。    
-</code></pre><h3 id="beforeDestory"><a href="#beforeDestory" class="headerlink" title="beforeDestory"></a>beforeDestory</h3><pre><code>执行时机：实例销毁之前调用。在这一步，实例仍然完全可用。
-</code></pre><h3 id="destoryed"><a href="#destoryed" class="headerlink" title="destoryed"></a>destoryed</h3><pre><code>执行时机：Vue 实例销毁后调用。
-</code></pre><h2 id="选项-资源"><a href="#选项-资源" class="headerlink" title="选项/资源"></a>选项/资源</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var vm = new Vue(&#123;</div><div class="line">	el: &apos;#app&apos;,</div><div class="line">	directives: &#123;&#125;, // 注册局部指令</div><div class="line">	filters: &#123;&#125;,    // 注册局部过滤器</div><div class="line">	compoents: &#123;&#125;   // 注册局部组件 </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="directives"><a href="#directives" class="headerlink" title="directives"></a>directives</h3><pre><code>类型：Object
-1.注册自定义指令（全局）
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">Vue.directive(&apos;focus&apos;, &#123;</div><div class="line">  // 当绑定元素插入到 DOM 中。</div><div class="line">  inserted: function (el) &#123;</div><div class="line">    // 聚焦元素</div><div class="line">    el.focus()</div><div class="line">  &#125;</div><div class="line">&#125;);</div><div class="line">var vm = new Vue(&#123;</div><div class="line">	el: &apos;#app&apos;,</div><div class="line">	// directives: &#123;&#125; 注册局部指令</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-
-这里指令的钩子函数：bind、inserted、update、componentUpdated、unbind
-每个钩子函数的参数：(包括 el，binding，vnode，oldVnode)。
-2.使用自定义指令
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;div id=&quot;app&quot;&gt;</div><div class="line">	&lt;input v-focus&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h3><pre><code>类型：Object
-1.注册全局过滤器
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">Vue.filter(&apos;add4&apos;, function (value) &#123;</div><div class="line">return value + 4;</div><div class="line">  // 返回处理后的值</div><div class="line">&#125;);</div><div class="line">var vm = new Vue(&#123;</div><div class="line">	el: &apos;#app&apos;,</div><div class="line">	data() &#123;</div><div class="line">		return &#123;</div><div class="line">			num: 10</div><div class="line">		&#125;;</div><div class="line">	&#125;,</div><div class="line">	// filters: &#123;&#125; 注册局部过滤器</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-
-2.使用过滤器
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;div id=&quot;app&quot;&gt;</div><div class="line">	&lt;p&gt;10 + 4 = &#123;&#123;num | add4&#125;&#125;&lt;/p&gt; // 14</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="compoents（局部组件的注册）"><a href="#compoents（局部组件的注册）" class="headerlink" title="compoents（局部组件的注册）"></a>compoents（局部组件的注册）</h3><pre><code>类型：Object
-1.注册全局组件
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">Vue.component(&apos;my-component&apos;, &#123;</div><div class="line">  // 选项</div><div class="line">&#125;);</div><div class="line">var vm = new Vue(&#123;</div><div class="line">	el: &apos;#app&apos;,</div><div class="line">	data() &#123;</div><div class="line">		return &#123;</div><div class="line">			num: 10</div><div class="line">		&#125;;</div><div class="line">	&#125;,</div><div class="line">	// components: &#123;&#125; 注册局部组件</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-
-2.使用组件
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;div id=&quot;app&quot;&gt;</div><div class="line">	&lt;my-component /&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
-</code></pre><h2 id="选项-组合"><a href="#选项-组合" class="headerlink" title="选项/组合"></a>选项/组合</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">import parentComponent from &apos;./path&apos;;</div><div class="line">var vm = new Vue(&#123;</div><div class="line">	el: &apos;#app&apos;,</div><div class="line">	parent: parentComponent, // 定义当前组件的父组件</div><div class="line">	minxins: [mixin],        // 定义局部混合逻辑（引入的先触发）</div><div class="line">	extends: CompA           // 定义局部继承（自身的先触发）</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="parent"><a href="#parent" class="headerlink" title="parent"></a>parent</h3><pre><code>类型：Vue instance
-作用：指定已创建的实例的父实例，在两者之间建立父子关系。
-    子实例可以用 this.$parent 访问父实例，子实例被推入父实例的 $children 数组中。
-</code></pre><h3 id="minxins"><a href="#minxins" class="headerlink" title="minxins"></a>minxins</h3><pre><code>类型：Array&lt;Object&gt;
-作用：混合 (mixins) 是一种分发 Vue 组件中可复用功能的非常灵活的方式。
-混合对象可以包含任意组件选项。以组件使用混合对象时，所有混合对象的选项将被
-混入该组件本身的选项。
-1.创建局部混合
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">var mixin = &#123;</div><div class="line">  created: function () &#123;</div><div class="line">	console.log(&apos;混合对象的钩子被调用&apos;)</div><div class="line">  &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-
-2.使用混合
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">new Vue(&#123;</div><div class="line">  mixins: [mixin], // 这里使用</div><div class="line">  created: function () &#123;</div><div class="line">	console.log(&apos;组件钩子被调用&apos;)</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-
-这里需要说明：混合对象的 钩子将在组件自身钩子 之前 调用。 
-</code></pre><h3 id="extends"><a href="#extends" class="headerlink" title="extends"></a>extends</h3><pre><code>类型：Object | Function
-作用：允许声明扩展另一个组件(可以是一个简单的选项对象或构造函数)，而无需使用 Vue.extend。这主要是为了便于扩展单文件组件。
-    这和 mixins 类似，区别在于，组件自身的选项会比要扩展的源组件具有更高的优先级。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var CompA = &#123; ... &#125;</div><div class="line">// 在没有调用 `Vue.extend` 时候继承 CompA</div><div class="line">var CompB = &#123;</div><div class="line">  extends: CompA,</div><div class="line">  ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="provide-inject"><a href="#provide-inject" class="headerlink" title="provide/inject"></a>provide/inject</h3><pre><code>provide：Object | () =&gt; Object
-inject：Array&lt;string&gt; | { [key: string]: string | Symbol }
-说明：provide 和 inject 主要为高阶插件/组件库提供用例。并不推荐直接用于应用程序代码中。
-</code></pre><h2 id="选项-其它"><a href="#选项-其它" class="headerlink" title="选项/其它"></a>选项/其它</h2><h3 id="name"><a href="#name" class="headerlink" title="name"></a>name</h3><pre><code>类型：string    
-作用：只有作为组件选项时起作用，并为组件命名。
-最佳实践：为每个组件命名，利于 vue-devtools 调试。
-</code></pre><h3 id="delimiters"><a href="#delimiters" class="headerlink" title="delimiters"></a>delimiters</h3><pre><code>类型：Array&lt;string&gt;
-作用：改变纯文本插入分隔符。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">new Vue(&#123;</div><div class="line">  delimiters: [&apos;$&#123;&apos;, &apos;&#125;&apos;]</div><div class="line">&#125;);</div><div class="line">// 分隔符变成了 ES6 模板字符串的风格</div></pre></td></tr></table></figure>
-</code></pre><h3 id="functional"><a href="#functional" class="headerlink" title="functional"></a>functional</h3><pre><code>类型：boolean
-作用：使组件无状态 (没有 data ) 和无实例 (没有 this 上下文)。
-</code></pre><h3 id="model"><a href="#model" class="headerlink" title="model"></a>model</h3><pre><code>类型：{ prop?: string, event?: string }
-作用：允许一个自定义组件在使用 v-model 时定制 prop 和 event。
-</code></pre><h3 id="inheritAttrs"><a href="#inheritAttrs" class="headerlink" title="inheritAttrs"></a>inheritAttrs</h3><pre><code>类型：boolean
-作用：默认情况下父作用域的不被认作 props 的特性绑定 (attribute bindings) 将会“回退”且作为普通的 HTML 特性应用在子组件的根元素上。
-</code></pre><h3 id="comments"><a href="#comments" class="headerlink" title="comments"></a>comments</h3><pre><code>类型：boolean
-作用：当设为 true 时，将会保留且渲染模板中的 HTML 注释。默认行为是舍弃它们。
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="https://cn.vuejs.org/v2/api" target="_blank" rel="external">官方api</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/18/vue组件开发方法总结/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/10/18/vue组件开发方法总结/" itemprop="url">
-                  vue组件开发方法总结
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T19:29:37+08:00">
-                2017-10-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/vue/" itemprop="url" rel="index">
-                    <span itemprop="name">vue</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/18/vue组件开发方法总结/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/18/vue组件开发方法总结/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  595
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  3
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><em>VUE 组件的三种开发方式</em><br><strong>    开发组件大致分为3个步骤： 组件声明-组件注册（全局和局部）-组件使用</strong></p>
-<h1 id="使用-script-标签"><a href="#使用-script-标签" class="headerlink" title="使用 script 标签"></a>使用 script 标签</h1><pre><code>1.组件声明
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 注意：使用&lt;script&gt;标签时，type指定为text/x-template，意在告诉浏览器这不是一段js脚本，浏览器在解析HTML文档时会忽略&lt;script&gt;标签内定义的内容。--&gt;	</div><div class="line">&lt;!-- type 和 id 必须要填写 --&gt;</div><div class="line">&lt;script type=&quot;text/x-template&quot; id=&quot;myComponent&quot;&gt;</div><div class="line">	&lt;!--只能有一个根节点，下面两种方式同样遵循--&gt;</div><div class="line">       &lt;div class=&quot;root&quot;&gt;</div><div class="line">		&lt;p&gt;我是p1&lt;/p&gt;</div><div class="line">		&lt;p&gt;我是p2&lt;/p&gt;</div><div class="line">	&lt;/div&gt;</div><div class="line">   &lt;/script&gt;</div></pre></td></tr></table></figure>
-
-2.组件注册（分为全局注册和局部注册）
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">全局注册：需要确保在根实例初始化之前注册，这样才能使组件在任意实例中都可以使用。</div><div class="line">	Vue.component(&apos;my-component&apos;,MyComponent);//此句一定要放在new Vue(&#123;...&#125;);之前</div><div class="line">局部注册：限定了组件只能在被注册的组件中使用，而无法在其他组件中使用。</div><div class="line">//全局注册组件</div><div class="line">Vue.component(&apos;my-component&apos;,&#123;</div><div class="line">	template: &apos;#myComponent&apos;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-
-3.组件使用
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;div id=&quot;app&quot;&gt;</div><div class="line">       &lt;my-component&gt;&lt;/my-component&gt;</div><div class="line">   &lt;/div&gt;</div></pre></td></tr></table></figure>
-
-本例全部代码
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">	&lt;body&gt;</div><div class="line">		&lt;div id=&quot;app&quot;&gt;</div><div class="line">			&lt;!--3.组件使用--&gt;</div><div class="line">			&lt;my-component&gt;&lt;/my-component&gt;</div><div class="line">		&lt;/div&gt;</div><div class="line">		</div><div class="line">		&lt;!--1.组件声明--&gt;</div><div class="line">		&lt;script type=&quot;text/x-template&quot; id=&quot;myComponent&quot;&gt;</div><div class="line">			&lt;div&gt;This is a component!&lt;/div&gt;</div><div class="line">		&lt;/script&gt;</div><div class="line">	&lt;/body&gt;</div><div class="line">	&lt;script src=&quot;js/vue.js&quot;&gt;&lt;/script&gt;</div><div class="line">	&lt;script&gt;</div><div class="line">		&lt;!--2.组件注册--&gt;</div><div class="line">		Vue.component(&apos;my-component&apos;,&#123;</div><div class="line">			template: &apos;#myComponent&apos;</div><div class="line">		&#125;);</div><div class="line"></div><div class="line">		new Vue(&#123;</div><div class="line">			el: &apos;#app&apos;</div><div class="line">		&#125;);</div><div class="line">	&lt;/script&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
-</code></pre><h1 id="使用-template-标签"><a href="#使用-template-标签" class="headerlink" title="使用 template 标签"></a>使用 template 标签</h1><pre><code>1.组件声明
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;template id=&quot;myComponent&quot;&gt;</div><div class="line">       &lt;div&gt;This is a component!&lt;/div&gt;</div><div class="line">   &lt;/template&gt;</div></pre></td></tr></table></figure>
-
-2.组件注册
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Vue.component(&apos;my-component&apos;,&#123;</div><div class="line">	template: &apos;#myComponent&apos;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-
-3.使用组件
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;div id=&quot;app&quot;&gt;</div><div class="line">       &lt;my-component&gt;&lt;/my-component&gt;</div><div class="line">   &lt;/div&gt;</div></pre></td></tr></table></figure>
-
-本例全部代码
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">	&lt;body&gt;</div><div class="line">		&lt;div id=&quot;app&quot;&gt;</div><div class="line">			&lt;!--3.组件使用--&gt;</div><div class="line">			&lt;my-component&gt;&lt;/my-component&gt;</div><div class="line">		&lt;/div&gt;</div><div class="line">		</div><div class="line">		&lt;!--1.组件声明--&gt;</div><div class="line">		&lt;template id=&quot;myComponent&quot;&gt;</div><div class="line">			&lt;div&gt;This is a component!&lt;/div&gt;</div><div class="line">		&lt;/template&gt;</div><div class="line">	&lt;/body&gt;</div><div class="line">	&lt;script src=&quot;js/vue.js&quot;&gt;&lt;/script&gt;</div><div class="line">	&lt;script&gt;</div><div class="line">		&lt;!--2.组件注册--&gt;</div><div class="line">		Vue.component(&apos;my-component&apos;,&#123;</div><div class="line">			template: &apos;#myComponent&apos;</div><div class="line">		&#125;);</div><div class="line"></div><div class="line">		new Vue(&#123;</div><div class="line">			el: &apos;#app&apos;</div><div class="line">		&#125;);</div><div class="line"></div><div class="line">	&lt;/script&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure>
-</code></pre><h1 id="单文件组件"><a href="#单文件组件" class="headerlink" title="单文件组件"></a>单文件组件</h1><pre><code>注：这种方法常用在vue单页应用中。
-1.创建组件（hello.vue）
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">&lt;template&gt;</div><div class="line">  &lt;div class=&quot;hello&quot;&gt;</div><div class="line">	&lt;h1&gt;&#123;&#123; msg &#125;&#125;&lt;/h1&gt;</div><div class="line">  &lt;/div&gt;</div><div class="line">&lt;/template&gt;</div><div class="line"></div><div class="line">&lt;script&gt;</div><div class="line">export default &#123;</div><div class="line">  name: &apos;hello&apos;,</div><div class="line">  data () &#123;</div><div class="line">	return &#123;</div><div class="line">	  msg: &apos;欢迎！&apos;</div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
-
-父组件代码（app.vue，这里app.vue为hello.vue的父组件）
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 展示模板 --&gt;</div><div class="line">&lt;template&gt;</div><div class="line">  &lt;div id=&quot;app&quot;&gt;</div><div class="line">	&lt;!-- 3.使用组件 --&gt;</div><div class="line">	&lt;hello&gt;&lt;/hello&gt;</div><div class="line">  &lt;/div&gt;</div><div class="line">&lt;/template&gt;</div><div class="line"></div><div class="line">&lt;script&gt;</div><div class="line">// 导入组件</div><div class="line">import Hello from &apos;./components/hello&apos;</div><div class="line"></div><div class="line">export default &#123;</div><div class="line">  name: &apos;app&apos;,</div><div class="line">  // 2.这里进行组件局部注册</div><div class="line">  components: &#123;</div><div class="line">	Hello</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="https://cn.vuejs.org/" target="_blank" rel="external">vue官网</a><br>    <a href="http://blog.csdn.net/u012123026/article/details/72460470" target="_blank" rel="external">vue组件的3种书写形式</a><br>    <a href="http://blog.csdn.net/u013910340/article/details/72763418" target="_blank" rel="external">vue.js中组件的创建和使用方法</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2769,7 +2904,7 @@ inject：Array&lt;string&gt; | { [key: string]: string | Symbol }
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">116</span>
+                <span class="site-state-item-count">121</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2908,7 +3043,7 @@ inject：Array&lt;string&gt; | { [key: string]: string | Symbol }
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共145.6k字</span>
+  <span class="post-count">博客全站共152.8k字</span>
 </div>
         
 

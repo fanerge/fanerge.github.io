@@ -306,6 +306,1049 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/15/js设计模式-代理模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/15/js设计模式-代理模式/" itemprop="url">
+                  js设计模式-代理模式
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-15T20:24:36+08:00">
+                2017-10-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/15/js设计模式-代理模式/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/15/js设计模式-代理模式/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  679
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  3
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="代理模式"><a href="#代理模式" class="headerlink" title="代理模式"></a>代理模式</h1><pre><code>定义：为一个对象提供一个代用品或占位符，以便控制对它的访问。
+    代理对象和本体对象实现了同样的接口，并且会把任何方法调用传递给本体对象；
+举例：
+    图片预加载、图片懒加载、
+    合并HTTP请求（代理收集一定时间内的所有HTTP请求，然后一次性发给服务器）、
+    惰性加载（通过代理处理和收集一些基本操作，然后仅在真正需要本体的时候才加载本体）、
+    缓存代理（缓存请求结果、计算结果）
+</code></pre><h1 id="缓存代理"><a href="#缓存代理" class="headerlink" title="缓存代理"></a>缓存代理</h1><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">// 先实现具体的两个算法</div><div class="line">const mult = function() &#123;</div><div class="line">	let a = 1;</div><div class="line">	for (let i = 0; i &lt; arguments.length; i++) &#123;</div><div class="line">		a *= arguments[i];</div><div class="line">	&#125;</div><div class="line">	return a;</div><div class="line">&#125;;</div><div class="line">const plus = function() &#123;</div><div class="line">	let a = 0;</div><div class="line">	for (let i = 0; i &lt; arguments.length; i++) &#123;</div><div class="line">		a += arguments[i];</div><div class="line">	&#125;</div><div class="line">	return a;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">// 创建缓存代理</div><div class="line">const createProxyFactory = function(fn) &#123;</div><div class="line">	let cache = &#123;&#125;; // 保存计算的结果</div><div class="line">	// 使用闭包在内存中保留对cache的引用</div><div class="line">	return function() &#123;</div><div class="line">		let args = Array.from(arguments).join(&apos;,&apos;); // 将所有参数转化为字符串作为缓存的 key</div><div class="line">		if (args in cache) &#123;</div><div class="line">			return cache[args];</div><div class="line">		&#125; else &#123;</div><div class="line">			return cache[args] = fn.apply(this, arguments);</div><div class="line">		&#125;</div><div class="line">	&#125;;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">// 使用代理对象</div><div class="line">const proxyMult = createProxyFactory(mult);</div><div class="line">const proxyPlus = createProxyFactory(plus);</div><div class="line">console.log(proxyMult(1,2,3,4)); // 24</div><div class="line">console.log(proxyPlus(1,2,3,4)); // 10</div></pre></td></tr></table></figure>
+
+说明：这里每次进行同类的计算时（乘法和加法两类），先判断缓存对象cache中是否存在该参数连接成的字符串作为key的属性。
+如果有，则直接从cache中读取，否则就进行计算并保存其结果。
+</code></pre><h1 id="虚拟代理"><a href="#虚拟代理" class="headerlink" title="虚拟代理"></a>虚拟代理</h1><pre><code>虚拟代理：某一个花销很大的操作，可以通过虚拟代理的方式延迟到这种需要它的时候才去创建
+例：使用虚拟代理实现图片懒加载
+下面以虚拟代理来说明：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">// 本体对象</div><div class="line">const imgFunc = (function() &#123;</div><div class="line">	const imgNode = document.createElement(&apos;img&apos;);</div><div class="line">	document.body.appendChild(imgNode);</div><div class="line">	return &#123;</div><div class="line">		setSrc(src)&#123;</div><div class="line">			imgNode.src = src;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;)();</div><div class="line"></div><div class="line">// 代理对象</div><div class="line">const proxyImage = (function() &#123;</div><div class="line">	const img = new Image();</div><div class="line">	img.onload = function() &#123;</div><div class="line">		imgFunc.setSrc(this.src);</div><div class="line">	&#125;;</div><div class="line">	return &#123;</div><div class="line">		setSrc(src)&#123;</div><div class="line">			imgFunc.setSrc(&apos;./loading.gif&apos;);</div><div class="line">			img.src = src;</div><div class="line">		&#125;</div><div class="line">	&#125;;</div><div class="line">&#125;)();</div><div class="line"></div><div class="line">// 使用代理对象</div><div class="line">proxyImage.setSrc(&apos;./reality.png&apos;);</div></pre></td></tr></table></figure>
+
+说明：图片懒加载的方式：先通过一张loading图占位，然后通过异步的方式加载图片，等图片加载好了再把完成的图片加载到img标签里面。
+这里讲述一下代理对象做了那些事：
+    1.创建了一个 Image 对象，并为其绑定了 onload 事件。
+    2.将 imgNode 先设置为 &apos;./loading.gif&apos; 加载的菊花图。
+    3.当 Image 对象加载完真实的图片，也就是上文的 &apos;./reality.png&apos; ,将 imgNode 设置为 &apos;./reality.png&apos;。 
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="http://www.cnblogs.com/shamoguying1140/p/3169206.html" target="_blank" rel="external">js设计模式（9）—代理模式</a><br>    <a href="https://juejin.im/post/59df4f74f265da430f311909" target="_blank" rel="external">JavaScript设计模式</a><br>    <a href="http://blog.csdn.net/hi_xiexialing/article/details/54605065" target="_blank" rel="external"> js用高阶函数动态创建缓存代理</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/15/js设计模式-策略模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/15/js设计模式-策略模式/" itemprop="url">
+                  js设计模式-策略模式
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-15T19:11:08+08:00">
+                2017-10-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/15/js设计模式-策略模式/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/15/js设计模式-策略模式/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  810
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  3
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="策略模式"><a href="#策略模式" class="headerlink" title="策略模式"></a>策略模式</h1><pre><code>定义：定义一系列的算法，把它们一个个封装起来，并且使它们可以相互替换。
+举例：表单效验（是否为空、长度、手机号、邮箱等等）
+    计算年终奖（工资、效绩）
+下面以年终将做说明：
+比如公司的年终奖是根据员工的工资和绩效来考核的，绩效为A的人，年终奖为工资的4倍，
+绩效为B的人，年终奖为工资的3倍，绩效为C的人，年终奖为工资的2倍；
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">// 一组策略类封装具体的算法</div><div class="line">const Bouns = &#123;</div><div class="line">	A (salary)&#123;</div><div class="line">		return salary * 4;</div><div class="line">	&#125;,</div><div class="line">	B (salary)&#123;</div><div class="line">		return salary * 3;</div><div class="line">	&#125;,</div><div class="line">	C (salary)&#123;</div><div class="line">		return salary * 2;</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line">Object.freeze(Bouns);</div><div class="line"></div><div class="line">/*</div><div class="line">* 计算年终奖 环境类Context</div><div class="line">* @param &#123;String&#125; A 效绩等级</div><div class="line">* @param &#123;Number&#125; 10000 每月工资</div><div class="line">* @returns &#123;Number&#125; 40000 年终奖</div><div class="line">*/</div><div class="line">const calculateBouns = function (type, salary)&#123;</div><div class="line">	return Bouns[type](salary);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">// 测试年终奖计算方式</div><div class="line">const demo1 = calculateBouns(&apos;A&apos;, 10000);</div><div class="line">const demo2 = calculateBouns(&apos;B&apos;, 80000);</div><div class="line">console.log(demo1, demo2); // 40000, 240000</div></pre></td></tr></table></figure>
+
+说明：
+策略模式指的是 定义一系列的算法，把它们一个个封装起来，将不变的部分和变化的部分隔开，
+实际就是将算法的使用和实现分离出来；算法的使用方式是不变的，都是根据某个算法取得计算后的奖金数，
+而算法的实现是根据绩效对应不同的绩效规则；
+一个基于策略模式的程序至少由2部分组成，第一个部分是一组策略类，策略类封装了具体的算法，
+并负责具体的计算过程。第二个部分是环境类Context，该Context接收客户端的请求，
+随后把请求委托给某一个策略类。
+复合开放-封闭原则，可变的部分为策略类（一组算法），不变的部分为执行具体算法的方式。
+</code></pre><h1 id="表单验证"><a href="#表单验证" class="headerlink" title="表单验证"></a>表单验证</h1><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div></pre></td><td class="code"><pre><div class="line">// 这里我们实现一组策略类封装具体的验证规则</div><div class="line">const strategy = &#123;</div><div class="line">	// 是否为空</div><div class="line">	isNotEmpty (value, errorMsg)&#123;</div><div class="line">		if (value === &apos;&apos;) &#123;</div><div class="line">			return errorMsg;</div><div class="line">		&#125;</div><div class="line">	&#125;,</div><div class="line">	// 最小长度</div><div class="line">	minLength (value, errorMsg, length)&#123;</div><div class="line">		if (value.length &lt; length) &#123;</div><div class="line">			return errorMsg;</div><div class="line">		&#125;</div><div class="line">	&#125;,</div><div class="line">	// 手机号码格式</div><div class="line">	mobileFormat (value,errorMsg)&#123;</div><div class="line">		if(!/(^1[3|5|8][0-9]&#123;9&#125;$)/.test(value)) &#123;</div><div class="line">			return errorMsg;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line">Object.freeze(strategy);</div><div class="line"></div><div class="line">var Validator = function()&#123;</div><div class="line">	this.cache = [];  // 保存效验规则</div><div class="line">&#125;;</div><div class="line">Validator.prototype.add = function(dom,rules) &#123;</div><div class="line">	var self = this;</div><div class="line">	for(var i = 0, rule; rule = rules[i++]; )&#123;</div><div class="line">		(function(rule)&#123;</div><div class="line">			var strategyAry = rule.strategy.split(&quot;:&quot;);</div><div class="line">			var errorMsg = rule.errorMsg;</div><div class="line">			self.cache.push(function()&#123;</div><div class="line">				var strategy = strategyAry.shift();</div><div class="line">				strategyAry.unshift(dom.value);</div><div class="line">				strategyAry.push(errorMsg);</div><div class="line">				return strategys[strategy].apply(dom,strategyAry);</div><div class="line">			&#125;);</div><div class="line">		&#125;)(rule);</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line">Validator.prototype.start = function()&#123;</div><div class="line">	for(var i = 0, validatorFunc; validatorFunc = this.cache[i++]; ) &#123;</div><div class="line">	var msg = validatorFunc(); // 开始效验 并取得效验后的返回信息</div><div class="line">	if(msg) &#123;</div><div class="line">		return msg;</div><div class="line">	&#125;</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line">// 代码调用</div><div class="line">var registerForm = document.getElementById(&quot;registerForm&quot;);</div><div class="line">var validateFunc = function()&#123;</div><div class="line">	var validator = new Validator(); // 创建一个Validator对象</div><div class="line">	/* 添加一些效验规则 */</div><div class="line">	validator.add(registerForm.userName,[</div><div class="line">		&#123;strategy: &apos;isNotEmpty&apos;,errorMsg:&apos;用户名不能为空&apos;&#125;,</div><div class="line">		&#123;strategy: &apos;minLength:6&apos;,errorMsg:&apos;用户名长度不能小于6位&apos;&#125;</div><div class="line">	]);</div><div class="line">	validator.add(registerForm.password,[</div><div class="line">		&#123;strategy: &apos;minLength:6&apos;,errorMsg:&apos;密码长度不能小于6位&apos;&#125;,</div><div class="line">	]);</div><div class="line">	validator.add(registerForm.phoneNumber,[</div><div class="line">		&#123;strategy: &apos;mobileFormat&apos;,errorMsg:&apos;手机号格式不正确&apos;&#125;,</div><div class="line">	]);</div><div class="line">	var errorMsg = validator.start(); // 获得效验结果</div><div class="line">	return errorMsg; // 返回效验结果</div><div class="line">&#125;;</div><div class="line">// 点击确定提交</div><div class="line">registerForm.onsubmit = function()&#123;</div><div class="line">	var errorMsg = validateFunc();</div><div class="line">	if(errorMsg)&#123;</div><div class="line">		alert(errorMsg);</div><div class="line">		return false;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+说明：此处代码来源于--腾讯.曾探的《javascript设计模式》，这能很好的说明策略模式的用途。
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="http://www.cnblogs.com/tugenhua0707/p/4722696.html" target="_blank" rel="external">理解javascript中的策略模式</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/15/js设计模式-单例模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/15/js设计模式-单例模式/" itemprop="url">
+                  js设计模式-单例模式
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-15T16:12:31+08:00">
+                2017-10-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/15/js设计模式-单例模式/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/15/js设计模式-单例模式/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  561
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  2
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h1><pre><code>定义：单例就是保证一个类只有一个实例，实现的方法一般是先判断实例存在与否，如果存在直接返回，如果不存在就创建了再返回，这就确保了一个类只有一个实例对象。
+    在JavaScript里，单例作为一个命名空间提供者，从全局命名空间里提供一个唯一的访问点来访问该对象。
+举例：模态框、登录控件、注销控件
+下面均以登录模态框做说明
+</code></pre><h1 id="引入代理实现单例模式"><a href="#引入代理实现单例模式" class="headerlink" title="引入代理实现单例模式"></a>引入代理实现单例模式</h1><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">var CreateDiv = function(html) &#123;</div><div class="line">	this.html = html;</div><div class="line">	this.init();</div><div class="line">&#125;;</div><div class="line"></div><div class="line">CreateDiv.prototype.init = function() &#123;</div><div class="line">	var div = document.createElement(&apos;div&apos;);</div><div class="line">	div.innerHTML = this.html;</div><div class="line">	document.body.appendChild(div);</div><div class="line">&#125;</div><div class="line"></div><div class="line">var ProxySingletonCreateDiv = (function() &#123;</div><div class="line">	var instance;</div><div class="line">	return function(html) &#123;</div><div class="line">		if (!instance) &#123;</div><div class="line">			instance = new CreateDiv(html);</div><div class="line">		&#125;</div><div class="line">		return instance;</div><div class="line">	&#125;</div><div class="line">&#125;)();</div><div class="line"></div><div class="line">var a = new ProxySingletonCreateDiv(&apos;seven1&apos;);</div><div class="line">var b = new ProxySingletonCreateDiv(&apos;seven2&apos;);</div><div class="line"></div><div class="line">console.log(a === b); // true</div></pre></td></tr></table></figure>
+
+说明：我们负责管理单例的逻辑移到了代理类ProxySingletonCreateDiv中。
+这样一来，CreateDiv就变成了一个普通的类，他跟ProxySingletonCreateDiv组合起来可以达到单例模式的效果。
+</code></pre><h1 id="通用的单例模式"><a href="#通用的单例模式" class="headerlink" title="通用的单例模式"></a>通用的单例模式</h1><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">// 通用的单例验证方法</div><div class="line">const getSingle = function (fn)&#123;</div><div class="line">	let result;</div><div class="line">	return function ()&#123;</div><div class="line">		return result || (result = fn.apply(this, arguments));</div><div class="line">	&#125;;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">// 创建登录模态框</div><div class="line">const createLoginLayer = function ()&#123;</div><div class="line">	const div = document.createElement(&apos;div&apos;);</div><div class="line">	div.innerHTML = &apos;我是登录模态框&apos;;</div><div class="line">	document.body.appendChild(div);</div><div class="line">	return div;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">// 为登录模态框使用单例模式</div><div class="line">const createSingleLoginLoyer = getSingle(createLoginLayer);</div><div class="line">const loginLayer1 = createSingleLoginLoyer(); // 第一个登录模态框</div><div class="line">const loginLayer2 = createSingleLoginLoyer(); // 还是第一个登录模态框</div><div class="line"></div><div class="line">console.log(loginLayer1 === loginLayer2); // true</div></pre></td></tr></table></figure>
+
+这时不管你执行多少次 createSingleLoginLoyer() 方法，都只会生产一个 div 节点。
+我们的通用单例模式就完成了。    
+</code></pre><h1 id="惰性单例"><a href="#惰性单例" class="headerlink" title="惰性单例"></a>惰性单例</h1><pre><code>定义：惰性单例指的是在需要的时候才创建对象的实例。
+以创建登录模态框为例
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">const createLoginLayer = (function ()&#123;</div><div class="line">	let div;</div><div class="line">	return function ()&#123;</div><div class="line">		if (!div) &#123;</div><div class="line">			div = document.createElement(&apos;div&apos;);</div><div class="line">			div.innerHTML = &apos;我是登录模态框&apos;;</div><div class="line">		&#125;</div><div class="line">		return div;</div><div class="line">	&#125;;</div><div class="line">&#125;)();</div><div class="line"></div><div class="line">// 在点击按钮时才创建节点（惰性）</div><div class="line">document.getElementById(&apos;login-btn&apos;).onclick = function ()&#123;</div><div class="line">	var loginLayer = createLoginLayer();</div><div class="line">	loginLayer.style.display = &apos;block&apos;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+
+这里的对惰性单例的实现主要是只有单例了网页上的登录按钮，才会去创建，登录框的dom节点，并且只是创建一次。
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="https://segmentfault.com/a/1190000006049548" target="_blank" rel="external">JavaScript设计模式—-单例模式</a><br>    <a href="http://www.cnblogs.com/TomXu/archive/2012/02/20/2352817.html" target="_blank" rel="external">设计模式之单例模式</a>    </p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/15/js设计模式-工厂模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/15/js设计模式-工厂模式/" itemprop="url">
+                  js设计模式-工厂模式
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-15T10:07:51+08:00">
+                2017-10-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/15/js设计模式-工厂模式/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/15/js设计模式-工厂模式/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  594
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  2
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>从事前端开发已经有几年了，也经常使用一些设计模式，但是对一些设计模式并不能很好的说出名字以及使用场景。<br>现利用周末闲暇事件来好好整理一下JS中常用的设计模式,如有不正确的地方，还望指出，谢谢！</p>
+<h1 id="简单工厂"><a href="#简单工厂" class="headerlink" title="简单工厂"></a>简单工厂</h1><pre><code>定义：简单工厂模式是由一个方法来决定到底要创建哪个类的实例, 而这些实例通常都拥有相同的接口（属性和方法）。 
+举例：计算器（加、减、乘、除）
+    自行车售卖（山地、公路）
+    饮料机（咖啡、牛奶、水）
+    RPG中职业（战士、法师、射手）
+这里就以RPG中职业（战士、法师、射手）来做说明：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">// 先创建各个角色的构造函数</div><div class="line">function  Warrior() &#123;</div><div class="line">	this.skill = &apos;回血&apos;;</div><div class="line">	this.blood = 150; // 初始化生命值</div><div class="line">	this.hit = 8; // 普通攻击伤害</div><div class="line">	// 其他特有属性和方法比如生命值</div><div class="line">	console.log(this);</div><div class="line">&#125;</div><div class="line">function  Mage() &#123;</div><div class="line">		this.skill = &apos;冰冻&apos;;</div><div class="line">	this.blood = 120; // 初始化生命值</div><div class="line">	this.hit = 3; // 普通攻击伤害</div><div class="line">	// 其他特有属性和方法</div><div class="line">	console.log(this);</div><div class="line">&#125;</div><div class="line">function  Archer() &#123;</div><div class="line">		this.skill = &apos;消耗&apos;;</div><div class="line">	this.blood = 110; // 初始化生命值</div><div class="line">	this.hit = 10; // 普通攻击伤害</div><div class="line">	// 其他特有属性和方法</div><div class="line">	console.log(this);</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 工厂对象 可以是普通对象是的方法 和 构造函数，这里使用前者</div><div class="line">const RoleFactory = &#123;</div><div class="line">	createRole (role) &#123;</div><div class="line">		let roler;</div><div class="line">		switch (role) &#123;</div><div class="line">			case &apos;战士&apos;:</div><div class="line">				roler = new Warrior();</div><div class="line">				break;</div><div class="line">			case &apos;法师&apos;:</div><div class="line">				roler = new Mage();</div><div class="line">				break;</div><div class="line">			case &apos;射手&apos;:</div><div class="line">				roler = new Archer();</div><div class="line">				break;</div><div class="line">			// 后续扩展角色直接追加选择语句和添加角色构造函数</div><div class="line">			defaulr: </div><div class="line">				roler = new Warrior();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line">Object.freeze(RoleFactory); // 冻结该对象，防止他人操作</div><div class="line"></div><div class="line">// 创建各个角色的实例</div><div class="line">var warrior1 = RoleFactory.createRole(&apos;战士&apos;); // 创建一个战士</div><div class="line">var mage1 = RoleFactory.createRole(&apos;法师&apos;); // 创建一个法师</div><div class="line">var arche1 = RoleFactory.createRole(&apos;射手&apos;); // 创建一个射手</div></pre></td></tr></table></figure>
+<p>其实我们还可以这样设计工厂处理函数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">const RoleFactory = function (role) &#123;</div><div class="line">	return new role ();</div><div class="line">&#125;</div><div class="line"></div><div class="line">var warrior1 = RoleFactory(Warrior); // 创建一个战士</div><div class="line">var mage1 = RoleFactory(Mage); // 创建一个法师</div><div class="line">var arche1 = RoleFactory(Archer); // 创建一个射手</div></pre></td></tr></table></figure></p>
+<p>上面输出的结果<br><img src="http://oxpnrlb4j.bkt.clouddn.com/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E8%BE%93%E5%87%BA.png" alt="输出结果"></p>
+<h1 id="什么时候使用工厂模式"><a href="#什么时候使用工厂模式" class="headerlink" title="什么时候使用工厂模式"></a>什么时候使用工厂模式</h1><ol>
+<li>对象的构建十分复杂</li>
+<li>需要依赖具体环境创建不同实例</li>
+<li>处理大量具有相同属性的小对象<blockquote>
+<p>   参考文档：<br><a href="http://www.cnblogs.com/coiorz/p/4806550.html" target="_blank" rel="external">JS设计模式之工厂模式</a><br><a href="http://www.cnblogs.com/myzy/p/5240457.html" target="_blank" rel="external">js之简单工厂模式</a></p>
+</blockquote>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/14/OSI七层与TCP-IP五层网络架构/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/14/OSI七层与TCP-IP五层网络架构/" itemprop="url">
+                  OSI七层与TCP/IP五层网络架构
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-14T20:04:20+08:00">
+                2017-10-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/通信协议/" itemprop="url" rel="index">
+                    <span itemprop="name">通信协议</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/14/OSI七层与TCP-IP五层网络架构/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/14/OSI七层与TCP-IP五层网络架构/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,501
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  5
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>还记得大学时学习了通信相关的底层知识，只是当时并没有特别在意，<br>从参加工作一直做的WEB前端开发，对这方面知识也不是太需要。<br>但是为了自己更好的发展，需要了解一些底层的东西重新拾起通信相关的知识。</p>
+<h1 id="名词解释"><a href="#名词解释" class="headerlink" title="名词解释"></a>名词解释</h1><ol>
+<li>OSI：开放系统互连参考模型 (Open System Interconnect 简称OSI）。</li>
+<li>TCP：TCP（Transmission Control Protocol 传输控制协议）是一种面向连接的、可靠的、基于字节流的传输层通信协议。</li>
+<li>IP：网络之间互连的协议（IP）是Internet Protocol的外语缩写，中文缩写为“网协”。</li>
+<li>HTTP：超文本传输协议（HTTP，HyperText Transfer Protocol)是互联网上应用最为广泛的一种网络协议。</li>
+<li>HTTPS：HTTPS（全称：Hyper Text Transfer Protocol over Secure Socket Layer），是以安全为目标的HTTP通道，简单讲是HTTP的安全版。</li>
+</ol>
+<h1 id="OSI七层模型"><a href="#OSI七层模型" class="headerlink" title="OSI七层模型"></a>OSI七层模型</h1><pre><code>OSI七层结构--每层的解释
+</code></pre><p><img src="http://oxpnrlb4j.bkt.clouddn.com/osi%E6%9E%84%E6%9E%B6%E5%90%84%E5%B1%82%E5%8A%9F%E8%83%BD%E8%AF%B4%E6%98%8E.jpg" alt="OSI七层结构"><br>    OSI七层结构–每层结构的功能<br><img src="http://oxpnrlb4j.bkt.clouddn.com/osi%E5%90%84%E5%B1%82%E7%9A%84%E4%BD%9C%E7%94%A8.png" alt="OSI七层结构"></p>
+<h1 id="TCP-IP五层模型"><a href="#TCP-IP五层模型" class="headerlink" title="TCP/IP五层模型"></a>TCP/IP五层模型</h1><pre><code>OSI七层模型与TCP/IP五层模型的关系
+</code></pre><p><img src="http://oxpnrlb4j.bkt.clouddn.com/tcp%E5%92%8Cip%E7%BB%93%E6%9E%84%E8%A7%A3%E6%9E%90.png" alt="TCP/IP五层模型"><br>    OSI七层模型–每层的设备<br><img src="http://oxpnrlb4j.bkt.clouddn.com/tcp%E5%92%8Cip%E8%AE%BE%E5%A4%87.jpg" alt="各层对应的设备"></p>
+<h1 id="对各层的详细说明"><a href="#对各层的详细说明" class="headerlink" title="对各层的详细说明"></a>对各层的详细说明</h1><ol>
+<li>第一层是物理层（PhysicalLayer)，<br>规定通信设备的机械的、电气的、功能的和过程的特性，用以建立、维护和拆除物理链路连接。<br>具体地讲，机械 特性规定了网络连接时所需接插件的规格尺寸、引脚数量和排列情况等；<br>电气特性规定了在物理连接上传输bit流时线路上信号电平的大小、阻抗匹配、传输速率 距离限制等；<br>功能特性是指对各个信号先分配确切的信号含义，即定义了DTE和DCE之间各个线路的功能；<br>规程特性定义了利用信号线进行bit流传输的一组 操作规程，是指在物理连接的建立、维护、交换信息是，DTE和DCE双放在各电路上的动作系列。<br>在这一层，数据的单位称为比特（bit）。属于物理层定义的典型规范代表包括：EIA/TIA RS-232、EIA/TIA RS-449、V.35、RJ-45等。</li>
+<li>第二层是数据链路层<br>在物理层提供比特流服务的基础上，建立相邻结点之间的数据链路，通过差错控制提供数据帧（Frame）在信道上无差错的传输，<br>并进行各电路上的动作系列。数据链路层在不可靠的物理介质上提供可靠的传输。<br>该层的作用包括：物理地址寻址、数据的成帧、流量控制、数据的检错、重发等。<br>在这一层，数据的单位称为帧（frame）。数据链路层协议的代表包括：SDLC、HDLC、PPP、STP、帧中继等。</li>
+<li>第三层是网络层<br>在计算机网络中进行通信的两个计算机之间可能会经过很多个数据链路，也可能还要经过很多通信子网。<br>网络层的任务就是选择合适的网间路由和交换结点， 确保数据及时传送。<br>网络层将数据链路层提供的帧组成数据包，包中封装有网络层包头，其中含有逻辑地址信息- -源站点和目的站点地址的网络地址。<br>如果你在谈论一个IP地址，那么你是在处理第3层的问题，这是“数据包”问题，而不是第2层的“帧”。<br>IP是第3层问题的一部分，此外还有一些路由协议和地 址解析协议（ARP）。有关路由的一切事情都在这第3层处理。<br>地址解析和路由是3层的重要目的。网络层还可以实现拥塞控制、网际互连等功能。在这一层，数据的单位称为数据包（packet）。<br>网络层协议的代表包括：IP、IPX、RIP、OSPF等。</li>
+<li>第四层是处理信息的传输层<br>第4层的数据单元也称作数据包（packets）。但是，当你谈论TCP等具体的协议时又有特殊的叫法，<br>TCP的数据单元称为段 （segments）而UDP协议的数据单元称为“数据报（datagrams）”。<br>这个层负责获取全部信息，因此，它必须跟踪数据单元碎片、乱序到达的 数据包和其它在传输过程中可能发生的危险。<br>第4层为上层提供端到端（最终用户到最终用户）的透明的、可靠的数据传输服务。<br>所为透明的传输是指在通信过程中 传输层对上层屏蔽了通信传输系统的具体细节。<br>传输层协议的代表包括：TCP、UDP、SPX等。</li>
+<li>第五层是会话层<br>这一层也可以称为会晤层或对话层，在会话层及以上的高层次中，数据传送的单位不再另外命名，<br>而是统称为报文。会话层不参与具体的传输，它提供包括访问验证和会话管理在内的建立和维护应用之间通信的机制。<br>如服务器验证用户登录便是由会话层完成的。</li>
+<li>第六层是表示层<br>这一层主要解决拥护信息的语法表示问题。它将欲交换的数据从适合于某一用户的抽象语法，<br>转换为适合于OSI系统内部使用的传送语法。即提供格式化的表示和转换数据服务。<br>数据的压缩和解压缩， 加密和解密等工作都由表示层负责。</li>
+<li>第七层应用层<br>应用层为操作系统或网络应用程序提供访问网络服务的接口。<br>应用层协议的代表包括：Telnet、FTP、HTTP、SNMP等。</li>
+</ol>
+<blockquote>
+<p>   参考文档<br>    <a href="https://www.2cto.com/net/201310/252965.html" target="_blank" rel="external">OSI七层与TCP/IP五层网络架构详解</a><br>    <a href="http://www.cnblogs.com/qishui/p/5428938.html" target="_blank" rel="external">OSI七层模型与TCP/IP五层模型</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/13/RESTful-API-设计指南/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1855,1519 +2898,11 @@ WebSocket原理：WebSocket是一种在单个TCP连接上进行全双工通讯�
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/28/koa学习-总结/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/28/koa学习-总结/" itemprop="url">
-                  koa学习-总结
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-28T20:22:32+08:00">
-                2017-09-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
-                    <span itemprop="name">NodeJS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/28/koa学习-总结/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/28/koa学习-总结/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  1,610
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  8
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="一个koa示例"><a href="#一个koa示例" class="headerlink" title="一个koa示例"></a>一个koa示例</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">const koa = require(&apos;koa&apos;);</div><div class="line">const app = new koa();</div><div class="line"></div><div class="line">// 使用中间件</div><div class="line">app.use(); // @param function</div><div class="line">// 监听端口，开启服务</div><div class="line">app.listen(1314, () =&gt; &#123;</div><div class="line">	console.log(&apos;success&apos;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h2 id="Context-对象"><a href="#Context-对象" class="headerlink" title="Context 对象"></a>Context 对象</h2><pre><code>Koa 提供一个 Context 对象，表示一次对话的上下文（包括 HTTP 请求和 HTTP 回复）。
-koa 通过 ctx.request.accepts 设置期望返回的类型内容，默认为 text/plain。        
-koa 通过 ctx.response.type 指定返回类型。
-示例：常用的格式xml、json、html、text等。
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">	app.use((ctx) =&gt; &#123;</div><div class="line">		if (ctx.request.accepts(&apos;xml&apos;)) &#123;</div><div class="line">			ctx.response.type = &apos;xml&apos;;</div><div class="line">			ctx.response.body = &apos;&lt;data&gt;我是xml&lt;/data&gt;&apos;;</div><div class="line">		&#125; else &#123;</div><div class="line">			ctx.response.type = &apos;text&apos;;</div><div class="line">			ctx.response.body = &apos;我是text&apos;;</div><div class="line">		&#125;</div><div class="line">	&#125;);</div><div class="line">	```	</div><div class="line">示例：实际开发（网页模板）</div><div class="line">	直接返回template.html</div></pre></td></tr></table></figure>
-
-    app.use(ctx =&gt; {
-      ctx.response.type = &apos;html&apos;;
-      ctx.response.body = fs.createReadStream(&apos;./views/template.html&apos;);
-    });
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">##	路由</div><div class="line">	通过ctx.request.path可以获取用户请求的路径，由此实现简单的路由。</div><div class="line">###	原生路由</div></pre></td></tr></table></figure>
-
-    const main = ctx =&gt; {
-        ctx.response.type = &apos;html&apos;;
-      if (ctx.request.path === &apos;/&apos;) {
-        ctx.response.body = &apos;&lt;a href=&quot;/&quot;&gt;Index Page&lt;/a&gt;&apos;;
-      } else if (ctx.request.path === &apos;/get&apos;) {
-        ctx.response.body = &apos;&lt;a href=&quot;/&quot;&gt;Get Page&lt;/a&gt;&apos;;
-      } else {
-        ctx.response.body = &apos;&lt;a href=&quot;/&quot;&gt;other Page&lt;/a&gt;&apos;;
-      }
-    };
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">###	koa-route 模块</div></pre></td></tr></table></figure>
-
-const Koa = require(&apos;koa&apos;);
-const route = require(&apos;koa-route&apos;);
-const app = new Koa();
-
-const about = ctx =&gt; {
-    ctx.response.type = &apos;html&apos;;
-    ctx.response.body = &apos;&lt;p&gt;about page&lt;/p&gt;&apos;
-};
-
-const user = ctx =&gt; {
-    ctx.response.type = &apos;html&apos;;
-    ctx.response.body = &apos;&lt;p&gt;user page&lt;/p&gt;&apos;
-};
-
-const main = ctx =&gt; {
-    ctx.response.type = &apos;html&apos;;
-    ctx.response.body = &apos;hello world&apos;
-};
-
-app.use(route.get(&apos;/&apos;, main)); // 主页
-app.use(route.get(&apos;/about&apos;, about)); // about页面
-app.use(route.get(&apos;/user&apos;, user)); // user页面
-
-// app.use(main);
-app.listen(3000);
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">##	静态资源 和 重定向</div><div class="line">###	静态资源</div><div class="line">	如果网站提供静态资源（图片、字体、样式表、脚本......）。</div><div class="line">	koa-static 模块封装了这部分的请求。</div><div class="line">	示例：请求本地12.js</div></pre></td></tr></table></figure>
-
-const Koa = require(&apos;koa&apos;);
-const app = new Koa();
-const path = require(&apos;path&apos;);
-const serve = require(&apos;koa-static&apos;);
-
-const main = serve(path.join(__dirname));
-
-app.use(main);
-app.listen(3000);
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">	说明：__dirname 表示 node.js 执行环境路径。</div><div class="line">	请求资源： http://127.0.0.1:3000/12.js</div><div class="line">###	重定向</div><div class="line">	有些场合，服务器需要重定向（redirect）访问请求。</div><div class="line">	比如，用户登陆以后，将他重定向到登陆前的页面。</div><div class="line">	ctx.response.redirect()方法可以发出一个302跳转，将用户导向另一个路由。</div></pre></td></tr></table></figure>
-
-const redirect = ctx =&gt; {
-  ctx.response.redirect(&apos;/&apos;);
-};
-
-const main = ctx =&gt; {
-  ctx.response.body = &apos;Hello World&apos;;
-};
-
-app.use(route.get(&apos;/&apos;, main));
-app.use(route.get(&apos;/redirect&apos;, redirect)); // 当请求路径为 /redirect 时，执行 redirect 方法，进行重定向
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">	访问 http://127.0.0.1:3000/redirect ，浏览器会将用户导向根路由。</div><div class="line">##	中间件</div><div class="line">###	设计中间件</div><div class="line">	Koa 的最大特色，也是最重要的一个设计，就是中间件（middleware）。</div><div class="line">	示例：自己设计一个logger中间件。</div></pre></td></tr></table></figure>
-
-/**
-* 定义日志中间件 logger
-* @param ctx {object} 上下文对象 
-* @param next {function} 下一个中间件执行权
-*/
-const logger = (ctx, next) =&gt; {
-    console.log(`${Date.now()} ${ctx.request.method} ${ctx.request.url}`);
-    next(); // 只要调用next函数，就可以把执行权转交给下一个中间件。
-};
-// 使用中间件
-app.use(logger);
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">###	中间件特性</div><div class="line">	多个中间件会形成一个栈结构（middle stack），以&quot;先进后出&quot;（first-in-last-out）的顺序执行。</div></pre></td></tr></table></figure>
-
-const one = (ctx, next) =&gt; {
-  console.log(&apos;&gt;&gt; one&apos;);
-  next();
-  console.log(&apos;&lt;&lt; one&apos;);
-}
-
-const two = (ctx, next) =&gt; {
-  console.log(&apos;&gt;&gt; two&apos;);
-  next(); 
-  console.log(&apos;&lt;&lt; two&apos;);
-}
-
-const three = (ctx, next) =&gt; {
-  console.log(&apos;&gt;&gt; three&apos;);
-  next();
-  console.log(&apos;&lt;&lt; three&apos;);
-}
-
-app.use(one);
-app.use(two);
-app.use(three);
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">	输出：</div><div class="line">	&gt;&gt; one   // one中间件进栈</div><div class="line">	&gt;&gt; two   // two中间件进栈</div><div class="line">	&gt;&gt; three // three中间件进栈</div><div class="line">	&lt;&lt; three // three中间件 出栈</div><div class="line">	&lt;&lt; two   // two中间件 出栈</div><div class="line">	&lt;&lt; one	 // one中间件 出栈	</div><div class="line">###	异步中间件</div><div class="line">	如果有异步操作（比如读取数据库），中间件就必须写成 async 函数。</div><div class="line">	实例：异步 main 中间件</div></pre></td></tr></table></figure>
-
-const fs = require(&apos;fs.promised&apos;);
-
-const main = async function (ctx, next) {
-  ctx.response.type = &apos;html&apos;;
-  ctx.response.body = await fs.readFile(&apos;./demos/template.html&apos;, &apos;utf8&apos;);
-};
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	fs.readFile是一个异步操作，必须写成异步中间件。</div><div class="line">###	koa-compose模块可以将多个中间件合成为一个。</div><div class="line">	示例：合并 logger 和 main 中间件。</div></pre></td></tr></table></figure>
-
-const compose = require(&apos;koa-compose&apos;);
-
-const middlewares = compose([logger, main]);
-app.use(middlewares);
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">##	错误处理</div><div class="line">	如果代码运行过程中发生错误，我们需要把错误信息返回给用户。</div><div class="line">###	500错误</div><div class="line">	HTTP 协定约定这时要返回500状态码。</div><div class="line">	Koa 提供了ctx.throw()方法，用来抛出错误，ctx.throw(500)就是抛出500错误。</div></pre></td></tr></table></figure>
-
-const main = ctx =&gt; {
-    ctx.throw(500);
-};
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">###	404错误</div><div class="line">	如果将ctx.response.status设置成404，就相当于ctx.throw(404)，返回404错误。</div></pre></td></tr></table></figure>
-
-const main = ctx =&gt; {
-  ctx.response.status = 404; // ctx.throw(404);
-  ctx.response.body = &apos;Page Not Found&apos;;
-};
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">###	处理错误的中间件	</div><div class="line">	为了方便处理错误，最好使用try...catch将其捕获。</div><div class="line">	但是，为每个中间件都写try...catch太麻烦，我们可以让最外层的中间件，负责所有中间件的错误处理。</div></pre></td></tr></table></figure>
-
-// 最外层中间件
-const handler = async (ctx, next) =&gt; {
-  try {
-    await next();
-  } catch (err) {
-    ctx.response.status = err.statusCode || err.status || 500;
-    ctx.response.body = {
-      message: err.message
-    };
-  }
-};
-// 内层中间件
-const main = ctx =&gt; {
-  ctx.throw(404);
-};
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">###	error 事件的监听</div><div class="line">	运行过程中一旦出错，Koa 会触发一个error事件。</div><div class="line">	监听这个事件，也可以处理错误。</div></pre></td></tr></table></figure>
-
-const main = ctx =&gt; {
-    ctx.throw(500); // 直接触发错误
-};
-// 监听错误
-app.on(&apos;error&apos;, (err, ctx) =&gt; {
-    console.error(&apos;server error&apos;, err);
-});
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">###	释放 error 事件	</div><div class="line">	需要注意的是，如果错误被try...catch捕获，就不会触发error事件。</div><div class="line">	这时，必须调用ctx.app.emit()，手动释放error事件，才能让监听函数生效。</div></pre></td></tr></table></figure>
-
-const handler = async (ctx, next) =&gt; {
-    try {
-        await next();
-    } catch (err) {
-        ctx.response.status = err.statusCode || err.status || 500;
-        ctx.response.type = &apos;html&apos;;
-        ctx.response.body = &apos;&lt;p&gt;Something wrong, please contact administrator.&lt;/p&gt;&apos;;
-        ctx.app.emit(&apos;error&apos;, err, ctx);
-    }
-};
-
-const main = ctx =&gt; {
-    ctx.throw(500);
-};
-
-app.on(&apos;error&apos;, function(err) {
-    console.log(&apos;logging error &apos;, err.message);
-    console.log(err);
-});
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">	main函数抛出错误，被handler函数捕获。</div><div class="line">	catch代码块里面使用ctx.app.emit()手动释放error事件，才能让监听函数监听到。</div><div class="line">##	Web App 的功能</div><div class="line">###	Cookies</div><div class="line">	ctx.cookies 用来读写 Cookie。</div></pre></td></tr></table></figure>
-
-const main = function(ctx) {
-    const n = Number(ctx.cookies.get(&apos;view&apos;) || 0) + 1;
-    ctx.cookies.set(&apos;view&apos;, n);
-    ctx.response.body = n + &apos; views&apos;;
-}
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">###	表单</div><div class="line">	Web 应用离不开处理表单。</div><div class="line">	表单就是 POST 方法发送到服务器的键值对。</div><div class="line">	koa-body模块可以用来从 POST 请求的数据体里面提取键值对。</div></pre></td></tr></table></figure>
-
-const koaBody = require(&apos;koa-body&apos;);
-
-const main = async function (ctx) {
-    const body = ctx.request.body;
-    if (!body.name) ctx.throw(400, &apos;.name required&apos;);
-    ctx.body = { name: body.name };
-};
-
-app.use(koaBody());
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">###	文件上传</div><div class="line">	koa-body模块还可以用来处理文件上传。</div></pre></td></tr></table></figure>
-
-const os = require(&apos;os&apos;);
-const path = require(&apos;path&apos;);
-const koaBody = require(&apos;koa-body&apos;);
-
-const main = async function(ctx) {
-    const tmpdir = os.tmpdir();
-    const filePaths = [];
-    const files = ctx.request.body.files || {};
-
-    for (let key in files) {
-        const file = files[key];
-        const filePath = path.join(tmpdir, file.name);
-        const reader = fs.createReadStream(file.path);
-        const writer = fs.createWriteStream(filePath);
-        reader.pipe(writer);
-        filePaths.push(filePath);
-    }
-
-    ctx.body = filePaths;
-};
-
-app.use(koaBody({ multipart: true }));
-```
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="http://www.ruanyifeng.com/blog/2017/08/koa.html" target="_blank" rel="external">阮一峰老师的koa教程</a><br>    <a href="https://www.npmjs.com/package/koa-router" target="_blank" rel="external">koa-router官方文档</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/27/jsDoc学习-5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/27/jsDoc学习-5/" itemprop="url">
-                  jsDoc学习-标签总结
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-27T22:46:04+08:00">
-                2017-09-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/代码规范/" itemprop="url" rel="index">
-                    <span itemprop="name">代码规范</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/27/jsDoc学习-5/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/27/jsDoc学习-5/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  1,105
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  4
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="类和构造函数"><a href="#类和构造函数" class="headerlink" title="类和构造函数"></a>类和构造函数</h2><pre><code>@class -- 此函数旨在需要使用”new”关键字调用（构造函数）或ES6中class。
-    @constructor
-@classdesc -- 使用的后面的蚊子来描述整个类。
-@abstract -- 这个成员必须在继承的子类中重写。
-    @virtual
-@static -- 记录一个静态成员。
-@access -- 指定该成员的访问级别（私有private、保护protected、公共public）。
-    @access private 等价于 @private
-    @access protected 等价于 @protected
-    @access public 等价于 @public
-@alias -- 标记成员有一个别名。
-@extends -- 指名这个子类继承至哪个父类，后面需要加父类名。
-    @augments
-@instance -- 记录一个实例成员。
-@interface -- 这是别人可以实现的一个接口。
-</code></pre><h2 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h2><pre><code>@borrows -- 这个对象使用另一个对象的某些东西。
-@lends -- 将一个字面量对象的所有属性标记为某个标识符（类或模块）的成员。
-@mixes -- 此对象混入了另一个对象中的所有成员。
-@mixin -- 记录一个mixin（混入）对象。
-@name  -- 记录一个对象的名称。
-@namespace -- 记录一个命名空间对象。
-@property -- 记录一个对象的属性。
-    @prop
-@typedef -- 记录一个自定义的类型。
-@type -- 记录一个对象的类型。
-@variation -- 区分具有相同名称的不同的对象。
-</code></pre><h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><pre><code>@callback -- 描述一个回调函数。
-@function -- 描述一个函数或方法。
-    @func
-    @method
-@returns -- 记录一个函数的返回值。
-    @return
-@this -- this关键字的指向。
-</code></pre><h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><pre><code>@author -- 指定项目的作者。
-@constant -- 记录一个对象作为一个常量。
-    @const
-@default -- 记录默认值。
-    @defaultvalue
-@copyright -- 描述一些版权信息。
-@since -- 该方法添加于该版本，建议使用。
-@deprecated -- 该方法已弃用，不建议使用。
-@description -- 描述一个标识。
-    @desc
-@enum -- 描述一个相关属性的集合。
-@example -- 提供一个如何使用描述项的例子。
-@external -- 标识一个外部的类，命名空间，或模块。
-@file -- 描述一个文件。
-    @fileoverview
-    @overview
-@global -- 记录一个全局对象。
-@ignore -- 忽略文档中的一个标识。
-@implements -- 这个表示实现一个接口。
-@inheritdoc -- 指明这个标识应继承其父类的文档。
-@inner -- 描述一个内部对象。
-@kind -- 表示的类型。
-@license -- 表示你的代码采用何种软件许可协议。
-@member -- 记录一个成员。
-    @var
-@memberof -- 标明这个标识属于哪个父级标识。
-@override -- 指明一个标识符覆盖其父类同名的标识符。
-@param -- 记录传递给一个函数的参数。
-    @arg 
-    @argument
-@readonly -- 标记为只读的。
-@see -- 更多详细参阅其他一些文档。
-@summary -- 完整描述的一个简写版本。
-@throws -- 说明可能会被抛出什么样的错误。
-@todo -- 记录一个将要完成的任务。
-@tutorial -- 插入一个连接到包含教程文件。
-@version -- 记录版本信息。
-</code></pre><h2 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h2><pre><code>@event -- 描述一个事件。
-@listens -- 列出一个标识的监听事件。
-@fires -- 描述事件这个方法可能会触发。
-    @emits
-</code></pre><h2 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h2><pre><code>@exports -- 表示一个由javascript模块导出的成员。
-@module -- 记录一个javascript模块。
-@requires -- 这个文件需要一个javascript模块。
-</code></pre><h2 id="内联标签"><a href="#内联标签" class="headerlink" title="内联标签"></a>内联标签</h2><pre><code>@link -- 连接到文档中的另一个项目。
-    @linkcode
-    @linkplain
-@tutorial -- 链接到一个教程。
-</code></pre><h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
-<li>安装jsdoc3<br>npm install -g jsdoc</li>
-<li>在cmd 中 (此时会在test.js的同级目录产出out目录，存放生成的API文档)<br>jsdoc test.js<br>  默认配置情况下out目录中产出：<pre><code>fonts、scripts、styles目录顾名思义。
-index.html -- API文档首页
-global.html -- 全局的（成员和方法）
-index.js.html -- 源代码页面
-</code></pre></li>
-<li><p>相关配置<br>启用jsdoc有两种方式：命令行参数 和 conf.json配置<br>JSDoc命令行参数<br>  JSDoc命令行几个常用参数有以下几个：<br>  -c, –configure 指定configuration file<br>  -d, –destination 指定输出路径，默认./out<br>  -e, –encoding 设定encoding，默认utf8<br>  -p, –private 将private注释输出到文档，默认不输出<br>  -P, –package 指定package.json file<br>  -r, –recurse 查询子目录<br>  -t, –template 指定输出文档template<br>  -u, –tutorials 指定教程路径，默认无<br>  例如：jsdoc -T –match tag –verbose<br>JSDoc配置文件<br>  默认的配置文件：conf.json.EXAMPLE</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">	&quot;tags&quot;: &#123;</div><div class="line">		&quot;allowUnknownTags&quot;: true, // 允许使用自定义tag</div><div class="line">		&quot;dictionaries&quot;: [&quot;jsdoc&quot;,&quot;closure&quot;] // 定义tag集</div><div class="line">	&#125;,</div><div class="line">	&quot;source&quot;: &#123;</div><div class="line">		&quot;includePattern&quot;: &quot;.+\\.js(doc)?$&quot;, // 将以.js, .jsdoc结尾的文件作为源文件</div><div class="line">		&quot;excludePattern&quot;: &quot;(^|\\/|\\\\)_&quot; // 忽略以_开头的文件夹及文件</div><div class="line">	&#125;,</div><div class="line">	&quot;plugins&quot;: [],</div><div class="line">	&quot;templates&quot;: &#123;</div><div class="line">		&quot;cleverLinks&quot;: false,</div><div class="line">		&quot;monospaceLinks&quot;: false</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>  例如：jsdoc -c /path/to/conf.json</p>
-</li>
-</ol>
-<blockquote>
-<p>   参考文档：<br>    <a href="http://www.css88.com/doc/jsdoc/inline-tags.html" target="_blank" rel="external">jsdoc</a><br>    <a href="https://github.com/jsdoc3/jsdoc" target="_blank" rel="external">jsdoc3</a><br>    <a href="http://www.moodpo.com/archives/jsdoc3-tutorial.html" target="_blank" rel="external">使用 JSDoc 3 自动生成 JavaScript API 文档</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/26/jsDoc学习-4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/26/jsDoc学习-4/" itemprop="url">
-                  jsDoc学习-标签3
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-26T21:28:50+08:00">
-                2017-09-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/代码规范/" itemprop="url" rel="index">
-                    <span itemprop="name">代码规范</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/26/jsDoc学习-4/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/26/jsDoc学习-4/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  1,678
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  7
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="override"><a href="#override" class="headerlink" title="@override"></a>@override</h3><pre><code>@override标签指明一个标识符覆盖其父类同名的标识符。
-下面的例子说明一个方法如何重写父类的方法。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @classdesc Abstract class representing a network connection.</div><div class="line"> * @class</div><div class="line"> */</div><div class="line">function Connection() &#123;&#125;</div><div class="line"></div><div class="line">/**</div><div class="line"> * Open the connection.</div><div class="line"> */</div><div class="line">Connection.prototype.open = function() &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div><div class="line"></div><div class="line"></div><div class="line">/**</div><div class="line"> * @classdesc Class representing a socket connection.</div><div class="line"> * @class</div><div class="line"> * @augments Connection</div><div class="line"> */</div><div class="line">function Socket() &#123;&#125;</div><div class="line"></div><div class="line">/**</div><div class="line"> * Open the socket.</div><div class="line"> * @override</div><div class="line"> */</div><div class="line">Socket.prototype.open = function() &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="param"><a href="#param" class="headerlink" title="@param"></a>@param</h3><pre><code>@param标签提供了对某个函数的参数的各项说明，包括参数名、参数数据类型、描述等。
-别名：@arg @argument
-下面的示例演示如何在 @param标签中包含名称，类型，和说明。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @param somebody</div><div class="line"> */</div><div class="line">function sayHello(somebody) &#123;</div><div class="line">	alert(&apos;Hello &apos; + somebody);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="private"><a href="#private" class="headerlink" title="@private"></a>@private</h3><pre><code>@private标签标记标识符为私有，或者不做一般用途使用。
-私有成员不会在生成文档中输出任何内容，除非JSDoc使用 -p/--private 命令行选项运行。
-语法：@private
-在下面的例子中，Documents和Documents.Newspaper会被输出到生成的文档中，但是Documents.Diary不会。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">/** @namespace */</div><div class="line">var Documents = &#123;</div><div class="line">	/**</div><div class="line">	 * An ordinary newspaper.</div><div class="line">	 */</div><div class="line">	Newspaper: 1,</div><div class="line">	/**</div><div class="line">	 * My diary.</div><div class="line">	 * @private</div><div class="line">	 */</div><div class="line">	Diary: 2</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="property"><a href="#property" class="headerlink" title="@property"></a>@property</h3><pre><code>@property标签很容易描述类，命名空间或其它对象的静态属性列表。
-别名：@prop
-例如，描述命名空间的默认属性及嵌套属性：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @namespace</div><div class="line"> * @property &#123;object&#125;  defaults               - The default values for parties.</div><div class="line"> * @property &#123;number&#125;  defaults.players       - The default number of players.</div><div class="line"> * @property &#123;string&#125;  defaults.level         - The default level for the party.</div><div class="line"> * @property &#123;object&#125;  defaults.treasure      - The default treasure.</div><div class="line"> * @property &#123;number&#125;  defaults.treasure.gold - How much gold the party starts with.</div><div class="line"> */</div><div class="line">var config = &#123;</div><div class="line">	defaults: &#123;</div><div class="line">		players: 1,</div><div class="line">		level:   &apos;beginner&apos;,</div><div class="line">		treasure: &#123;</div><div class="line">			gold: 0</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="protected"><a href="#protected" class="headerlink" title="@protected"></a>@protected</h3><pre><code>@protected标签标记标识符为受保护的，通常情况下，受保护的成员只能在被继承的子类中或在模块内部可以访问。
-语法：@protected [{typeExpression}]
-在下面的例子中，该实例成员Thingy#_bar会被导出到生成的文档中，但使用注释说明它是被保护的。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">/** @constructor */</div><div class="line">function Thingy() &#123;</div><div class="line">	/** @protected */</div><div class="line">	this._bar = 1;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="public"><a href="#public" class="headerlink" title="@public"></a>@public</h3><pre><code>@public标签标记标识符为公开的。    
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * The Thingy class is available to all.</div><div class="line"> * @public</div><div class="line"> * @class</div><div class="line"> */</div><div class="line">function Thingy() &#123;</div><div class="line">	/**</div><div class="line">	 * The Thingy~foo member. Note that &apos;foo&apos; is still an inner member</div><div class="line">	 * of &apos;Thingy&apos;, in spite of the @public tag.</div><div class="line">	 * @public</div><div class="line">	 */</div><div class="line">	var foo = 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="readonly"><a href="#readonly" class="headerlink" title="@readonly"></a>@readonly</h3><pre><code>标记一个标识符为只读。jsdoc不会检查某个代码是否真是只读的，只要标上@readonly，在文档中就体现为只读的。
-例如，给getter标记为只读
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Options for ordering a delicious slice of pie.</div><div class="line"> * @namespace</div><div class="line"> */</div><div class="line">var pieOptions = &#123;</div><div class="line">	/**</div><div class="line">	 * A la mode.</div><div class="line">	 * @readonly</div><div class="line">	 */</div><div class="line">	get aLaMode() &#123;</div><div class="line">		return this.plain + &apos; with ice cream&apos;;</div><div class="line">	&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="requires"><a href="#requires" class="headerlink" title="@requires"></a>@requires</h3><pre><code>@requires标签可以记录一个模块需要的依赖项。一个JSDoc注释块可以有多个@require标签。
-模块名可以被指定为 &quot;moduleName&quot; 或者 &quot;module:moduleName&quot;;这两种形式将被解析为模块。
-语法：@requires &lt;someModuleName&gt;
-例如，使用@requires 标签
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * This class requires the modules &#123;@link module:xyzcorp/helper&#125; and</div><div class="line"> * &#123;@link module:xyzcorp/helper.ShinyWidget#polish&#125;.</div><div class="line"> * @class</div><div class="line"> * @requires module:xyzcorp/helper</div><div class="line"> * @requires xyzcorp/helper.ShinyWidget#polish</div><div class="line"> */</div><div class="line">function Widgetizer() &#123;&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="returns"><a href="#returns" class="headerlink" title="@returns"></a>@returns</h3><pre><code>@returns 标签描述一个函数的返回值。语法和@param类似。
-别名：@return
-返回值的类型
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Returns the sum of a and b</div><div class="line"> * @param &#123;Number&#125; a</div><div class="line"> * @param &#123;Number&#125; b</div><div class="line"> * @returns &#123;Number&#125;</div><div class="line"> */</div><div class="line">function sum(a, b) &#123;</div><div class="line">	return a + b;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="see"><a href="#see" class="headerlink" title="@see"></a>@see</h3><pre><code>@see标签表示可以参考另一个标识符的说明文档，或者一个外部资源。
-语法：@see &lt;namepath&gt;
-      @see &lt;text&gt;
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Both of these will link to the bar function.</div><div class="line"> * @see &#123;@link bar&#125;</div><div class="line"> * @see bar</div><div class="line"> */</div><div class="line">function foo() &#123;&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="since"><a href="#since" class="headerlink" title="@since"></a>@since</h3><pre><code>@since标签标明一个类，方法，或其它标识符是在哪个特定版本开始添加进来的。
-语法：@since &lt;versionDescription&gt;
-例如，使用@since标签：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Provides access to user information.</div><div class="line"> * @since 1.0.1</div><div class="line"> */</div><div class="line">function UserRecord() &#123;&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="static"><a href="#static" class="headerlink" title="@static"></a>@static</h3><pre><code>@static标签标明一个在父类中的标识符不需实例即可使用。
-例如，在一个虚拟注释中使用@static    
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">/** @namespace MyNamespace */</div><div class="line">/**</div><div class="line"> * @function myFunction</div><div class="line"> * @memberof MyNamespace</div><div class="line"> * @static</div><div class="line"> */</div></pre></td></tr></table></figure>
-</code></pre><h3 id="summary"><a href="#summary" class="headerlink" title="@summary"></a>@summary</h3><pre><code>@summary标签是完整描述的一个简写版本。它可以被添加到任何的doclet。
-语法：@summary Summary goes here.
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * A very long, verbose, wordy, long-winded, tedious, verbacious, tautological,</div><div class="line"> * profuse, expansive, enthusiastic, redundant, flowery, eloquent, articulate,</div><div class="line"> * loquacious, garrulous, chatty, extended, babbling description.</div><div class="line"> * @summary A concise summary.</div><div class="line"> */</div><div class="line">function bloviate() &#123;&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="this"><a href="#this" class="headerlink" title="@this"></a>@this</h3><pre><code>@this标签指明this关键字的指向。
-语法：@this &lt;namePath&gt;
-在下面的例子中，@this标签迫使&quot;this.name&quot;被描述为&quot;Greeter#name&quot;，而不是全局变量&quot;name&quot;。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">/** @constructor */</div><div class="line">function Greeter(name) &#123;</div><div class="line">	setName.apply(this, name);</div><div class="line">&#125;</div><div class="line"></div><div class="line">/** @this Greeter */</div><div class="line">function setName(name) &#123;</div><div class="line">	/** document me */</div><div class="line">	this.name = name;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="throws"><a href="#throws" class="headerlink" title="@throws"></a>@throws</h3><pre><code>@throws标签可以让你描述函数可能会抛出的错误。在一个JSDoc注释块中您可以包含多个@throws标签。
-语法：@throws free-form description
-      @throws {&lt;type&gt;}
-      @throws {&lt;type&gt;} free-form description
-例如，在type中使用@throws标签:
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @throws &#123;InvalidArgumentException&#125;</div><div class="line"> */</div><div class="line">function foo(x) &#123;&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="todo"><a href="#todo" class="headerlink" title="@todo"></a>@todo</h3><pre><code>@todo标签可以让你记录要完成的任务。在一个JSDoc注释块中您可以包含多个@todo标签。
-语法：@todo text describing thing to do.
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @todo Write the documentation.</div><div class="line"> * @todo Implement this function.</div><div class="line"> */</div><div class="line">function foo() &#123;</div><div class="line">	// write me</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="tutorial"><a href="#tutorial" class="headerlink" title="@tutorial"></a>@tutorial</h3><pre><code>@tutorial 标签插入一个指向向导教程的链接，作为文档的一部分。
-语法：@tutorial &lt;tutorialID&gt;
-在下面的例子中，MyClass的文档将链接到tutorial-1 和 tutorial-2标识符的教程。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Description</div><div class="line"> * @class</div><div class="line"> * @tutorial tutorial-1</div><div class="line"> * @tutorial tutorial-2</div><div class="line"> */</div><div class="line">function MyClass() &#123;&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="type"><a href="#type" class="headerlink" title="@type"></a>@type</h3><pre><code>@type标签允许你提供一个表达式，用于标识一个标识符可能包含的值的类型，或由函数返回值的类型。
-语法：@type {typeName1 | typeName2}
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">/** @type &#123;(string|Array.&lt;string&gt;)&#125; */</div><div class="line">var foo;</div><div class="line">/** @type &#123;number&#125; */</div><div class="line">var bar = 1;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="typedef"><a href="#typedef" class="headerlink" title="@typedef"></a>@typedef</h3><pre><code>@typedef标签在描述自定义类型时是很有用的，特别是如果你要反复引用它们的时候。
-语法：@typedef [&lt;type&gt;] &lt;namepath&gt;
-这个例子定义了一个联合类型的参数，表示可以包含数字或字符串。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * A number, or a string containing a number.</div><div class="line"> * @typedef &#123;(number|string)&#125; NumberLike</div><div class="line"> */</div></pre></td></tr></table></figure>
-</code></pre><h3 id="variation"><a href="#variation" class="headerlink" title="@variation"></a>@variation</h3><pre><code>描述: 区分具有相同名称的不同的对象。
-语法：@variation &lt;variationNumber&gt;
-</code></pre><h3 id="version"><a href="#version" class="headerlink" title="@version"></a>@version</h3><pre><code>@version标签后面的文本将被用于表示该项的版本。    
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @version 1.2.3</div><div class="line"> * @tutorial solver</div><div class="line"> */</div><div class="line">function solver(a, b) &#123;</div><div class="line">	return b / a;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="内联标签（inline-Tags）"><a href="#内联标签（inline-Tags）" class="headerlink" title="内联标签（inline Tags）"></a>内联标签（inline Tags）</h3><pre><code>{@link}内联标签创建一个链接到您指定的namepath或URL。当您使用{@link}标签，还可以提供几种不同的格式的链接文本。
-如果你不提供任何链接文本，JSDoc使用namepath或URL作为链接文字。
-别名：@linkcode  @linkplain
-语法：{@link namepathOrURL}
-      [link text]{@link namepathOrURL}
-      {@link namepathOrURL|link text}
-      {@link namepathOrURL link text (after the first space)}
-下面的例子显示了提供给{@link} 标签链接文本的所有方式
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * See &#123;@link MyClass&#125; and [MyClass&apos;s foo property]&#123;@link MyClass#foo&#125;.</div><div class="line"> * Also, check out &#123;@link http://www.google.com|Google&#125; and</div><div class="line"> * &#123;@link https://github.com GitHub&#125;.</div><div class="line"> */</div><div class="line">function myFunction() &#123;&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="tutorial-1"><a href="#tutorial-1" class="headerlink" title="@tutorial"></a>@tutorial</h3><pre><code>{@tutorial}行内标签创建一个链接到您指定的教程标识符。当您使用{@tutorial}标签，您也可以提供几种不同的格式的链接文本。
-如果你不提供任何链接文本，JSDoc使用本教程的标题作为链接文字。
-语法：{@tutorial tutorialID}
-      [link text]{@tutorial tutorialID}
-      {@tutorial tutorialID|link text}
-      {@tutorial tutorialID link text (after the first space)}
-下面的例子显示了提供给{@tutorial}标签链接文本的所有方式
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * See &#123;@tutorial gettingstarted&#125; and [Configuring the Dashboard]&#123;@tutorial dashboard&#125;.</div><div class="line"> * For more information, see &#123;@tutorial create|Creating a Widget&#125; and</div><div class="line"> * &#123;@tutorial destroy Destroying a Widget&#125;.</div><div class="line"> */</div><div class="line">function myFunction() &#123;&#125;</div></pre></td></tr></table></figure>
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="http://www.css88.com/doc/jsdoc/" target="_blank" rel="external">jsDoc文档</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/26/jsDoc学习-3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/26/jsDoc学习-3/" itemprop="url">
-                  jsDoc学习-标签2
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-26T20:26:15+08:00">
-                2017-09-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/代码规范/" itemprop="url" rel="index">
-                    <span itemprop="name">代码规范</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/26/jsDoc学习-3/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/26/jsDoc学习-3/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  1,751
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  7
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="file"><a href="#file" class="headerlink" title="@file"></a>@file</h3><pre><code>@file标签提供文件的说明。在文件开头的JSDoc注释部分使用该标签。
-别名：@fileoverview  @overview
-例如，文件描述
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @file 这是正则js文件</div><div class="line"> * @author fanerge &lt;fanerge@example.com&gt;</div><div class="line"> */</div></pre></td></tr></table></figure>
-</code></pre><h3 id="fires"><a href="#fires" class="headerlink" title="@fires"></a>@fires</h3><pre><code>@fires标签标明当一个方法被调用时将触发一个指定类型的事件，使用@event 标签来描述事件的内容。
-别名：@emits
-语法：@fires &lt;className&gt;#[event:]&lt;eventName&gt;
-例如，方法将触发&quot;drain&quot;事件
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Drink the milkshake.</div><div class="line"> * @fires Milkshake#drain</div><div class="line"> */</div><div class="line">Milkshake.prototype.drink = function() &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="function"><a href="#function" class="headerlink" title="@function"></a>@function</h3><pre><code>标记一个对象作为一个函数，即使它可能不会出现在解析器中。它设置doclet的@kind为&apos;function&apos;。
-别名：@func  @method
-语法：@function [&lt;FunctionName&gt;]
-例如，使用@function标记为一个函数
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">/** @function */</div><div class="line">var paginate = paginateFactory(pages);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="global"><a href="#global" class="headerlink" title="global"></a>global</h3><pre><code>@global标签指定一个在文档的标识是为全局性的标识。
-JSDoc忽略这个标识在源文件中的实际作用范围。这个标记是在本地所定义标识时特别有用。
-例如，文档中的内部变量作为一个全局变量
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">(function() &#123;</div><div class="line">	/** @global */</div><div class="line">	var foo = &apos;hello foo&apos;;</div><div class="line"></div><div class="line">	this.foo = foo;</div><div class="line">&#125;).apply(window);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="ignore"><a href="#ignore" class="headerlink" title="@ignore"></a>@ignore</h3><pre><code>@ignore标签表示在你的代码中的注释不应该出现在文档中，注释会被直接忽略。这个标签优先于所有其他标签。
-在下面的例子中，@ignore标签， Jacket 和 Jacket#color 将不会出现在文档中
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @class</div><div class="line"> * @ignore</div><div class="line"> */</div><div class="line">function Jacket() &#123;</div><div class="line">	/** The jacket&apos;s color. */</div><div class="line">	this.color = null;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="implements"><a href="#implements" class="headerlink" title="@implements"></a>@implements</h3><pre><code>@implements标签指示一个标识实现一个接口。
-语法：@implements {typeExpression}
-在下面的例子中，TransparentColor类实现Color接口，并添加了TransparentColor#rgba方法。
-</code></pre><h3 id="inheritdoc"><a href="#inheritdoc" class="headerlink" title="@inheritdoc"></a>@inheritdoc</h3><pre><code>@inheritdoc标签指示该标识应继承其父类的文档。在你的JSDoc注释中的任何其它标签都将被忽略。
-下面的例子显示了一个类的描述如何从它的父类继承文档。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @classdesc Abstract class representing a network connection.</div><div class="line"> * @class</div><div class="line"> */</div><div class="line">function Connection() &#123;&#125;</div><div class="line"></div><div class="line">/**</div><div class="line"> * Open the connection.</div><div class="line"> */</div><div class="line">Connection.prototype.open = function() &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div><div class="line"></div><div class="line"></div><div class="line">/**</div><div class="line"> * @classdesc Class representing a socket connection.</div><div class="line"> * @class</div><div class="line"> * @augments Connection</div><div class="line"> */</div><div class="line">function Socket() &#123;&#125;</div><div class="line"></div><div class="line">/** @inheritdoc */</div><div class="line">Socket.prototype.open = function() &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="inner"><a href="#inner" class="headerlink" title="@inner"></a>@inner</h3><pre><code>使用@inner标签将标明该标识符作为它父标识符的内部成员。这意味着它可以通过 &quot;Parent~Child&quot; 被引用。
-在下面的例子中，我们使用@inner迫使一个命名空间的成员被描述作为内部成员（默认情况下，这是一个静态成员）。
-这意味着，foo现在有了MyNamespace~foo新名字，而不是MyNamespace.foo。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">/** @namespace */</div><div class="line">var MyNamespace = &#123;</div><div class="line">	/**</div><div class="line">	 * foo is now MyNamespace~foo rather than MyNamespace.foo.</div><div class="line">	 * @inner</div><div class="line">	 */</div><div class="line">	foo: 1</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="instance"><a href="#instance" class="headerlink" title="@instance"></a>@instance</h3><pre><code>使用@instance标签标明该标识符作为它父标识符的实例成员。
-这意味着它可以通过&quot;Parent#Child&quot;被引用。
-例如，使用@instance确定一个实例成员
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">/** @namespace */</div><div class="line">var BaseObject = &#123;</div><div class="line">	/**</div><div class="line">	 * foo is now BaseObject#foo rather than BaseObject.foo.</div><div class="line">	 * @instance</div><div class="line">	 */</div><div class="line">	foo: null</div><div class="line">&#125;;</div><div class="line"></div><div class="line">/** Generates BaseObject instances. */</div><div class="line">function fooFactory(fooValue) &#123;</div><div class="line">	var props = &#123; foo: fooValue &#125;;</div><div class="line">	return Object.create(BaseObject, props);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="interface"><a href="#interface" class="headerlink" title="@interface"></a>@interface</h3><pre><code>@interface标签使一个标识符作为其他标识符的一个实现接口。 例如，你的代码可能定义一个父类，它的方法和属性被去掉。
-您可以将@interface标签添加到父类，以指明子类必须实现父类的方法和属性。
-语法：@interface [&lt;name&gt;]
-在下面的例子中，Color函数表示其它类可以实现的接口。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Interface for classes that represent a color.</div><div class="line"> * @interface</div><div class="line"> */</div><div class="line">function Color() &#123;&#125;</div><div class="line">/**</div><div class="line"> * Get the color as an array of red, green, and blue values, represented as</div><div class="line"> * decimal numbers between 0 and 1.</div><div class="line"> * @returns &#123;Array&amp;lt;number&gt;&#125; An array containing the red, green, and blue values,</div><div class="line"> * in that order.</div><div class="line"> */</div><div class="line">Color.prototype.rgb = function() &#123;</div><div class="line">	throw new Error(&apos;not implemented&apos;);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="kind"><a href="#kind" class="headerlink" title="@kind"></a>@kind</h3><pre><code>@kind标签是用来指明什么样的标识符被描述（例如，一类或模块）。标识符kind 不同于标识符type（例如，字符串或布尔）。
-语法：@kind &lt;kindName&gt;
-    kindName取值：class constant event external file function member mixin module namespace typedef
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * A constant.</div><div class="line"> * @kind constant</div><div class="line"> */</div><div class="line">const asdf = 1;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="lends"><a href="#lends" class="headerlink" title="@lends"></a>@lends</h3><pre><code>@lends标签允许你将一个字面量对象的所有成员标记为某个标识符（类或模块）的成员，就像他们是给定名称的标识符成员。
-你可能想这样做，如果你传递一个对象字面量给一个函数，创建一个成员为对象字面量的命名类。
-语法：@lends &lt;namepath&gt;
-实例，@lends标签告诉JSDoc，这一对象字面量的所有成员都会被“借”给&quot;Person&quot;类。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">/** @class */</div><div class="line">var Person = makeClass(</div><div class="line">	/** @lends Person */</div><div class="line">	&#123;</div><div class="line">		initialize: function(name) &#123;</div><div class="line">			this.name = name;</div><div class="line">		&#125;,</div><div class="line">		say: function(message) &#123;</div><div class="line">			return this.name + &quot; says: &quot; + message;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="license"><a href="#license" class="headerlink" title="@license"></a>@license</h3><pre><code>@license标签标识你的代码采用何种软件许可协议。
-语法：@license &lt;identifier&gt;
-例如，这是在Apache 2.0 许可下分发的模块
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Utility functions for the foo package.</div><div class="line"> * @module foo/util</div><div class="line"> * @license Apache-2.0</div><div class="line"> */</div></pre></td></tr></table></figure>
-</code></pre><h3 id="listens"><a href="#listens" class="headerlink" title="@listens"></a>@listens</h3><pre><code>@listens 标签指示一个标识监听指定的事件。使用@event 标签来记录事件的内容。
-语法：@listens &lt;eventName&gt;
-下面的示例演示了如何记录名为module:hurler~event:snowball的事件，还有一个方法命名为module:playground/monitor.reportThrowage来监听事件。
-</code></pre><h3 id="member"><a href="#member" class="headerlink" title="@member"></a>@member</h3><pre><code>@member标签记录成员基本种类（kind），比如&quot;class&quot;, &quot;function&quot;, 或者 &quot;constant&quot;。
-一个成员可以任选地具有一个类型以及名称。
-别名：@var
-语法：@member [&lt;type&gt;] [&lt;name&gt;]
-例如，Data#point上使用@member：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">/** @class */</div><div class="line">function Data() &#123;</div><div class="line">	/** @member &#123;Object&#125; */</div><div class="line">	this.point = &#123;&#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="memberof"><a href="#memberof" class="headerlink" title="@memberof"></a>@memberof</h3><pre><code>@memberof标签标明成员隶属于哪一个父级标识符。
-语法：@memberof &lt;parentNamepath&gt;
-      @memberof! &lt;parentNamepath&gt;
-事实上，它就是一个全局性的函数，但同事它也是Tools命名空间的一个成员，而这才是你想描述的。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">/** @namespace */</div><div class="line">var Tools = &#123;&#125;;</div><div class="line"></div><div class="line">/** @memberof Tools */</div><div class="line">var hammer = function() &#123;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">Tools.hammer = hammer;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="mixes"><a href="#mixes" class="headerlink" title="@mixes"></a>@mixes</h3><pre><code>@mixes标签指示当前对象混入了OtherObjectPath对象的所有成员,被混入的对象就是一个@mixin。    
-语法：@mixes &lt;OtherObjectPath&gt;
-</code></pre><h3 id="mixin"><a href="#mixin" class="headerlink" title="@mixin"></a>@mixin</h3><pre><code>您可以使用@mixin标签标识该对象是一个mixin（混入），旨在表明该对象的属性和方法混入到其他对象。
-然后，可以将@mixes标签 添加到使用了该 mixin（混入）的对象上。
-语法：@mixin [&lt;MixinName&gt;]
-</code></pre><h3 id="module"><a href="#module" class="headerlink" title="@module"></a>@module</h3><pre><code>@module可以将当前文件标注为一个模块，默认情况下文件内的所有标识符都隶属于此模块，除非文档另有说明。
-@module [[{&lt;type&gt;}] &lt;moduleName&gt;]
-下面的示例演示了在一个模块中用于标识的namepaths。第一个标识符是模块私有的，或“内部”变量 - 它只能在模块内访问。第二个标识符是由模块导出一个静态函数。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">/** @module myModule */</div><div class="line"></div><div class="line">/** will be module:myModule~foo */</div><div class="line">var foo = 1;</div><div class="line"></div><div class="line">/** will be module:myModule.bar */</div><div class="line">var bar = function() &#123;&#125;;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="name"><a href="#name" class="headerlink" title="@name"></a>@name</h3><pre><code>@name标签强制JSDoc使用这个给定的名称，而忽略实际代码里的名称。
-这个标签最好用于&quot;虚拟注释&quot;，而不是在代码中随时可见的标签，如在运行时期间产生的方法。
-语法：@name &lt;namePath&gt;
-下面的例子演示了如何使用@name标签描述一个函数，JSDoc通常不会识别。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @name highlightSearchTerm</div><div class="line"> * @function</div><div class="line"> * @global</div><div class="line"> * @param &#123;string&#125; term - The search term to highlight.</div><div class="line"> */</div><div class="line">eval(&quot;window.highlightSearchTerm = function(term) &#123;&#125;;&quot;)</div></pre></td></tr></table></figure>
-</code></pre><h3 id="namespace"><a href="#namespace" class="headerlink" title="@namespace"></a>@namespace</h3><pre><code>@namespace标签指明对象是一个命名空间。你也可以书写一个虚拟JSDoc注释，通过使用代码来定义命名空间。
-语法：@namespace [{&lt;type&gt;}] &lt;SomeName&gt;]
-例如，对象上使用 @namespace 标签：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * My namespace.</div><div class="line"> * @namespace</div><div class="line"> */</div><div class="line">var MyNamespace = &#123;</div><div class="line">	/** documented as MyNamespace.foo */</div><div class="line">	foo: function() &#123;&#125;,</div><div class="line">	/** documented as MyNamespace.bar */</div><div class="line">	bar: 1</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="http://www.css88.com/doc/jsdoc/" target="_blank" rel="external">jsDoc文档</a>    </p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/26/postman/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/26/postman/" itemprop="url">
-                  postman
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-26T19:32:30+08:00">
-                2017-09-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/调试/" itemprop="url" rel="index">
-                    <span itemprop="name">调试</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/26/postman/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/26/postman/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  904
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  4
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <pre><code>虽然一直使用postman进行http相关的调试，但一直都停留在简单使用，并没有对其的深入学习。
-现在比较全面的学习下post相关功能。
-</code></pre><h3 id="postman仪表盘布局"><a href="#postman仪表盘布局" class="headerlink" title="postman仪表盘布局"></a>postman仪表盘布局</h3><pre><code>分为左右两栏（sidebar + main）
-    siderbar：Search + History + Collections
-    main：
-        第一行：请求方式 + URL + Params + Send(Send and Download) + Save(Save as)
-        第二行(request)：Authorization + Headers + Body + Pre-request Script(请求发送前运行的脚本) + Tests + Code(转化为相应的语言请求代码)
-        第三行(response)：Body + Cookies + Headers + Tests + Status(响应状态) + Time(响应等待时间)     
-</code></pre><h3 id="请求"><a href="#请求" class="headerlink" title="请求"></a>请求</h3><pre><code>HTTP请求的4部分:URL，method，headers，body。
-对于body说明：
-    1.mutipart/form-data：是网页表单用来传输数据的默认格式。（提交表单上传文件）
-    2.x-www-form-urlencoded：同前面一样，注意,你不能上传文件通过这个编码模式。
-    3.raw：raw request可以包含任何东西。所有填写的text都会随着请求发送。
-    4.binary：image, audio or video files.text files 。 也不能保存历史，每次选择文件，提交。
-身份验证Authentication：
-    1.Basic Auth：填写用户名和密码，点击Refresh headers
-    2.Digest Auth：要比Basic Auth复杂的多。使用当前填写的值生成authorization header。
-        所以在生成header之前要确保设置的正确性。
-        如果当前的header已经存在，postman会移除之前的header。
-    3.OAuth 1.0a：postman的OAuth helper让你签署支持OAuth 1.0基于身份验证的请求。
-        OAuth不用获取access token,你需要去API提供者获取的。
-        OAuth 1.0可以在header或者查询参数中设置value。
-    4.OAuth 2.0：postman支持获得OAuth 2.0 token并添加到requests中。    
-</code></pre><h3 id="响应"><a href="#响应" class="headerlink" title="响应"></a>响应</h3><pre><code>对于body说明：
-    1.Pretty：格式化了JSON和XML，方便查看。
-    2.Raw：是text文本。
-    3.Preview：返回html页面。
-cookies：可以显示browser cookies，需要开启Interceptor。
-</code></pre><h3 id="Writting-Test"><a href="#Writting-Test" class="headerlink" title="Writting Test"></a>Writting Test</h3><pre><code>暂不涉及！！！
-Postman的Tests标签可以用来写测试
-</code></pre><h3 id="运行Collections"><a href="#运行Collections" class="headerlink" title="运行Collections"></a>运行Collections</h3><pre><code>Postman测试管理的单位是测试集（Collections），测试集内可以创建文件夹(Folder)和具体的请求(Requests)。
-postman允许你运行collection，你可以运行任意的次数。 
-最后会给出一个整体运行的结果。
-会保存每一次运行的结果，提供给你比较每一次运行结果的不同。
-</code></pre><h3 id="Postman开发者模式"><a href="#Postman开发者模式" class="headerlink" title="Postman开发者模式"></a>Postman开发者模式</h3><pre><code>使用环境变量可以方便的在开发和测试环境进行切换。
-1.点击环境管理按钮添加环境。
-2.通常会有开发和测试两个环境，分别添加相应的环境变量。
-    环境一：ev_develop
-        url：127.0.0.1.8081
-    环境二：ev_test
-        url：10.1.1.133.8080
-3.使用环境变量
-    {{url}}/api/v1/currentUser.json
-    No Environment选择对应的环境即可
-4.查看和编辑环境变量
-    下拉select和眼睛图标
-</code></pre><h3 id="Postman接口测试"><a href="#Postman接口测试" class="headerlink" title="Postman接口测试"></a>Postman接口测试</h3><pre><code>1.对于同一接口的多个测试请求，可统一使用后缀命名
-    在Collections中
-    如测试登录的不同情况：
-    login_normal
-    login_bad_username
-    login_bad_password
-    login_miss_username
-    login_miss_password
-2.对于关键字搜索测试，可使用关键字作为后缀，以保持与开发关键字一致
-    如测试评分资料内容列表展示
-    评分资料内容列表_pageNum
-    评分资料内容列表_numPerPage
-    评分资料内容列表_docName
-3.对于需要额外说明的测试请求，需要在描述里增加注释
-    点击edit添加Description
-</code></pre><h3 id="Postman接口测试进阶"><a href="#Postman接口测试进阶" class="headerlink" title="Postman接口测试进阶"></a>Postman接口测试进阶</h3><pre><code>1.全局变量的创建方式与环境变量相同    
-2.使用方式也是相同的，不同的是全局变量可以在不同环境下共用    
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="http://blog.csdn.net/flowerspring/article/details/52774399" target="_blank" rel="external">postman 使用详解</a><br>    <a href="https://jingyan.baidu.com/article/0f5fb09907e3046d8334ea2f.html" target="_blank" rel="external">postmen 使用入门</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -3412,7 +2947,7 @@ postman允许你运行collection，你可以运行任意的次数。
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">116</span>
+                <span class="site-state-item-count">121</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -3551,7 +3086,7 @@ postman允许你运行collection，你可以运行任意的次数。
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共145.6k字</span>
+  <span class="post-count">博客全站共152.8k字</span>
 </div>
         
 
