@@ -306,6 +306,203 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/11/13/排序算法-归并算法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/11/13/排序算法-归并算法/" itemprop="url">
+                  排序算法-归并算法
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-13T20:18:58+08:00">
+                2017-11-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/11/13/排序算法-归并算法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/11/13/排序算法-归并算法/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,004
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  4
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="归并排序（MERGE-SORT）基础"><a href="#归并排序（MERGE-SORT）基础" class="headerlink" title="归并排序（MERGE-SORT）基础"></a>归并排序（MERGE-SORT）基础</h1><p>定义：归并排序是建立在归并操作上的一种有效的排序算法,该算法是采用分治法（Divide and Conquer）的一个非常典型的应用。将已有序的子序列合并，得到完全有序的序列；即先使每个子序列有序，再使子序列段间有序。若将两个有序表合并成一个有序表，称为二路归并。<br>实现过程：比较a[i]和b[j]的大小，若a[i]≤b[j]，则将第一个有序表中的元素a[i]复制到r[k]中，并令i和k分别加上1；否则将第二个有序表中的元素b[j]复制到r[k]中，并令j和k分别加上1，如此循环下去，直到其中一个有序表取完，然后再将另一个有序表中剩余的元素复制到r中从下标k到下标t的单元。归并排序的算法我们通常用递归实现，先把待排序区间[s,t]以中点二分，接着把左边子区间排序，再把右边子区间排序，最后把左区间和右区间用一次归并操作合并成有序的区间[s,t]。</p>
+<h1 id="归并操作"><a href="#归并操作" class="headerlink" title="归并操作"></a>归并操作</h1><p>归并排序：其基本思想是分治策略，先进行划分，然后再进行合并。</p>
+<h2 id="算法思路"><a href="#算法思路" class="headerlink" title="算法思路"></a>算法思路</h2><p>假设要对数组C进行归并排序，步骤是：<br>    let C = [10, 4, 6, 3, 8, 2, 5, 7];<br>    1.先将C划分为两个数组A和B（即把数组C从中间分开 n = Math.floor(C.length/2)）<br>    2.再分别对数组A、B重复步骤1的操作，逐步划分，直到不能再划分为止(每个子数组只剩下一个元素)，这样，划分的过程就结束了。<br>    3.然后从下层往上层不断合并数组，每一层合并相邻的两个子数组，合并的过程是每次从待合并的两个子数组中选取一个最小的元素，然后把这个元素放到合并后的数组中，不断重复直到把两个子数组的元素都放到合并后的数组为止。<br>    4.依次类推，直到合并到最上层结束，这时数据的排序已经完成了。</p>
+<h2 id="算法划分和合并过程"><a href="#算法划分和合并过程" class="headerlink" title="算法划分和合并过程"></a>算法划分和合并过程</h2><p><div style="color: red;"><br>    先划分：              [10, 4, 6, 3, 8, 2, 5, 7]<br>    第一次划分：[10, 4, 6, 3]         [8, 2, 5, 7]<br>    第二次划分：[10, 4]   [6, 3]      [8, 2]  [5, 7]<br>    第三次划分：[10] [4] [6] [3]      [8] [2] [5] [7]<br>    再合并：<br>    第一次合并：[4, 10] [3, 6]      [2, 8] [5, 7]<br>    第二次合并：[3, 4, 6, 10]      [2, 5, 7, 8]<br>    第三次合并：[2, 3, 4, 5, 6, 7, 8, 10]<br></div><br><img src="https://gss3.bdstatic.com/7Po3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike92%2C5%2C5%2C92%2C30/sign=236fa62859b5c9ea76fe0bb1b450dd65/c8177f3e6709c93d673b9ed49d3df8dcd00054c3.jpg" alt="图解">    </p>
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">function　merge(left, right)&#123;</div><div class="line">	var　result=[];</div><div class="line">	while(left.length &amp;&amp; right.length)&#123;</div><div class="line">		if(left[0] &lt; right[0])&#123;</div><div class="line">		/*shift()方法用于把数组的第一个元素从其中删除，并返回第一个元素的值。*/</div><div class="line">			result.push(left.shift());</div><div class="line">		&#125;else&#123;</div><div class="line">			result.push(right.shift());</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	return　result.concat(left).concat(right);</div><div class="line">&#125;</div><div class="line"></div><div class="line">function　mergeSort(items)&#123;</div><div class="line">	if(items.length === 1)&#123;</div><div class="line">		return　items;</div><div class="line">	&#125;</div><div class="line">	let　middle = Math.floor(items.length/2),</div><div class="line">		left = items.slice(0, middle), //得到下标从0~index-1的数组</div><div class="line">		right = items.slice(middle); //得到下标从index开始到末尾的数组</div><div class="line">	return　merge(mergeSort(left), mergeSort(right));</div><div class="line">&#125;</div><div class="line"></div><div class="line">let arr = [10, 4, 6, 3, 8, 2, 5, 7];</div><div class="line">let demo = mergeSort(arr)</div><div class="line">console.log(arr); // [10, 4, 6, 3, 8, 2, 5, 7]</div><div class="line">console.log(demo); // [2, 3, 4, 5, 6, 7, 8, 10]</div></pre></td></tr></table></figure>
+</code></pre><p>ps：使用递归的代码如下。优点是描述算法过程思路清晰，缺点是使用递归，mergeSort()函数频繁地自我调用。长度为n的数组最终会调用mergeSort()函数 2n-1次，这意味着一个长度超过1500的数组会在Firefox上发生栈溢出错误。可以考虑使用迭代来实现同样的功能。<br>    时间复杂度：O(n log n)<br>    空间复炸都：O（n)<br>    稳定性：稳定<br>    排序方式：外排序</p>
+<h1 id="动图展示"><a href="#动图展示" class="headerlink" title="动图展示"></a>动图展示</h1><p><img src="http://oz5ii8zjo.bkt.clouddn.com/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F" alt="动态图"><br>    <a href="http://web.jobbole.com/87968/" target="_blank" rel="external">图片来源，在此表示感谢</a>    </p>
+<blockquote>
+<p>   参考文档：<br>    <a href="http://blog.csdn.net/fendou_dexiaoniao/article/details/46594125" target="_blank" rel="external">JS实现归并排序</a><br>    <a href="https://www.cnblogs.com/lizhancheng/p/3989809.html" target="_blank" rel="external">js归并排序法</a><br>    <a href="https://baike.baidu.com/item/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F/1639015?fr=aladdin#5_10" target="_blank" rel="external">归并排序</a><br>    <a href="http://web.jobbole.com/87968/" target="_blank" rel="external">十大经典排序算法</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/11/12/设计模式总结/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2261,219 +2458,6 @@ PS：建议使用不可变对象的思想进行编程。
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/11/08/排序算法-冒泡排序/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/11/08/排序算法-冒泡排序/" itemprop="url">
-                  排序算法--冒泡排序
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-08T21:31:41+08:00">
-                2017-11-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/11/08/排序算法-冒泡排序/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/11/08/排序算法-冒泡排序/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  794
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  3
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><a href="https://fanerge.github.io/2017/11/08/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">或许你需要对算法的基本概念进行了解，请访问该链接。</a></p>
-<h1 id="冒泡排序算法定义（Bubble-Sort）"><a href="#冒泡排序算法定义（Bubble-Sort）" class="headerlink" title="冒泡排序算法定义（Bubble Sort）"></a>冒泡排序算法定义（Bubble Sort）</h1><pre><code>它重复地走访过要排序的数列，一次比较两个元素，如果他们的顺序错误就把他们交换过来。
-走访数列的工作是重复地进行直到没有再需要交换，也就是说该数列已经排序完成。
-这个算法的名字由来是因为越大的元素会经由交换慢慢“浮”到数列的顶端，故名。
-</code></pre><h1 id="冒泡排序算法原理"><a href="#冒泡排序算法原理" class="headerlink" title="冒泡排序算法原理"></a>冒泡排序算法原理</h1><pre><code>冒泡排序算法的运作如下：（从后往前）
-</code></pre><ol>
-<li>比较相邻的元素。如果第一个比第二个大，就交换他们两个。</li>
-<li>对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对。在这一点，最后的元素应该会是最大的数。</li>
-<li>针对所有的元素重复以上的步骤，除了最后一个。</li>
-<li>持续每次对越来越少的元素重复上面的步骤，直到没有任何一对数字需要比较。</li>
-</ol>
-<h1 id="冒泡排序算法分析"><a href="#冒泡排序算法分析" class="headerlink" title="冒泡排序算法分析"></a>冒泡排序算法分析</h1><h2 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h2><pre><code>若数组的初始状态是正序的，一趟扫描即可完成排序。所需的关键字比较次数 C 和记录移动次数 M 均达到最小值。
-    C=n-1；M=0；
-</code></pre><p><span>所以，冒泡排序最好的时间复杂度为 O(n)。</span><br>    若初始数组是反序的，需要进行 n-1 趟排序。每趟排序要进行 n-i 次关键字的比较(1≤i≤n-1)，<br>    且每次比较都必须移动记录三次来达到交换记录位置。<br>        C=n<em>(n-1)/2 = O(n^2)；M=3n</em>(n-1)/2 = O(n^2)</p>
-<p><span>所以，冒泡排序最好的时间复杂度为 O(n^2)。</span><br>    综上，因此冒泡排序总的平均时间复杂度为  O(n^2)。        </p>
-<h2 id="冒泡排序算法的稳定性"><a href="#冒泡排序算法的稳定性" class="headerlink" title="冒泡排序算法的稳定性"></a>冒泡排序算法的稳定性</h2><pre><code>冒泡排序就是把小的元素往前调或者把大的元素往后调。比较是相邻的两个元素比较，交换也发生在这两个元素之间。
-所以，如果两个元素相等，我想你是不会再无聊地把他们俩交换一下的；如果两个相等的元素没有相邻，
-那么即使通过前面的两两交换把两个相邻起来，这时候也不会交换，所以相同元素的前后顺序并没有改变，
-所以冒泡排序是一种稳定排序算法。
-</code></pre><h1 id="冒泡排序算法描述"><a href="#冒泡排序算法描述" class="headerlink" title="冒泡排序算法描述"></a>冒泡排序算法描述</h1><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">function bubbleSort(array) &#123;</div><div class="line">	let len = array.length, j, arr = array.slice();</div><div class="line">	let tempExchangeVal;</div><div class="line">	while (len &gt; 0) &#123;</div><div class="line">		for (j = 0; j &lt; len - 1; j++) &#123;</div><div class="line">			if (arr[j] &gt; arr[j+1]) &#123;</div><div class="line">				// 交换两个值</div><div class="line">				tempExchangeVal = arr[j];</div><div class="line">				arr[j] = arr[j + 1];</div><div class="line">				arr[j + 1] = tempExchangeVal;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		len--;</div><div class="line">	&#125;</div><div class="line">	return arr;</div><div class="line">&#125;</div><div class="line">const arr = [5, 4, 3, 2, 1];</div><div class="line">let arrSorted = bubbleSort(arr);</div><div class="line">console.log(arrSorted); // [1, 2, 3, 4, 5]</div><div class="line">console.log(arr); // [5, 4, 3, 2, 1];</div></pre></td></tr></table></figure>
-
-PS：这里在方法中新生成了一个数组，有不可变对象的思想。
-</code></pre><h1 id="动态展示"><a href="#动态展示" class="headerlink" title="动态展示"></a>动态展示</h1><p><img src="http://oz5ii8zjo.bkt.clouddn.com/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F" alt="冒泡排序"><br>    <a href="http://web.jobbole.com/87968/" target="_blank" rel="external">图片来源</a>，在此表示感谢！</p>
-<blockquote>
-<p>   参考文档：<br>    <a href="https://www.cnblogs.com/zhouliang/p/6638010.html" target="_blank" rel="external">JS-排序详解-冒泡排序</a><br>    <a href="http://web.jobbole.com/87968/" target="_blank" rel="external">十大经典排序算法</a><br>    <a href="https://baike.baidu.com/item/%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/4602306?fr=aladdin" target="_blank" rel="external">冒泡排序</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2523,7 +2507,7 @@ PS：这里在方法中新生成了一个数组，有不可变对象的思想。
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">121</span>
+                <span class="site-state-item-count">122</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2662,7 +2646,7 @@ PS：这里在方法中新生成了一个数组，有不可变对象的思想。
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共152.8k字</span>
+  <span class="post-count">博客全站共153.8k字</span>
 </div>
         
 
