@@ -306,6 +306,228 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/07/30/js函数式编程-读书笔记-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/30/js函数式编程-读书笔记-2/" itemprop="url">
+                  js函数式编程-变量的作用域和闭包
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-30T10:42:20+08:00">
+                2017-07-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
+                    <span itemprop="name">函数式编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/30/js函数式编程-读书笔记-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/07/30/js函数式编程-读书笔记-2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  520
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  3
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸<strong>函数式编程</strong>。<br><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
+<h3 id="变量的作用域和闭包"><a href="#变量的作用域和闭包" class="headerlink" title="变量的作用域和闭包"></a>变量的作用域和闭包</h3><h4 id="全局作用域"><a href="#全局作用域" class="headerlink" title="全局作用域"></a>全局作用域</h4><pre><code>动态作用域 -- this（函数调用时确定的）
+静态作用域（词法作用域）-- 函数声明时确定的
+</code></pre><h4 id="词法作用域"><a href="#词法作用域" class="headerlink" title="词法作用域"></a>词法作用域</h4><pre><code>定义：所谓的词法作用域其实是指作用域在词法解析阶段既确定了,不会改变。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var aVariable = &apos;outer&apos;;</div><div class="line">function afunc()&#123;</div><div class="line">	let aVariable = &apos;middle&apos;;</div><div class="line">	return _.map([1, 2, 3], function (e)&#123;</div><div class="line">		let aVariable = &apos;in&apos;; // 使用最内层的aVariable</div><div class="line">		return [aVariable,e].join(&apos; &apos;);</div><div class="line">	&#125;);</div><div class="line">&#125;</div><div class="line">console.log(afunc()) // [&quot;in 1&quot;, &quot;in 2&quot;, &quot;in 3&quot;]</div></pre></td></tr></table></figure>
+</code></pre><h4 id="动态作用域"><a href="#动态作用域" class="headerlink" title="动态作用域"></a>动态作用域</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">var globals = &#123;&#125;;</div><div class="line">function makeBindFun(resolver)&#123;</div><div class="line">	return function(k, v)&#123;</div><div class="line">		let stack = globals[k] || [];</div><div class="line">		globals[k] = resolver(stack, v);</div><div class="line">		return globals;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">var stackBinder = makeBindFun(function(stack, v)&#123;</div><div class="line">	stack.push(v);</div><div class="line">	return stack;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">var stackUnBinder = makeBindFun(function(stack, v)&#123;</div><div class="line">	stack.pop(v);</div><div class="line">	return stack;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">var dd = stackBinder(&apos;sd&apos;, &apos;dd&apos;)</div><div class="line">console.log(dd) //&#123;sd: [&apos;dd&apos;]&#125;</div></pre></td></tr></table></figure>
+
+
+javascript的动态作用域（对this引用的讨论）
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">*bind* 锁定this使其不被更改</div><div class="line">function globalThis() &#123;</div><div class="line">	return this;</div><div class="line">&#125;</div><div class="line">var nopeThis = _.bind(globalThis, &apos;nope&apos;);</div><div class="line">nopeThis.call(&apos;wat&apos;) // &apos;nope&apos;;</div><div class="line"></div><div class="line">*bindAll* 锁定this引用到对应的命名函数</div><div class="line">var target = &#123;</div><div class="line">	name: &apos;the right value&apos;,</div><div class="line">	aux: function () &#123;</div><div class="line">		return this.name;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">var dd = _.bindAll(target, &apos;aux&apos;)</div><div class="line">console.log(target.aux.call(&apos;wat&apos;)) // the right value</div></pre></td></tr></table></figure>
+</code></pre><h4 id="函数作用域"><a href="#函数作用域" class="headerlink" title="函数作用域"></a>函数作用域</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">*clone* 克隆一个对象</div><div class="line">function f()&#123;</div><div class="line">	this[&apos;a&apos;] = 200;</div><div class="line">	return this[&apos;a&apos;] + this[&apos;b&apos;];</div><div class="line">&#125;</div><div class="line">var globals = &#123;&apos;b&apos;: 2&#125;;</div><div class="line">var dd = f.call(_.clone(globals))</div><div class="line">console.log(dd) // 202</div></pre></td></tr></table></figure>
+</code></pre><h4 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h4><pre><code>模拟闭包
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">function whatWasTheLocal() &#123;</div><div class="line">	let CAPTURED = &quot;Oh hai&quot;;</div><div class="line">	return function () &#123;</div><div class="line">		return &quot;The local was:&quot; + CAPTURED;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">var dd = whatWasTheLocal();</div><div class="line">console.log(dd()) // The local was:Oh hai</div><div class="line"></div><div class="line">function createWeirdScaleFunction(FACTOR) &#123;</div><div class="line">	return function (v) &#123;</div><div class="line">		this[&apos;FACTOR&apos;] = FACTOR;</div><div class="line">		let captures = this;</div><div class="line">		return _.map(v, _.bind(function (n) &#123;</div><div class="line">			return (n * this[&apos;FACTOR&apos;]);	</div><div class="line">		&#125;, captures));</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">let scale10 = createWeirdScaleFunction(10);</div><div class="line">let dd = scale10.call(&#123;&#125;, [3, 4, 5])</div><div class="line">console.log(dd)</div></pre></td></tr></table></figure>
+
+遮蔽
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var shadowed = 220;</div><div class="line">function argShadow(shadowed) &#123;</div><div class="line">	return [&apos;value is&apos;, shadowed].join();</div><div class="line">&#125;</div><div class="line"></div><div class="line">var dd = argShadow()</div><div class="line">console.log(dd)</div></pre></td></tr></table></figure>
+
+使用闭包
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">let pingpong = (function () &#123;</div><div class="line">	let PRIVATE = 0;</div><div class="line">	return &#123;</div><div class="line">		inc: function (n) &#123;</div><div class="line">			return PRIVATE += n;</div><div class="line">		&#125;,</div><div class="line">		dec: function (n) &#123;</div><div class="line">			return PRIVATE -= n;</div><div class="line">		&#125;</div><div class="line">	&#125;;</div><div class="line">&#125;)();</div><div class="line"></div><div class="line">let dd = pingpong.inc(10);</div><div class="line">console.log(dd) // 10</div></pre></td></tr></table></figure>
+
+闭包的抽象
+```
+function plucker (FIELD) {
+    return function (obj) {
+        return (obj &amp;&amp; obj[FIELD])
+    }
+}
+let best = {title: &apos;infinite jest&apos;, author: &apos;dfw&apos;}
+let getTitle = plucker(&apos;title&apos;)
+let dd = getTitle(best);
+console.log(dd) // infinite jest
+```    
+</code></pre><blockquote>
+<p>   源代码仓库<br>    <a href="https://github.com/fanerge/Functional-reading-notes" target="_blank" rel="external">函数式编程-读书笔记</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/07/27/js函数式编程-读书笔记-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2275,212 +2497,6 @@ compose(id, f) === compose(f, id) === f;
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/07/17/vue-end/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/07/17/vue-end/" itemprop="url">
-                  vue  end
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-17T22:16:17+08:00">
-                2017-07-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/vue/" itemprop="url" rel="index">
-                    <span itemprop="name">vue</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/07/17/vue-end/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/07/17/vue-end/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  396
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  2
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="今天完成后台界面中引入iconfont图标和添加全屏功能screenfull"><a href="#今天完成后台界面中引入iconfont图标和添加全屏功能screenfull" class="headerlink" title="今天完成后台界面中引入iconfont图标和添加全屏功能screenfull"></a>今天完成后台界面中引入<a href="http://www.iconfont.cn" target="_blank" rel="external">iconfont</a>图标和添加全屏功能<a href="">screenfull</a></h2><p><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
-<h3 id="引入iconfont图标，这是阿里的开源产品，个人感觉不错，其中symbol方式应该会成为未来的主流方式（不支持ie8）"><a href="#引入iconfont图标，这是阿里的开源产品，个人感觉不错，其中symbol方式应该会成为未来的主流方式（不支持ie8）" class="headerlink" title="引入iconfont图标，这是阿里的开源产品，个人感觉不错，其中symbol方式应该会成为未来的主流方式（不支持ie8）"></a>引入iconfont图标，这是阿里的开源产品，个人感觉不错，其中symbol方式应该会成为未来的主流方式（不支持ie8）</h3><ol>
-<li>进入iconfont后，创建项目，把自己喜欢的图标都放到项目中去，点击下载这里我们只需要iconfont.js文件</li>
-<li><p>在main.js中引入 </p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">import &apos;@/assets/icon-font/iconfont&apos; // 引入iconfont图库</div></pre></td></tr></table></figure>
-</li>
-<li><p>这里我把它单独封装一个组件，以便其他地方使用(直接贴上源码了，都能看懂)</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">&lt;template&gt;</div><div class="line">	&lt;svg class=&quot;icon&quot; :style=&quot;&#123;width: width + &apos;em&apos;, height: height + &apos;em&apos;, verticalAlign: verticalAlign + &apos;em&apos;&#125;&quot; aria-hidden=&quot;true&quot;&gt;</div><div class="line">	  &lt;use :xlink:href=&quot;iconName&quot;&gt;&lt;/use&gt;</div><div class="line">	&lt;/svg&gt;</div><div class="line">&lt;/template&gt;</div><div class="line"></div><div class="line">&lt;script&gt;</div><div class="line">  export default &#123;</div><div class="line">	name: &apos;iconfont&apos;,</div><div class="line">	props: &#123;</div><div class="line">		icon: &#123;</div><div class="line">			type: String,</div><div class="line">			required: true </div><div class="line">		&#125;,</div><div class="line">		width: &#123;</div><div class="line">			type: Number,</div><div class="line">			default: 1</div><div class="line">		&#125;,</div><div class="line">		height: &#123;</div><div class="line">			type: Number,</div><div class="line">			default: 1</div><div class="line">		&#125;,</div><div class="line">		verticalAlign: &#123;</div><div class="line">			type: Number,</div><div class="line">			default: -0.15</div><div class="line">		&#125;</div><div class="line">	&#125;,</div><div class="line">	data () &#123;</div><div class="line">	  return &#123;</div><div class="line">	  &#125;</div><div class="line">	&#125;,</div><div class="line">	computed: &#123;</div><div class="line">		iconName () &#123;</div><div class="line">			return `#$&#123;this.icon&#125;`</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">&lt;/script&gt;</div><div class="line"></div><div class="line">&lt;style scoped&gt;</div><div class="line">  .icon &#123;</div><div class="line">	   fill: currentColor;</div><div class="line">	   overflow: hidden;</div><div class="line">	&#125;</div><div class="line">&lt;/style&gt;</div></pre></td></tr></table></figure>
-</li>
-<li><p>使用的时候</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;iconfont icon=&quot;icon-daxiang&quot; :width=&quot;2&quot; :height=&quot;2&quot; :verticalAlign=&quot;-0.5&quot;&gt;&lt;/iconfont&gt;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="添加全屏功能"><a href="#添加全屏功能" class="headerlink" title="添加全屏功能"></a>添加全屏功能</h3><ol>
-<li>安装依赖 npm i screenfull -S</li>
-<li>我还是封装成组件，一遍其他项目使用(贴原代码) <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">&lt;template&gt;</div><div class="line">	&lt;iconfont @click.native=&quot;toggleFullScreen&quot; :icon=&quot;iconType&quot;&gt;&lt;/iconfont&gt;</div><div class="line">&lt;/template&gt;</div><div class="line"></div><div class="line">&lt;script&gt;</div><div class="line">import screenfull from &apos;screenfull&apos;</div><div class="line">import iconfont from &apos;@/components/iconfont&apos;</div><div class="line">  export default &#123;</div><div class="line">	name: &apos;screenfull&apos;,</div><div class="line">	data () &#123;</div><div class="line">	  return &#123;</div><div class="line">		isFullscreen: false,</div><div class="line">		iconType: &apos;icon-quanping&apos;</div><div class="line">	  &#125;</div><div class="line">	&#125;,</div><div class="line">	methods: &#123;</div><div class="line">		toggleFullScreen () &#123;</div><div class="line">			if (!screenfull.enabled) &#123;</div><div class="line">				this.$message(&#123;</div><div class="line">				  message: &apos;you browser can not work&apos;,</div><div class="line">				  type: &apos;warning&apos;</div><div class="line">				&#125;);</div><div class="line">				return false;</div><div class="line">			&#125;</div><div class="line">			this.iconType = this.isFullscreen ? &apos;icon-quanping&apos; : &apos;icon-tuichuquanping&apos;</div><div class="line">			screenfull.toggle()</div><div class="line">			this.isFullscreen = !this.isFullscreen</div><div class="line">		&#125;</div><div class="line">	&#125;,</div><div class="line">	components: &#123;</div><div class="line">		iconfont</div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">&lt;/script&gt;</div><div class="line"></div><div class="line">&lt;style scoped&gt;</div><div class="line">&lt;/style&gt;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>后台系统，先做的这里，以后在添加。打算接着撸一段事件的函数式编程</p>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2530,7 +2546,7 @@ compose(id, f) === compose(f, id) === f;
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">122</span>
+                <span class="site-state-item-count">123</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2669,7 +2685,7 @@ compose(id, f) === compose(f, id) === f;
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共153.8k字</span>
+  <span class="post-count">博客全站共155.1k字</span>
 </div>
         
 

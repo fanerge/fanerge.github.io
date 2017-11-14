@@ -306,6 +306,212 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/11/01/js设计模式-访问者模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/11/01/js设计模式-访问者模式/" itemprop="url">
+                  js设计模式-访问者模式
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-01T20:11:11+08:00">
+                2017-11-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/11/01/js设计模式-访问者模式/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/11/01/js设计模式-访问者模式/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  645
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  2
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="在访问者模式中，主要包括下面几个角色"><a href="#在访问者模式中，主要包括下面几个角色" class="headerlink" title="在访问者模式中，主要包括下面几个角色"></a>在访问者模式中，主要包括下面几个角色</h1><ol>
+<li>抽象访问者：抽象类或者接口，声明访问者可以访问哪些元素，具体到程序中就是visit方法中的参数定义哪些对象是可以被访问的。</li>
+<li>访问者：实现抽象访问者所声明的方法，它影响到访问者访问到一个类后该干什么，要做什么事情。</li>
+<li>抽象元素类：接口或者抽象类，声明接受哪一类访问者访问，程序上是通过accept方法中的参数来定义的。抽象元素一般有两类方法，一部分是本身的业务逻辑，另外就是允许接收哪类访问者来访问。</li>
+<li>元素类：实现抽象元素类所声明的accept方法，通常都是visitor.visit(this)，基本上已经形成一种定式了。</li>
+<li>结构对象：一个元素的容器，一般包含一个容纳多个不同类、不同接口的容器，如List、Set、Map等，在项目中一般很少抽象出这个角色。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">// 访问者  </div><div class="line">function Visitor() &#123;  </div><div class="line">  this.visit = function( concreteElement ) &#123;  </div><div class="line">    concreteElement.doSomething();  </div><div class="line">  &#125;  </div><div class="line">&#125; </div><div class="line"></div><div class="line">// 元素类  </div><div class="line">function ConceteElement() &#123;  </div><div class="line">  this.doSomething = function() &#123;  </div><div class="line">    console.log(&quot;这是一个具体元素&quot;);  </div><div class="line">  &#125;  </div><div class="line">  this.accept = function( visitor ) &#123;  </div><div class="line">    visitor.visit(this);  </div><div class="line">  &#125;  </div><div class="line">&#125;  </div><div class="line"></div><div class="line">// Client  </div><div class="line">var ele = new ConceteElement();  </div><div class="line">var v = new Visitor();  </div><div class="line">ele.accept( v );</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="访问者模式的适用场景"><a href="#访问者模式的适用场景" class="headerlink" title="访问者模式的适用场景"></a>访问者模式的适用场景</h1><ol>
+<li>假如一个对象中存在着一些与本对象不相干（或者关系较弱）的操作，为了避免这些操作污染这个对象，则可以使用访问者模式来把这些操作封装到访问者中去。</li>
+<li>假如一组对象中，存在着相似的操作，为了避免出现大量重复的代码，也可以将这些重复的操作封装到访问者中去。</li>
+</ol>
+<h1 id="访问者模式的优点"><a href="#访问者模式的优点" class="headerlink" title="访问者模式的优点"></a>访问者模式的优点</h1><ol>
+<li>符合单一职责原则：凡是适用访问者模式的场景中，元素类中需要封装在访问者中的操作必定是与元素类本身关系不大且是易变的操作，使用访问者模式一方面符合单一职责原则，另一方面，因为被封装的操作通常来说都是易变的，所以当发生变化时，就可以在不改变元素类本身的前提下，实现对变化部分的扩展。</li>
+<li>扩展性良好：元素类可以通过接受不同的访问者来实现对不同操作的扩展。</li>
+</ol>
+<blockquote>
+<p>   参考文档：<br>    <a href="http://blog.csdn.net/itpinpai/article/details/51644922" target="_blank" rel="external">【JS设计模式】访问者模式的代码示例</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/31/Redux-API整理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2789,229 +2995,6 @@ PS：这看起来很像是----适配器，的确如此。
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/21/js设计模式-迭代器模式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/10/21/js设计模式-迭代器模式/" itemprop="url">
-                  js设计模式-迭代器模式
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-21T13:15:11+08:00">
-                2017-10-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">设计模式</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/21/js设计模式-迭代器模式/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/21/js设计模式-迭代器模式/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  882
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  4
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="迭代器模式介绍"><a href="#迭代器模式介绍" class="headerlink" title="迭代器模式介绍"></a>迭代器模式介绍</h1><pre><code>定义：迭代器模式是指提供一种方法顺序访问一个聚合对象中的各个元素，而又不需要暴露该对象的内部表示。
-使用的好处：迭代器模式可以把迭代的过程从业务逻辑中分离出来，在使用迭代器模式之后，即使不关心对象的内部构造，也可以按顺序访问其中的每个元素。
-先看一个 jquery 迭代器
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$.each(array, function (i, n) &#123;</div><div class="line">	console.log(`当前为第$&#123;i&#125;项，值为$&#123;n&#125;`);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h1 id="封装迭代器"><a href="#封装迭代器" class="headerlink" title="封装迭代器"></a>封装迭代器</h1><h2 id="内部迭代器"><a href="#内部迭代器" class="headerlink" title="内部迭代器"></a>内部迭代器</h2><pre><code>定义：迭代函数内部已经定义好了迭代原则，它完全接手整个迭代过程，外部只需要一次初始调用。    
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">const each = function(array, callback) &#123;</div><div class="line">	for (let i = 0, len = array.length; i &lt; len; i++) &#123;</div><div class="line">		callback.call(array[i], array[i], i); </div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line">// 注意：这里设计each函数时参考了[].forEach函数，callback第一个参数为 value，第二个参数为 index。</div></pre></td></tr></table></figure>
-
-使用内部迭代器：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">each([1,2,3,4], function (val, ind) &#123;</div><div class="line">	console.log( val + &quot; - &quot; + ind ); // 输出数组值和下标</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-
-说明：现在 ES5 已经实现了内部迭代器 [].foreEach(callback(currentValue, index, array)[, this]); 
-详细的使用说明请参考[MDN-Array.prototype.forEach()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach)
-</code></pre><h2 id="外部迭代器"><a href="#外部迭代器" class="headerlink" title="外部迭代器"></a>外部迭代器</h2><pre><code>定义：外部迭代器必须显式地请求迭代下一个元素，外部迭代器增加了一些调用的复杂度，
-    但相对的也增强了迭代器的灵活性，我们可以手工控制迭代的过程或者顺序。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">2 var Iterator = function (obj) &#123;</div><div class="line">	var current = 0;</div><div class="line"></div><div class="line">	var next = function()&#123;</div><div class="line">		current += 1;</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">	var isDone = function()&#123;</div><div class="line">		return current &gt;= obj.length;</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">	var getCurrItem = function()&#123;</div><div class="line">		return obj[ current ];</div><div class="line">	&#125;;</div><div class="line"></div><div class="line">	return &#123;</div><div class="line">		next: next,</div><div class="line">		isDone: isDone,</div><div class="line">		getCurrItem: getCurrItem</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-使用：判断两个数组是不是相等
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">var compare = function( iterator1, iterator2 )&#123;</div><div class="line">	while( iterator1.isDone() &amp;&amp; iterator2.isDone() )&#123;</div><div class="line">		if( iterator1.getCurrItem() !== iterator2.getCurrItem() )&#123;</div><div class="line">			throw new Error( &quot;iterator1 和 iterator2不相等&quot; );</div><div class="line">		&#125;</div><div class="line">		iterator1.next();</div><div class="line">		iterator2.next();</div><div class="line">	&#125;</div><div class="line">	console.log( &quot;iterator1 和 iterator2相等&quot; );</div><div class="line">&#125;;</div><div class="line"></div><div class="line">var iterator1 = Iterator( [1,2,3,4] );</div><div class="line">var iterator2 = Iterator( [1,2,3,4] );</div><div class="line"></div><div class="line">compare(iterator1,iterator2);</div></pre></td></tr></table></figure>
-</code></pre><h2 id="中止迭代器"><a href="#中止迭代器" class="headerlink" title="中止迭代器"></a>中止迭代器</h2><pre><code>定义：在迭代过程，通过判断是否退出迭代器。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">var each = function( arry, callback )&#123;</div><div class="line">	for( var i = 0, l = arry.length; i &lt; l; i++ )&#123;</div><div class="line">		// callback 的执行结果返回false，提前中止迭代</div><div class="line">		if( callback( arry[i], i ) === false )&#123;</div><div class="line">			break;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-
-使用：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">each( [1,2,3,4,5], function ( n, i ) &#123;</div><div class="line">	if( n&gt;3 )&#123; // n 大于3的时候中止循环</div><div class="line">		return false;</div><div class="line">	&#125;</div><div class="line">	console.log(n); // 输出 1 2 3</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h1 id="迭代器应用示例"><a href="#迭代器应用示例" class="headerlink" title="迭代器应用示例"></a>迭代器应用示例</h1><pre><code>需求：根据不同的浏览器获取相应的上传组件对象，将不同的上传对象封装到各自的函数里; 
-如果函数可用，则返回该对象，否则返回false，提示迭代器继续向下迭代。
-定义上传组件方法：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">// 将不同的上传对象封装到各自的函数里; 如果函数可用，则返回该对象，否则返回false，提示迭代器继续</div><div class="line">var getActiveUploadObj = function()&#123;</div><div class="line">	try&#123;</div><div class="line">		return new ActiceXObject( &quot;TXFTNActiveX.FTNUpload&quot; ); // IE 上传控件</div><div class="line">	&#125;catch(e)&#123;</div><div class="line">		return false;</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line">var getFlashUploadObj = function()&#123;</div><div class="line">	if( supportFlash() )&#123;</div><div class="line">		var str = &quot;&lt;object type=&apos;application/x-shockwave-flash&apos;&gt;&lt;/object&gt;&quot;;</div><div class="line">		return $( str).appendTo( $(&quot;body&quot;) );</div><div class="line">	&#125;</div><div class="line">	return false;</div><div class="line">&#125;;</div><div class="line">var getFormUpl0adObj = function()&#123;</div><div class="line">	var str = &quot;&lt;input type=&apos;file&apos; type=&apos;file&apos; class=&apos;ui-file&apos; /&gt;&quot;; // 表单上传</div><div class="line">	return $( str).appendTo( $(&quot;body&quot;) );</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-
-实现迭代器：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">//迭代器代码</div><div class="line">var iteratorUploadObj = function()&#123;</div><div class="line">	for( var i = 0, fn; fn = arguments[ i++ ]; )&#123;</div><div class="line">		var uploadObj = fn();</div><div class="line">		if( uploadObj !== false )&#123;</div><div class="line">			return uploadObj;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">var uploadObj = iteratorUploadObj( getActiveUploadObj, getFlashUploadObj, getFormUpl0adObj );</div></pre></td></tr></table></figure>
-
-PS：这里说明一下，如果前面的上传方案可以使用就使用，否则就使用后面的上传方案。
-    可以用于浏览器降级处理
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="http://www.alloyteam.com/2012/10/commonly-javascript-design-patterns-iterator-mode/" target="_blank" rel="external">【Javascript设计模式12】-迭代器模式</a><br>    <a href="http://www.cnblogs.com/Medeor/p/5017879.html" target="_blank" rel="external">JavaScript设计模式 - 迭代器模式</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -3061,7 +3044,7 @@ PS：这里说明一下，如果前面的上传方案可以使用就使用，否
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">122</span>
+                <span class="site-state-item-count">123</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -3200,7 +3183,7 @@ PS：这里说明一下，如果前面的上传方案可以使用就使用，否
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共153.8k字</span>
+  <span class="post-count">博客全站共155.1k字</span>
 </div>
         
 
