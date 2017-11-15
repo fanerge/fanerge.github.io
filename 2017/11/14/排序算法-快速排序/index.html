@@ -121,7 +121,7 @@
 <meta property="og:site_name" content="余真帆的博客">
 <meta property="og:description" content="快速排序（Quicksort）的基础定义：快速排序（Quicksort）是对冒泡排序的一种改进。基本思想是：通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。 快速排序算法的介绍设要排序的数组是A[0]……A[N-1]，首先任意选取一个数据（通常选用">
 <meta property="og:image" content="http://oz5ii8zjo.bkt.clouddn.com/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F">
-<meta property="og:updated_time" content="2017-11-14T13:37:04.762Z">
+<meta property="og:updated_time" content="2017-11-14T14:18:55.554Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="排序算法-快速排序">
 <meta name="twitter:description" content="快速排序（Quicksort）的基础定义：快速排序（Quicksort）是对冒泡排序的一种改进。基本思想是：通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。 快速排序算法的介绍设要排序的数组是A[0]……A[N-1]，首先任意选取一个数据（通常选用">
@@ -446,7 +446,8 @@
         <h1 id="快速排序（Quicksort）的基础"><a href="#快速排序（Quicksort）的基础" class="headerlink" title="快速排序（Quicksort）的基础"></a>快速排序（Quicksort）的基础</h1><p>定义：快速排序（Quicksort）是对冒泡排序的一种改进。<br>基本思想是：通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。</p>
 <h1 id="快速排序算法的介绍"><a href="#快速排序算法的介绍" class="headerlink" title="快速排序算法的介绍"></a>快速排序算法的介绍</h1><p>设要排序的数组是A[0]……A[N-1]，首先任意选取一个数据（通常选用数组的第一个数）作为关键数据，然后将所有比它小的数都放到它前面，所有比它大的数都放到它后面，这个过程称为一趟快速排序。<br>一趟快速排序的算法是：<br>    1）设置两个变量i、j，排序开始的时候：i=0，j=N-1；<br>    2）以第一个数组元素作为关键数据，赋值给key，即key=A[0]；<br>    3）从j开始向前搜索，即由后开始向前搜索(j–)，找到第一个小于key的值A[j]，将A[j]和A[i]互换；<br>    4）从i开始向后搜索，即由前开始向后搜索(i++)，找到第一个大于key的A[i]，将A[i]和A[j]互换；<br>    5）重复第3、4步，直到i=j； (3,4步中，没找到符合条件的值，即3中A[j]不小于key,4中A[i]不大于key的时候改变j、i的值，使得j=j-1，i=i+1，直至找到为止。找到符合条件的值，进行交换的时候i， j指针位置不变。另外，i==j这一过程一定正好是i+或j-完成的时候，此时令循环结束）。</p>
 <h1 id="排序演示"><a href="#排序演示" class="headerlink" title="排序演示"></a>排序演示</h1><p>假设用户输入了如下数组：<br><span style="padding-left: 24px; color: red;">6, 2, 7, 3, 8, 9</span><br>1.创建变量i=0（指向第一个数据）, j=5(指向最后一个数据), k=6(赋值为第一个数据的值)。<br>我们要把所有比k小的数移动到k的左面，所以我们可以开始寻找比6小的数，从j开始，从右往左找，不断递减变量j的值，我们找到第一个下标3的数据比6小，于是把数据3移到下标0的位置，把下标0的数据6移到下标3，完成第一次比较：<br><span style="padding-left: 24px; color: red;">3, 2, 7, 6, 8, 9</span><br><span style="padding-left: 24px; color: red;">i=0 j=3 k=6</span><br>接着，开始第二次比较，这次要变成找比k大的了，而且要从前往后找了。递加变量i，发现下标2的数据是第一个比k大的，于是用下标2的数据7和j指向的下标3的数据的6做交换，数据状态变成下表：<br><span style="padding-left: 24px; color: red;">3, 2, 6, 7, 8, 9</span><br><span style="padding-left: 24px; color: red;">i=2 j=3 k=6</span><br>称上面两次比较为一个循环。<br>接着，再递减变量j，不断重复进行上面的循环比较。<br>在本例中，我们进行一次循环，就发现i和j“碰头”了：他们都指向了下标2。于是，第一遍比较结束。得到结果如下，凡是k(=6)左边的数都比它小，凡是k右边的数都比它大：<br><span style="padding-left: 24px; color: red;">3, 2, 6, 7, 8, 9</span><br>如果i和j没有碰头的话，就递加i找大的，还没有，就再递减j找小的，如此反复，不断循环。注意判断和寻找是同时进行的。<br>然后，对k两边的数据，再分组分别进行上述的过程，直到不能再分组为止。<br>注意：第一遍快速排序不会直接得到最终结果，只会把比k大和比k小的数分到k的两边。为了得到最后结果，需要再次对下标2两边的数组分别执行此步骤，然后再分解数组，直到数组不能再分解为止（只有一个数据），才能得到正确结果。</p>
-<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><p>前面讲了那么多了，简单就记住下面的步骤就好了。<br>1、找基准（一般是以当前数组的第一项的值）<br>2、遍历数组，小于基准的放在left，大于基准的放在right<br>3、递归（再分别对数组 left 和 right 1,2步骤，直到不能再分组为止）<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">function quickSort(array)&#123;</div><div class="line">	let arr = array.slice();</div><div class="line"></div><div class="line">	//如果数组&lt;=1,则直接返回</div><div class="line">	if(arr.length&lt;=1)&#123;</div><div class="line">		return arr;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	//找基准，并把基准从原数组删除</div><div class="line">	var pivot=arr.splice(0,1)[0];</div><div class="line">	//定义左右数组</div><div class="line">	var left=[];</div><div class="line">	var right=[];</div><div class="line"></div><div class="line">	//比基准小的放在left，比基准大的放在right</div><div class="line">	for(var i=0;i&lt;arr.length;i++)&#123;</div><div class="line">		if(arr[i]&lt;=pivot)&#123;</div><div class="line">			left.push(arr[i]);</div><div class="line">		&#125;</div><div class="line">		else&#123;</div><div class="line">			right.push(arr[i]);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	//递归</div><div class="line">	return quickSort(left).concat([pivot],quickSort(right));</div><div class="line">&#125;</div><div class="line"></div><div class="line">let arr = [6, 2, 7, 3, 8, 9];</div><div class="line">let demo = quickSort(arr);</div><div class="line"></div><div class="line">console.log(arr); // [6, 2, 7, 3, 8, 9];</div><div class="line">console.log(demo); // [2, 3, 6, 7, 8, 9];</div></pre></td></tr></table></figure></p>
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><p>前面讲了那么多了，简单就记住下面的步骤就好了。</p>
+<p><div style="color: red;"><br>1、找基准（一般是以当前数组的第一项的值）<br>2、遍历数组，小于基准的放在left，大于基准的放在right<br>3、递归（再分别对数组 left 和 right 1,2步骤，直到不能再分组为止）<br></div><br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">function quickSort(array)&#123;</div><div class="line">	let arr = array.slice();</div><div class="line"></div><div class="line">	//如果数组&lt;=1,则直接返回</div><div class="line">	if(arr.length&lt;=1)&#123;</div><div class="line">		return arr;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	//找基准，并把基准从原数组删除</div><div class="line">	var pivot=arr.splice(0,1)[0];</div><div class="line">	//定义左右数组</div><div class="line">	var left=[];</div><div class="line">	var right=[];</div><div class="line"></div><div class="line">	//比基准小的放在left，比基准大的放在right</div><div class="line">	for(var i=0;i&lt;arr.length;i++)&#123;</div><div class="line">		if(arr[i]&lt;=pivot)&#123;</div><div class="line">			left.push(arr[i]);</div><div class="line">		&#125;</div><div class="line">		else&#123;</div><div class="line">			right.push(arr[i]);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	//递归</div><div class="line">	return quickSort(left).concat([pivot],quickSort(right));</div><div class="line">&#125;</div><div class="line"></div><div class="line">let arr = [6, 2, 7, 3, 8, 9];</div><div class="line">let demo = quickSort(arr);</div><div class="line"></div><div class="line">console.log(arr); // [6, 2, 7, 3, 8, 9];</div><div class="line">console.log(demo); // [2, 3, 6, 7, 8, 9];</div></pre></td></tr></table></figure></p>
 <p>时间复杂度：T(n) = O(n^2)<br>空间复杂度：S(n) = O(logn)<br>稳定性：不稳定<br>是否为内排序：是</p>
 <h1 id="动图展示"><a href="#动图展示" class="headerlink" title="动图展示"></a>动图展示</h1><p><img src="http://oz5ii8zjo.bkt.clouddn.com/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F" alt="动态图"><br>    <a href="http://web.jobbole.com/87968/" target="_blank" rel="external">图片来源网络，在次表示感谢</a></p>
 <blockquote>
@@ -468,7 +469,7 @@
   <p><span>本文标题:</span><a href="/2017/11/14/排序算法-快速排序/">排序算法-快速排序</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 余真帆-fanerge 的个人博客">余真帆-fanerge</a></p>
   <p><span>发布时间:</span>2017年11月14日 - 20:11</p>
-  <p><span>最后更新:</span>2017年11月14日 - 21:11</p>
+  <p><span>最后更新:</span>2017年11月14日 - 22:11</p>
   <p><span>原始链接:</span><a href="/2017/11/14/排序算法-快速排序/" title="排序算法-快速排序">https://fanerge.github.io/2017/11/14/排序算法-快速排序/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://fanerge.github.io/2017/11/14/排序算法-快速排序/"  aria-label="复制成功！"></i></span>
   </p>
@@ -568,6 +569,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/11/15/排序算法-堆排序/" rel="prev" title="排序算法-堆排序">
+                排序算法-堆排序 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -669,7 +674,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">123</span>
+                <span class="site-state-item-count">124</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -824,7 +829,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共155.1k字</span>
+  <span class="post-count">博客全站共156.4k字</span>
 </div>
         
 

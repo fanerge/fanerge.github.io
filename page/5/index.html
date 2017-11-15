@@ -306,6 +306,235 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/17/js函数传参方式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/17/js函数传参方式/" itemprop="url">
+                  js函数传参方式--按值传递
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-17T20:39:15+08:00">
+                2017-10-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/js/" itemprop="url" rel="index">
+                    <span itemprop="name">js</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/17/js函数传参方式/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/17/js函数传参方式/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,260
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  5
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>一直以为js函数传参方式–按引用传递，原来我一直错了。通过查阅资料彻底了解js函数传参是按值传递的。<br><strong>要搞清楚js函数传参方式，我们先需要具备一些基础知识。</strong></p>
+<h1 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h1><pre><code>基本类型值: Undefined,Null,Boolean,Number,String。
+引用类型值: Object,Array,Function,Date等。
+</code></pre><h1 id="变量的复制"><a href="#变量的复制" class="headerlink" title="变量的复制"></a>变量的复制</h1><h2 id="基本类型的复制"><a href="#基本类型的复制" class="headerlink" title="基本类型的复制"></a>基本类型的复制</h2><pre><code>    众所周知，js中变量的基本类型和引用类型保存方式是不同的，这也就导致变量复制时也就不同了。
+如果从一个变量向另一个变量复制基本类型的值时，会将前者的值克隆一个，然后将克隆的值赋值到后者，
+因此这两个值是完全独立的，只是他们的value相同而已。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var num1 = 10;</div><div class="line">var num2 = num1;</div><div class="line">console.log(num2);//10</div></pre></td></tr></table></figure>
+
+    上面的num1中被保存的值为10，当把num1的值赋值给num2时，num2的值也为10。
+但是这两个10是完全独立的，num2中的10只是被克隆出来的，相当于我写了一个word文档，
+把它放到了num1的文件夹中，然后我再复制这个word文档，就叫word副本吧，然后把这个副本放到num2的文件夹下，
+这两个word文档是完全一样的，修改任何一个都不会影响另一个。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">num2 += 1;</div><div class="line">console.log(num1); //10</div><div class="line">console.log(num2); //11</div></pre></td></tr></table></figure>
+</code></pre><h2 id="引用类型的复制"><a href="#引用类型的复制" class="headerlink" title="引用类型的复制"></a>引用类型的复制</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var obj1 = &#123;</div><div class="line">  name : &quot;111&quot;</div><div class="line">&#125;;</div><div class="line">var obj2 = obj1;</div><div class="line">console.log(obj2.name); //111</div><div class="line">obj2.name = &quot;222&quot;;</div><div class="line">console.log(obj1.name); //222</div></pre></td></tr></table></figure>
+
+    第一次打印出的结果为“111”，这个我们很容易理解，但是第二次打印出来的是“222”，有点莫名其妙了。
+这就是引用类型和基本类型的不同之处了。复制对象时并不会在堆内存中新生成一个一模一样的对象，
+只是多了一个保存指向这个对象指针的变量罢了。将obj1的值复制给obj2，而这个值的副本实际上是一个指针，
+这个指针指向存储在堆中的一个对象，也就是说创建了一个新的内存地址传给了obj2，obj1和obj2两个变量同时指向了同一个Object，
+当去改变这个对象时，他们的值都会改变，也就是说他们中任何一个作出的改变都会反映在另一个身上。
+下面的简易图可能更明了些。
+</code></pre><p><img src="http://oxpnrlb4j.bkt.clouddn.com/%E5%BC%95%E7%94%A8%E5%A4%8D%E5%88%B6.png" alt="引用复制"></p>
+<h1 id="函数参数的传递（按值传递）"><a href="#函数参数的传递（按值传递）" class="headerlink" title="函数参数的传递（按值传递）"></a>函数参数的传递（按值传递）</h1><h2 id="基本类型传递参数（）"><a href="#基本类型传递参数（）" class="headerlink" title="基本类型传递参数（）"></a>基本类型传递参数（）</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">var count = 10;</div><div class="line">function num(num1)&#123;</div><div class="line">   num1 = 1;</div><div class="line">   return num1;</div><div class="line">&#125;</div><div class="line">var result = num(count);</div><div class="line">console.log(result); //1</div><div class="line">console.log(count); //10，并未变成1</div></pre></td></tr></table></figure>
+
+    这个例子很容易理解，实际就是创建了一个count的副本，然后把count的副本的值传入参数中，
+因为函数中定义了参数的值，所以1就将10覆盖了，最后的result返回1，而count并未发生变化。
+</code></pre><h2 id="引用类型传递参数（按值传递）"><a href="#引用类型传递参数（按值传递）" class="headerlink" title="引用类型传递参数（按值传递）"></a>引用类型传递参数（按值传递）</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">var person  = &#123;</div><div class="line">	name : &quot;Tom&quot;</div><div class="line">&#125;;</div><div class="line">function obj(peo)&#123;</div><div class="line">	// PS：这里 peo 对象和 person 对象的内存地址一模一样，所以后面两个才会同时改变</div><div class="line">	peo.name = &quot;Jerry&quot;;</div><div class="line">	return peo;</div><div class="line">&#125;</div><div class="line">var result = obj(person);</div><div class="line">console.log(result.name); // Jerry</div><div class="line">console.log(person.name); // Jerry</div></pre></td></tr></table></figure>
+
+    在上面的例子中，把person复制传入obj()中，peo和person指向了同一个对象，而在peo中修改了name属性，
+其实修改了它们共同指向的对象的name属性，相对应的外部person所引用的name属性也就改变了，
+所以打印出来的为Jerry。其实这个乍一看，感觉引用类型的参数是按照引用传递的，
+这就是我最初犯得错误。
+再来看一个例子。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">var person = &#123;</div><div class="line">	name : &quot;Tom&quot;</div><div class="line">&#125;; </div><div class="line">function obj(peo)&#123;</div><div class="line">	// PS：这里在函数里面新建了一个对象 peo，其内存地址和 person 对象内存地址不一样，所以两个对象不相干涉 </div><div class="line">	peo = &#123;</div><div class="line">	   name : &quot;Jerry&quot;</div><div class="line">	&#125;;</div><div class="line">	return peo;</div><div class="line">&#125;</div><div class="line">var result = obj(person);</div><div class="line">console.log(result.name);// Jerry</div><div class="line">console.log(person.name);// Tom</div></pre></td></tr></table></figure>
+
+    上面的例子中，在函数中重新定义了一个对象，也就是现在堆内存中有两个对象，
+外部的person指向的是老的对象，被传入参数后指向的是新定义的对象，所以调用后返回的值是新定义的对象的值。
+如果是参数是按引用传递的，那么person.name打印出来的结果为Jerry，从这点可以得出参数是按值传递的（有的地方叫做按共享传递）。
+</code></pre><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p><strong>JavaScript中的函数不存在按引用传递，所有参数都是按值传递！<br>    引用类型的变量本就是一个引用，它的值是堆内存中Object的地址，<br>    当使用按值传递时传递的值本就是一个地址，所以在函数中对参数进行操作会影响到函数外对应的变量。</strong></p>
+<blockquote>
+<p>   参考文档：<br>    <a href="http://www.cnblogs.com/dgjamin/p/4337677.html" target="_blank" rel="external">JavaScript中函数参数的按值传递与按引用传递（即按地址传递）</a><br>    <a href="http://blog.csdn.net/allenliu6/article/details/52516605" target="_blank" rel="external">JS函数参数都是按值传递的！</a><br>    <a href="http://www.cnblogs.com/open-wang/p/5208606.html" target="_blank" rel="external">js函数中参数的传递</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/16/js设计模式-装饰者模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2371,477 +2600,6 @@ https://api.example.com/v1
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/10/深入浅出Node-js-读书笔记（下）/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/10/10/深入浅出Node-js-读书笔记（下）/" itemprop="url">
-                  深入浅出Node.js-读书笔记
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-10T20:17:16+08:00">
-                2017-10-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
-                    <span itemprop="name">NodeJS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/10/深入浅出Node-js-读书笔记（下）/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/10/深入浅出Node-js-读书笔记（下）/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  3,395
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  13
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="构建Web应用"><a href="#构建Web应用" class="headerlink" title="构建Web应用"></a>构建Web应用</h2><h3 id="基础功能"><a href="#基础功能" class="headerlink" title="基础功能"></a>基础功能</h3><pre><code>常见的需求：
-</code></pre><ol>
-<li>请求方法的判断（保存在报文）<br>常见的方法有：GET(查看)\POST(更新)\DELETE(删除)\PUT(新建)\CONNECT\HEAD<br>通过req.method 来判断</li>
-<li>URL的路径解析（保存在报文）<br><a href="http://localhost:8080/a.html" target="_blank" rel="external">http://localhost:8080/a.html</a><br>通过req.url 来查找</li>
-<li>URL中查询字符串解析（保存在报文）<br>?foo=bar&amp;baz=val<br>使用Node提供的querystring 模块处理</li>
-<li>Cookie的解析（保存在报文）<br>网站为了辨别用户身份而储存在用户本地终端（Client Side）上的数据（通常经过加密）。<br>http 为无状态协议。<br>数据保存在客户端。</li>
-<li>Session（会话）的需求（保存在报文）<br>数据保存在服务器端。<br>1.基于Cookie 来实现用户和数据的映射。<br>  原理：在客户端只保存口令，发送请求是通过该口令再去查找对应的数据<br>2.通过查询字符串来实现浏览器端和服务器端数据的对应。<br>  不推荐使用，风险大。<br>两种存储方式：<br>1.内存<br>2.数据工具<br>  Redis是一个支持网络、基于内存、可选持久性的键值对存储数据库。</li>
-<li>Basic认证（保存在报文）<br>当客户端与服务端进行请求时，允许通过用户名和密码实现的一种身份认证方式。</li>
-<li>数据上传<br>思路：先判断数据的格式，再通过对应的解析方法解析。<br>1.表单数据的解析<br>先判断req.headers[‘content-type’] === ‘application/x-www-formurlencoded’<br>  querystring.parse(req.rawBody);<br>2.其他格式<br>  json – application/json<br>  xml – application/xml</li>
-<li><p>任意格式文件的上传处理<br>此时需要<form action="/upload" method="post" enctype="multipart/form-data"></form></p>
-</li>
-<li><p>缓存<br>YSlow中提出的缓存规则：<br>1.添加Expires 和 Cache-Control 到报文头中。<br>2.配置ETags。<br>3.让Ajax 可缓存。<br>数据上传与安全<br>1.内存限制（提交数据占用了所有内存）<br>  限制上传内容的大小，一旦超过限制，停止接收数据，并响应400状态码。<br>  通过流式解析，将数据导向到磁盘中，Node只保留文件路径等小数据。<br>2.CSRF<br>  Cross-Site Request Forgery（跨站点请求伪造）</p>
-</li>
-</ol>
-<h3 id="路由解析"><a href="#路由解析" class="headerlink" title="路由解析"></a>路由解析</h3><pre><code>文件路径型
-    静态文件：URL 的路径与网站目录的路径一致，无须转换。
-    动态文件：在 MVC 模式流行起来之前，根据文件路径执行动态脚本也是基本的路由方式，
-        它的处理原理是Web服务器根据URL路径找到对应的文件，如/index.asp或/index.php。
-MVC
-    MVC 模型的主要思想是将业务逻辑按职责分离。
-        控制器（Controller），一组行为的集合。
-        模型（Model），数据相关的操作和封装。
-        视图（View），视图的渲染。
-        1.路由解析，根据URL寻找到对应的控制器和行为。
-        2.行为调用相关的模型，进行数据操作。
-        3.数据操作结束后，调用视图和相关数据进行页面渲染，输出到客户端。
-    路由映射
-    1.手工映射
-        正则匹配
-        参数解析
-    2.自然映射
-RESTful        
-    REST Representational State Transfer （表现层状态转化）        
-    POST /user/fanerge 修改用户信息
-    DELETE /user/fanerge 删除用户
-    PUT /user/fanerge 新建用户        
-    GET /user/fanerge 查询用户信息    
-    请求方法    
-</code></pre><h3 id="中间件"><a href="#中间件" class="headerlink" title="中间件"></a>中间件</h3><pre><code>作用：middleware 来简化和隔离这些基础设施与业务逻辑之间的细节，使开发者更加关注在业务的开发。    
-</code></pre><p><img src="/images/middleware.png" alt="中间件工作原理"><br>    中间件设计格式（connect的设计）<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var querystring = function (req, res, next) &#123;</div><div class="line">	// TODO</div><div class="line">	next();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<pre><code>使用中间件（串联多个中间件）
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">app.use(&apos;/user/:username&apos;, querystring, cookie, session, function (req, res) &#123;</div><div class="line">	// 这里处理具体的业务逻辑</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-
-
-异常处理
-    同步异常 -- try {} catch (err) {throw err} 
-    异步异常
-        需要把异常传递出来
-        domain 模块    
-</code></pre><h3 id="页面渲染"><a href="#页面渲染" class="headerlink" title="页面渲染"></a>页面渲染</h3><pre><code>内容响应
-    Content-Encoding: gzip
-    Content-Length: 21170
-    Content-Type: text/javascript; charset=utf-8
-    MIME : Multipurpose Internet Mail Extensions    
-    附件下载：有些MIME类的资源不需要在客户端中打开它，只需要弹出并下载它即可。
-        Content-Disposition: inline(查看)/attachment(附件下载);
-        例如：Content-Disposition: attachment; filename=&apos;filename.ext&apos;; // 下载附件并为其命名
-    响应JSON
-    响应跳转    
-视图渲染
-模板
-    如EJS、Pug等
-    模板引擎
-        语法分解。
-        处理表达式。
-        生成待执行的语句。
-        与数据一起执行，生成最终字符串。
-    with的应用    
-        模板安全 XSS 解决方案 转义用户的输入
-    模板逻辑
-    集成文件系统    
-    子模板    
-    布局视图    
-    模板性能
-Bigpipe
-    BigPipe是一个重新设计的基础动态网页服务体系。
-    前端加载技术，它的提出主要是为了解决重数据页面的加载问题。
-    Bigpipe 的解决思路则是将页面分割成多个部分（pagelet），
-    先向用户输出没有数据（框架），将每个部分逐步输出到前端，
-    再最终渲染填充框架，完成整个网页的渲染。
-    这个过程中需要前端js的参与，它负责将后续输出的数据渲染到页面上。
-    1.页面布局框架（无数据的）。
-    2.后端持续性的数据输出。
-    3.前端渲染。
-        bigpipe.ready() -- 以一个key注册一个事件。
-        bigpipe.set() -- 触发一个事件，进行页面渲染。
-</code></pre><h2 id="玩转进程"><a href="#玩转进程" class="headerlink" title="玩转进程"></a>玩转进程</h2><h3 id="多进程架构"><a href="#多进程架构" class="headerlink" title="多进程架构"></a>多进程架构</h3><pre><code>child_process 模块
-创建子进程
-    1.spawn(): 启动一个子进程来执行命令。
-    2.exec(): 启动一个子进程来执行命令，与spawn()不同的是其接口不同，
-    它有一个回调函数获知子进程的状况。
-    3.execFile(): 启动一个子进程来执行可执行文件。
-    4.fork(): 与spawn()类似，不同点在于它创建Node的子进程只需指定要执行的Javascript文件模块即可。
-    spawn()与exec()、execFile()不同的是，后两者创建时可以指定timeout属性设置超时时间，
-    一旦创建的进程运行超过设定的时间将会被杀死。
-    exec()与execFile()不同的是，exec()适合执行已有的命令，execFile()适合执行文件。
-进程间通信
-    message事件 绑定发送事件
-    send()方法 触发发送消息
-句柄传递
-    child_process.send(message, [sendHandle]);
-    句柄是一种可以用来标识资源的引用，它的内部包含了指向对象的文件描述符。
-    比如句柄可以用来标识一个服务器端socket对象、客户端socket对象、UDP套接字、一个管道等。
-</code></pre><h3 id="集群稳定之路"><a href="#集群稳定之路" class="headerlink" title="集群稳定之路"></a>集群稳定之路</h3><pre><code>进程事件
-    message
-    error
-    exit
-    close
-    disconnect
-自动重启
-    自杀信号
-    负载均衡（轮叫调度）    
-        由主进程接受链接，将其依次分发给工作进程。
-        cluster 模块
-    状态共享
-        第三方数据存储 通过轮询
-        主动通知 当数据更新时，主动通知子进程。
-</code></pre><h3 id="Cluster-模块"><a href="#Cluster-模块" class="headerlink" title="Cluster 模块"></a>Cluster 模块</h3><pre><code>解决多核CPU的利用率问题。
-Cluster 工作原理
-    该模块是 child_process 和 net 模块的组合应用。
-Cluster 事件
-    fork
-    online
-    listening
-    disconnect
-    exit
-    setup
-</code></pre><h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><pre><code>测试驱动开发
-</code></pre><h3 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h3><pre><code>测试代码编写的原则
-1.单一职责
-2.接口抽象
-3.层次分离
-单元测试介绍
-1.断言
-    assert 模块
-    单元测试中用来保证最小单元是否正常的检测方法。
-    用于检查程序在运行时是否满足期望。
-    ok(): 判断结果是否为真。
-    equal(): 判断实际值余期望值是否相等。
-    notEqual(): 判断实际值与期望值是否不相等。
-    deepEqual(): 判断实际值余期望值是否深度相等（对象和数组的元素是否相等）。
-    notDeepEqual(): 判断实际值与期望值是否不深度相等。
-    strictEqual(): 判断实际值与期望值是否严格相等（===）。
-    notStrictEqual(): 判断实际值与期望值是否不严格相等（!==）。
-    throws(): 判断代码块是否抛出异常。
-    doesNotThrow(): 判断代码块是否没有抛出异常。
-    ifError(): 判断实际值是否为一个假值（null、undefined、0、&apos;&apos;、false），若实际值为真值，将抛出异常。
-2.测试框架
-    用于管理测试用例和生成测试报告。
-    mocha 模块
-    测试风格
-        TDD 测试驱动开发
-        BDD 行为驱动开发
-    测试报告
-        mocha --reporters
-    测试代码的文件组织
-    测试用例
-    异步测试
-    测试覆盖率
-    mock 或者 muk
-    私有方法的测试
-        var lib = rewire(&apos;../lib/index.js&apos;); // 需要测试方法所在的文件
-        var litmit = lib.__get__(&apos;limit&apos;); // 需要测试的方法
-3.工程化与自动化    
-    工程化 -- Makefile
-    持续集成 -- travis-ci
-</code></pre><h2 id="性能测试"><a href="#性能测试" class="headerlink" title="性能测试"></a>性能测试</h2><pre><code>负载测试、压力测试和基准测试。
-基准测试：（对基本的方法如Array.protoryp.map 和 for循环的比较）
-    benchmark 模块
-压力测试：（网络接口进行压力测试）
-    常用的工具：ab、siege、http_load
-基准测试驱动开发
-    1.写基准测试
-    2.写/改代码
-    3.收集数据
-    4.找出问题
-    5.回到第（2）步
-测试数据余业务数据的转换
-    PV访问量（Page View），即页面访问量，每打开一次页面PV计数+1，刷新页面也是。
-    UV访问数（Unique Visitor）指独立访客访问数，一台电脑终端为一个访客。
-    TPS 是每秒内的事务数，比如执行了dml操作，那么相应的tps会增加；
-    QPS 是指每秒内查询次数，比如执行了select操作，相应的qps会增加。
-    QPS = PV/H (H为访问量集中的时间单位小时)。
-</code></pre><h2 id="产品化"><a href="#产品化" class="headerlink" title="产品化"></a>产品化</h2><pre><code>包括：工程化、架构、容灾备份、部署和运维。
-</code></pre><h3 id="项目工程化"><a href="#项目工程化" class="headerlink" title="项目工程化"></a>项目工程化</h3><pre><code>1.目录结构
-    Web框架：Express、Koa、Egg
-2.构建工具
-    合并静态文件、压缩文件大小、打包应用、编译模块。
-    Makefile 
-        一个工程中的源文件不计其数，其按类型、功能、模块分别放在若干个目录中，
-        makefile定义了一系列的规则来指定，哪些文件需要先编译，哪些文件需要后编译，
-        哪些文件需要重新编译，甚至于进行更复杂的功能操作，
-        因为 makefile就像一个Shell脚本一样，其中也可以执行操作系统的命令。
-    Grunt
-3.编码规范
-    JSLint JSHint ESLint
-4.代码审查
-</code></pre><h3 id="部署流程"><a href="#部署流程" class="headerlink" title="部署流程"></a>部署流程</h3><pre><code>部署环境
-部署操作    
-</code></pre><h3 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h3><pre><code>动静分离
-    静态请求用 Nginx 和 CDN 来保存
-启用缓存
-    Redis 和 Memcached
-多进程架构    
-    读写分离
-</code></pre><h3 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h3><pre><code>访问日志
-异常日志
-日志与数据库
-分割日志
-</code></pre><h3 id="监控报警"><a href="#监控报警" class="headerlink" title="监控报警"></a>监控报警</h3><pre><code>业务逻辑型监控 和 硬件型监控
-监控    
-    日志监控
-    响应时间
-    进程监控
-    磁盘监控
-    内存监控
-    CPU占用监控
-    CPU load监控
-    I/O负载
-    网络监控
-    应用状态监控
-    DNS 监控 -- 免费DNS监控服务 DNSPod
-    报警的实现
-        邮件报警 -- nodemailer 模块
-        短信或电话报警 
-
-监控系统的稳定性
-</code></pre><h3 id="稳定性"><a href="#稳定性" class="headerlink" title="稳定性"></a>稳定性</h3><pre><code>多机器
-多机房
-容灾备份
-</code></pre><h3 id="异构共存"><a href="#异构共存" class="headerlink" title="异构共存"></a>异构共存</h3><h2 id="调试Node"><a href="#调试Node" class="headerlink" title="调试Node"></a>调试Node</h2><pre><code>Debugger
-    1.在代码中插入 debugger
-    2.运行 node debug demo.js
-Node Inspector
-    1.安装 npm install -g node-inspector
-    2.错误堆栈
-</code></pre><h2 id="Node-编码规范"><a href="#Node-编码规范" class="headerlink" title="Node 编码规范"></a>Node 编码规范</h2><h3 id="编码规范"><a href="#编码规范" class="headerlink" title="编码规范"></a>编码规范</h3><pre><code>1.空格与格式 -- 采用2个空格缩进，而不是tab缩进。
-2.变量声明 -- 每个变量声明都应该带var。
-3.空格 -- 操作符前后加空格，如+、-、*、%、/、=等
-4.单双引号的问题 -- 只在html标签的属性中使用双引号，其余使用单引号。
-    但在JSON中，严格的规范是要求使用字符串使用双引号，内容中出现双引号时需要转义。
-5.大括号的位置 -- 不需要另起一行
-6.逗号 -- 若逗号不在行结尾，前面需要一个空格。
-7.分号 -- 给表达式结尾添加分号。    
-</code></pre><h3 id="命名规范"><a href="#命名规范" class="headerlink" title="命名规范"></a>命名规范</h3><pre><code>1.变量命名 -- 小驼峰式命名。
-2.方法命名 -- 小驼峰式命名，尽量采用动词或判断词汇。
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var getUser = () =&gt; &#123;&#125;;</div><div class="line">var isAdmin = () =&gt; &#123;&#125;;</div></pre></td></tr></table></figure>
-
-3.类命名（构造函数和Class） -- 大驼峰式命名。
-4.常量命名 -- 全大写字母和下划线。    
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">var PINK_COLOR = &apos;pink&apos;;</div></pre></td></tr></table></figure>
-
-
-5.文件命名 -- 全小写字母和下划线。
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">child_process.js // 普通文件</div><div class="line">_linklist.js // 私有文件</div></pre></td></tr></table></figure>
-
-6.包名 -- 不要包含 js 或 node 的字样，它们是重复的。
-</code></pre><h3 id="比较操作"><a href="#比较操作" class="headerlink" title="比较操作"></a>比较操作</h3><pre><code>1.使用 === 替代 ==
-2.当遇到 0、undefined、null、false、&apos;&apos;假值时，不需要使用 === 或 ==。    
-</code></pre><h3 id="字面量"><a href="#字面量" class="headerlink" title="字面量"></a>字面量</h3><pre><code>尽量使用 {}、[]，不要使用 new Object() 和 new Array()    
-</code></pre><h3 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h3><pre><code>1.慎用with
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">with (obj) &#123;</div><div class="line">	foo = bar;</div><div class="line">&#125;</div><div class="line">// 出现4中结果：obj.foo = obj.bar; obj.foo = bar; foo = obj.bar; foo = bar;</div></pre></td></tr></table></figure>
-
-2.慎用eval()
-</code></pre><h3 id="数组与对象"><a href="#数组与对象" class="headerlink" title="数组与对象"></a>数组与对象</h3><pre><code>1.字面量格式 -- 结尾用逗号分隔，若分行，一行只能一个元素。
-2.for in 循环 -- 只能对对象使用，不能对数组使用。
-    for in语句以任意顺序遍历一个对象的可枚举属性（包括原型上的属性）。
-3.不要把数组当对象使用    
-</code></pre><h3 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h3><pre><code>1.异步回调函数的第一个参数应该是错误指示    
-2.执行传入的回调函数    
-</code></pre><h3 id="类与模块"><a href="#类与模块" class="headerlink" title="类与模块"></a>类与模块</h3><pre><code>1.类继承（Node推荐的类继承方式）
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">function Socket (options) &#123;</div><div class="line">	stream.Stream.call(this);</div><div class="line">&#125;</div><div class="line">util.inherits(Socket, stream.Stream);</div></pre></td></tr></table></figure>
-
-2.导出 -- 所有供外部调用的方法或变量均需要挂载在exports变量上。
-    当需要将文件当做一个类导出时，需要通过如下方式挂载。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">module.exports = Class;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="注解规范"><a href="#注解规范" class="headerlink" title="注解规范"></a>注解规范</h3><pre><code>采用 JSDoc
-</code></pre><h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><pre><code>1.冲突的解决原则 -- 入乡随俗
-2.给编辑器设置检测工具    
-3.版本控制中的hook    
-4.持续集成
-</code></pre><h2 id="搭建局域NPM仓库"><a href="#搭建局域NPM仓库" class="headerlink" title="搭建局域NPM仓库"></a>搭建局域NPM仓库</h2><blockquote>
-<p>参考文档<br>    <a href="https://www.baidu.com/s?ie=utf8&amp;oe=utf8&amp;wd=%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAnode&amp;tn=98010089_dg&amp;ch=1" target="_blank" rel="external">朴灵-深入浅出Node</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2891,7 +2649,7 @@ Node Inspector
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">123</span>
+                <span class="site-state-item-count">124</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -3030,7 +2788,7 @@ Node Inspector
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共155.1k字</span>
+  <span class="post-count">博客全站共156.4k字</span>
 </div>
         
 

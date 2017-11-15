@@ -306,6 +306,260 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/11/15/排序算法-堆排序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/11/15/排序算法-堆排序/" itemprop="url">
+                  排序算法-堆排序
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-15T19:47:34+08:00">
+                2017-11-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/11/15/排序算法-堆排序/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/11/15/排序算法-堆排序/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,269
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  5
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="堆排序（Heapsort）的基础"><a href="#堆排序（Heapsort）的基础" class="headerlink" title="堆排序（Heapsort）的基础"></a>堆排序（Heapsort）的基础</h1><p>定义：堆排序(Heapsort)是指利用堆积树（堆）这种数据结构所设计的一种排序算法，它是选择排序的一种。可以利用数组的特点快速定位指定索引的元素。堆分为大根堆和小根堆，是完全二叉树。大根堆的要求是每个节点的值都不大于其父节点的值，即A[PARENT[i]] &gt;= A[i]。在数组的非降序排序中，需要使用的就是大根堆，因为根据大根堆的要求可知，最大的值一定在堆顶。</p>
+<h1 id="我们需要了解什么叫堆"><a href="#我们需要了解什么叫堆" class="headerlink" title="我们需要了解什么叫堆"></a>我们需要了解什么叫堆</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>n个关键字序列Kl，K2，…，Kn称为（Heap），当且仅当该序列满足如下性质（简称为堆性质）：<br>        (1)ki&lt;=k(2i）且ki&lt;=k(2i+1)(1≤i≤ n/2），当然，这是小根堆，大根堆则换成&gt;=号。//k(i）相当于二叉树的非叶子结点，K(2i）则是左子节点，k(2i+1）是右子节点<br>        若将此序列所存储的向量R[1..n]看做是一棵完全二叉树的存储结构，则堆实质上是满足如下性质的完全二叉树：树中任一非叶子结点的关键字均不大于（或不小于）其左右孩子（若存在）结点的关键字。</p>
+<h2 id="来个例子说明"><a href="#来个例子说明" class="headerlink" title="来个例子说明"></a>来个例子说明</h2><p>【例】关键字序列（10，15，56，25，30，70）和（70，56，30，25，15，10）分别满足堆性质（1）和（2），故它们均是堆，其对应的完全二叉树分别如小根堆示例和大根堆示例所示。<br>    小根堆：根结点（亦称为堆顶）的关键字是堆里所有结点关键字中最小者的堆称为小根堆，又称最小堆。<br>    大根堆：根结点（亦称为堆顶）的关键字是堆里所有结点关键字中最大者，称为大根堆，又称最大堆。<br>    注意：①堆中任一子树亦是堆。②以上讨论的堆实际上是二叉堆（Binary Heap），类似地可定义k叉堆。<br>    来张图表示一下：<br>    <img src="https://gss2.bdstatic.com/9fo3dSag_xI4khGkpoWK1HF6hhy/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=b360e14f7bec54e755e1124cd851f035/43a7d933c895d1433f14885273f082025aaf0764.jpg" alt="大跟堆和小跟堆"></p>
+<h2 id="堆的高度"><a href="#堆的高度" class="headerlink" title="堆的高度"></a>堆的高度</h2><p>堆可以被看成是一棵树，结点在堆中的高度可以被定义为从本结点到叶子结点的最长简单下降路径上边的数目；定义堆的高度为树根的高度。我们将看到，堆结构上的一些基本操作的运行时间至多是与树的高度成正比，为O（lgn）。</p>
+<h1 id="算法描述"><a href="#算法描述" class="headerlink" title="算法描述"></a>算法描述</h1><p><div style="color: red;"><br>    <1>.将初始待排序关键字序列(R1,R2….Rn)构建成大顶堆，此堆为初始的无序区；<br>    <2>.将堆顶元素R[1]与最后一个元素R[n]交换，此时得到新的无序区(R1,R2,……Rn-1)和新的有序区(Rn),且满足R[1,2…n-1]&lt;=R[n]；<br>    <3>.由于交换后新的堆顶R[1]可能违反堆的性质，因此需要对当前无序区(R1,R2,……Rn-1)调整为新堆，然后再次将R[1]与无序区最后一个元素交换，得到新的无序区(R1,R2….Rn-2)和新的有序区(Rn-1,Rn)。不断重复此过程直到有序区的元素个数为n-1，则整个排序过程完成。<br></3></2></1></div>    </p>
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><pre><code>```
+/**
+ * 对数组中的前n项整理成堆
+ * @param array
+ * @param n
+ */
+function refreshHeap(array, n){
+    if(array.length&lt;n)n = array.length;
+
+    //array[n/2-1]表示的是最后一个有子节点的节点
+    for(let i=Math.floor(n/2)-1;i&gt;=0;i--){
+        //对于有子节点的节点i，2*i+1表示的是其第一个子节点，即左子节点
+        //这个while是判断当前节点与其子节点是否需要调整
+        while(2*i+1&lt;n){
+            let j = 2*i+1;
+            //如果节点j不是其父节点的唯一子节点，也就是说如果存在右子节点
+            if(j+1&lt;n){
+                //如果右子节点大于左子节点，则使j指向右边（总之要找到最大的子接点）
+                if(array[j]&lt;a[j+1]){
+                    j++;
+                }
+            }
+            //如果最大子节点大于其父节点，则交换
+            if(a[i]&lt;a[j]){
+                let tmp = a[i];
+                a[i] = a[j];
+                a[j] = tmp;
+                //交换之后整个堆被破坏，需要重新调整，故令i=j
+                //这个调整表示的是从j节点开始判断堆是否需要调整
+                //比如交换j、i节点后，结果j的子节点又大于j了，那么就需要重新调整
+                i = j;
+            }else{
+                break;
+            }
+        }
+    }
+    return array;
+}
+
+function heapSort(array, n){
+    if(array.length&lt;n)n = array.length;
+    while(n&gt;0){
+        //刷新堆之后，将array[0]（最大值）与最后一个子节点交换
+        //然后重新刷新堆(不包括最后那些排好序的节点了)
+        refreshHeap(array, n--);
+        let tmp = array[n];
+        array[n] = array[0];
+        array[0] = tmp;
+    }
+    return array;
+}
+
+var a = [16,7,3,20,17,8];
+console.log(a); // [16, 7, 3, 20, 17, 8]
+heapSort(a,a.length);
+console.log(a); // [3, 7, 8, 16, 17, 20]
+```    
+</code></pre><p>时间复杂度：T(n) = O(nlogn)<br>空间复杂度：S(n) = O(1)<br>稳定性：不稳定<br>排序方式：内排序    </p>
+<h1 id="动图展示"><a href="#动图展示" class="headerlink" title="动图展示"></a>动图展示</h1><p><img src="http://oz5ii8zjo.bkt.clouddn.com/%E5%A0%86%E6%8E%92%E5%BA%8F" alt="动图">    </p>
+<blockquote>
+<p>   参考文档：<br>    <a href="http://blog.csdn.net/liuyaqi1993/article/details/69569059" target="_blank" rel="external">JavaScript数据结构之 堆排序</a><br>    <a href="http://web.jobbole.com/87968/" target="_blank" rel="external">十大经典排序算法</a><br>    <a href="https://baike.baidu.com/item/%E5%A0%86%E6%8E%92%E5%BA%8F/2840151?fr=aladdin" target="_blank" rel="external">堆排序</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/11/14/排序算法-快速排序/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -449,7 +703,8 @@
             <h1 id="快速排序（Quicksort）的基础"><a href="#快速排序（Quicksort）的基础" class="headerlink" title="快速排序（Quicksort）的基础"></a>快速排序（Quicksort）的基础</h1><p>定义：快速排序（Quicksort）是对冒泡排序的一种改进。<br>基本思想是：通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。</p>
 <h1 id="快速排序算法的介绍"><a href="#快速排序算法的介绍" class="headerlink" title="快速排序算法的介绍"></a>快速排序算法的介绍</h1><p>设要排序的数组是A[0]……A[N-1]，首先任意选取一个数据（通常选用数组的第一个数）作为关键数据，然后将所有比它小的数都放到它前面，所有比它大的数都放到它后面，这个过程称为一趟快速排序。<br>一趟快速排序的算法是：<br>    1）设置两个变量i、j，排序开始的时候：i=0，j=N-1；<br>    2）以第一个数组元素作为关键数据，赋值给key，即key=A[0]；<br>    3）从j开始向前搜索，即由后开始向前搜索(j–)，找到第一个小于key的值A[j]，将A[j]和A[i]互换；<br>    4）从i开始向后搜索，即由前开始向后搜索(i++)，找到第一个大于key的A[i]，将A[i]和A[j]互换；<br>    5）重复第3、4步，直到i=j； (3,4步中，没找到符合条件的值，即3中A[j]不小于key,4中A[i]不大于key的时候改变j、i的值，使得j=j-1，i=i+1，直至找到为止。找到符合条件的值，进行交换的时候i， j指针位置不变。另外，i==j这一过程一定正好是i+或j-完成的时候，此时令循环结束）。</p>
 <h1 id="排序演示"><a href="#排序演示" class="headerlink" title="排序演示"></a>排序演示</h1><p>假设用户输入了如下数组：<br><span style="padding-left: 24px; color: red;">6, 2, 7, 3, 8, 9</span><br>1.创建变量i=0（指向第一个数据）, j=5(指向最后一个数据), k=6(赋值为第一个数据的值)。<br>我们要把所有比k小的数移动到k的左面，所以我们可以开始寻找比6小的数，从j开始，从右往左找，不断递减变量j的值，我们找到第一个下标3的数据比6小，于是把数据3移到下标0的位置，把下标0的数据6移到下标3，完成第一次比较：<br><span style="padding-left: 24px; color: red;">3, 2, 7, 6, 8, 9</span><br><span style="padding-left: 24px; color: red;">i=0 j=3 k=6</span><br>接着，开始第二次比较，这次要变成找比k大的了，而且要从前往后找了。递加变量i，发现下标2的数据是第一个比k大的，于是用下标2的数据7和j指向的下标3的数据的6做交换，数据状态变成下表：<br><span style="padding-left: 24px; color: red;">3, 2, 6, 7, 8, 9</span><br><span style="padding-left: 24px; color: red;">i=2 j=3 k=6</span><br>称上面两次比较为一个循环。<br>接着，再递减变量j，不断重复进行上面的循环比较。<br>在本例中，我们进行一次循环，就发现i和j“碰头”了：他们都指向了下标2。于是，第一遍比较结束。得到结果如下，凡是k(=6)左边的数都比它小，凡是k右边的数都比它大：<br><span style="padding-left: 24px; color: red;">3, 2, 6, 7, 8, 9</span><br>如果i和j没有碰头的话，就递加i找大的，还没有，就再递减j找小的，如此反复，不断循环。注意判断和寻找是同时进行的。<br>然后，对k两边的数据，再分组分别进行上述的过程，直到不能再分组为止。<br>注意：第一遍快速排序不会直接得到最终结果，只会把比k大和比k小的数分到k的两边。为了得到最后结果，需要再次对下标2两边的数组分别执行此步骤，然后再分解数组，直到数组不能再分解为止（只有一个数据），才能得到正确结果。</p>
-<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><p>前面讲了那么多了，简单就记住下面的步骤就好了。<br>1、找基准（一般是以当前数组的第一项的值）<br>2、遍历数组，小于基准的放在left，大于基准的放在right<br>3、递归（再分别对数组 left 和 right 1,2步骤，直到不能再分组为止）<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">function quickSort(array)&#123;</div><div class="line">	let arr = array.slice();</div><div class="line"></div><div class="line">	//如果数组&lt;=1,则直接返回</div><div class="line">	if(arr.length&lt;=1)&#123;</div><div class="line">		return arr;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	//找基准，并把基准从原数组删除</div><div class="line">	var pivot=arr.splice(0,1)[0];</div><div class="line">	//定义左右数组</div><div class="line">	var left=[];</div><div class="line">	var right=[];</div><div class="line"></div><div class="line">	//比基准小的放在left，比基准大的放在right</div><div class="line">	for(var i=0;i&lt;arr.length;i++)&#123;</div><div class="line">		if(arr[i]&lt;=pivot)&#123;</div><div class="line">			left.push(arr[i]);</div><div class="line">		&#125;</div><div class="line">		else&#123;</div><div class="line">			right.push(arr[i]);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	//递归</div><div class="line">	return quickSort(left).concat([pivot],quickSort(right));</div><div class="line">&#125;</div><div class="line"></div><div class="line">let arr = [6, 2, 7, 3, 8, 9];</div><div class="line">let demo = quickSort(arr);</div><div class="line"></div><div class="line">console.log(arr); // [6, 2, 7, 3, 8, 9];</div><div class="line">console.log(demo); // [2, 3, 6, 7, 8, 9];</div></pre></td></tr></table></figure></p>
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><p>前面讲了那么多了，简单就记住下面的步骤就好了。</p>
+<p><div style="color: red;"><br>1、找基准（一般是以当前数组的第一项的值）<br>2、遍历数组，小于基准的放在left，大于基准的放在right<br>3、递归（再分别对数组 left 和 right 1,2步骤，直到不能再分组为止）<br></div><br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">function quickSort(array)&#123;</div><div class="line">	let arr = array.slice();</div><div class="line"></div><div class="line">	//如果数组&lt;=1,则直接返回</div><div class="line">	if(arr.length&lt;=1)&#123;</div><div class="line">		return arr;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	//找基准，并把基准从原数组删除</div><div class="line">	var pivot=arr.splice(0,1)[0];</div><div class="line">	//定义左右数组</div><div class="line">	var left=[];</div><div class="line">	var right=[];</div><div class="line"></div><div class="line">	//比基准小的放在left，比基准大的放在right</div><div class="line">	for(var i=0;i&lt;arr.length;i++)&#123;</div><div class="line">		if(arr[i]&lt;=pivot)&#123;</div><div class="line">			left.push(arr[i]);</div><div class="line">		&#125;</div><div class="line">		else&#123;</div><div class="line">			right.push(arr[i]);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	//递归</div><div class="line">	return quickSort(left).concat([pivot],quickSort(right));</div><div class="line">&#125;</div><div class="line"></div><div class="line">let arr = [6, 2, 7, 3, 8, 9];</div><div class="line">let demo = quickSort(arr);</div><div class="line"></div><div class="line">console.log(arr); // [6, 2, 7, 3, 8, 9];</div><div class="line">console.log(demo); // [2, 3, 6, 7, 8, 9];</div></pre></td></tr></table></figure></p>
 <p>时间复杂度：T(n) = O(n^2)<br>空间复杂度：S(n) = O(logn)<br>稳定性：不稳定<br>是否为内排序：是</p>
 <h1 id="动图展示"><a href="#动图展示" class="headerlink" title="动图展示"></a>动图展示</h1><p><img src="http://oz5ii8zjo.bkt.clouddn.com/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F" alt="动态图"><br>    <a href="http://web.jobbole.com/87968/" target="_blank" rel="external">图片来源网络，在次表示感谢</a></p>
 <blockquote>
@@ -2237,207 +2492,6 @@ WeakMap与Map的区别有两点：
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/11/10/排序算法-插入排序/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/11/10/排序算法-插入排序/" itemprop="url">
-                  排序算法-插入排序
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-10T21:12:03+08:00">
-                2017-11-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/算法/" itemprop="url" rel="index">
-                    <span itemprop="name">算法</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/11/10/排序算法-插入排序/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/11/10/排序算法-插入排序/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  1,652
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  6
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="插入排序算法定义（Insertion-Sort）"><a href="#插入排序算法定义（Insertion-Sort）" class="headerlink" title="插入排序算法定义（Insertion Sort）"></a>插入排序算法定义（Insertion Sort）</h1><p>有一个已经有序的数据序列，要求在这个已经排好的数据序列中插入一个数，但要求插入后此数据序列仍然有序，<br>    这个时候就要用到一种新的排序方法——插入排序法,插入排序的基本操作就是将一个数据插入到已经排好序的有序<br>    数据中，从而得到一个新的、个数加一的有序数据，算法适用于少量数据的排序，时间复杂度为O(n^2)。<br>    是稳定的排序方法。插入算法把要排序的数组分成两部分：第一部分包含了这个数组的所有元素，<br>    但将最后一个元素除外（让数组多一个空间才有插入的位置），而第二部分就只包含这一个元素（即待插入元素）。<br>    在第一部分排序完成后，再将这个最后元素插入到已排好序的第一部分中。</p>
-<pre><code>插入排序的基本思想是：每步将一个待排序的记录，按其关键码值的大小插入前面已经排序的文件中适当位置上，
-直到全部插入完为止。
-</code></pre><h1 id="插入排序的分类"><a href="#插入排序的分类" class="headerlink" title="插入排序的分类"></a>插入排序的分类</h1><p>包括：直接插入排序，二分插入排序（又称折半插入排序），链表插入排序，希尔排序（又称缩小增量排序）。<br>    属于稳定排序的一种（通俗地讲，就是两个相等的数不会交换位置） 。</p>
-<h2 id="直接插入排序"><a href="#直接插入排序" class="headerlink" title="直接插入排序"></a>直接插入排序</h2><h3 id="实现思路"><a href="#实现思路" class="headerlink" title="实现思路"></a>实现思路</h3><p>直接插入排序是一种简单的插入排序法，其基本思想是：把待排序的记录按其关键码值的大小逐个插入到一个<br>    已经排好序的有序序列中，直到所有的记录插入完为止，得到一个新的有序序列。<br>        例如,已知待排序的一组记录是：60,71,49,11,24,3,66<br>        假设在排序过程中，前3个记录已按关键码值递增的次序重新排列，构成一个有序序列：49,60,71<br>        将待排序记录中的第4个记录（即11）插入上述有序序列，以得到一个新的含4个记录的有序序列。<br>        首先，应找到11的插入位置，再进行插入。可以讲11放入数组的第一个单元r[0]中，这个单元称为监视哨，<br>        然后从71起从右到左查找，11小于71，将71右移一个位置，11小于60，又将60右移一个位置，11小于49，<br>        又再将49右移一个位置，这时再将11与r[0]的值比较，11≥r[0]，它的插入位置就是r[1]。<br>        假设11大于第一个值r[1]。它的插入位置应该在r[1]和r[2]之间，由于60已经右移了，留出来的位置正好留给11.<br>        后面的记录依照同样的方法逐个插入到该有序序列中。若记录数n,续进行n-1趟排序，才能完成。<br>        直接插入排序的算法思路：<br>        （1） 设置监视哨r[0]，将待插入记录的值赋值给r[0]；<br>        （2） 设置开始查找的位置j；<br>        （3） 在数组中进行搜索，搜索中将第j个记录后移，直至r[0].key≥r[j].key为止；<br>        （4） 将r[0]插入r[j+1]的位置上。</p>
-<h3 id="实现代码"><a href="#实现代码" class="headerlink" title="实现代码"></a>实现代码</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">function insertSort(array)&#123;  </div><div class="line">	let i,</div><div class="line">		j, </div><div class="line">		temp,</div><div class="line">		arr = array.slice(),  // 这里对原数组拷贝</div><div class="line">		n = arr.length; </div><div class="line">		</div><div class="line">	for(i = 1;i &lt; n;i++)&#123;   </div><div class="line">		j = i-1; </div><div class="line">		temp = arr[i]; // 第i项为待插入的项  </div><div class="line">		</div><div class="line">		while(j &lt; i &amp;&amp; arr[j] &gt; temp)&#123;   </div><div class="line">			arr[j+1] = arr[j];   </div><div class="line">			j--;  </div><div class="line">		&#125;   </div><div class="line">		</div><div class="line">		arr[j+1] = temp;   </div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	return arr;   </div><div class="line">&#125;   </div><div class="line">var arrayA = [1 , 3, 2, 6, 4, 5];   </div><div class="line">let demo = insertSort(arrayA);</div><div class="line">console.log(arrayA); // [1, 3, 2, 6, 4, 5]</div><div class="line">console.log(demo); // [1, 2, 3, 4, 5, 6]</div></pre></td></tr></table></figure>
-</code></pre><p><img src="http://oz5ii8zjo.bkt.clouddn.com/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F" alt="直接插入排序"><br>    最佳情况：输入数组按升序排列。T(n) = O(n)<br>    最坏情况：输入数组按降序排列。T(n) = O(n2)<br>    平均情况：T(n) = O(n2)</p>
-<h2 id="折半插入排序（二分插入排序）"><a href="#折半插入排序（二分插入排序）" class="headerlink" title="折半插入排序（二分插入排序）"></a>折半插入排序（二分插入排序）</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p>将直接插入排序中寻找A[i]的插入位置的方法改为采用折半比较，即可得到折半插入排序算法。<br>    在处理A[i]时，A[0]……A[i-1]已经按关键码值排好序。所谓折半比较，就是在插入A[i]时，<br>    取A[i-1/2]的关键码值与A[i]的关键码值进行比较，如果A[i]的关键码值小于A[i-1/2]的关键码值，<br>    则说明A[i]只能插入A[0]到A[i-1/2]之间，故可以在A[0]到A[i-1/2-1]之间继续使用折半比较；<br>    否则只能插入A[i-1/2]到A[i-1]之间，故可以在A[i-1/2+1]到A[i-1]之间继续使用折半比较。<br>    如此担负，直到最后能够确定插入的位置为止。一般在A[k]和A[r]之间采用折半，其中间结点为A[k+r/2]，<br>    经过一次比较即可排除一半记录，把可能插入的区间减小了一半，故称为折半。<br>    执行折半插入排序的前提是文件记录必须按顺序存储。</p>
-<h3 id="实现思路-1"><a href="#实现思路-1" class="headerlink" title="实现思路"></a>实现思路</h3><p>（1）计算 0 ~ i-1 的中间点，用 i 索引处的元素与中间值进行比较，如果 i 索引处的元素大，<br>        说明要插入的这个元素应该在中间值和刚加入i索引之间，反之，就是在刚开始的位置 到中间值的位置，这样很简单的完成了折半；<br>    （2）在相应的半个范围里面找插入的位置时，不断的用（1）步骤缩小范围，不停的折半，<br>        范围依次缩小为 1/2 1/4 1/8 …….快速的确定出第 i 个元素要插在什么地方；<br>    （3）确定位置之后，将整个序列后移，并将元素插入到相应位置。</p>
-<h3 id="实现代码-1"><a href="#实现代码-1" class="headerlink" title="实现代码"></a>实现代码</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">function binaryInsertSort(array)&#123;</div><div class="line">	let arr = array.slice();</div><div class="line">	for (let i = 1; i &lt; arr.length; i++) &#123;</div><div class="line">		let key = arr[i], </div><div class="line">			left = 0, </div><div class="line">			right = i - 1;</div><div class="line"></div><div class="line">		while (left &lt;= right) &#123;</div><div class="line">			let middle = parseInt((left + right) / 2);</div><div class="line"></div><div class="line">			if (key &lt; arr[middle]) &#123;</div><div class="line">				right = middle - 1;</div><div class="line">			&#125; else &#123;</div><div class="line">				left = middle + 1;</div><div class="line">			&#125;</div><div class="line"></div><div class="line">		&#125;</div><div class="line"></div><div class="line">		for (var j = i - 1; j &gt;= left; j--) &#123;</div><div class="line">		  arr[j + 1] = arr[j];</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		arr[left] = key;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	return arr;</div><div class="line">&#125;</div><div class="line"></div><div class="line">var arrayA = [1 , 3, 2, 6, 4, 5];   </div><div class="line">let demo = binaryInsertSort(arrayA);</div><div class="line">console.log(arrayA); // [1, 3, 2, 6, 4, 5]</div><div class="line">console.log(demo); // [1, 2, 3, 4, 5, 6]</div></pre></td></tr></table></figure>
-</code></pre><p><img src="http://oz5ii8zjo.bkt.clouddn.com/%E4%BA%8C%E5%88%86%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F.jpg" alt="二分插入排序"><br>    最佳情况：T(n) = O(nlogn)<br>    最差情况：T(n) = O(n2)<br>    平均情况：T(n) = O(n2)</p>
-<blockquote>
-<p>   参考文档：<br>    <a href="https://www.cnblogs.com/90zeng/p/insert_sort.html" target="_blank" rel="external">数据结构复习：直接插入排序与二分插入排序的C++实现</a><br>    <a href="https://baike.baidu.com/item/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/7214992?fr=aladdin" target="_blank" rel="external">插入排序</a><br>    <a href="http://web.jobbole.com/87968/" target="_blank" rel="external">十大经典排序算法</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2487,7 +2541,7 @@ WeakMap与Map的区别有两点：
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">123</span>
+                <span class="site-state-item-count">124</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2626,7 +2680,7 @@ WeakMap与Map的区别有两点：
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共155.1k字</span>
+  <span class="post-count">博客全站共156.4k字</span>
 </div>
         
 
