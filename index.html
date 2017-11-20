@@ -306,6 +306,208 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/11/20/排序算法-计数排序/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/11/20/排序算法-计数排序/" itemprop="url">
+                  排序算法-计数排序
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-20T20:15:37+08:00">
+                2017-11-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/11/20/排序算法-计数排序/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/11/20/排序算法-计数排序/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,009
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  4
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="计数排序的基础"><a href="#计数排序的基础" class="headerlink" title="计数排序的基础"></a>计数排序的基础</h1><p>定义：计数排序是一个非基于比较的排序算法。它的优势在于在对一定范围内的整数排序时，它的复杂度为Ο(n+k)（其中k是整数的范围），快于任何比较排序算法。[1-2]  当然这是一种牺牲空间换取时间的做法，而且当O(k)&gt;O(n<em>log(n))的时候其效率反而不如基于比较的排序（基于比较的排序的时间复杂度在理论上的下限是O(n</em>log(n)), 如归并排序，堆排序）<br>计数排序对输入的数据有附加的限制条件：<br>    1、输入的线性表的元素属于有限偏序集S；<br>    2、设输入的线性表的长度为n，|S|=k（表示集合S中元素的总数目为k），则k=O(n)。    </p>
+<h1 id="计数排序算法思想"><a href="#计数排序算法思想" class="headerlink" title="计数排序算法思想"></a>计数排序算法思想</h1><p>计数排序的基本思想是对于给定的输入序列中的每一个元素x，确定该序列中值小于x的元素的个数（此处并非比较各元素的大小，而是通过对元素值的计数和计数值的累加来确定）。一旦有了这个信息，就可以将x直接存放到最终的输出序列的正确位置上。例如，如果输入序列中只有17个元素的值小于x的值，则x可以直接存放在输出序列的第18个位置上。当然，如果有多个元素具有相同的值时，我们不能将这些元素放在输出序列的同一个位置上，因此，上述方案还要作适当的修改。</p>
+<h1 id="现实计数算法"><a href="#现实计数算法" class="headerlink" title="现实计数算法"></a>现实计数算法</h1><h2 id="具体算法实现步骤"><a href="#具体算法实现步骤" class="headerlink" title="具体算法实现步骤"></a>具体算法实现步骤</h2><p><1>. 找出待排序的数组中最大和最小的元素；</1></p>
+<p><2>. 统计数组中每个值为i的元素出现的次数，存入数组C的第i项；</2></p>
+<p><3>. 对所有的计数累加（从C中的第一个元素开始，每一项和前一项相加）；</3></p>
+<p><4>. 反向填充目标数组：将每个元素i放在新数组的第C[i]项，每放一个元素就将C[i]减去1。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">function countingSort(arr)&#123;</div><div class="line">	let len = arr.length,</div><div class="line">		Result = [], // 保存排序后的数组</div><div class="line">		Count = [], // 保存各项出现次数的数组</div><div class="line">		min = max = arr[0];</div><div class="line">	console.time(&apos;计数排序计时&apos;);</div><div class="line"></div><div class="line">	// 查找最大、最小值,并将arr数置入Count数组中,统计出现次数</div><div class="line">	for(var i = 0; i &lt; len; i++)&#123;</div><div class="line">		Count[arr[i]] = Count[arr[i]] ? Count[arr[i]] + 1 : 1; // 求各项出现次数</div><div class="line">		min = min &lt;= arr[i] ? min : arr[i]; // 求数组最小值</div><div class="line">		max = max &gt;= arr[i] ? max : arr[i]; // 求数组最大值</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	// 从最小值-&gt;最大值,将计数逐项相加</div><div class="line">	for(var j = min; j &lt; max; j++)&#123;</div><div class="line">		Count[j+1] = (Count[j+1]||0)+(Count[j]||0);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	// Count中,下标为arr数值,数据为arr数值出现次数;反向填充数据进入Result数据</div><div class="line">	for(var k = len - 1; k &gt;= 0;k--)&#123;</div><div class="line">		/*Result[位置] = arr数据*/</div><div class="line">		Result[Count[arr[k]] - 1] = arr[k];</div><div class="line">		/*减少Count数组中保存的计数*/</div><div class="line">		Count[arr[k]]--;</div><div class="line">		/*显示Result数组每一步详情*/</div><div class="line">		console.log(Result);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	console.timeEnd(&apos;计数排序计时&apos;);</div><div class="line">	return Result;</div><div class="line">&#125;</div><div class="line">var arr = [3,44,38,5,47,15,36,26,27,2,46,4,19,50,48];</div><div class="line">console.log(countingSort(arr));</div></pre></td></tr></table></figure></4></p>
+<pre><code>PS：时间复杂度：T(n) = O(n)
+空间复杂度：S(n) = O(k)
+是否稳定：是
+排序方式：外排序
+</code></pre><p>运行结果为:<br>[ , , , , , , , , , , , , , 48 ]<br>[ , , , , , , , , , , , , , 48, 50 ]<br>[ , , , , , 19, , , , , , , , 48, 50 ]<br>[ , , 4, , , 19, , , , , , , , 48, 50 ]<br>[ , , 4, , , 19, , , , , , 46, , 48, 50 ]<br>[ 2, , 4, , , 19, , , , , , 46, , 48, 50 ]<br>[ 2, , 4, , , 19, , 27, , , , 46, , 48, 50 ]<br>[ 2, , 4, , , 19, 26, 27, , , , 46, , 48, 50 ]<br>[ 2, , 4, , , 19, 26, 27, 36, , , 46, , 48, 50 ]<br>[ 2, , 4, , 15, 19, 26, 27, 36, , , 46, , 48, 50 ]<br>[ 2, , 4, , 15, 19, 26, 27, 36, , , 46, 47, 48, 50 ]<br>[ 2, , 4, 5, 15, 19, 26, 27, 36, , , 46, 47, 48, 50 ]<br>[ 2, , 4, 5, 15, 19, 26, 27, 36, 38, , 46, 47, 48, 50 ]<br>[ 2, , 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50 ]<br>[ 2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50 ]<br>计数排序计时: 16ms<br>[ 2, 3, 4, 5, 15, 19, 26, 27, 36, 38, 44, 46, 47, 48, 50 ]</p>
+<h1 id="动图展示"><a href="#动图展示" class="headerlink" title="动图展示"></a>动图展示</h1><p><img src="http://oz5ii8zjo.bkt.clouddn.com/%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F" alt="动态图 | center"></p>
+<blockquote>
+<p>   参考文档：<br>    <a href="http://hao.jser.com/archive/13600/" target="_blank" rel="external">基本算法学习(四)之计数排序(JS)</a><br>    <a href="https://baike.baidu.com/item/%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F/8518144?fr=aladdin" target="_blank" rel="external">计数排序</a><br>    <a href="http://web.jobbole.com/87968/" target="_blank" rel="external">十大经典排序算法</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/11/15/排序算法-堆排序/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2265,233 +2467,6 @@ WeakMap与Map的区别有两点：
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/11/11/Promise的用法/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/11/11/Promise的用法/" itemprop="url">
-                  Promise的用法
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-11T10:31:27+08:00">
-                2017-11-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/js/" itemprop="url" rel="index">
-                    <span itemprop="name">js</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/11/11/Promise的用法/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/11/11/Promise的用法/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  1,535
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  6
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>ES6出来了很久，Promise也一直在用，现在总结一下具体用法。</p>
-<h1 id="Promise-定义"><a href="#Promise-定义" class="headerlink" title="Promise 定义"></a>Promise 定义</h1><p>Promise 对象用于一个异步操作的最终完成（或失败）及其结果值的表示。所谓Promise，简单说就是一个容器，里面保存着某个未来才会结束的事件（通常是一个异步操作）的结果。<br><img src="https://mdn.mozillademos.org/files/8633/promises.png" alt="MDN"><br>    这里使用MDN的图片</p>
-<h1 id="基本方法"><a href="#基本方法" class="headerlink" title="基本方法"></a>基本方法</h1><h2 id="创造了一个-Promise-实例"><a href="#创造了一个-Promise-实例" class="headerlink" title="创造了一个 Promise 实例"></a>创造了一个 Promise 实例</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">const promise = new Promise(function(resolve, reject) &#123;</div><div class="line">  // ... some code</div><div class="line"></div><div class="line">  if (/* 异步操作成功 */)&#123;</div><div class="line">	resolve(value);</div><div class="line">  &#125; else &#123;</div><div class="line">	reject(error);</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h2 id="对-Promise-实例成功-或-失败-做相应的处理"><a href="#对-Promise-实例成功-或-失败-做相应的处理" class="headerlink" title="对 Promise 实例成功 或 失败 做相应的处理"></a>对 Promise 实例成功 或 失败 做相应的处理</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">promise.then(function(value) &#123;</div><div class="line">  // success</div><div class="line">&#125;, function(error) &#123;</div><div class="line">  // failure</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h1 id="Promise-prototype-then"><a href="#Promise-prototype-then" class="headerlink" title="Promise.prototype.then()"></a>Promise.prototype.then()</h1><p>Promise 实例具有then方法，也就是说，then方法是定义在原型对象Promise.prototype上的。它的作用是为 Promise 实例添加状态改变时的回调函数。then方法的第一个参数是resolved状态的回调函数，第二个参数（可选）是rejected状态的回调函数。</p>
-<h2 id="分为三种调用形式（注意最后面需要带着错误处理函数）"><a href="#分为三种调用形式（注意最后面需要带着错误处理函数）" class="headerlink" title="分为三种调用形式（注意最后面需要带着错误处理函数）"></a>分为三种调用形式（注意最后面需要带着错误处理函数）</h2><ol>
-<li>promise.then((resolve) =&gt; { // 成功的处理函数 }, (reject) =&gt; { // 错误的处理函数 })</li>
-<li>promise.then((resolve) =&gt; { // 成功的处理函数 }).then((resolve) =&gt; { // 成功的处理函数 }, (reject) =&gt; { // 错误的处理函数 })</li>
-<li>promise.then(null, (reject) =&gt; { // 错误的处理函数 })</li>
-</ol>
-<h2 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h2><p>返回一个<span style="color: red">新的</span>Promise 对象，从而达到链式调用。</p>
-<h1 id="Promise-prototype-catch"><a href="#Promise-prototype-catch" class="headerlink" title="Promise.prototype.catch()"></a>Promise.prototype.catch()</h1><p>Promise.prototype.catch方法是.then(null, rejection)的别名，用于指定发生错误时的回调函数。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">promise.then(function(resolve) &#123;</div><div class="line">  // 成功的处理函数</div><div class="line">&#125;).catch(function(error) &#123;</div><div class="line">  console.log(error);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<h1 id="Promise-all"><a href="#Promise-all" class="headerlink" title="Promise.all()"></a>Promise.all()</h1><h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><p>Promise.all方法用于将多个 Promise 实例，包装成一个新的 Promise 实例。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">const p = Promise.all([p1, p2, p3]);</div></pre></td></tr></table></figure></p>
-<p>PS：Promise.all方法接受一个数组或具有Iterator 接口的对象作为参数，p1、p2、p3都是 Promise 实例，如果不是，就会先调用Promise.resolve方法，将参数转为 Promise 实例，再进一步处理。</p>
-<h2 id="返回值-1"><a href="#返回值-1" class="headerlink" title="返回值"></a>返回值</h2><p>（1）只有p1、p2、p3的状态都变成resolved，p的状态才会变成resolved，此时p1、p2、p3的返回值组成一个数组，传递给p的回调函数。<br>（2）只要p1、p2、p3之中有一个被rejected，p的状态就变成rejected，此时第一个被reject的实例的返回值，会传递给p的回调函数。</p>
-<h1 id="Promise-race"><a href="#Promise-race" class="headerlink" title="Promise.race()"></a>Promise.race()</h1><h2 id="用法-1"><a href="#用法-1" class="headerlink" title="用法"></a>用法</h2><p>Promise.race方法同样是将多个Promise实例，包装成一个新的Promise实例。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">const p = Promise.race([p1, p2, p3]);</div></pre></td></tr></table></figure></p>
-<p>PS：Promise.race方法的参数与Promise.all方法一样，如果不是 Promise 实例，就会先调用下面讲到的Promise.resolve方法，将参数转为 Promise 实例，再进一步处理。</p>
-<h2 id="返回值-2"><a href="#返回值-2" class="headerlink" title="返回值"></a>返回值</h2><p>只要p1、p2、p3之中有一个实例率先改变状态，p的状态就跟着改变。那个率先改变的 Promise 实例的返回值，就传递给p的回调函数。</p>
-<h1 id="Promise-resolve"><a href="#Promise-resolve" class="headerlink" title="Promise.resolve()"></a>Promise.resolve()</h1><p>有时需要将现有对象转为Promise对象，Promise.resolve方法就起到这个作用。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">const jsPromise = Promise.resolve($.ajax(&apos;/whatever.json&apos;));</div></pre></td></tr></table></figure></p>
-<p>PS：将jQuery生成的deferred对象，转为一个新的Promise对象。</p>
-<h2 id="根据不同参数，返回结果情况"><a href="#根据不同参数，返回结果情况" class="headerlink" title="根据不同参数，返回结果情况"></a>根据不同参数，返回结果情况</h2><ol>
-<li>参数是一个Promise实例<br>如果参数是Promise实例，那么Promise.resolve将不做任何修改、原封不动地返回这个实例。</li>
-<li>参数是一个thenable对象（thenable对象指的是具有then方法的对象）<br>Promise.resolve方法会将这个对象转为Promise对象，然后就立即执行thenable对象的then方法。</li>
-<li>参数不是具有then方法的对象，或根本就不是对象<br>如果参数是一个原始值，或者是一个不具有then方法的对象，则Promise.resolve方法返回一个新的Promise对象，状态为resolved。</li>
-<li>不带有任何参数<br>Promise.resolve方法允许调用时不带参数，直接返回一个resolved状态的Promise对象。</li>
-</ol>
-<h1 id="Promise-reject"><a href="#Promise-reject" class="headerlink" title="Promise.reject()"></a>Promise.reject()</h1><p>Promise.reject(reason)方法也会返回一个新的 Promise 实例，该实例的状态为rejected。<br>下面两种形式一样：<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">const p = Promise.reject(&apos;出错了&apos;);</div><div class="line">// 等同于</div><div class="line">const p = new Promise((resolve, reject) =&gt; reject(&apos;出错了&apos;))</div><div class="line"></div><div class="line">p.then(null, function (s) &#123;</div><div class="line">  console.log(s)</div><div class="line">&#125;);</div><div class="line">// 出错了</div></pre></td></tr></table></figure></p>
-<h1 id="自己部署有用的方法"><a href="#自己部署有用的方法" class="headerlink" title="自己部署有用的方法"></a>自己部署有用的方法</h1><h2 id="done"><a href="#done" class="headerlink" title="done()"></a>done()</h2><h3 id="解决的问题"><a href="#解决的问题" class="headerlink" title="解决的问题"></a>解决的问题</h3><p>Promise对象的回调链，不管以then方法或catch方法结尾，要是最后一个方法抛出错误，都有可能无法捕捉到（因为Promise内部的错误不会冒泡到全局）。因此，我们可以提供一个done方法，总是处于回调链的尾端，保证抛出任何可能出现的错误。</p>
-<h3 id="部署-done-方法"><a href="#部署-done-方法" class="headerlink" title="部署 done 方法"></a>部署 done 方法</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Promise.prototype.done = function (onFulfilled, onRejected) &#123;</div><div class="line">  this.then(onFulfilled, onRejected)</div><div class="line">	.catch(function (reason) &#123;</div><div class="line">	  // 抛出一个全局错误</div><div class="line">	  setTimeout(() =&gt; &#123; throw reason &#125;, 0);</div><div class="line">	&#125;);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">asyncFunc()</div><div class="line">	.then(f1)</div><div class="line">	.catch(r1)</div><div class="line">	.then(f2)</div><div class="line">	.done();</div></pre></td></tr></table></figure>
-</code></pre><h2 id="finally"><a href="#finally" class="headerlink" title="finally()"></a>finally()</h2><h3 id="解决的问题-1"><a href="#解决的问题-1" class="headerlink" title="解决的问题"></a>解决的问题</h3><p>finally方法用于指定不管Promise对象最后状态如何，都会执行的操作。它与done方法的最大区别，它接受一个普通的回调函数作为参数，该函数不管怎样都必须执行。</p>
-<h3 id="部署finally方法"><a href="#部署finally方法" class="headerlink" title="部署finally方法"></a>部署finally方法</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Promise.prototype.finally = function (callback) &#123;</div><div class="line">  let P = this.constructor;</div><div class="line">  return this.then(</div><div class="line">	value  =&gt; P.resolve(callback()).then(() =&gt; value),</div><div class="line">	reason =&gt; P.resolve(callback()).then(() =&gt; &#123; throw reason &#125;)</div><div class="line">  );</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="使用-1"><a href="#使用-1" class="headerlink" title="使用"></a>使用</h3><p>下面是一个例子，服务器使用Promise处理请求，然后使用finally方法关掉服务器。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">server.listen(0)</div><div class="line">	.then(function () &#123;</div><div class="line">	// run test</div><div class="line">	&#125;)</div><div class="line">	.finally(server.stop);</div></pre></td></tr></table></figure></p>
-<h1 id="Promise-try"><a href="#Promise-try" class="headerlink" title="Promise.try()"></a>Promise.try()</h1><p><span style="color: red">目前还为提案，Promise 库Bluebird、Q和when，提供了这个方法。</span></p>
-<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><p>实际开发中，经常遇到一种情况：不知道或者不想区分，函数f是同步函数还是异步操作，但是想用 Promise 来处理它。因为这样就可以不管f是否包含异步操作，都用then方法指定下一步流程，用catch方法处理f抛出的错误。    </p>
-<h2 id="使用-2"><a href="#使用-2" class="headerlink" title="使用"></a>使用</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Promise.try(f) // 这里不需要管 f 是同步还是异步函数。</div><div class="line">  .then(...)</div><div class="line">  .catch(...)</div></pre></td></tr></table></figure>
-</code></pre><h1 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h1><p>我们可以将图片的加载写成一个Promise，一旦加载完成，Promise的状态就发生变化。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">const preloadImage = function (path) &#123;</div><div class="line">  return new Promise(function (resolve, reject) &#123;</div><div class="line">	const image = new Image();</div><div class="line">	image.onload  = resolve;</div><div class="line">	image.onerror = reject;</div><div class="line">	image.src = path;</div><div class="line">  &#125;);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">preloadImage</div><div class="line">	.then((reslove) =&gt; &#123; console.log(&apos;图片加载成功了哦！&apos;) &#125;)</div><div class="line">	.catch((reject) =&gt; &#123; console.log(&apos;图片加载失败了哦！&apos;) &#125;)</div></pre></td></tr></table></figure></p>
-<blockquote>
-<p>   参考文档：<br>    <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank" rel="external">MDN–Promiese</a><br>    <a href="http://es6.ruanyifeng.com/#docs/promise" target="_blank" rel="external">阮一峰–Promise</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2541,7 +2516,7 @@ WeakMap与Map的区别有两点：
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">124</span>
+                <span class="site-state-item-count">125</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2680,7 +2655,7 @@ WeakMap与Map的区别有两点：
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共156.4k字</span>
+  <span class="post-count">博客全站共157.4k字</span>
 </div>
         
 
