@@ -306,6 +306,206 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/11/21/排序算法-桶排算法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/11/21/排序算法-桶排算法/" itemprop="url">
+                  排序算法-桶排序
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-21T20:01:12+08:00">
+                2017-11-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/11/21/排序算法-桶排算法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/11/21/排序算法-桶排算法/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,010
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  4
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="桶排序的基础"><a href="#桶排序的基础" class="headerlink" title="桶排序的基础"></a>桶排序的基础</h1><p>桶排序的定义：假定：输入是由一个随机过程产生的[0, 1)区间上均匀分布的实数。将区间[0, 1)划分为n个大小相等的子区间（桶），每桶大小1/n：[0, 1/n)， [1/n, 2/n)， [2/n, 3/n)，…，[k/n, (k+1)/n )，…将n个输入元素分配到这些桶中，对桶中元素进行排序，然后依次连接桶输入0 ≤A[1..n] &lt;1辅助数组B[0..n-1]是一指针数组，指向桶（链表）。<br>桶排序的说明：桶排序 (Bucket sort)或所谓的箱排序，是一个排序算法，工作的原理是将数组分到有限数量的桶子里。每个桶子再个别排序（有可能再使用别的排序算法或是以递归方式继续使用桶排序进行排序）。桶排序是鸽巢排序的一种归纳结果。当要被排序的数组内的数值是均匀分配的时候，桶排序使用线性时间（O(n)）。但桶排序并不是 比较排序，他不受到 O(n log n) 下限的影响。</p>
+<h1 id="桶排序的步骤"><a href="#桶排序的步骤" class="headerlink" title="桶排序的步骤"></a>桶排序的步骤</h1><div style="color: red;"><br>1.    找出排序数组 arr 中最小值min和最大值max，并设定用来排序的桶的数量 N。<br>2.    计算出每个桶中的数据范围为 L = (max - min)/N。<br>3.    再计算出 N 个桶的数值范围，如第一个桶[min, min + L),第二个桶[min + L, min + 2L),依次类推…<br>4.    将数组arr分配到相应的桶中，再在每个桶的数据进行排序（一般插入排序就可）。<br>5.    将桶中的数据依次取出放入新数组，这时新数组就是排好序的数组了。<br></div>
+
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div></pre></td><td class="code"><pre><div class="line">// 插入排序</div><div class="line">function insertionSort(arr) &#123;</div><div class="line">	var len = arr.length;</div><div class="line">	var preIndex, current;</div><div class="line">	for (var i = 1; i &lt; len; i++) &#123;</div><div class="line">		preIndex = i - 1;</div><div class="line">		current = arr[i];</div><div class="line">		while(preIndex &gt;= 0 &amp;&amp; arr[preIndex] &gt; current) &#123;</div><div class="line">			arr[preIndex+1] = arr[preIndex];</div><div class="line">			preIndex--;</div><div class="line">		&#125;</div><div class="line">		arr[preIndex+1] = current;</div><div class="line">	&#125;</div><div class="line">	return arr;</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 桶排序</div><div class="line">function bucketSort(array, bucketSize) &#123;</div><div class="line">	let arr = array.slice();</div><div class="line">	let i;</div><div class="line">	let minValue = arr[0];</div><div class="line">	let maxValue = arr[0];</div><div class="line"></div><div class="line">	// 空数组时直接返回空数组</div><div class="line">	if (arr.length === 0) &#123;</div><div class="line">	  return arr;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	</div><div class="line">	for (i = 1; i &lt; arr.length; i++) &#123;</div><div class="line">	  if (arr[i] &lt; minValue) &#123;</div><div class="line">		  minValue = arr[i];                //输入数据的最小值</div><div class="line">	  &#125; else if (arr[i] &gt; maxValue) &#123;</div><div class="line">		  maxValue = arr[i];                //输入数据的最大值</div><div class="line">	  &#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	// 桶的初始化</div><div class="line">	let DEFAULT_BUCKET_SIZE = 5;            //设置桶的默认数量为5</div><div class="line">	bucketSize = bucketSize || DEFAULT_BUCKET_SIZE;</div><div class="line">	let bucketCount = Math.floor((maxValue - minValue) / bucketSize) + 1;   </div><div class="line">	let buckets = new Array(bucketCount);</div><div class="line"></div><div class="line">	// 二维数组，每个桶初始化为空数组</div><div class="line">	for (i = 0; i &lt; buckets.length; i++) &#123;</div><div class="line">		buckets[i] = [];</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	// 利用映射函数将数据分配到各个桶中</div><div class="line">	for (i = 0; i &lt; arr.length; i++) &#123;</div><div class="line">		buckets[Math.floor((arr[i] - minValue) / bucketSize)].push(arr[i]);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	arr.length = 0;</div><div class="line">	for (i = 0; i &lt; buckets.length; i++) &#123;</div><div class="line">		insertionSort(buckets[i]);                      //对每个桶进行插入排序</div><div class="line">		for (var j = 0; j &lt; buckets[i].length; j++) &#123;</div><div class="line">			arr.push(buckets[i][j]);                      </div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	return arr;</div><div class="line">&#125;</div><div class="line"></div><div class="line">let arr = [63,157,189,51,101,47,141,121,157,156,194,117,98,139,67,133,181,13,28,109];</div><div class="line">var demo = bucketSort(arr, 4); // 这里我分配了4个桶，桶越多越快但需要的内存就越多</div><div class="line">console.log(arr); // [63, 157, 189, 51, 101, 47, 141, 121, 157, 156, 194, 117, 98, 139, 67, 133, 181, 13, 28, 109]</div><div class="line">console.log(demo); // [13, 28, 47, 51, 63, 67, 98, 101, 109, 117, 121, 133, 139, 141, 156, 157, 157, 181, 189, 194]</div></pre></td></tr></table></figure>
+</code></pre><p>PS：桶排序是计数排序的升级版。它利用了函数的映射关系，高效与否的关键就在于这个映射函数的确定。<br>为了使桶排序更加高效，我们需要做到这两点：</p>
+<ol>
+<li>在额外空间充足的情况下，尽量增大桶的数量</li>
+<li>使用的映射函数能够将输入的N个数据均匀的分配到K个桶中<br>同时，对于桶中元素的排序，选择何种比较排序算法对于性能的影响至关重要。<br>什么时候最快（Best Cases）：<br>  当输入的数据可以均匀的分配到每一个桶中<br>什么时候最慢（Worst Cases）：<br>  当输入的数据被分配到了同一个桶中</li>
+</ol>
+<h1 id="图片展示"><a href="#图片展示" class="headerlink" title="图片展示"></a>图片展示</h1><p><img src="http://oz5ii8zjo.bkt.clouddn.com/%E6%A1%B6%E6%8E%92%E5%BA%8F.jpeg" alt="图片展示"></p>
+<blockquote>
+<p>   参考文档：<br>    <a href="https://www.cnblogs.com/dushao/p/6004883.html" target="_blank" rel="external">JS的十大经典算法排序</a><br>    <a href="http://web.jobbole.com/87968/" target="_blank" rel="external">十大经典排序算法</a><br>    <a href="https://baike.baidu.com/item/%E6%A1%B6%E6%8E%92%E5%BA%8F/4973777?fr=aladdin#4_2" target="_blank" rel="external">桶排序</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/11/20/排序算法-计数排序/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2261,212 +2461,6 @@ WeakMap与Map的区别有两点：
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/11/11/Generator函数的用法/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/11/11/Generator函数的用法/" itemprop="url">
-                  Generator函数的用法
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-11T15:48:46+08:00">
-                2017-11-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/js/" itemprop="url" rel="index">
-                    <span itemprop="name">js</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/11/11/Generator函数的用法/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/11/11/Generator函数的用法/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  1,088
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  5
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Generator函数的定义"><a href="#Generator函数的定义" class="headerlink" title="Generator函数的定义"></a>Generator函数的定义</h1><p>从语法上，首先可以把它理解成，Generator 函数是一个状态机，封装了多个内部状态。<br>执行 Generator 函数会返回一个遍历器对象，也就是说，Generator 函数除了状态机，还是一个遍历器对象生成函数。返回的遍历器对象，可以依次遍历 Generator 函数内部的每一个状态。<br>形式上，Generator 函数是一个普通函数，但是有两个特征。一是，function关键字与函数名之间有一个星号；二是，函数体内部使用yield表达式，定义不同的内部状态（yield在英语里的意思就是“产出”）。</p>
-<h1 id="Generator函数的简单示例"><a href="#Generator函数的简单示例" class="headerlink" title="Generator函数的简单示例"></a>Generator函数的简单示例</h1><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">function* g() &#123;</div><div class="line">  yield &apos;hello&apos;;</div><div class="line">  yield &apos;world&apos;;</div><div class="line">  return &apos;ending&apos;;</div><div class="line">&#125;</div><div class="line"></div><div class="line">var demo = g();</div></pre></td></tr></table></figure>
-</code></pre><p>PS：上面代码定义了一个 Generator 函数g，它内部有两个yield表达式（hello和world），即该函数有三个状态：hello，world 和 return 语句（结束执行）。<br><span style="color: red">返回的是，遍历器对象（Iterator Object）。例如这里，{ value: ‘hello’, done: false }</span></p>
-<h1 id="yield-表达式"><a href="#yield-表达式" class="headerlink" title="yield 表达式"></a>yield 表达式</h1><p>由于 Generator 函数返回的遍历器对象，只有调用next方法才会遍历下一个内部状态，所以其实提供了一种可以暂停执行的函数。yield表达式就是暂停标志。<br>    （1）遇到yield表达式，就暂停执行后面的操作，并将紧跟在yield后面的那个表达式的值，作为返回的对象的value属性值。<br>    （2）下一次调用next方法时，再继续往下执行，直到遇到下一个yield表达式。<br>    （3）如果没有再遇到新的yield表达式，就一直运行到函数结束，直到return语句为止，并将return语句后面的表达式的值，作为返回的对象的value属性值。<br>    （4）如果该函数没有return语句，则返回的对象的value属性值为undefined。</p>
-<h1 id="for…of-循环"><a href="#for…of-循环" class="headerlink" title="for…of 循环"></a>for…of 循环</h1><pre><code>可以遍历 数组 和 实现了 Symbol.iterator 方法的对象。
-</code></pre><p>for…of循环可以自动遍历 Generator 函数时生成的Iterator对象，且此时不再需要调用next方法。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">function *foo() &#123;</div><div class="line">  yield 1;</div><div class="line">  yield 2;</div><div class="line">  yield 3;</div><div class="line">  yield 4;</div><div class="line">  yield 5;</div><div class="line">  return 6;</div><div class="line">&#125;</div><div class="line"></div><div class="line">for (let v of foo()) &#123;</div><div class="line">  console.log(v);</div><div class="line">&#125;</div><div class="line">// 1 2 3 4 5</div></pre></td></tr></table></figure></p>
-<h1 id="Generator-prototype-next"><a href="#Generator-prototype-next" class="headerlink" title="Generator.prototype.next()"></a>Generator.prototype.next()</h1><p>yield表达式本身没有返回值，或者说总是返回undefined。next方法可以带一个参数，该参数就会被当作上一个yield表达式的返回值。<br>next() 方法返回一个包含属性 done 和 value 的对象。该方法也可以通过接受一个参数用以向生成器传值。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">function* gen() &#123; </div><div class="line">  yield 1;</div><div class="line">  yield 2;</div><div class="line">  yield 3;</div><div class="line">&#125;</div><div class="line"></div><div class="line">var g = gen(); // &quot;Generator &#123; &#125;&quot;</div><div class="line">g.next();      // &quot;Object &#123; value: 1, done: false &#125;&quot;</div><div class="line">g.next();      // &quot;Object &#123; value: 2, done: false &#125;&quot;</div><div class="line">g.next();      // &quot;Object &#123; value: 3, done: false &#125;&quot;</div><div class="line">g.next();      // &quot;Object &#123; value: undefined, done: true &#125;&quot;</div></pre></td></tr></table></figure></p>
-<h1 id="Generator-prototype-throw"><a href="#Generator-prototype-throw" class="headerlink" title="Generator.prototype.throw()"></a>Generator.prototype.throw()</h1><p>Generator 函数返回的遍历器对象，都有一个throw方法，可以在函数体外抛出错误，然后在 Generator 函数体内捕获。    </p>
-<h1 id="Generator-prototype-return"><a href="#Generator-prototype-return" class="headerlink" title="Generator.prototype.return()"></a>Generator.prototype.return()</h1><p>Generator 函数返回的遍历器对象，还有一个return方法，可以返回给定的值，并且终结遍历 Generator 函数。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">function* gen() &#123;</div><div class="line">  yield 1;</div><div class="line">  yield 2;</div><div class="line">  yield 3;</div><div class="line">&#125;</div><div class="line"></div><div class="line">var g = gen();</div><div class="line"></div><div class="line">g.next()        // &#123; value: 1, done: false &#125;</div><div class="line">g.return(&apos;foo&apos;) // &#123; value: &quot;foo&quot;, done: true &#125;</div><div class="line">g.next()        // &#123; value: undefined, done: true &#125;</div></pre></td></tr></table></figure></p>
-<p>PS：遍历器对象g调用return方法后，返回值的value属性就是return方法的参数foo。并且，Generator函数的遍历就终止了，返回值的done属性为true，以后再调用next方法，done属性总是返回true。<br>如果return方法调用时，不提供参数，则返回值的value属性为undefined。</p>
-<h1 id="比较一下多个异步操作的编码"><a href="#比较一下多个异步操作的编码" class="headerlink" title="比较一下多个异步操作的编码"></a>比较一下多个异步操作的编码</h1><p>step1完成才能做step2，step2完成才能做step3，step3完成才能做step4</p>
-<h2 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数("></a>回调函数(</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">step1(function (value1) &#123;</div><div class="line">  step2(value1, function(value2) &#123;</div><div class="line">	step3(value2, function(value3) &#123;</div><div class="line">	  step4(value3, function(value4) &#123;</div><div class="line">		// Do something with value4</div><div class="line">	  &#125;);</div><div class="line">	&#125;);</div><div class="line">  &#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><p>PS：层数多了就形成了回调地狱。</p>
-<h2 id="Promise-组织代码"><a href="#Promise-组织代码" class="headerlink" title="Promise 组织代码"></a>Promise 组织代码</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Q.fcall(step1)</div><div class="line">  .then(step2)</div><div class="line">  .then(step3)</div><div class="line">  .then(step4)</div><div class="line">  .then(function (value4) &#123;</div><div class="line">	// Do something with value4</div><div class="line">  &#125;, function (error) &#123;</div><div class="line">	// Handle any error from step1 through step4</div><div class="line">  &#125;)</div><div class="line">  .done();</div></pre></td></tr></table></figure>
-</code></pre><p>PS：是不是代码稍微要清晰一些了。</p>
-<h2 id="Generator-组织代码"><a href="#Generator-组织代码" class="headerlink" title="Generator 组织代码"></a>Generator 组织代码</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">function* longRunningTask() &#123;</div><div class="line">  try &#123;</div><div class="line">	var value1 = yield step1();</div><div class="line">	var value2 = yield step2(value1);</div><div class="line">	var value3 = yield step3(value2);</div><div class="line">	var value4 = yield step4(value3);</div><div class="line">	// Do something with value4</div><div class="line">  &#125; catch (e) &#123;</div><div class="line">	// Handle any error from step1 through step4</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">function scheduler(task) &#123;</div><div class="line">  setTimeout(function() &#123;</div><div class="line">	var taskObj = task.next(task.value);</div><div class="line">	// 如果Generator函数未结束，就继续调用</div><div class="line">	if (!taskObj.done) &#123;</div><div class="line">	  task.value = taskObj.value</div><div class="line">	  scheduler(task);</div><div class="line">	&#125;</div><div class="line">  &#125;, 0);</div><div class="line">&#125;</div><div class="line"></div><div class="line">scheduler(longRunningTask());</div></pre></td></tr></table></figure>
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="http://es6.ruanyifeng.com/#docs/generator" target="_blank" rel="external">Generator 函数的语法</a><br>    <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Generator" target="_blank" rel="external">MDN-Generator</a><br>    <a href="http://blog.csdn.net/jiangbo_phd/article/details/51820642" target="_blank" rel="external">ES6 Generator 函数的使用</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2516,7 +2510,7 @@ WeakMap与Map的区别有两点：
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">125</span>
+                <span class="site-state-item-count">126</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2655,7 +2649,7 @@ WeakMap与Map的区别有两点：
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共157.4k字</span>
+  <span class="post-count">博客全站共158.4k字</span>
 </div>
         
 

@@ -306,6 +306,203 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/17/koa学习-文件上传/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/17/koa学习-文件上传/" itemprop="url">
+                  koa学习-文件上传
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-17T20:20:14+08:00">
+                2017-09-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
+                    <span itemprop="name">NodeJS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/17/koa学习-文件上传/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/17/koa学习-文件上传/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  608
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  3
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="busboy模块"><a href="#busboy模块" class="headerlink" title="busboy模块"></a>busboy模块</h3><pre><code>模块是用来解析POST请求，node原生req中的文件流。
+busboy 是用来解析出请求中文件流。
+</code></pre><h3 id="封装上传文件到写入服务的方法"><a href="#封装上传文件到写入服务的方法" class="headerlink" title="封装上传文件到写入服务的方法"></a>封装上传文件到写入服务的方法</h3><pre><code>创建上传模块upload.js
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div></pre></td><td class="code"><pre><div class="line">const inspect = require(&apos;util&apos;).inspect;</div><div class="line">const path = require(&apos;path&apos;);</div><div class="line">const os = require(&apos;os&apos;);</div><div class="line">const fs = require(&apos;fs&apos;);</div><div class="line">const Busboy = require(&apos;busboy&apos;);</div><div class="line"></div><div class="line">/*</div><div class="line">* 同步创建文件目录</div><div class="line">* @param &#123;string&#125; dirname 目录绝对地址</div><div class="line">* @return &#123;boolean&#125; 创建目录结果</div><div class="line">*/</div><div class="line">function mkdirsSync (dirname) &#123;</div><div class="line">	if (fs.existsSync(dirname)) &#123;</div><div class="line">		return true;</div><div class="line">	&#125; else &#123;</div><div class="line">		if (mkdirsSync(path.dirname(dirname))) &#123;</div><div class="line">			fs.mkdirSync(dirname);</div><div class="line">			return true;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">/*</div><div class="line">* 获取上传文件的后缀名</div><div class="line">* @param &#123;string&#125; fileName 获取上传文件的后缀名</div><div class="line">* @return &#123;string&#125; 文件后缀名</div><div class="line">*/</div><div class="line">function getSuffixName (fileName) &#123;</div><div class="line">	/*let nameList = fileName.split(&apos;.&apos;);</div><div class="line">	return nameList[nameList.length-1]*/</div><div class="line">	return path.extname(fileName);</div><div class="line">&#125;</div><div class="line"></div><div class="line">/*</div><div class="line">* 上传文件</div><div class="line">* @param &#123;object&#125; ctx koa上下文</div><div class="line">* @param &#123;object&#125; options 文件上传参数 fileType文件类型， path文件存放路径</div><div class="line">* @return &#123;promise&#125;</div><div class="line">*/</div><div class="line">function uploadFile (ctx, options) &#123;</div><div class="line">	let req = ctx.req;</div><div class="line">	let res = ctx.res;</div><div class="line">	let busboy = new Busboy(&#123;headers: req.headers&#125;);</div><div class="line"></div><div class="line">	// 获取类型</div><div class="line">	let fileType = options.fileType || &apos;common&apos;;</div><div class="line">	let filePath = path.join(options.path, fileType);</div><div class="line">	let mkdirResult = mkdirsSync(filePath);</div><div class="line"></div><div class="line">	return new Promise((resolve, reject) =&gt; &#123;</div><div class="line">		console.log(&apos;文件上传中...&apos;);</div><div class="line">		let result = &#123;</div><div class="line">			success: false,</div><div class="line">			formData: &#123;&#125;,</div><div class="line">		&#125;;</div><div class="line"></div><div class="line">		// 解析请求文件事件</div><div class="line">		busboy.on(&apos;file&apos;, function(fieldname, file, filename, encoding, mimetype) &#123;</div><div class="line">		  let fileName = Math.random().toString(16).substr(2) + &apos;.&apos; + getSuffixName(filename)</div><div class="line">		  let _uploadFilePath = path.join( filePath, fileName )</div><div class="line">		  let saveTo = path.join(_uploadFilePath)</div><div class="line"></div><div class="line">		  // 文件保存到制定路径</div><div class="line">		  file.pipe(fs.createWriteStream(saveTo))</div><div class="line"></div><div class="line">		  // 文件写入事件结束</div><div class="line">		  file.on(&apos;end&apos;, function() &#123;</div><div class="line">			result.success = true</div><div class="line">			result.message = &apos;文件上传成功&apos;</div><div class="line"></div><div class="line">			console.log(&apos;文件上传成功！&apos;)</div><div class="line">			resolve(result)</div><div class="line">		  &#125;)</div><div class="line">		&#125;)</div><div class="line"></div><div class="line">		// 解析表单中其他字段信息</div><div class="line">		busboy.on(&apos;field&apos;, function(fieldname, val, fieldnameTruncated, valTruncated, encoding, mimetype) &#123;</div><div class="line">		  console.log(&apos;表单字段数据 [&apos; + fieldname + &apos;]: value: &apos; + inspect(val));</div><div class="line">		  result.formData[fieldname] = inspect(val);</div><div class="line">		&#125;);</div><div class="line"></div><div class="line">		// 解析结束事件</div><div class="line">		busboy.on(&apos;finish&apos;, function( ) &#123;</div><div class="line">		  console.log(&apos;文件上结束&apos;)</div><div class="line">		  resolve(result)</div><div class="line">		&#125;)</div><div class="line"></div><div class="line">		// 解析错误事件</div><div class="line">		busboy.on(&apos;error&apos;, function(err) &#123;</div><div class="line">		  console.log(&apos;文件上出错&apos;)</div><div class="line">		  reject(result)</div><div class="line">		&#125;)</div><div class="line"></div><div class="line">		req.pipe(busboy)</div><div class="line"></div><div class="line">	&#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">module.exports =  &#123;</div><div class="line">  uploadFile</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+入口文件
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">const Koa = require(&apos;koa&apos;)</div><div class="line">const path = require(&apos;path&apos;)</div><div class="line">const app = new Koa()</div><div class="line">// const bodyParser = require(&apos;koa-bodyparser&apos;)</div><div class="line"></div><div class="line">const &#123; uploadFile &#125; = require(&apos;./util/upload&apos;)</div><div class="line"></div><div class="line">// app.use(bodyParser())</div><div class="line"></div><div class="line">app.use( async ( ctx ) =&gt; &#123;</div><div class="line"></div><div class="line">  if ( ctx.url === &apos;/&apos; &amp;&amp; ctx.method === &apos;GET&apos; ) &#123;</div><div class="line">	// 当GET请求时候返回表单页面</div><div class="line">	let html = `</div><div class="line">	  &lt;h1&gt;koa2 upload demo&lt;/h1&gt;</div><div class="line">	  &lt;form method=&quot;POST&quot; action=&quot;/upload.json&quot; enctype=&quot;multipart/form-data&quot;&gt;</div><div class="line">		&lt;p&gt;file upload&lt;/p&gt;</div><div class="line">		&lt;span&gt;picName:&lt;/span&gt;&lt;input name=&quot;picName&quot; type=&quot;text&quot; /&gt;&lt;br/&gt;</div><div class="line">		&lt;input name=&quot;file&quot; type=&quot;file&quot; /&gt;&lt;br/&gt;&lt;br/&gt;</div><div class="line">		&lt;button type=&quot;submit&quot;&gt;submit&lt;/button&gt;</div><div class="line">	  &lt;/form&gt;</div><div class="line">	`</div><div class="line">	ctx.body = html</div><div class="line"></div><div class="line">  &#125; else if ( ctx.url === &apos;/upload.json&apos; &amp;&amp; ctx.method === &apos;POST&apos; ) &#123;</div><div class="line">	// 上传文件请求处理</div><div class="line">	let result = &#123; success: false &#125;</div><div class="line">	let serverFilePath = path.join( __dirname, &apos;upload-files&apos; )</div><div class="line"></div><div class="line">	// 上传文件事件</div><div class="line">	result = await uploadFile( ctx, &#123;</div><div class="line">	  fileType: &apos;album&apos;, // common or album</div><div class="line">	  path: serverFilePath</div><div class="line">	&#125;)</div><div class="line"></div><div class="line">	ctx.body = result</div><div class="line">  &#125; else &#123;</div><div class="line">	// 其他请求显示404</div><div class="line">	ctx.body = &apos;&lt;h1&gt;404！！！ o(╯□╰)o&lt;/h1&gt;&apos;</div><div class="line">  &#125;</div><div class="line">&#125;)</div><div class="line"></div><div class="line">app.listen(3004, () =&gt; &#123;</div><div class="line">  console.log(&apos;[demo] upload-simple is starting at port 3000&apos;)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="https://chenshenhai.github.io/koa2-note/note/request/post-use-middleware.html" target="_blank" rel="external">koa-note</a><br>    <a href="https://www.npmjs.com/package/cookies" target="_blank" rel="external">cookies</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/17/koa学习-模版引擎/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2342,252 +2539,6 @@ fs.appendFile(&apos;filename.txt&apos;, &apos;data to append&apos; , (err) =&gt;
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/16/nodejs自带模块学习-path/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/16/nodejs自带模块学习-path/" itemprop="url">
-                  path模块-路径
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-16T10:16:31+08:00">
-                2017-09-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
-                    <span itemprop="name">NodeJS</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/16/nodejs自带模块学习-path/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/16/nodejs自带模块学习-path/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  575
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  3
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="path模块-路径"><a href="#path模块-路径" class="headerlink" title="path模块-路径"></a>path模块-路径</h3><pre><code>在不同系统中，路径分隔符显示不同。POSIX 上的 / 与 Windows 上的 \
-说明：path 模块提供了一些工具函数，用于处理文件与目录的路径。
-</code></pre><h3 id="path-sep"><a href="#path-sep" class="headerlink" title="path.sep"></a>path.sep</h3><pre><code>作用：提供了平台特定的路径片段分隔符。
-    windows上是 \
-    POSIX上是 /
-</code></pre><h3 id="path-win32-和-path-posix"><a href="#path-win32-和-path-posix" class="headerlink" title="path.win32 和 path.posix"></a>path.win32 和 path.posix</h3><pre><code>要想在任何操作系统上处理 Windows 文件路径时获得一致的结果，可以使用 path.win32
-    path.win32.basename(&apos;c:\\temp\\myfile.html&apos;); // myfile.html
-要想在任何操作系统上处理 POSIX 文件路径时获得一致的结果，可以使用 path.posix
-    path.posix.basename(&apos;/temp/myfile.html&apos;); // myfile.html
-</code></pre><h3 id="path-delimiter"><a href="#path-delimiter" class="headerlink" title="path.delimiter"></a>path.delimiter</h3><pre><code>作用：提供平台特定的路径分隔符。
-    windows是;
-    POSIX是:
-    process.env.PATH; // &apos;/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin&apos;
-    process.env.PATH.split(path.delimiter); // [&apos;/usr/bin&apos;, &apos;/bin&apos;, &apos;/usr/sbin&apos;, &apos;/sbin&apos;, &apos;/usr/local/bin&apos;]
-</code></pre><h3 id="path-basename-path-ext"><a href="#path-basename-path-ext" class="headerlink" title="path.basename(path[, ext]);"></a>path.basename(path[, ext]);</h3><pre><code>作用：返回一个 path 的最后一部分。
-    path.basename(&apos;/foo/bar/myfile.html&apos;); // &apos;myfile.html&apos;
-    patn.basename(&apos;/foo/bar/myfile.html&apos;, &apos;.html&apos;); // &apos;myfile&apos;
-</code></pre><h3 id="path-dirname-path"><a href="#path-dirname-path" class="headerlink" title="path.dirname(path);"></a>path.dirname(path);</h3><pre><code>作用：返回一个path的目录名。
-    path.dirname(&apos;/foo/bar/myfile&apos;); // foo/bar
-</code></pre><h3 id="path-extname-path"><a href="#path-extname-path" class="headerlink" title="path.extname(path)"></a>path.extname(path)</h3><pre><code>作用：返回 path 的扩展名，即从 path 的最后一部分中的最后一个 .（句号）字符到字符串结束。
-    path.extname(&apos;index.coffee.md&apos;); // &apos;.md&apos;
-</code></pre><h3 id="path-format-pathObject"><a href="#path-format-pathObject" class="headerlink" title="path.format(pathObject);"></a>path.format(pathObject);</h3><pre><code>作用：会从一个对象返回一个路径字符串。 与 path.parse() 相反。
-参数：Object
-    {
-        dir: &apos;&apos;,
-        root: &apos;&apos;,
-        base: &apos;&apos;,
-        name: &apos;&apos;,
-        ext: &apos;&apos;
-    }
-    在windows中
-    path.format({
-        root: &apos;ignored&apos;,
-        dir: &apos;\home\user&apos;,
-        base: &apos;file.txt&apos;
-    });
-    // &apos;\home\user\file.txt&apos;
-</code></pre><h3 id="path-parse-path"><a href="#path-parse-path" class="headerlink" title="path.parse(path);"></a>path.parse(path);</h3><pre><code>作用：返回一个对象，对象的属性表示 path 的元素。
-    path.parse(&apos;/home/user/file.txt&apos;);
-    // {
-        root: &apos;/&apos;,
-        base: &apos;/home/user&apos;,
-        ext: &apos;.txt&apos;.
-        name: &apos;file&apos;
-    }
-</code></pre><h3 id="path-isAbsolute-path"><a href="#path-isAbsolute-path" class="headerlink" title="path.isAbsolute(path);"></a>path.isAbsolute(path);</h3><pre><code>作用：会判定 path 是否为一个绝对路径。
-    path.isAbsolute(&apos;bar\baz&apos;); // true
-</code></pre><h3 id="path-join-…path"><a href="#path-join-…path" class="headerlink" title="path.join([…path]);"></a>path.join([…path]);</h3><pre><code>作用：使用平台特定的分隔符把全部给定的 path 片段连接到一起，并规范化生成的路径。
-    path.join(&apos;/foo&apos;, &apos;bar&apos;, &apos;baz/asdf&apos;, &apos;quux&apos;, &apos;..&apos;); // 返回: &apos;/foo/bar/baz/asdf&apos;
-</code></pre><h3 id="path-normalize-path"><a href="#path-normalize-path" class="headerlink" title="path.normalize(path);"></a>path.normalize(path);</h3><pre><code>作用：规范化给定的 path，并解析 &apos;..&apos; 和 &apos;.&apos; 片段。
-    path.normalize(&apos;/foo/bar/baz/asdf/quux/..&apos;); // &apos;/foo/bar/baz/asdf&apos;
-</code></pre><h3 id="path-relative-from-to"><a href="#path-relative-from-to" class="headerlink" title="path.relative(from, to);"></a>path.relative(from, to);</h3><pre><code>作用：返回从 from 到 to 的相对路径（基于当前工作目录）。
-    path.relative(&apos;/data/orandea/test/aaa&apos;, &apos;/data/orandea/impl/bbb&apos;);
-    // &apos;../../impl/bbb&apos;
-</code></pre><h3 id="path-resolve-…paths"><a href="#path-resolve-…paths" class="headerlink" title="path.resolve([…paths]);"></a>path.resolve([…paths]);</h3><pre><code>作用：把一个路径或路径片段的序列解析为一个绝对路径。
-    path.resolve(&apos;/foo/bar&apos;, &apos;./baz&apos;); // &apos;/foo/bar/baz&apos;
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="http://nodejs.cn/api/path.html" target="_blank" rel="external">path参考-api</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2637,7 +2588,7 @@ fs.appendFile(&apos;filename.txt&apos;, &apos;data to append&apos; , (err) =&gt;
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">125</span>
+                <span class="site-state-item-count">126</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2776,7 +2727,7 @@ fs.appendFile(&apos;filename.txt&apos;, &apos;data to append&apos; , (err) =&gt;
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共157.4k字</span>
+  <span class="post-count">博客全站共158.4k字</span>
 </div>
         
 
