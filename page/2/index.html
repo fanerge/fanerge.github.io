@@ -306,6 +306,243 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/11/11/Proxy和Reflect的用法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/11/11/Proxy和Reflect的用法/" itemprop="url">
+                  Proxy和Reflect的用法
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-11T18:51:05+08:00">
+                2017-11-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/js/" itemprop="url" rel="index">
+                    <span itemprop="name">js</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/11/11/Proxy和Reflect的用法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/11/11/Proxy和Reflect的用法/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,659
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  7
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Proxy-详解"><a href="#Proxy-详解" class="headerlink" title="Proxy 详解"></a>Proxy 详解</h1><h2 id="Proxy-定义"><a href="#Proxy-定义" class="headerlink" title="Proxy 定义"></a>Proxy 定义</h2><p>Proxy 可以理解成，在目标对象之前架设一层“拦截”，外界对该对象的访问，都必须先通过这层拦截，因此提供了一种机制，可以对外界的访问进行过滤和改写。Proxy 这个词的原意是代理，用在这里表示由它来“代理”某些操作，可以译为“代理器”。</p>
+<h2 id="Proxy-语法"><a href="#Proxy-语法" class="headerlink" title="Proxy 语法"></a>Proxy 语法</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">// 目标对象，需要被拦截 或 处理的对象，数组，函数甚至是其他的代理器</div><div class="line">let target = &#123;&#125;;</div><div class="line">// 拦截器对象</div><div class="line">let handler = &#123;</div><div class="line">	get(target, name)&#123;</div><div class="line">		// 这里如果 target 没有name属性的话，就设定一个默认值</div><div class="line">		return name in target ? target[name] : 27;</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line">var proxy = new Proxy(target, handler);</div><div class="line"></div><div class="line">console.log(target.name); // undefined</div><div class="line">console.log(proxy.name); // 27</div></pre></td></tr></table></figure>
+</code></pre><p>PS：Proxy 对象的所有用法，都是上面这种形式，不同的只是handler参数的写法。其中，new Proxy()表示生成一个Proxy实例，target参数表示所要拦截的目标对象，handler参数也是一个对象，用来定制拦截行为。</p>
+<h2 id="Proxy-支持的拦截操作一览，一共13种"><a href="#Proxy-支持的拦截操作一览，一共13种" class="headerlink" title="Proxy 支持的拦截操作一览，一共13种"></a>Proxy 支持的拦截操作一览，一共13种</h2><ol>
+<li>get(target, propKey, receiver)：拦截对象属性的读取，比如proxy.foo和proxy[‘foo’]。</li>
+<li>set(target, propKey, value, receiver)：拦截对象属性的设置，比如proxy.foo = v或proxy[‘foo’] = v，返回一个布尔值。</li>
+<li>has(target, propKey)：拦截propKey in proxy的操作，返回一个布尔值。</li>
+<li>deleteProperty(target, propKey)：拦截delete proxy[propKey]的操作，返回一个布尔值。</li>
+<li>ownKeys(target)：拦截Object.getOwnPropertyNames(proxy)、Object.getOwnPropertySymbols(proxy)、Object.keys(proxy)，返回一个数组。该方法返回目标对象所有自身的属性的属性名，而Object.keys()的返回结果仅包括目标对象自身的可遍历属性。</li>
+<li>getOwnPropertyDescriptor(target, propKey)：拦截Object.getOwnPropertyDescriptor(proxy, propKey)，返回属性的描述对象。</li>
+<li>defineProperty(target, propKey, propDesc)：拦截Object.defineProperty(proxy, propKey, propDesc）、Object.defineProperties(proxy, propDescs)，返回一个布尔值。</li>
+<li>preventExtensions(target)：拦截Object.preventExtensions(proxy)，返回一个布尔值。</li>
+<li>getPrototypeOf(target)：拦截Object.getPrototypeOf(proxy)，返回一个对象。</li>
+<li>isExtensible(target)：拦截Object.isExtensible(proxy)，返回一个布尔值。</li>
+<li>setPrototypeOf(target, proto)：拦截Object.setPrototypeOf(proxy, proto)，返回一个布尔值。如果目标对象是函数，那么还有两种额外操作可以拦截。</li>
+<li>apply(target, object, args)：拦截 Proxy 实例作为函数调用的操作，比如proxy(…args)、proxy.call(object, …args)、proxy.apply(…)。</li>
+<li>construct(target, args)：拦截 Proxy 实例作为构造函数调用的操作，比如new proxy(…args)。</li>
+</ol>
+<h2 id="Proxy-revocable-可撤销的代理"><a href="#Proxy-revocable-可撤销的代理" class="headerlink" title="Proxy.revocable() 可撤销的代理"></a>Proxy.revocable() 可撤销的代理</h2><p>Proxy.revocable方法返回一个可取消的 Proxy 实例。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">let target = &#123;&#125;;</div><div class="line">let handler = &#123;&#125;;</div><div class="line"></div><div class="line">let &#123;proxy, revoke&#125; = Proxy.revocable(target, handler);</div><div class="line"></div><div class="line">proxy.foo = 123;</div><div class="line">console.log(proxy.foo);</div><div class="line"></div><div class="line">revoke(); // 取消Proxy实例</div><div class="line">console.log(proxy.foo); // TypeError: Revoked</div></pre></td></tr></table></figure></p>
+<p>PS：Proxy.revocable方法返回一个对象，该对象的proxy属性是Proxy实例，revoke属性是一个函数，可以取消Proxy实例。上面代码中，当执行revoke函数之后，再访问Proxy实例，就会抛出一个错误。<br>Proxy.revocable的一个使用场景是，目标对象不允许直接访问，必须通过代理访问，一旦访问结束，就收回代理权，不允许再次访问。</p>
+<h2 id="this-的问题"><a href="#this-的问题" class="headerlink" title="this 的问题"></a>this 的问题</h2><p>虽然 Proxy 可以代理针对目标对象的访问，但它不是目标对象的透明代理，即不做任何拦截的情况下，也无法保证与目标对象的行为一致。主要原因就是在 Proxy 代理的情况下，目标对象内部的this关键字会指向 Proxy 代理。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">const target = &#123;</div><div class="line">  m: function () &#123;</div><div class="line">	console.log(this === proxy);</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line">const handler = &#123;&#125;;</div><div class="line"></div><div class="line">const proxy = new Proxy(target, handler);</div><div class="line"></div><div class="line">target.m() // false</div><div class="line">proxy.m()  // true</div></pre></td></tr></table></figure></p>
+<h2 id="Proxy-的应用"><a href="#Proxy-的应用" class="headerlink" title="Proxy 的应用"></a>Proxy 的应用</h2><h3 id="扩展数组的属性和方法"><a href="#扩展数组的属性和方法" class="headerlink" title="扩展数组的属性和方法"></a>扩展数组的属性和方法</h3><p>需求：对于数组对象，有时候我们只想要得到数组中对象的某个键值内容。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">var AddSomeFunctionHandler=&#123;</div><div class="line">	get:function(obj,prop)&#123;</div><div class="line"></div><div class="line">		if(prop in obj)&#123;</div><div class="line">			return obj[prop]   // 按数组默认方式访问元素</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		if(prop === &apos;name&apos;)&#123;</div><div class="line">			return obj.map(o=&gt;o.name)</div><div class="line">		&#125;</div><div class="line"></div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">var PersonArray=[&#123;</div><div class="line">	name:&quot;Alice&quot;,age:23</div><div class="line">&#125;,&#123;</div><div class="line">	name:&quot;Bob&quot;,age:45</div><div class="line">&#125;,&#123;</div><div class="line">	name:&quot;Mike&quot;,age:27</div><div class="line">&#125;]</div><div class="line"></div><div class="line">var p= new Proxy(PersonArray,AddSomeFunctionHandler)</div><div class="line">console.log(p.name) // [&quot;Alice&quot;, &quot;Bob&quot;, &quot;Mike&quot;]</div></pre></td></tr></table></figure></p>
+<h1 id="Reflect-详解"><a href="#Reflect-详解" class="headerlink" title="Reflect 详解"></a>Reflect 详解</h1><h2 id="Reflect-定义"><a href="#Reflect-定义" class="headerlink" title="Reflect 定义"></a>Reflect 定义</h2><p>Reflect对象与Proxy对象一样，也是 ES6 为了操作对象而提供的新 API。<br>Reflect对象的设计目的有这样几个：</p>
+<ol>
+<li>将Object对象的一些明显属于语言内部的方法（比如Object.defineProperty），放到Reflect对象上。现阶段，某些方法同时在Object和Reflect对象上部署，未来的新方法将只部署在Reflect对象上。也就是说，从Reflect对象上可以拿到语言内部的方法。</li>
+<li>修改某些Object方法的返回结果，让其变得更合理。比如，Object.defineProperty(obj, name, desc)在无法定义属性时，会抛出一个错误，而Reflect.defineProperty(obj, name, desc)则会返回false。</li>
+<li>让Object操作都变成函数行为。某些Object操作是命令式，比如name in obj和delete obj[name]，而Reflect.has(obj, name)和Reflect.deleteProperty(obj, name)让它们变成了函数行为。</li>
+<li>Reflect对象的方法与Proxy对象的方法一一对应，只要是Proxy对象的方法，就能在Reflect对象上找到对应的方法。这就让Proxy对象可以方便地调用对应的Reflect方法，完成默认行为，作为修改行为的基础。也就是说，不管Proxy怎么修改默认行为，你总可以在Reflect上获取默认行为。</li>
+</ol>
+<h2 id="Reflect-静态方法"><a href="#Reflect-静态方法" class="headerlink" title="Reflect 静态方法"></a>Reflect 静态方法</h2><p>Reflect对象一共有13个静态方法。</p>
+<ol>
+<li>Reflect.apply(target, thisArg, args)</li>
+<li>Reflect.construct(target, args)</li>
+<li>Reflect.get(target, name, receiver)</li>
+<li>Reflect.set(target, name, value, receiver)</li>
+<li>Reflect.defineProperty(target, name, desc)</li>
+<li>Reflect.deleteProperty(target, name)</li>
+<li>Reflect.has(target, name)</li>
+<li>Reflect.ownKeys(target)</li>
+<li>Reflect.isExtensible(target)</li>
+<li>Reflect.preventExtensions(target)</li>
+<li>Reflect.getOwnPropertyDescriptor(target, name)</li>
+<li>Reflect.getPrototypeOf(target)</li>
+<li>Reflect.setPrototypeOf(target, prototype)<br>PS：上面这些方法的作用，大部分与Object对象的同名方法的作用都是相同的，而且它与Proxy对象的方法是一一对应的。</li>
+</ol>
+<h2 id="Reflect-get-target-name-receiver"><a href="#Reflect-get-target-name-receiver" class="headerlink" title="Reflect.get(target, name, receiver)"></a>Reflect.get(target, name, receiver)</h2><p>Reflect.get方法查找并返回target对象的name属性，如果没有该属性，则返回undefined。<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">var myObject = &#123;</div><div class="line">  foo: 1,</div><div class="line">  bar: 2,</div><div class="line">  get baz() &#123;</div><div class="line">	return this.foo + this.bar;</div><div class="line">  &#125;,</div><div class="line">&#125;</div><div class="line"></div><div class="line">Reflect.get(myObject, &apos;foo&apos;) // 1</div><div class="line">Reflect.get(myObject, &apos;bar&apos;) // 2</div><div class="line">Reflect.get(myObject, &apos;baz&apos;) // 3</div></pre></td></tr></table></figure></p>
+<h2 id="实例–使用-Proxy-实现观察者模式"><a href="#实例–使用-Proxy-实现观察者模式" class="headerlink" title="实例–使用 Proxy 实现观察者模式"></a>实例–使用 Proxy 实现观察者模式</h2><p>观察者模式（Observer mode）指的是函数自动观察数据对象，一旦对象有变化，函数就会自动执行。<br>如果你还不懂<a href="">观察者模式</a><br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">//添加观察者</div><div class="line">const queuedObservers = new Set();</div><div class="line">const observe = fn =&gt; queuedObservers.add(fn);</div><div class="line"></div><div class="line">//proxy 的set 方法</div><div class="line">function set(target, key, value, receiver) &#123;</div><div class="line">	const result = Reflect.set(target, key, value, receiver);</div><div class="line">	queuedObservers.forEach(observer =&gt; observer());</div><div class="line">	return result;</div><div class="line">&#125;</div><div class="line">//创建proxy代理</div><div class="line">const observable = obj =&gt; new Proxy(obj, &#123;set&#125;);</div><div class="line">//被观察的 对象</div><div class="line">const person = observable(&#123;</div><div class="line">	name: &apos;张三&apos;,</div><div class="line">	age: 20</div><div class="line">&#125;);</div><div class="line"></div><div class="line">observe(print);</div><div class="line">console.log(person.name); // 张三</div><div class="line">person.name = &apos;李四&apos;;</div><div class="line">console.log(person.name); // 李四</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>   参考文档：<br>    <a href="http://es6.ruanyifeng.com/#docs/reflect" target="_blank" rel="external">阮一峰-Reflect</a><br>    <a href="https://www.cnblogs.com/WhiteHorseIsNotHorse/p/7016010.html" target="_blank" rel="external">用es6 （proxy 和 reflect）轻松实现 观察者模式</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/11/11/Generator函数的用法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2223,217 +2460,6 @@ PS：这段代码实例化了一个Menu对象，然后分别切换了显示和�
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/11/06/js设计模式-备忘录模式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/11/06/js设计模式-备忘录模式/" itemprop="url">
-                  js设计模式-备忘录模式
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-06T20:00:30+08:00">
-                2017-11-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">设计模式</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/11/06/js设计模式-备忘录模式/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/11/06/js设计模式-备忘录模式/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  765
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  3
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="备忘录模式的基础"><a href="#备忘录模式的基础" class="headerlink" title="备忘录模式的基础"></a>备忘录模式的基础</h1><pre><code>定义：在不破坏封装性的前提下，捕获一个对象的内部状态，并在该对象之外保存这个状态。
-    这样就可以将该对象恢复到原先保存的状态
-作用：在我们的开发中偶尔会遇到这样一种情况，需要对用户的行为进行撤销。要想实现撤销，
-    首先需要保存软件系统的历史状态，当用户执行撤销时用之前的状态覆盖当前状态。
-    本节介绍的备忘录模式提供了一种状态恢复的实现机制，使得用户可以方便的回到一个特定的历史步骤。
-    备忘录模式在js中经常用于数据缓存。        
-使用场景：分页控件、撤销组件    
-</code></pre><h1 id="分页控件"><a href="#分页控件" class="headerlink" title="分页控件"></a>分页控件</h1><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">var Page = function()&#123;</div><div class="line">	let page = 1,</div><div class="line">		cache = &#123;&#125;,</div><div class="line">		data;</div><div class="line">	return function( page )&#123;</div><div class="line">		if ( cache[ page ] )&#123;</div><div class="line">				data =  cache[ page ];</div><div class="line">				render( data );</div><div class="line">		&#125;else&#123;</div><div class="line">				Ajax.send( &apos;cgi.xx.com/xxx&apos;, function( data )&#123;</div><div class="line">				   cache[ page ] = data;</div><div class="line">				   render( data );</div><div class="line">				&#125;);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;();</div></pre></td></tr></table></figure>
-
-PS：分页控件, 从服务器获得某一页的数据后可以存入缓存。以后再翻回这一页的时候，
-    可以直接使用缓存里的数据而无需再次请求服务器。
-</code></pre><h1 id="撤销组件"><a href="#撤销组件" class="headerlink" title="撤销组件"></a>撤销组件</h1><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line">// 备忘录构造函数</div><div class="line">var Memento = function(state)&#123;</div><div class="line">	var _state = state;</div><div class="line">	this.getState = function()&#123;</div><div class="line">		return _state;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 原法器，saveStateToMemento创建一个备忘录，存储当前状态。</div><div class="line">var Originator = function()&#123;</div><div class="line">	var _state;</div><div class="line">	this.setState = function(state)&#123;</div><div class="line">		_state = state;</div><div class="line">	&#125;</div><div class="line">	this.getState = function()&#123;</div><div class="line">		return _state;</div><div class="line">	&#125;</div><div class="line">	this.saveStateToMemento = function()&#123;</div><div class="line">		return new Memento(_state)</div><div class="line">	&#125;</div><div class="line">	this.getStateFromMemento = function(memento)&#123;</div><div class="line">		_state = memento.getState();</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">// CareTaker称之为负责人也可以叫管理者，它负责保存备忘录</div><div class="line">var CareTaker = function()&#123;</div><div class="line">	var _mementoList = [];</div><div class="line">	this.add = function(memento)&#123;</div><div class="line">		_mementoList.push(memento);</div><div class="line">	&#125;</div><div class="line">	this.get = function(index)&#123;</div><div class="line">		return _mementoList[index];</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line">var originator = new Originator();</div><div class="line">var careTaker = new CareTaker();</div><div class="line">originator.setState(&quot;State 1&quot;);</div><div class="line">originator.setState(&quot;State 2&quot;);</div><div class="line">careTaker.add(originator.saveStateToMemento());</div><div class="line">originator.setState(&quot;State 3&quot;);</div><div class="line">careTaker.add(originator.saveStateToMemento());</div><div class="line">originator.setState(&quot;State 4&quot;);</div><div class="line"> </div><div class="line">console.log(&quot;当前状态: &quot; + originator.getState());</div><div class="line">// 当前状态: State 4</div><div class="line">originator.getStateFromMemento(careTaker.get(0));</div><div class="line">console.log(&quot;恢复第一次保存状态: &quot; + originator.getState());</div><div class="line">// 恢复第一次保存状态: State 2</div><div class="line">originator.getStateFromMemento(careTaker.get(1));</div><div class="line">console.log(&quot;恢复第二次保存: &quot; + originator.getState());</div><div class="line">// 恢复第二次保存: State 3</div></pre></td></tr></table></figure>
-
-PS：这个例子里面Originator称为原发器，可以通过saveStateToMemento创建一个备忘录，存储当前状态。
-    Memento是一个备忘录对象，只供原发器使用，提供状态提取方法。CareTaker称之为负责人也可以叫管理者，
-    它负责保存备忘录，但是不能对备忘录内容进行操作或检查。
-优点：
-    * 提供了一种状态恢复的时间机制，使得用户可以方便的回退到一个特定的历史步骤。
-    * 备忘录实现了对信息的封装，一个备忘录对象是一种原发器对象状态的表示，不会被其他代码所改动。
-缺点：
-    * 备忘录模式的主要缺点是资源消耗过大，如果需要保存的原发器类的成员变量太多，就不可避免的需要占用大量的存储空间。
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="http://www.isjs.cn/?p=998" target="_blank" rel="external">《javascript设计模式 – 备忘录模式》</a><br>    <a href="http://www.alloyteam.com/2012/10/commonly-javascript-design-patterns-memorandum-mode/" target="_blank" rel="external">【Javascript设计模式14】-备忘录模式</a>    </p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2483,7 +2509,7 @@ PS：这个例子里面Originator称为原发器，可以通过saveStateToMement
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">126</span>
+                <span class="site-state-item-count">127</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2622,7 +2648,7 @@ PS：这个例子里面Originator称为原发器，可以通过saveStateToMement
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共158.4k字</span>
+  <span class="post-count">博客全站共159.2k字</span>
 </div>
         
 

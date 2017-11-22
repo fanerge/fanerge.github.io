@@ -306,6 +306,227 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/16/nodejs自带模块学习-util/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/16/nodejs自带模块学习-util/" itemprop="url">
+                  util模块-工具
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-16T10:18:15+08:00">
+                2017-09-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NodeJS/" itemprop="url" rel="index">
+                    <span itemprop="name">NodeJS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/09/16/nodejs自带模块学习-util/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/09/16/nodejs自带模块学习-util/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  528
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  2
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="util模块"><a href="#util模块" class="headerlink" title="util模块"></a>util模块</h3><pre><code>说明：util 模块主要用于支持 Node.js 内部 API 的需求。 大部分实用工具也可用于应用程序与模块开发者。
+</code></pre><h3 id="util-callbackify-original"><a href="#util-callbackify-original" class="headerlink" title="util.callbackify(original)"></a>util.callbackify(original)</h3><h3 id="util-debuglog-section"><a href="#util-debuglog-section" class="headerlink" title="util.debuglog(section)"></a>util.debuglog(section)</h3><pre><code>作用：util.debuglog() 方法用于创建一个函数，基于 NODE_DEBUG 环境变量的存在与否有条件地写入调试信息到 stderr。
+    const debuglog = util.debuglog(&apos;foo&apos;);
+    debuglog(&apos;hello from foo [%d]&apos;, 123);
+    若程序的环境运行是带上NODE_DEBUG=foo,则FOO 3245: hello from foo [123]
+    3234是进程id
+</code></pre><h3 id="util-deprecate-function-string"><a href="#util-deprecate-function-string" class="headerlink" title="util.deprecate(function, string)"></a>util.deprecate(function, string)</h3><pre><code>作用：util.deprecate() 方法会包装给定的 function 或类，并标记为废弃的。
+    // 在util模块中
+    exports.puts = util.deprecate(function() {
+      for (let i = 0, len = arguments.length; i &lt; len; ++i) {
+        process.stdout.write(arguments[i] + &apos;\n&apos;);
+      }
+    }, &apos;util.puts: 使用 console.log 代替&apos;);
+</code></pre><h3 id="util-format-format-…args"><a href="#util-format-format-…args" class="headerlink" title="util.format(format[, …args])"></a>util.format(format[, …args])</h3><pre><code>作用：返回一个格式化后的字符串，使用第一个参数作为一个类似 printf 的格式。
+对应的占位符：
+    %s - 字符串
+    %d - 数值
+    %i - Integer
+    %f - Float
+    %j - JSON
+    %o - Object
+    %% - 单个百分号（&apos;%&apos;）。不消耗参数。
+    util.format(&apos;%s:%d&apos;, &apos;fan&apos;, 100); // &apos;fan:100&apos;
+</code></pre><h3 id="util-inherits-constructor-superConstructor"><a href="#util-inherits-constructor-superConstructor" class="headerlink" title="util.inherits(constructor, superConstructor)"></a>util.inherits(constructor, superConstructor)</h3><pre><code>注意，不建议使用 util.inherits()。 请使用 ES6 的 class 和 extends 关键词获得语言层面的继承支持。
+作用：从一个构造函数中继承原型方法到另一个。 constructor 的原型会被设置到一个从 superConstructor 创建的新对象上。
+    util.inherits(MyStream, EventEmitter);
+</code></pre><h3 id="util-inspect-object-options"><a href="#util-inspect-object-options" class="headerlink" title="util.inspect(object[, options])"></a>util.inspect(object[, options])</h3><pre><code>作用：返回 object 的字符串表示，主要用于调试。 附加的 options 可用于改变格式化字符串的某些方面。
+</code></pre><h3 id="自定义-util-inspect-颜色"><a href="#自定义-util-inspect-颜色" class="headerlink" title="自定义 util.inspect 颜色"></a>自定义 util.inspect 颜色</h3><pre><code>作用：可以通过 util.inspect.styles 和 util.inspect.colors 属性全局地自定义 util.inspect 的颜色输出（如果已启用）。
+</code></pre><h3 id="util-inspect-custom"><a href="#util-inspect-custom" class="headerlink" title="util.inspect.custom"></a>util.inspect.custom</h3><pre><code>作用：可被用于声明自定义的查看函数。
+</code></pre><h3 id="util-inspect-defaultOptions"><a href="#util-inspect-defaultOptions" class="headerlink" title="util.inspect.defaultOptions"></a>util.inspect.defaultOptions</h3><pre><code>作用：defaultOptions 值允许对被 util.inspect 使用的默认选项进行自定义。
+</code></pre><h3 id="util-promisify-original"><a href="#util-promisify-original" class="headerlink" title="util.promisify(original)"></a>util.promisify(original)</h3><pre><code>作用：让一个遵循通常的让一个遵循通常的 Node.js 回调风格的函数， 即 (err, value) =&gt; ... 回调函数是最后一个参数, 返回一个返回值是一个 promise 版本的函数。    
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="http://nodejs.cn/api/util.html" target="_blank" rel="external">util参考-api</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/16/nodejs自带模块学习-path/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3030,226 +3251,6 @@ writing-mode: lr-tb | tb-rl;
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/04/css加强-4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/04/css加强-4/" itemprop="url">
-                  css加强（表单和文本样式和动态边框和上传组件美化）
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-04T19:31:38+08:00">
-                2017-09-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/css/" itemprop="url" rel="index">
-                    <span itemprop="name">css</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/04/css加强-4/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/04/css加强-4/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  928
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  5
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在接下来的一段时间学习看云上购买的一本<a href="https://www.kancloud.cn/dennis/javascriptmethod/261472" target="_blank" rel="external">Web开发实战</a>书籍，来提升自己的软实力。<br>本部分为css实战部分。</p>
-<h4 id="表单input"><a href="#表单input" class="headerlink" title="表单input"></a>表单input</h4><p>主要添加了过渡下border和验证提示<br><img src="/images/form.png" alt="表单中的input"></p>
-<h5 id="创建模版"><a href="#创建模版" class="headerlink" title="创建模版"></a>创建模版</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&lt;div class=&quot;input-field&quot;&gt;</div><div class="line">	&lt;input id=&quot;last-name&quot; type=&quot;text&quot; placeholder=&quot;name&quot;&gt;&lt;/input&gt;</div><div class="line">	&lt;span&gt;&lt;/span&gt;</div><div class="line">&lt;/div&gt;</div><div class="line">&lt;!--带验证的--&gt;</div><div class="line">&lt;div class=&quot;input-field error input-field-icon&quot;&gt;</div><div class="line">	&lt;input id=&quot;last_name&quot; type=&quot;text&quot; placeholder=&quot;账号&quot;&gt;</div><div class="line">	&lt;span class=&quot;gradient&quot;&gt;&lt;/span&gt;</div><div class="line">	&lt;i class=&quot;ion-android-close&quot;&gt;</div><div class="line">	&lt;/i&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
-
-解释：
-.input-field成为容器层，input和span并列排列。
-让span来充当input的下border，然后在通过为类选择器:focus和兄弟选择器和伪类元素span:after来完成
-</code></pre><h5 id="设置样式"><a href="#设置样式" class="headerlink" title="设置样式"></a>设置样式</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line"> *&#123;</div><div class="line">	box-sizing:border-box;</div><div class="line">&#125;</div><div class="line">.input-field &#123;</div><div class="line">	position: relative;</div><div class="line">	width: 200px;</div><div class="line">	margin: 20px 50px;</div><div class="line">&#125;</div><div class="line"></div><div class="line">.input-field input &#123;</div><div class="line">	background-color: transparent;</div><div class="line">	border: none;</div><div class="line">	border-radius: 0;</div><div class="line">	height: 35px;</div><div class="line">	width: 100%;</div><div class="line">	padding: 0;</div><div class="line">	box-shadow: none;</div><div class="line">	outline: none;</div><div class="line">	transition: all 0.3s;</div><div class="line">&#125;</div><div class="line"></div><div class="line">.input-field input+span &#123;</div><div class="line">	position: absolute;</div><div class="line">	top: 100%;</div><div class="line">	left: 0;</div><div class="line">	display: inline-block;</div><div class="line">	max-width: 100%;</div><div class="line">	z-index: 0;</div><div class="line">	width: 100%;</div><div class="line">	height: 1px;</div><div class="line">	border-bottom: 1px solid #d9d9d9;</div><div class="line">&#125;</div><div class="line"></div><div class="line">.input-field span:after &#123;</div><div class="line">	content: &quot;&quot;;</div><div class="line">	position: absolute;</div><div class="line">	bottom: 0;</div><div class="line">	left: 0;</div><div class="line">	width: 100%;</div><div class="line">	height: 2px;</div><div class="line">	background: #2196f3;</div><div class="line">	transform: scale(0);</div><div class="line">	transition: all .2s ease-out;</div><div class="line">&#125;</div><div class="line">.input-field input:focus+span:after &#123;</div><div class="line">	transform: scale(1);</div><div class="line">&#125;</div><div class="line">.input-field.input-field-icon i&#123;</div><div class="line">	position:absolute;</div><div class="line">	right:0;</div><div class="line">	top:50%;</div><div class="line">	padding:0 5px;</div><div class="line">	font-size:1.5em;</div><div class="line">	-webkit-transform: translate(0, -50%);</div><div class="line">	transform: translate(0, -50%);</div><div class="line">&#125;</div><div class="line">.input-field.input-field-icon input&#123;</div><div class="line">	padding-right:30px;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-这里有个小技巧：要是验证图标垂直居中，达到居中效果。
-top: 50%; 相对于父元素的高度
-transform: translate(0, -50%); 相对于自身元素的高度。
-</code></pre><h4 id="自定义选择文本样式"><a href="#自定义选择文本样式" class="headerlink" title="自定义选择文本样式"></a>自定义选择文本样式</h4><pre><code>使用::selection伪类选择器，我们可以实现与众不同的选择文本样式。
-注意：只能设置背景色和文字颜色，同时不支持渐变色。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">::selection &#123;</div><div class="line">	background: #009a61;</div><div class="line">	color: #fff;</div><div class="line">&#125;</div><div class="line"></div><div class="line">::-moz-selection &#123;</div><div class="line">	background: #009a61;</div><div class="line">	color: #fff;</div><div class="line">&#125;</div><div class="line"></div><div class="line">::-webkit-selection &#123;</div><div class="line">	background: #009a61;</div><div class="line">	color: #fff;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h4 id="动态的边框"><a href="#动态的边框" class="headerlink" title="动态的边框"></a>动态的边框</h4><h5 id="创建模版-1"><a href="#创建模版-1" class="headerlink" title="创建模版"></a>创建模版</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;div class=&quot;dynamic-border dynamic-border-2&quot;&gt;</div><div class="line">	&lt;span&gt;</div><div class="line">	&lt;/span&gt;</div><div class="line">	&lt;img src=&quot;images/girl.jpg&quot; alt=&quot;&quot;&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
-
-整体思路：
-创建一个容器，容器自身两个伪类元素，span又包含两个伪类元素，可以动态生成容器的4个边框（相对+绝对定位）。
-在加上过渡效果就OK了。第二个动态边框只要按不同时间延迟组合就好了。
-</code></pre><h5 id="设置样式-1"><a href="#设置样式-1" class="headerlink" title="设置样式"></a>设置样式</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div></pre></td><td class="code"><pre><div class="line"> *&#123;</div><div class="line">	box-sizing:border-box;</div><div class="line">&#125;</div><div class="line">.dynamic-border &#123;</div><div class="line">	position:relative;</div><div class="line">	width:200px;</div><div class="line">	height:200px;</div><div class="line">	background:gray;</div><div class="line">&#125;</div><div class="line">.dynamic-border:before,</div><div class="line">.dynamic-border:after,</div><div class="line">.dynamic-border span:first-child:before,</div><div class="line">.dynamic-border span:first-child:after &#123;</div><div class="line">	content:&quot;&quot;;</div><div class="line">	position:absolute;</div><div class="line">	background:red;</div><div class="line">	-webkit-transition:all .2s ease;</div><div class="line">	transition:all .2s ease;</div><div class="line">&#125;</div><div class="line">/*上边边框*/</div><div class="line">.dynamic-border:before &#123;</div><div class="line">	width:0; </div><div class="line">	top:-2px;</div><div class="line">	right:0;</div><div class="line">	height:2px;</div><div class="line">&#125;</div><div class="line">/*右边边框*/</div><div class="line">.dynamic-border:after &#123;</div><div class="line">	width:2px;</div><div class="line">	height:0;  </div><div class="line">	right:-2px;</div><div class="line">	bottom:0;</div><div class="line">&#125;</div><div class="line">/*下边边框*/</div><div class="line">.dynamic-border span:first-child:before &#123;</div><div class="line">	width:0;  </div><div class="line">	height:2px;</div><div class="line">	bottom:-2px;</div><div class="line">	left:0;</div><div class="line">&#125;</div><div class="line">/*左边边框*/</div><div class="line">.dynamic-border span:first-child:after &#123;</div><div class="line">	width:2px;</div><div class="line">	height:0;  </div><div class="line">	top:0;</div><div class="line">	left:-2px;</div><div class="line">&#125;</div><div class="line">/*鼠标移动上去时*/</div><div class="line">.dynamic-border:hover:before,</div><div class="line">.dynamic-border:hover span:first-child:before &#123;</div><div class="line">	width:calc(100% + 2px);</div><div class="line">&#125;</div><div class="line">.dynamic-border:hover:after,</div><div class="line">.dynamic-border:hover span:first-child:after &#123;</div><div class="line">	height:calc(100% + 2px);</div><div class="line">&#125;</div><div class="line">/*添加过渡延迟时间*/</div><div class="line">.dynamic-border-1:hover:before,</div><div class="line">.dynamic-border-1:hover span:first-child:before &#123;</div><div class="line">	-webkit-transition-delay:.2s;</div><div class="line">	transition-delay:.2s;</div><div class="line">&#125;</div><div class="line">.dynamic-border-2:hover span:first-child:before &#123;</div><div class="line">	-webkit-transition-delay:.2s;</div><div class="line">	transition-delay:.2s;</div><div class="line">&#125;</div><div class="line">.dynamic-border-2:hover:after &#123;</div><div class="line">	-webkit-transition-delay:.4s;</div><div class="line">	transition-delay:.4s;</div><div class="line">&#125;</div><div class="line">.dynamic-border-2:hover:before &#123;</div><div class="line">	-webkit-transition-delay:.6s;</div><div class="line">	transition-delay:.6s;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h4 id="上传组件美化"><a href="#上传组件美化" class="headerlink" title="上传组件美化"></a>上传组件美化</h4><h5 id="创建模版-2"><a href="#创建模版-2" class="headerlink" title="创建模版"></a>创建模版</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&lt;div class=&quot;file file-input&quot;&gt;</div><div class="line">	&lt;div class=&quot;file-inner&quot;&gt;</div><div class="line">		选择文件</div><div class="line">		&lt;button class=&quot;btn btn-primary file-inner-btn&quot;&gt;</div><div class="line">			文件上传</div><div class="line">			&lt;i class=&quot;ion-ios-cloud-upload-outline&quot;&gt;</div><div class="line">			&lt;/i&gt;</div><div class="line">		&lt;/button&gt;</div><div class="line">	&lt;/div&gt;</div><div class="line">	&lt;input type=&quot;file&quot; /&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
-</code></pre><h5 id="设置CSS样式"><a href="#设置CSS样式" class="headerlink" title="设置CSS样式"></a>设置CSS样式</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">.file &#123;</div><div class="line">	position:relative;</div><div class="line">&#125;</div><div class="line">.file input &#123;</div><div class="line">	position:absolute;</div><div class="line">	top:0;</div><div class="line">	left:0;</div><div class="line">	opacity:0;</div><div class="line">	width:100%;</div><div class="line">	height:100%;</div><div class="line">&#125;</div><div class="line">.file-inner &#123;</div><div class="line">	position:relative;</div><div class="line">	width:250px;</div><div class="line">	height:35px;</div><div class="line">	border:1px solid #d9d9d9;</div><div class="line">	border-radius:5px;</div><div class="line">	padding-left:10px;</div><div class="line">	line-height:35px;</div><div class="line">&#125;</div><div class="line">.file-inner .file-inner-btn &#123;</div><div class="line">	position:absolute;</div><div class="line">	right:0;</div><div class="line">	top:0;</div><div class="line">	height:100%;</div><div class="line">	box-shadow:none;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
-解释；
-这里就用了一个技巧，把input设置为opacity: 0;然后在绝对定位并设置宽高100%，这样就会是整个区域都触发file的input默认事件。
-</code></pre><blockquote>
-<p>   参考文档</p>
-<ol>
-<li><a href="https://www.kancloud.cn/dennis/javascriptmethod/261473" target="_blank" rel="external">web开发实战</a></li>
-<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/linear-gradient3.    [transform](http://www.runoob.com/cssref/css3-pr-transform.html" target="_blank" rel="external">linear-gradient</a><br><a href="https://github.com/fanerge/web-/tree/master" target="_blank" rel="external">代码仓库</a></li>
-</ol>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -3299,7 +3300,7 @@ transform: translate(0, -50%); 相对于自身元素的高度。
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">126</span>
+                <span class="site-state-item-count">127</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -3438,7 +3439,7 @@ transform: translate(0, -50%); 相对于自身元素的高度。
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共158.4k字</span>
+  <span class="post-count">博客全站共159.2k字</span>
 </div>
         
 
