@@ -306,6 +306,212 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/11/06/js设计模式-职责链模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/11/06/js设计模式-职责链模式/" itemprop="url">
+                  js设计模式-职责链模式
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-06T21:11:22+08:00">
+                2017-11-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/11/06/js设计模式-职责链模式/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/11/06/js设计模式-职责链模式/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  879
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  3
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="职责链模式的基础"><a href="#职责链模式的基础" class="headerlink" title="职责链模式的基础"></a>职责链模式的基础</h1><pre><code>定义：职责链模式（Chain of responsibility）是使多个对象都有机会处理请求，从而避免请求的发送者和接受者之间的耦合关系。
+    将这个对象连成一条链，并沿着这条链传递该请求，直到有一个对象处理他为止。
+    职责链模式的名字非常形象，一系列可能会处理请求的对象被该连接成一条链，请求在这些对象之间依次传递，
+    直到遇到一个可以处理它的对象，我们把这些对象成为链中的节点。
+优点：请求发送者只需要知道链中的第一个节点，从而弱化了发送者和一组接收者之间的强联系。
+使用场景：挤公交车递钱（只有售票元可以收钱）、交押金预定手机
+</code></pre><h1 id="交押金预定手机"><a href="#交押金预定手机" class="headerlink" title="交押金预定手机"></a>交押金预定手机</h1><blockquote>
+<p>   假设一个电视网站对于某部新上市的手机经过了2轮缴纳500元定金与200元定金的预定，现在已经到了正式购买的阶段。<br>    支付了500元定金的用户在购买阶段可以使用100元优惠券，200元定金可以使用50元优惠券，普通用户没有如果没有库存不一定能买到。<br>    约定：<br>    orderType: 表示订单类型(定金或者普通用户),code的值为1时候是500元定金用户，为2是200元定金用户，为3则是普通用户。<br>    pay : 表示用户是否支付定金，用户虽然下过500元定金的订单但是如果他一直没有支付定金，那么只能降级为普通用户。<br>    stock : 仅用户普通用户的库存数量，定金用户不受限制。</p>
+</blockquote>
+<pre><code>首先定义三种预定的客户的订单并且让每种客户订单有满足当前预定条件和不满足当前预定条件（需后面继续处理）
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line">// 500 元客户订单</div><div class="line">var order500 = function (orderType,pay,stock) &#123;</div><div class="line">	if(orderType === 1 &amp;&amp; pay)&#123;</div><div class="line">		 console.log(&apos;500 rmb deposit, get 100 coupon &apos;)</div><div class="line">	&#125; else &#123;</div><div class="line">		return &apos;nextSuccessor&apos;  // unknow the next node but always pass to next.</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">// 200 元客户订单</div><div class="line">var order200 = function (orderType,pay,stock) &#123;</div><div class="line">	if(orderType === 2 &amp;&amp; pay)&#123;</div><div class="line">		console.log(&apos;200 rmb deposit , get 50 coupon&apos;)</div><div class="line">	&#125; else&#123;</div><div class="line">		 return &apos;nextSuccessor&apos;; </div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">// 无预约客户订单</div><div class="line">var orderNormal = function (orderType,pay,stock) &#123;</div><div class="line">	if(stock &gt; 0)&#123;</div><div class="line">		 console.log(&apos;normal buy no coupon&apos;)</div><div class="line">	&#125; else&#123;</div><div class="line">		 console.log(&apos;the stock lack&apos;)</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">// 定制职责链对象（作用是形成订单职责链）</div><div class="line">var Chain = function (fn) &#123;</div><div class="line">	this.fn = fn;</div><div class="line">	this.successor = null;</div><div class="line">&#125;;</div><div class="line">// 设置职责链</div><div class="line">Chain.prototype.setNextSuccessor = function (successor) &#123;</div><div class="line">	return this.successor = successor;</div><div class="line">&#125;;</div><div class="line">// 设置每个节点的调用方式</div><div class="line">Chain.prototype.passRequest = function () &#123;</div><div class="line">	var ret = this.fn.apply(this.arguments);</div><div class="line">	if(ret === &apos;nextSuccessor&apos;)&#123;</div><div class="line">		return this.successor &amp;&amp; this.successor.passRequest.apply(this.successor,arguments)</div><div class="line">	&#125;</div><div class="line">	return ret;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">// 现在我们把3个订单函数分别包装成职责链的节点</div><div class="line">var chainOrder500 = new Chain(order500);</div><div class="line">var chainOrder200 = new Chain(order200);</div><div class="line">var chainOrderNormal = new Chain(orderNormal);</div><div class="line"></div><div class="line">// 这里我们把上面封装的节点连成一条线，依次判断执行</div><div class="line">chainOrder500.setNextSuccessor(chainOrder200)</div><div class="line">chainOrder200.setNextSuccessor(chainOrderNormal)</div><div class="line"></div><div class="line">// 测试代码</div><div class="line">chainOrder500.passRequest(1,true,6); // 500 rmb deposit, get 100 coupon</div><div class="line">chainOrder500.passRequest(2,true,4); // 200 rmb deposit , get 50 coupon</div></pre></td></tr></table></figure>
+
+假如我们又想支持，300元定金购买，那我们就在改链中增加一个节点即可
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var order300 = function () &#123;</div><div class="line">// todo</div><div class="line">&#125;;</div><div class="line">chainOrder300 = new Chain(chainOrder300)</div><div class="line">chainOrder500.setNextSuccessor(chainOrder300)</div><div class="line">chainOrder300.setNextSuccessor(chainOrder200)</div></pre></td></tr></table></figure>
+
+我们可以自由灵活的增加移除和链中的节点顺序，这样就很简单能满足瞬息万变的需求了。
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="http://www.jianshu.com/p/19b0033423be" target="_blank" rel="external">三分钟教会你JS设计模式之职责链模式</a><br>    <a href="http://www.cnblogs.com/TomXu/archive/2012/04/10/2435381.html" target="_blank" rel="external">深入理解JavaScript系列（38）：设计模式之职责链模式</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/11/06/js设计模式-备忘录模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2655,294 +2861,6 @@ React组件可以通过继承 React.Component 或 React.PureComponent 来定义�
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/26/web常见的安全问题及解决方法/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/10/26/web常见的安全问题及解决方法/" itemprop="url">
-                  web常见的安全问题及解决方法
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-26T19:48:33+08:00">
-                2017-10-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/安全/" itemprop="url" rel="index">
-                    <span itemprop="name">安全</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/26/web常见的安全问题及解决方法/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/26/web常见的安全问题及解决方法/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  1,938
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  7
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="前端安全问题"><a href="#前端安全问题" class="headerlink" title="前端安全问题"></a>前端安全问题</h1><h2 id="XSS-漏洞"><a href="#XSS-漏洞" class="headerlink" title="XSS 漏洞"></a>XSS 漏洞</h2><pre><code>定义：
-    跨站脚本攻击(Cross Site Scripting)，为了不和层叠样式表(Cascading Style Sheets, CSS)的缩写混淆，故将跨站脚本攻击缩写为XSS。
-    恶意攻击者往Web页面里插入恶意Script代码，当用户浏览该页之时，嵌入其中Web里面的Script代码会被执行，从而达到恶意攻击用户的目的。
-举例：
-1.HTML DOM
-    视图（textContent）
-        &lt;a href=&quot;/user/1&quot;&gt;{{ user_name }}&lt;/a&gt;
-    数据
-        &lt;script&gt;alert(1)&lt;/script&gt;
-    结果
-        &lt;a href=&quot;/user/1&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;&lt;/a&gt;
-    最基本的例子，如果此处不对 user_name 中的特殊符号进行 escape，就会造成 XSS。
-2.HTML Attribute
-    视图（attribute）
-        &lt;img src=&quot;{{ image_url }}&quot;&gt;
-    数据
-        onerror=&quot;alert(1)&quot;
-    结果
-        &lt;img src=&quot;&quot; onerror=&quot;alert(1)&quot;&gt;
-    这个例子表明，如果只对尖括号进行 escape 是不够的，很多时候引号也需要被 escape。
-    简单来说，对不同输出场景，需要使用不同的 escape 规则。
-3.Javascript
-        &lt;script&gt;var user_data = {{ user_data|json_encode }};&lt;/script&gt;
-    数据
-        {&quot;exploit&quot;: &quot;&lt;/script&gt;&lt;script&gt;alert(1);//&quot;}
-    结果
-        &lt;script&gt;var user_data = {&quot;exploit&quot;: &quot;&lt;/script&gt;&lt;script&gt;alert(1);//&quot;};&lt;/script&gt;
-    这是一个特别的例子，大多数人觉得，对于输出在 &lt;script&gt; 中的内容，json_encode 一下就安全了，其实不然。在这个例子中，XSS 仍然发生了。
-解决方案：
-    1.在不同上下文中，使用合适的 escape 方式
-    2.不要相信任何来自用户的输入，（不仅限于 POST Body，还包括 QueryString，甚至是 Headers）
-</code></pre><h2 id="CSRF-漏洞"><a href="#CSRF-漏洞" class="headerlink" title="CSRF 漏洞"></a>CSRF 漏洞</h2><pre><code>定义：    
-    CSRF（Cross-site request forgery）跨站请求伪造通常缩写为CSRF或者XSRF，是一种对网站的恶意利用。
-    它与XSS非常不同，XSS利用站点内的信任用户，而CSRF则通过伪装来自受信任用户的请求来利用受信任的网站。
-    与XSS攻击相比，CSRF攻击往往不大流行（因此对其进行防范的资源也相当稀少）和难以防范，所以被认为比XSS更具危险性。
-理解CSRF攻击：攻击者盗用了你的身份，以你的名义发送恶意请求。
-    CSRF能够做的事情包括：以你名义发送邮件，发消息，盗取你的账号，甚至于购买商品，虚拟货币转账......
-    造成的问题包括：个人隐私泄露以及财产安全。    
-CSRF攻击攻击原理及过程如下：
-   1. 用户C打开浏览器，访问受信任网站A，输入用户名和密码请求登录网站A；
-   2. 在用户信息通过验证后，网站A产生Cookie信息并返回给浏览器，此时用户登录网站A成功，可以正常发送请求到网站A；
-   3. 用户未退出网站A之前，在同一浏览器中，打开一个TAB页访问网站B；
-   4. 网站B接收到用户请求后，返回一些攻击性代码，并发出一个请求要求访问第三方站点A；
-   5. 浏览器在接收到这些攻击性代码后，根据网站B的请求，在用户不知情的情况下携带Cookie信息，向网站A发出请求。
-   网站A并不知道该请求其实是由B发起的，所以会根据用户C的Cookie信息以C的权限处理该请求，导致来自网站B的恶意代码被执行。 
-举例：    
-1.跨站转账
-    银行网站A，它以GET请求来完成银行转账的操作，如：http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000
-　　危险网站B，它里面有一段HTML的代码如下：
-　　&lt;img src=http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000&gt;
-　　首先，你登录了银行网站A保存了cookie，然后访问危险网站B，噢，这时你会发现你的银行账户少了1000块......
-　　为什么会这样呢？原因是银行网站A违反了HTTP规范，使用GET请求更新资源。
-    在访问危险网站B的之前，你已经登录了银行网站A，而B中的&lt;img&gt;以GET的方式请求第三方资源（这里的第三方就是指银行网站了，
-    原本这是一个合法的请求，但这里被不法分子利用了），所以你的浏览器会带上你的银行网站A的Cookie发出Get请求，
-    去获取资源“http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000”，结果银行网站服务器收到请求后，
-    认为这是一个更新资源操作（转账操作），所以就立刻进行转账操作......    
-解决方案：（让服务器分辨出是真实用户还是攻击者）    
-    1.为请求带上 token
-    2.验证HTTP Referer字段
-        根据HTTP协议，在HTTP头中有一个字段叫Referer，它记录了该HTTP请求的来源地址。
-    3.在HTTP头中自定义属性并验证
-</code></pre><h1 id="后端安全问题"><a href="#后端安全问题" class="headerlink" title="后端安全问题"></a>后端安全问题</h1><h2 id="SQL-注入漏洞"><a href="#SQL-注入漏洞" class="headerlink" title="SQL 注入漏洞"></a>SQL 注入漏洞</h2><pre><code>问题展示：
-    &lt;?php $user = mysql_query(&apos;SELECT * FROM USERS WHERE UserName=&quot;&apos;.$_GET[&apos;user&apos;].&apos;&quot;&apos;); ?&gt;
-    那么当请求中 user 参数为 &quot;;DROP TABLE USERS;-- 时，合成的 SQL 语句是：
-    SELECT * FROM USERS WHERE UserName=&quot;&quot;;DROP TABLE USERS;--&quot;
-    // 这样将删除表 users
-解决方案：
-    所有 SQL 语句都使用参数化查询（推荐）或对参数进行 escape（不推荐）
-</code></pre><h2 id="权限控制漏洞"><a href="#权限控制漏洞" class="headerlink" title="权限控制漏洞"></a>权限控制漏洞</h2><pre><code>问题展示：
-    未经授权可以进行的操作都是权限控制漏洞。
-    例如，某些网站的后台操作就仗着「以为用户不知道入口地址」不进行任何权限检查，
-    又例如，某些操作可能出现不允许更改的字段被用户递交更改（往往是那些网页上标记为 disabled 或者 hidden 的字段），
-    再例如，允许通过 ../ 访问到不应该被访问的文件等（一般存在于 include 中）。
-解决方案：
-    所有地方都要进行权限检查（如是否已登录、当前用户是否有足够权限、该项是否可修改等），
-    总之，不要相信任何来自用户的数据，URL 当然也是。
-</code></pre><h2 id="SESSION-与-COOKIE"><a href="#SESSION-与-COOKIE" class="headerlink" title="SESSION 与 COOKIE"></a>SESSION 与 COOKIE</h2><pre><code>问题展示：
-    Session 和 Cookie 是两种用于存储用户当前状态的工具。
-    某些开发者不了解 Session 与 Cookie 的区别，误用或者混用，导致敏感信息泄露或者信息篡改。
-    Cookie 存储在浏览器上，用户可以查看和修改 Cookie。
-解决方案：
-    Session 是存储在服务端的数据，一般来说安全可靠；大多数 Session 都是基于 Cookie 实现的
-    （在 Cookie 中存储一串 SESSION_ID，在服务器上存储该 SESSION_ID 对应的内容）。
-</code></pre><h2 id="IP-地址"><a href="#IP-地址" class="headerlink" title="IP 地址"></a>IP 地址</h2><pre><code>问题展示：
-    首先，用户的 IP 地址一般存储在 REMOTE_ADDR 中，这是唯一的可信的 IP 地址数据（视不同语言而定）。
-    然后某些代理服务器，会将用户的真实 IP 地址附加在 header 的 VIA 或 X_FORWARDED_FOR 中（因为REMOTE_ADDR 是代理服务器自身的 IP）。
-    所以，要获取用户 IP 地址，一般做法是，判断是否存在 VIA 或者 X_FORWARDED_FOR 头，
-    如果存在，则使用它们，如果不存在则使用 REMOTE_ADDR。
-    这就产生问题了，X_FORWARDED_FOR 或 VIA 是 HTTP Header，换句话说，它们是可以被伪造的。
-    例如，在投票中，如果采信了 X_FORWARDED_FOR，往往意味着被刷票。
-解决方案：
-    只使用 REMOTE_ADDR 作为获取 IP 的手段。
-</code></pre><h2 id="验证码"><a href="#验证码" class="headerlink" title="验证码"></a>验证码</h2><pre><code>问题展示：
-    验证码里常见的问题有：非一次性、容易被识别。
-解决方案：
-    非一次性指的是，同一个验证码可以一直被用下去。一般来说，每进行一次验证码校对（无论正确与否），
-    都应该强制更换或清除 Session 中的验证码。
-    关于识别问题，在当前科技水平下，不加噪点不加扭曲的验证码几乎是 100% 可识别的。
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="http://blog.csdn.net/fengyinchao/article/details/50775121" target="_blank" rel="external">Web 开发常见安全问题</a><br>    <a href="http://www.cnblogs.com/hyddd/archive/2009/04/09/1432744.html" target="_blank" rel="external">浅谈CSRF攻击方式</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2992,7 +2910,7 @@ CSRF攻击攻击原理及过程如下：
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">127</span>
+                <span class="site-state-item-count">128</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -3131,7 +3049,7 @@ CSRF攻击攻击原理及过程如下：
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共159.2k字</span>
+  <span class="post-count">博客全站共163.0k字</span>
 </div>
         
 

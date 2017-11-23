@@ -306,6 +306,211 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/15/js设计模式-工厂模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/15/js设计模式-工厂模式/" itemprop="url">
+                  js设计模式-工厂模式
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-15T10:07:51+08:00">
+                2017-10-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/设计模式/" itemprop="url" rel="index">
+                    <span itemprop="name">设计模式</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/15/js设计模式-工厂模式/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/15/js设计模式-工厂模式/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  594
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  2
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>从事前端开发已经有几年了，也经常使用一些设计模式，但是对一些设计模式并不能很好的说出名字以及使用场景。<br>现利用周末闲暇事件来好好整理一下JS中常用的设计模式,如有不正确的地方，还望指出，谢谢！</p>
+<h1 id="简单工厂"><a href="#简单工厂" class="headerlink" title="简单工厂"></a>简单工厂</h1><pre><code>定义：简单工厂模式是由一个方法来决定到底要创建哪个类的实例, 而这些实例通常都拥有相同的接口（属性和方法）。 
+举例：计算器（加、减、乘、除）
+    自行车售卖（山地、公路）
+    饮料机（咖啡、牛奶、水）
+    RPG中职业（战士、法师、射手）
+这里就以RPG中职业（战士、法师、射手）来做说明：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">// 先创建各个角色的构造函数</div><div class="line">function  Warrior() &#123;</div><div class="line">	this.skill = &apos;回血&apos;;</div><div class="line">	this.blood = 150; // 初始化生命值</div><div class="line">	this.hit = 8; // 普通攻击伤害</div><div class="line">	// 其他特有属性和方法比如生命值</div><div class="line">	console.log(this);</div><div class="line">&#125;</div><div class="line">function  Mage() &#123;</div><div class="line">		this.skill = &apos;冰冻&apos;;</div><div class="line">	this.blood = 120; // 初始化生命值</div><div class="line">	this.hit = 3; // 普通攻击伤害</div><div class="line">	// 其他特有属性和方法</div><div class="line">	console.log(this);</div><div class="line">&#125;</div><div class="line">function  Archer() &#123;</div><div class="line">		this.skill = &apos;消耗&apos;;</div><div class="line">	this.blood = 110; // 初始化生命值</div><div class="line">	this.hit = 10; // 普通攻击伤害</div><div class="line">	// 其他特有属性和方法</div><div class="line">	console.log(this);</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 工厂对象 可以是普通对象是的方法 和 构造函数，这里使用前者</div><div class="line">const RoleFactory = &#123;</div><div class="line">	createRole (role) &#123;</div><div class="line">		let roler;</div><div class="line">		switch (role) &#123;</div><div class="line">			case &apos;战士&apos;:</div><div class="line">				roler = new Warrior();</div><div class="line">				break;</div><div class="line">			case &apos;法师&apos;:</div><div class="line">				roler = new Mage();</div><div class="line">				break;</div><div class="line">			case &apos;射手&apos;:</div><div class="line">				roler = new Archer();</div><div class="line">				break;</div><div class="line">			// 后续扩展角色直接追加选择语句和添加角色构造函数</div><div class="line">			defaulr: </div><div class="line">				roler = new Warrior();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;;</div><div class="line">Object.freeze(RoleFactory); // 冻结该对象，防止他人操作</div><div class="line"></div><div class="line">// 创建各个角色的实例</div><div class="line">var warrior1 = RoleFactory.createRole(&apos;战士&apos;); // 创建一个战士</div><div class="line">var mage1 = RoleFactory.createRole(&apos;法师&apos;); // 创建一个法师</div><div class="line">var arche1 = RoleFactory.createRole(&apos;射手&apos;); // 创建一个射手</div></pre></td></tr></table></figure>
+<p>其实我们还可以这样设计工厂处理函数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">const RoleFactory = function (role) &#123;</div><div class="line">	return new role ();</div><div class="line">&#125;</div><div class="line"></div><div class="line">var warrior1 = RoleFactory(Warrior); // 创建一个战士</div><div class="line">var mage1 = RoleFactory(Mage); // 创建一个法师</div><div class="line">var arche1 = RoleFactory(Archer); // 创建一个射手</div></pre></td></tr></table></figure></p>
+<p>上面输出的结果<br><img src="http://oxpnrlb4j.bkt.clouddn.com/%E7%AE%80%E5%8D%95%E5%B7%A5%E5%8E%82%E8%BE%93%E5%87%BA.png" alt="输出结果"></p>
+<h1 id="什么时候使用工厂模式"><a href="#什么时候使用工厂模式" class="headerlink" title="什么时候使用工厂模式"></a>什么时候使用工厂模式</h1><ol>
+<li>对象的构建十分复杂</li>
+<li>需要依赖具体环境创建不同实例</li>
+<li>处理大量具有相同属性的小对象<blockquote>
+<p>   参考文档：<br><a href="http://www.cnblogs.com/coiorz/p/4806550.html" target="_blank" rel="external">JS设计模式之工厂模式</a><br><a href="http://www.cnblogs.com/myzy/p/5240457.html" target="_blank" rel="external">js之简单工厂模式</a></p>
+</blockquote>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/14/OSI七层与TCP-IP五层网络架构/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -3046,281 +3251,6 @@ index.js.html -- 源代码页面
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/09/26/jsDoc学习-3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/09/26/jsDoc学习-3/" itemprop="url">
-                  jsDoc学习-标签2
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-26T20:26:15+08:00">
-                2017-09-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/代码规范/" itemprop="url" rel="index">
-                    <span itemprop="name">代码规范</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/09/26/jsDoc学习-3/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/09/26/jsDoc学习-3/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  1,751
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  7
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="file"><a href="#file" class="headerlink" title="@file"></a>@file</h3><pre><code>@file标签提供文件的说明。在文件开头的JSDoc注释部分使用该标签。
-别名：@fileoverview  @overview
-例如，文件描述
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @file 这是正则js文件</div><div class="line"> * @author fanerge &lt;fanerge@example.com&gt;</div><div class="line"> */</div></pre></td></tr></table></figure>
-</code></pre><h3 id="fires"><a href="#fires" class="headerlink" title="@fires"></a>@fires</h3><pre><code>@fires标签标明当一个方法被调用时将触发一个指定类型的事件，使用@event 标签来描述事件的内容。
-别名：@emits
-语法：@fires &lt;className&gt;#[event:]&lt;eventName&gt;
-例如，方法将触发&quot;drain&quot;事件
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Drink the milkshake.</div><div class="line"> * @fires Milkshake#drain</div><div class="line"> */</div><div class="line">Milkshake.prototype.drink = function() &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="function"><a href="#function" class="headerlink" title="@function"></a>@function</h3><pre><code>标记一个对象作为一个函数，即使它可能不会出现在解析器中。它设置doclet的@kind为&apos;function&apos;。
-别名：@func  @method
-语法：@function [&lt;FunctionName&gt;]
-例如，使用@function标记为一个函数
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">/** @function */</div><div class="line">var paginate = paginateFactory(pages);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="global"><a href="#global" class="headerlink" title="global"></a>global</h3><pre><code>@global标签指定一个在文档的标识是为全局性的标识。
-JSDoc忽略这个标识在源文件中的实际作用范围。这个标记是在本地所定义标识时特别有用。
-例如，文档中的内部变量作为一个全局变量
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">(function() &#123;</div><div class="line">	/** @global */</div><div class="line">	var foo = &apos;hello foo&apos;;</div><div class="line"></div><div class="line">	this.foo = foo;</div><div class="line">&#125;).apply(window);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="ignore"><a href="#ignore" class="headerlink" title="@ignore"></a>@ignore</h3><pre><code>@ignore标签表示在你的代码中的注释不应该出现在文档中，注释会被直接忽略。这个标签优先于所有其他标签。
-在下面的例子中，@ignore标签， Jacket 和 Jacket#color 将不会出现在文档中
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @class</div><div class="line"> * @ignore</div><div class="line"> */</div><div class="line">function Jacket() &#123;</div><div class="line">	/** The jacket&apos;s color. */</div><div class="line">	this.color = null;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="implements"><a href="#implements" class="headerlink" title="@implements"></a>@implements</h3><pre><code>@implements标签指示一个标识实现一个接口。
-语法：@implements {typeExpression}
-在下面的例子中，TransparentColor类实现Color接口，并添加了TransparentColor#rgba方法。
-</code></pre><h3 id="inheritdoc"><a href="#inheritdoc" class="headerlink" title="@inheritdoc"></a>@inheritdoc</h3><pre><code>@inheritdoc标签指示该标识应继承其父类的文档。在你的JSDoc注释中的任何其它标签都将被忽略。
-下面的例子显示了一个类的描述如何从它的父类继承文档。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @classdesc Abstract class representing a network connection.</div><div class="line"> * @class</div><div class="line"> */</div><div class="line">function Connection() &#123;&#125;</div><div class="line"></div><div class="line">/**</div><div class="line"> * Open the connection.</div><div class="line"> */</div><div class="line">Connection.prototype.open = function() &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div><div class="line"></div><div class="line"></div><div class="line">/**</div><div class="line"> * @classdesc Class representing a socket connection.</div><div class="line"> * @class</div><div class="line"> * @augments Connection</div><div class="line"> */</div><div class="line">function Socket() &#123;&#125;</div><div class="line"></div><div class="line">/** @inheritdoc */</div><div class="line">Socket.prototype.open = function() &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="inner"><a href="#inner" class="headerlink" title="@inner"></a>@inner</h3><pre><code>使用@inner标签将标明该标识符作为它父标识符的内部成员。这意味着它可以通过 &quot;Parent~Child&quot; 被引用。
-在下面的例子中，我们使用@inner迫使一个命名空间的成员被描述作为内部成员（默认情况下，这是一个静态成员）。
-这意味着，foo现在有了MyNamespace~foo新名字，而不是MyNamespace.foo。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">/** @namespace */</div><div class="line">var MyNamespace = &#123;</div><div class="line">	/**</div><div class="line">	 * foo is now MyNamespace~foo rather than MyNamespace.foo.</div><div class="line">	 * @inner</div><div class="line">	 */</div><div class="line">	foo: 1</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="instance"><a href="#instance" class="headerlink" title="@instance"></a>@instance</h3><pre><code>使用@instance标签标明该标识符作为它父标识符的实例成员。
-这意味着它可以通过&quot;Parent#Child&quot;被引用。
-例如，使用@instance确定一个实例成员
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">/** @namespace */</div><div class="line">var BaseObject = &#123;</div><div class="line">	/**</div><div class="line">	 * foo is now BaseObject#foo rather than BaseObject.foo.</div><div class="line">	 * @instance</div><div class="line">	 */</div><div class="line">	foo: null</div><div class="line">&#125;;</div><div class="line"></div><div class="line">/** Generates BaseObject instances. */</div><div class="line">function fooFactory(fooValue) &#123;</div><div class="line">	var props = &#123; foo: fooValue &#125;;</div><div class="line">	return Object.create(BaseObject, props);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="interface"><a href="#interface" class="headerlink" title="@interface"></a>@interface</h3><pre><code>@interface标签使一个标识符作为其他标识符的一个实现接口。 例如，你的代码可能定义一个父类，它的方法和属性被去掉。
-您可以将@interface标签添加到父类，以指明子类必须实现父类的方法和属性。
-语法：@interface [&lt;name&gt;]
-在下面的例子中，Color函数表示其它类可以实现的接口。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Interface for classes that represent a color.</div><div class="line"> * @interface</div><div class="line"> */</div><div class="line">function Color() &#123;&#125;</div><div class="line">/**</div><div class="line"> * Get the color as an array of red, green, and blue values, represented as</div><div class="line"> * decimal numbers between 0 and 1.</div><div class="line"> * @returns &#123;Array&amp;lt;number&gt;&#125; An array containing the red, green, and blue values,</div><div class="line"> * in that order.</div><div class="line"> */</div><div class="line">Color.prototype.rgb = function() &#123;</div><div class="line">	throw new Error(&apos;not implemented&apos;);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="kind"><a href="#kind" class="headerlink" title="@kind"></a>@kind</h3><pre><code>@kind标签是用来指明什么样的标识符被描述（例如，一类或模块）。标识符kind 不同于标识符type（例如，字符串或布尔）。
-语法：@kind &lt;kindName&gt;
-    kindName取值：class constant event external file function member mixin module namespace typedef
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * A constant.</div><div class="line"> * @kind constant</div><div class="line"> */</div><div class="line">const asdf = 1;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="lends"><a href="#lends" class="headerlink" title="@lends"></a>@lends</h3><pre><code>@lends标签允许你将一个字面量对象的所有成员标记为某个标识符（类或模块）的成员，就像他们是给定名称的标识符成员。
-你可能想这样做，如果你传递一个对象字面量给一个函数，创建一个成员为对象字面量的命名类。
-语法：@lends &lt;namepath&gt;
-实例，@lends标签告诉JSDoc，这一对象字面量的所有成员都会被“借”给&quot;Person&quot;类。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">/** @class */</div><div class="line">var Person = makeClass(</div><div class="line">	/** @lends Person */</div><div class="line">	&#123;</div><div class="line">		initialize: function(name) &#123;</div><div class="line">			this.name = name;</div><div class="line">		&#125;,</div><div class="line">		say: function(message) &#123;</div><div class="line">			return this.name + &quot; says: &quot; + message;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="license"><a href="#license" class="headerlink" title="@license"></a>@license</h3><pre><code>@license标签标识你的代码采用何种软件许可协议。
-语法：@license &lt;identifier&gt;
-例如，这是在Apache 2.0 许可下分发的模块
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Utility functions for the foo package.</div><div class="line"> * @module foo/util</div><div class="line"> * @license Apache-2.0</div><div class="line"> */</div></pre></td></tr></table></figure>
-</code></pre><h3 id="listens"><a href="#listens" class="headerlink" title="@listens"></a>@listens</h3><pre><code>@listens 标签指示一个标识监听指定的事件。使用@event 标签来记录事件的内容。
-语法：@listens &lt;eventName&gt;
-下面的示例演示了如何记录名为module:hurler~event:snowball的事件，还有一个方法命名为module:playground/monitor.reportThrowage来监听事件。
-</code></pre><h3 id="member"><a href="#member" class="headerlink" title="@member"></a>@member</h3><pre><code>@member标签记录成员基本种类（kind），比如&quot;class&quot;, &quot;function&quot;, 或者 &quot;constant&quot;。
-一个成员可以任选地具有一个类型以及名称。
-别名：@var
-语法：@member [&lt;type&gt;] [&lt;name&gt;]
-例如，Data#point上使用@member：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">/** @class */</div><div class="line">function Data() &#123;</div><div class="line">	/** @member &#123;Object&#125; */</div><div class="line">	this.point = &#123;&#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="memberof"><a href="#memberof" class="headerlink" title="@memberof"></a>@memberof</h3><pre><code>@memberof标签标明成员隶属于哪一个父级标识符。
-语法：@memberof &lt;parentNamepath&gt;
-      @memberof! &lt;parentNamepath&gt;
-事实上，它就是一个全局性的函数，但同事它也是Tools命名空间的一个成员，而这才是你想描述的。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">/** @namespace */</div><div class="line">var Tools = &#123;&#125;;</div><div class="line"></div><div class="line">/** @memberof Tools */</div><div class="line">var hammer = function() &#123;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">Tools.hammer = hammer;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="mixes"><a href="#mixes" class="headerlink" title="@mixes"></a>@mixes</h3><pre><code>@mixes标签指示当前对象混入了OtherObjectPath对象的所有成员,被混入的对象就是一个@mixin。    
-语法：@mixes &lt;OtherObjectPath&gt;
-</code></pre><h3 id="mixin"><a href="#mixin" class="headerlink" title="@mixin"></a>@mixin</h3><pre><code>您可以使用@mixin标签标识该对象是一个mixin（混入），旨在表明该对象的属性和方法混入到其他对象。
-然后，可以将@mixes标签 添加到使用了该 mixin（混入）的对象上。
-语法：@mixin [&lt;MixinName&gt;]
-</code></pre><h3 id="module"><a href="#module" class="headerlink" title="@module"></a>@module</h3><pre><code>@module可以将当前文件标注为一个模块，默认情况下文件内的所有标识符都隶属于此模块，除非文档另有说明。
-@module [[{&lt;type&gt;}] &lt;moduleName&gt;]
-下面的示例演示了在一个模块中用于标识的namepaths。第一个标识符是模块私有的，或“内部”变量 - 它只能在模块内访问。第二个标识符是由模块导出一个静态函数。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">/** @module myModule */</div><div class="line"></div><div class="line">/** will be module:myModule~foo */</div><div class="line">var foo = 1;</div><div class="line"></div><div class="line">/** will be module:myModule.bar */</div><div class="line">var bar = function() &#123;&#125;;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="name"><a href="#name" class="headerlink" title="@name"></a>@name</h3><pre><code>@name标签强制JSDoc使用这个给定的名称，而忽略实际代码里的名称。
-这个标签最好用于&quot;虚拟注释&quot;，而不是在代码中随时可见的标签，如在运行时期间产生的方法。
-语法：@name &lt;namePath&gt;
-下面的例子演示了如何使用@name标签描述一个函数，JSDoc通常不会识别。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * @name highlightSearchTerm</div><div class="line"> * @function</div><div class="line"> * @global</div><div class="line"> * @param &#123;string&#125; term - The search term to highlight.</div><div class="line"> */</div><div class="line">eval(&quot;window.highlightSearchTerm = function(term) &#123;&#125;;&quot;)</div></pre></td></tr></table></figure>
-</code></pre><h3 id="namespace"><a href="#namespace" class="headerlink" title="@namespace"></a>@namespace</h3><pre><code>@namespace标签指明对象是一个命名空间。你也可以书写一个虚拟JSDoc注释，通过使用代码来定义命名空间。
-语法：@namespace [{&lt;type&gt;}] &lt;SomeName&gt;]
-例如，对象上使用 @namespace 标签：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * My namespace.</div><div class="line"> * @namespace</div><div class="line"> */</div><div class="line">var MyNamespace = &#123;</div><div class="line">	/** documented as MyNamespace.foo */</div><div class="line">	foo: function() &#123;&#125;,</div><div class="line">	/** documented as MyNamespace.bar */</div><div class="line">	bar: 1</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="http://www.css88.com/doc/jsdoc/" target="_blank" rel="external">jsDoc文档</a>    </p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -3370,7 +3300,7 @@ JSDoc忽略这个标识在源文件中的实际作用范围。这个标记是在
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">127</span>
+                <span class="site-state-item-count">128</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -3509,7 +3439,7 @@ JSDoc忽略这个标识在源文件中的实际作用范围。这个标记是在
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共159.2k字</span>
+  <span class="post-count">博客全站共163.0k字</span>
 </div>
         
 

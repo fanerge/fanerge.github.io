@@ -306,6 +306,294 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/26/web常见的安全问题及解决方法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/26/web常见的安全问题及解决方法/" itemprop="url">
+                  web常见的安全问题及解决方法
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-26T19:48:33+08:00">
+                2017-10-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/安全/" itemprop="url" rel="index">
+                    <span itemprop="name">安全</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/26/web常见的安全问题及解决方法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/26/web常见的安全问题及解决方法/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,938
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  7
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="前端安全问题"><a href="#前端安全问题" class="headerlink" title="前端安全问题"></a>前端安全问题</h1><h2 id="XSS-漏洞"><a href="#XSS-漏洞" class="headerlink" title="XSS 漏洞"></a>XSS 漏洞</h2><pre><code>定义：
+    跨站脚本攻击(Cross Site Scripting)，为了不和层叠样式表(Cascading Style Sheets, CSS)的缩写混淆，故将跨站脚本攻击缩写为XSS。
+    恶意攻击者往Web页面里插入恶意Script代码，当用户浏览该页之时，嵌入其中Web里面的Script代码会被执行，从而达到恶意攻击用户的目的。
+举例：
+1.HTML DOM
+    视图（textContent）
+        &lt;a href=&quot;/user/1&quot;&gt;{{ user_name }}&lt;/a&gt;
+    数据
+        &lt;script&gt;alert(1)&lt;/script&gt;
+    结果
+        &lt;a href=&quot;/user/1&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;&lt;/a&gt;
+    最基本的例子，如果此处不对 user_name 中的特殊符号进行 escape，就会造成 XSS。
+2.HTML Attribute
+    视图（attribute）
+        &lt;img src=&quot;{{ image_url }}&quot;&gt;
+    数据
+        onerror=&quot;alert(1)&quot;
+    结果
+        &lt;img src=&quot;&quot; onerror=&quot;alert(1)&quot;&gt;
+    这个例子表明，如果只对尖括号进行 escape 是不够的，很多时候引号也需要被 escape。
+    简单来说，对不同输出场景，需要使用不同的 escape 规则。
+3.Javascript
+        &lt;script&gt;var user_data = {{ user_data|json_encode }};&lt;/script&gt;
+    数据
+        {&quot;exploit&quot;: &quot;&lt;/script&gt;&lt;script&gt;alert(1);//&quot;}
+    结果
+        &lt;script&gt;var user_data = {&quot;exploit&quot;: &quot;&lt;/script&gt;&lt;script&gt;alert(1);//&quot;};&lt;/script&gt;
+    这是一个特别的例子，大多数人觉得，对于输出在 &lt;script&gt; 中的内容，json_encode 一下就安全了，其实不然。在这个例子中，XSS 仍然发生了。
+解决方案：
+    1.在不同上下文中，使用合适的 escape 方式
+    2.不要相信任何来自用户的输入，（不仅限于 POST Body，还包括 QueryString，甚至是 Headers）
+</code></pre><h2 id="CSRF-漏洞"><a href="#CSRF-漏洞" class="headerlink" title="CSRF 漏洞"></a>CSRF 漏洞</h2><pre><code>定义：    
+    CSRF（Cross-site request forgery）跨站请求伪造通常缩写为CSRF或者XSRF，是一种对网站的恶意利用。
+    它与XSS非常不同，XSS利用站点内的信任用户，而CSRF则通过伪装来自受信任用户的请求来利用受信任的网站。
+    与XSS攻击相比，CSRF攻击往往不大流行（因此对其进行防范的资源也相当稀少）和难以防范，所以被认为比XSS更具危险性。
+理解CSRF攻击：攻击者盗用了你的身份，以你的名义发送恶意请求。
+    CSRF能够做的事情包括：以你名义发送邮件，发消息，盗取你的账号，甚至于购买商品，虚拟货币转账......
+    造成的问题包括：个人隐私泄露以及财产安全。    
+CSRF攻击攻击原理及过程如下：
+   1. 用户C打开浏览器，访问受信任网站A，输入用户名和密码请求登录网站A；
+   2. 在用户信息通过验证后，网站A产生Cookie信息并返回给浏览器，此时用户登录网站A成功，可以正常发送请求到网站A；
+   3. 用户未退出网站A之前，在同一浏览器中，打开一个TAB页访问网站B；
+   4. 网站B接收到用户请求后，返回一些攻击性代码，并发出一个请求要求访问第三方站点A；
+   5. 浏览器在接收到这些攻击性代码后，根据网站B的请求，在用户不知情的情况下携带Cookie信息，向网站A发出请求。
+   网站A并不知道该请求其实是由B发起的，所以会根据用户C的Cookie信息以C的权限处理该请求，导致来自网站B的恶意代码被执行。 
+举例：    
+1.跨站转账
+    银行网站A，它以GET请求来完成银行转账的操作，如：http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000
+　　危险网站B，它里面有一段HTML的代码如下：
+　　&lt;img src=http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000&gt;
+　　首先，你登录了银行网站A保存了cookie，然后访问危险网站B，噢，这时你会发现你的银行账户少了1000块......
+　　为什么会这样呢？原因是银行网站A违反了HTTP规范，使用GET请求更新资源。
+    在访问危险网站B的之前，你已经登录了银行网站A，而B中的&lt;img&gt;以GET的方式请求第三方资源（这里的第三方就是指银行网站了，
+    原本这是一个合法的请求，但这里被不法分子利用了），所以你的浏览器会带上你的银行网站A的Cookie发出Get请求，
+    去获取资源“http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000”，结果银行网站服务器收到请求后，
+    认为这是一个更新资源操作（转账操作），所以就立刻进行转账操作......    
+解决方案：（让服务器分辨出是真实用户还是攻击者）    
+    1.为请求带上 token
+    2.验证HTTP Referer字段
+        根据HTTP协议，在HTTP头中有一个字段叫Referer，它记录了该HTTP请求的来源地址。
+    3.在HTTP头中自定义属性并验证
+</code></pre><h1 id="后端安全问题"><a href="#后端安全问题" class="headerlink" title="后端安全问题"></a>后端安全问题</h1><h2 id="SQL-注入漏洞"><a href="#SQL-注入漏洞" class="headerlink" title="SQL 注入漏洞"></a>SQL 注入漏洞</h2><pre><code>问题展示：
+    &lt;?php $user = mysql_query(&apos;SELECT * FROM USERS WHERE UserName=&quot;&apos;.$_GET[&apos;user&apos;].&apos;&quot;&apos;); ?&gt;
+    那么当请求中 user 参数为 &quot;;DROP TABLE USERS;-- 时，合成的 SQL 语句是：
+    SELECT * FROM USERS WHERE UserName=&quot;&quot;;DROP TABLE USERS;--&quot;
+    // 这样将删除表 users
+解决方案：
+    所有 SQL 语句都使用参数化查询（推荐）或对参数进行 escape（不推荐）
+</code></pre><h2 id="权限控制漏洞"><a href="#权限控制漏洞" class="headerlink" title="权限控制漏洞"></a>权限控制漏洞</h2><pre><code>问题展示：
+    未经授权可以进行的操作都是权限控制漏洞。
+    例如，某些网站的后台操作就仗着「以为用户不知道入口地址」不进行任何权限检查，
+    又例如，某些操作可能出现不允许更改的字段被用户递交更改（往往是那些网页上标记为 disabled 或者 hidden 的字段），
+    再例如，允许通过 ../ 访问到不应该被访问的文件等（一般存在于 include 中）。
+解决方案：
+    所有地方都要进行权限检查（如是否已登录、当前用户是否有足够权限、该项是否可修改等），
+    总之，不要相信任何来自用户的数据，URL 当然也是。
+</code></pre><h2 id="SESSION-与-COOKIE"><a href="#SESSION-与-COOKIE" class="headerlink" title="SESSION 与 COOKIE"></a>SESSION 与 COOKIE</h2><pre><code>问题展示：
+    Session 和 Cookie 是两种用于存储用户当前状态的工具。
+    某些开发者不了解 Session 与 Cookie 的区别，误用或者混用，导致敏感信息泄露或者信息篡改。
+    Cookie 存储在浏览器上，用户可以查看和修改 Cookie。
+解决方案：
+    Session 是存储在服务端的数据，一般来说安全可靠；大多数 Session 都是基于 Cookie 实现的
+    （在 Cookie 中存储一串 SESSION_ID，在服务器上存储该 SESSION_ID 对应的内容）。
+</code></pre><h2 id="IP-地址"><a href="#IP-地址" class="headerlink" title="IP 地址"></a>IP 地址</h2><pre><code>问题展示：
+    首先，用户的 IP 地址一般存储在 REMOTE_ADDR 中，这是唯一的可信的 IP 地址数据（视不同语言而定）。
+    然后某些代理服务器，会将用户的真实 IP 地址附加在 header 的 VIA 或 X_FORWARDED_FOR 中（因为REMOTE_ADDR 是代理服务器自身的 IP）。
+    所以，要获取用户 IP 地址，一般做法是，判断是否存在 VIA 或者 X_FORWARDED_FOR 头，
+    如果存在，则使用它们，如果不存在则使用 REMOTE_ADDR。
+    这就产生问题了，X_FORWARDED_FOR 或 VIA 是 HTTP Header，换句话说，它们是可以被伪造的。
+    例如，在投票中，如果采信了 X_FORWARDED_FOR，往往意味着被刷票。
+解决方案：
+    只使用 REMOTE_ADDR 作为获取 IP 的手段。
+</code></pre><h2 id="验证码"><a href="#验证码" class="headerlink" title="验证码"></a>验证码</h2><pre><code>问题展示：
+    验证码里常见的问题有：非一次性、容易被识别。
+解决方案：
+    非一次性指的是，同一个验证码可以一直被用下去。一般来说，每进行一次验证码校对（无论正确与否），
+    都应该强制更换或清除 Session 中的验证码。
+    关于识别问题，在当前科技水平下，不加噪点不加扭曲的验证码几乎是 100% 可识别的。
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="http://blog.csdn.net/fengyinchao/article/details/50775121" target="_blank" rel="external">Web 开发常见安全问题</a><br>    <a href="http://www.cnblogs.com/hyddd/archive/2009/04/09/1432744.html" target="_blank" rel="external">浅谈CSRF攻击方式</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/25/React-基础知识整理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2551,305 +2839,6 @@ props：name
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/18/vue官网-选项解读/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/10/18/vue官网-选项解读/" itemprop="url">
-                  vue官网-选项解读
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T21:20:15+08:00">
-                2017-10-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/vue/" itemprop="url" rel="index">
-                    <span itemprop="name">vue</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/18/vue官网-选项解读/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/18/vue官网-选项解读/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  2,157
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  9
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="选项-数据"><a href="#选项-数据" class="headerlink" title="选项/数据"></a>选项/数据</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">var app = new Vue(&#123;</div><div class="line">	data() &#123;            // 声明所有的根级响应式属性</div><div class="line">		return &#123;&#125;;</div><div class="line">	&#125;,</div><div class="line">	props: &#123;&#125;,          // 父组件传递过来的属性</div><div class="line">	propsData: &#123;&#125;,      // 只能用于 new 创建的实例时传递 props。主要作用是方便测试</div><div class="line">	methods: &#123;&#125;,		// 组件相关的方法</div><div class="line">	computed: &#123;&#125;,		// 组件的计算属性</div><div class="line">	watch: &#123;&#125;,			// 监听组件的 data 中数据变化执行对应函数	</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="data"><a href="#data" class="headerlink" title="data"></a>data</h3><pre><code>类型：Object | Function（对于组件只是使用这种方式，并且返回一个纯对象）
-作用：Vue 实例的数据对象。
-最佳实践：data中需要声明所有的根级响应式属性。
-    有些时候想为 data 添加新数据。Vue.set( target, key, value )；target 可以是Object 和 Array(多个VUE实例对象)， key 为对应数据的键，value 为对应数据的值。
-    对应还有 Vue.delete( target, key ) 移除VUE实例对象指定key的属性。
-数据驱动的原理：Vue 将会递归将 data 的属性转换为 getter/setter，从而让 data 的属性能够响应数据变化。
-    属性通过 Object.defineProperty(obj, prop, descriptor) 来实现数据驱动。
-</code></pre><h3 id="props"><a href="#props" class="headerlink" title="props"></a>props</h3><pre><code>类型：Array&lt;string&gt; | Object
-作用：用于接收来自父组件的数据。对象允许配置高级选项，如是否必填（required）、
-类型检测（type）、自定义校验（validator函数）和设置默认值（default）。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">// 对象语法，提供校验</div><div class="line">Vue.component(&apos;props-demo-advanced&apos;, &#123;</div><div class="line">  props: &#123;</div><div class="line">	// 检测类型</div><div class="line">	height: Number,</div><div class="line">	// 检测类型 + 其他验证</div><div class="line">	age: &#123;</div><div class="line">	  type: Number,</div><div class="line">	  default: 0,</div><div class="line">	  required: true,</div><div class="line">	  validator: function (value) &#123;</div><div class="line">		return value &gt;= 0</div><div class="line">	  &#125;</div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="propsData"><a href="#propsData" class="headerlink" title="propsData"></a>propsData</h3><pre><code>类型：{ [key: string]: any }
-作用：只能用于 new 创建的实例时传递 props。主要作用是方便测试。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">var vm = new Vue(&#123;</div><div class="line">  propsData: &#123;</div><div class="line">	msg: &apos;hello&apos;</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="computed"><a href="#computed" class="headerlink" title="computed"></a>computed</h3><pre><code>类型：{ [key: string]: Function | { get: Function, set: Function } }
-作用：计算属性的结果会被缓存，除非依赖的响应式属性（data中的数据）变化才会重新计算。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">var vm = new Vue(&#123;</div><div class="line">  data: &#123; a: 1 &#125;,</div><div class="line">  computed: &#123;</div><div class="line">	// 仅读取</div><div class="line">	aDouble: function () &#123;</div><div class="line">	  return this.a * 2</div><div class="line">	&#125;,</div><div class="line">  &#125;,</div><div class="line">&#125;);</div><div class="line"></div><div class="line">// 组件类使用</div><div class="line">this.aDouble</div><div class="line">// 组件外使用</div><div class="line">vm.aDouble</div></pre></td></tr></table></figure>
-</code></pre><h3 id="methods"><a href="#methods" class="headerlink" title="methods"></a>methods</h3><pre><code>类型：{ [key: string]: Function }
-作用：为组件定义方法
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">var vm = new Vue(&#123;</div><div class="line">  data: &#123; a: 1 &#125;,</div><div class="line">  methods: &#123;</div><div class="line">	plus: function () &#123;</div><div class="line">	  this.a++</div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">// 组件内使用</div><div class="line">this.plus()</div><div class="line">// 组件外使用</div><div class="line">vm.plus()</div></pre></td></tr></table></figure>
-</code></pre><h3 id="watch"><a href="#watch" class="headerlink" title="watch"></a>watch</h3><pre><code>类型：{ [key: string]: string | Function | Object }
-作用：键是需要观察的表达式data中的属性，值是对应回调函数。值也可以是方法名，或者包含选项的对象
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">var vm = new Vue(&#123;</div><div class="line">  data: &#123;</div><div class="line">	a: 1,</div><div class="line">	b: 2,</div><div class="line">	c: 3</div><div class="line">  &#125;,</div><div class="line">  watch: &#123;</div><div class="line">	a: function (val, oldVal) &#123;</div><div class="line">	  console.log(&apos;new: %s, old: %s&apos;, val, oldVal)</div><div class="line">	&#125;,</div><div class="line">	// 方法名</div><div class="line">	b: &apos;someMethod&apos;,</div><div class="line">	// 深度 watcher</div><div class="line">	c: &#123;</div><div class="line">	  handler: function (val, oldVal) &#123; /* ... */ &#125;,</div><div class="line">	  deep: true</div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h2 id="选项-DOM"><a href="#选项-DOM" class="headerlink" title="选项/DOM"></a>选项/DOM</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">new Vue(&#123;</div><div class="line">  el: &apos;#app&apos;,</div><div class="line">  template: &apos;&lt;div&gt;我是模板&lt;/div&gt;&apos;,</div><div class="line">  render (h) &#123;</div><div class="line">	throw new Error(&apos;oops&apos;)</div><div class="line">  &#125;,</div><div class="line">  renderError (h, err) &#123;</div><div class="line">	return h(&apos;pre&apos;, &#123; style: &#123; color: &apos;red&apos; &#125;&#125;, err.stack)</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="el"><a href="#el" class="headerlink" title="el"></a>el</h3><pre><code>类型：string | HTMLElement
-作用：提供一个在页面上已存在的 DOM 元素作为 Vue 实例的挂载目标（只在由 new 创建的实例中遵守）。
-</code></pre><h3 id="template"><a href="#template" class="headerlink" title="template"></a>template</h3><pre><code>类型：string    
-作用：一个字符串模板作为 Vue 实例的标识使用。
-</code></pre><h3 id="render"><a href="#render" class="headerlink" title="render"></a>render</h3><pre><code>类型：(createElement: () =&gt; VNode) =&gt; VNode
-作用：字符串模板的代替方案，允许你发挥 JavaScript 最大的编程能力。
-</code></pre><h3 id="renderError"><a href="#renderError" class="headerlink" title="renderError"></a>renderError</h3><pre><code>类型：(createElement: () =&gt; VNode, error: Error) =&gt; VNode
-作用：当 render 函数遭遇错误时，提供另外一种渲染输出。
-</code></pre><h2 id="选项-生命周期钩子（函数）"><a href="#选项-生命周期钩子（函数）" class="headerlink" title="选项/生命周期钩子（函数）"></a>选项/生命周期钩子（函数）</h2><pre><code>在组件的具体某个过程触发相应的函数
-可以理解为：创建 -&gt; 挂载 -&gt; 更新 -&gt; 激活 -&gt; 销毁
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">new Vue(&#123;</div><div class="line">	beforeCreate() &#123;&#125;, // 实例初始化之后</div><div class="line">	created() &#123;&#125;,      // 在实例创建完成后被立即调用</div><div class="line">	beforeMount() &#123;&#125;,  // 在挂载开始之前被调用</div><div class="line">	mounted() &#123;&#125;,      // 实例挂载到 DOM 节点</div><div class="line">	beforeUpdate() &#123;&#125;, // 数据更新时调用</div><div class="line">	updated() &#123;&#125;,      // 数据更新完成后调用</div><div class="line">	activated() &#123;&#125;,    // keep-alive 组件激活时调用</div><div class="line">	deactivated() &#123;&#125;,  // keep-alive 组件停用时调用</div><div class="line">	beforeDestory() &#123;&#125;,// 实例销毁之前调用</div><div class="line">	destoryed() &#123;&#125;     // 实例销毁后调用。</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-
-详细信息请看官网-生命周期图示
-</code></pre><p><img src="https://cn.vuejs.org/images/lifecycle.png" alt="生命周期图示"></p>
-<h3 id="beforeCreate"><a href="#beforeCreate" class="headerlink" title="beforeCreate"></a>beforeCreate</h3><pre><code>执行时机：在实例初始化之后，数据观测 (data observer) 和 event/watcher 事件配置之前被调用。
-</code></pre><h3 id="created"><a href="#created" class="headerlink" title="created"></a>created</h3><pre><code>执行时机：在实例创建完成后被立即调用。完成以下任务：数据观测 (data observer)，属性和方法的运算，watch/event 事件回调，但实例并没有挂载到真实节点。
-</code></pre><h3 id="beforeMount"><a href="#beforeMount" class="headerlink" title="beforeMount"></a>beforeMount</h3><pre><code>执行时机：在挂载开始之前被调用：相关的 render 函数首次被调用。
-</code></pre><h3 id="mounted"><a href="#mounted" class="headerlink" title="mounted"></a>mounted</h3><pre><code>执行时机：当实例挂载到文档 DOM 元素时触发。
-注意 mounted 不会保证所有的子组件也都一起被挂载，下面可以保证所有子组件都一起被挂起。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mounted: function () &#123;</div><div class="line">  this.$nextTick(function () &#123;</div><div class="line">	// 整个视图页面全部渲染时触发，类似于jquery的ready方法。</div><div class="line">  &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="beforeUpdate"><a href="#beforeUpdate" class="headerlink" title="beforeUpdate"></a>beforeUpdate</h3><pre><code>执行时机：数据更新时调用，发生在虚拟 DOM 重新渲染和打补丁之前。
-</code></pre><h3 id="updated"><a href="#updated" class="headerlink" title="updated"></a>updated</h3><pre><code>执行时机：由于数据更改导致的虚拟 DOM 重新渲染和打补丁，在这之后会调用该钩子。
-    此时可以进行 DOM 操作。
-</code></pre><h3 id="activated"><a href="#activated" class="headerlink" title="activated"></a>activated</h3><pre><code>执行时机：keep-alive 组件激活时调用。
-</code></pre><h3 id="deactivated"><a href="#deactivated" class="headerlink" title="deactivated"></a>deactivated</h3><pre><code>执行时机：keep-alive 组件停用时调用。    
-</code></pre><h3 id="beforeDestory"><a href="#beforeDestory" class="headerlink" title="beforeDestory"></a>beforeDestory</h3><pre><code>执行时机：实例销毁之前调用。在这一步，实例仍然完全可用。
-</code></pre><h3 id="destoryed"><a href="#destoryed" class="headerlink" title="destoryed"></a>destoryed</h3><pre><code>执行时机：Vue 实例销毁后调用。
-</code></pre><h2 id="选项-资源"><a href="#选项-资源" class="headerlink" title="选项/资源"></a>选项/资源</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var vm = new Vue(&#123;</div><div class="line">	el: &apos;#app&apos;,</div><div class="line">	directives: &#123;&#125;, // 注册局部指令</div><div class="line">	filters: &#123;&#125;,    // 注册局部过滤器</div><div class="line">	compoents: &#123;&#125;   // 注册局部组件 </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="directives"><a href="#directives" class="headerlink" title="directives"></a>directives</h3><pre><code>类型：Object
-1.注册自定义指令（全局）
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">Vue.directive(&apos;focus&apos;, &#123;</div><div class="line">  // 当绑定元素插入到 DOM 中。</div><div class="line">  inserted: function (el) &#123;</div><div class="line">    // 聚焦元素</div><div class="line">    el.focus()</div><div class="line">  &#125;</div><div class="line">&#125;);</div><div class="line">var vm = new Vue(&#123;</div><div class="line">	el: &apos;#app&apos;,</div><div class="line">	// directives: &#123;&#125; 注册局部指令</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-
-这里指令的钩子函数：bind、inserted、update、componentUpdated、unbind
-每个钩子函数的参数：(包括 el，binding，vnode，oldVnode)。
-2.使用自定义指令
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;div id=&quot;app&quot;&gt;</div><div class="line">	&lt;input v-focus&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h3><pre><code>类型：Object
-1.注册全局过滤器
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">Vue.filter(&apos;add4&apos;, function (value) &#123;</div><div class="line">return value + 4;</div><div class="line">  // 返回处理后的值</div><div class="line">&#125;);</div><div class="line">var vm = new Vue(&#123;</div><div class="line">	el: &apos;#app&apos;,</div><div class="line">	data() &#123;</div><div class="line">		return &#123;</div><div class="line">			num: 10</div><div class="line">		&#125;;</div><div class="line">	&#125;,</div><div class="line">	// filters: &#123;&#125; 注册局部过滤器</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-
-2.使用过滤器
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;div id=&quot;app&quot;&gt;</div><div class="line">	&lt;p&gt;10 + 4 = &#123;&#123;num | add4&#125;&#125;&lt;/p&gt; // 14</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="compoents（局部组件的注册）"><a href="#compoents（局部组件的注册）" class="headerlink" title="compoents（局部组件的注册）"></a>compoents（局部组件的注册）</h3><pre><code>类型：Object
-1.注册全局组件
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">Vue.component(&apos;my-component&apos;, &#123;</div><div class="line">  // 选项</div><div class="line">&#125;);</div><div class="line">var vm = new Vue(&#123;</div><div class="line">	el: &apos;#app&apos;,</div><div class="line">	data() &#123;</div><div class="line">		return &#123;</div><div class="line">			num: 10</div><div class="line">		&#125;;</div><div class="line">	&#125;,</div><div class="line">	// components: &#123;&#125; 注册局部组件</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-
-2.使用组件
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;div id=&quot;app&quot;&gt;</div><div class="line">	&lt;my-component /&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
-</code></pre><h2 id="选项-组合"><a href="#选项-组合" class="headerlink" title="选项/组合"></a>选项/组合</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">import parentComponent from &apos;./path&apos;;</div><div class="line">var vm = new Vue(&#123;</div><div class="line">	el: &apos;#app&apos;,</div><div class="line">	parent: parentComponent, // 定义当前组件的父组件</div><div class="line">	minxins: [mixin],        // 定义局部混合逻辑（引入的先触发）</div><div class="line">	extends: CompA           // 定义局部继承（自身的先触发）</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-</code></pre><h3 id="parent"><a href="#parent" class="headerlink" title="parent"></a>parent</h3><pre><code>类型：Vue instance
-作用：指定已创建的实例的父实例，在两者之间建立父子关系。
-    子实例可以用 this.$parent 访问父实例，子实例被推入父实例的 $children 数组中。
-</code></pre><h3 id="minxins"><a href="#minxins" class="headerlink" title="minxins"></a>minxins</h3><pre><code>类型：Array&lt;Object&gt;
-作用：混合 (mixins) 是一种分发 Vue 组件中可复用功能的非常灵活的方式。
-混合对象可以包含任意组件选项。以组件使用混合对象时，所有混合对象的选项将被
-混入该组件本身的选项。
-1.创建局部混合
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">var mixin = &#123;</div><div class="line">  created: function () &#123;</div><div class="line">	console.log(&apos;混合对象的钩子被调用&apos;)</div><div class="line">  &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-
-2.使用混合
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">new Vue(&#123;</div><div class="line">  mixins: [mixin], // 这里使用</div><div class="line">  created: function () &#123;</div><div class="line">	console.log(&apos;组件钩子被调用&apos;)</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-
-这里需要说明：混合对象的 钩子将在组件自身钩子 之前 调用。 
-</code></pre><h3 id="extends"><a href="#extends" class="headerlink" title="extends"></a>extends</h3><pre><code>类型：Object | Function
-作用：允许声明扩展另一个组件(可以是一个简单的选项对象或构造函数)，而无需使用 Vue.extend。这主要是为了便于扩展单文件组件。
-    这和 mixins 类似，区别在于，组件自身的选项会比要扩展的源组件具有更高的优先级。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var CompA = &#123; ... &#125;</div><div class="line">// 在没有调用 `Vue.extend` 时候继承 CompA</div><div class="line">var CompB = &#123;</div><div class="line">  extends: CompA,</div><div class="line">  ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h3 id="provide-inject"><a href="#provide-inject" class="headerlink" title="provide/inject"></a>provide/inject</h3><pre><code>provide：Object | () =&gt; Object
-inject：Array&lt;string&gt; | { [key: string]: string | Symbol }
-说明：provide 和 inject 主要为高阶插件/组件库提供用例。并不推荐直接用于应用程序代码中。
-</code></pre><h2 id="选项-其它"><a href="#选项-其它" class="headerlink" title="选项/其它"></a>选项/其它</h2><h3 id="name"><a href="#name" class="headerlink" title="name"></a>name</h3><pre><code>类型：string    
-作用：只有作为组件选项时起作用，并为组件命名。
-最佳实践：为每个组件命名，利于 vue-devtools 调试。
-</code></pre><h3 id="delimiters"><a href="#delimiters" class="headerlink" title="delimiters"></a>delimiters</h3><pre><code>类型：Array&lt;string&gt;
-作用：改变纯文本插入分隔符。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">new Vue(&#123;</div><div class="line">  delimiters: [&apos;$&#123;&apos;, &apos;&#125;&apos;]</div><div class="line">&#125;);</div><div class="line">// 分隔符变成了 ES6 模板字符串的风格</div></pre></td></tr></table></figure>
-</code></pre><h3 id="functional"><a href="#functional" class="headerlink" title="functional"></a>functional</h3><pre><code>类型：boolean
-作用：使组件无状态 (没有 data ) 和无实例 (没有 this 上下文)。
-</code></pre><h3 id="model"><a href="#model" class="headerlink" title="model"></a>model</h3><pre><code>类型：{ prop?: string, event?: string }
-作用：允许一个自定义组件在使用 v-model 时定制 prop 和 event。
-</code></pre><h3 id="inheritAttrs"><a href="#inheritAttrs" class="headerlink" title="inheritAttrs"></a>inheritAttrs</h3><pre><code>类型：boolean
-作用：默认情况下父作用域的不被认作 props 的特性绑定 (attribute bindings) 将会“回退”且作为普通的 HTML 特性应用在子组件的根元素上。
-</code></pre><h3 id="comments"><a href="#comments" class="headerlink" title="comments"></a>comments</h3><pre><code>类型：boolean
-作用：当设为 true 时，将会保留且渲染模板中的 HTML 注释。默认行为是舍弃它们。
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="https://cn.vuejs.org/v2/api" target="_blank" rel="external">官方api</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -2899,7 +2888,7 @@ inject：Array&lt;string&gt; | { [key: string]: string | Symbol }
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">127</span>
+                <span class="site-state-item-count">128</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -3038,7 +3027,7 @@ inject：Array&lt;string&gt; | { [key: string]: string | Symbol }
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共159.2k字</span>
+  <span class="post-count">博客全站共163.0k字</span>
 </div>
         
 

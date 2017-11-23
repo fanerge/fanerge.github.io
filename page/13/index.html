@@ -306,6 +306,217 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/07/24/js函数式编程-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/07/24/js函数式编程-5/" itemprop="url">
+                  js函数式编程-5
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-24T19:41:34+08:00">
+                2017-07-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
+                    <span itemprop="name">函数式编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/07/24/js函数式编程-5/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/07/24/js函数式编程-5/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  534
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  3
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Monad"><a href="#Monad" class="headerlink" title="Monad"></a>Monad</h2><p><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
+<h3 id="pointed-functor"><a href="#pointed-functor" class="headerlink" title="pointed functor"></a>pointed functor</h3><pre><code>of 方法不是用来避免使用 new 关键字的，而是用来把值放到默认最小化上下文（default minimal context）中的。
+</code></pre><blockquote>
+<p>  pointed functor 是实现了 of 方法的 functor。</p>
+</blockquote>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">这里的关键是把任意值丢到容器里然后开始到处使用 map 的能力。</div><div class="line">IO.of(&quot;tetris&quot;).map(concat(&quot; master&quot;)); // IO(&quot;tetris master&quot;)</div><div class="line">Maybe.of(1336).map(add(1)); // Maybe(1337)</div></pre></td></tr></table></figure>
+</code></pre><h3 id="混合比喻"><a href="#混合比喻" class="headerlink" title="混合比喻"></a>混合比喻</h3><ol>
+<li><p>例子</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">var fs = require(&apos;fs&apos;);</div><div class="line"></div><div class="line">//  readFile :: String -&gt; IO String</div><div class="line">var readFile = function(filename) &#123;</div><div class="line">  return new IO(function() &#123;</div><div class="line">	return fs.readFileSync(filename, &apos;utf-8&apos;);</div><div class="line">  &#125;);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">//  print :: String -&gt; IO String</div><div class="line">var print = function(x) &#123;</div><div class="line">  return new IO(function() &#123;</div><div class="line">	console.log(x);</div><div class="line">	return x;</div><div class="line">  &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">//  cat :: IO (IO String)</div><div class="line">var cat = compose(map(print), readFile);</div><div class="line"></div><div class="line">cat(&quot;.git/config&quot;)</div><div class="line">// IO(IO(&quot;[core]\nrepositoryformatversion = 0\n&quot;))</div></pre></td></tr></table></figure>
+</li>
+<li><p>剥开洋葱</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">我说过 monad 像洋葱，可以使用一个叫作 join 的方法，来剥开。</div><div class="line">var mmo = Maybe.of(Maybe.of(&quot;nunchucks&quot;));</div><div class="line">// Maybe(Maybe(&quot;nunchucks&quot;))</div><div class="line">mmo.join();</div><div class="line">// Maybe(&quot;nunchucks&quot;)</div><div class="line"></div><div class="line">var ttt = Task.of(Task.of(Task.of(&quot;sewers&quot;)));</div><div class="line">// Task(Task(Task(&quot;sewers&quot;)));</div><div class="line">ttt.join()</div><div class="line">// Task(Task(&quot;sewers&quot;))</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<blockquote>
+<p>   monad 是可以变扁（flatten）的 pointed functor。<br>    一个 functor，只要它定义个了一个 join 方法和一个 of 方法，并遵守一些定律，那么它就是一个 monad。</p>
+</blockquote>
+<pre><code>为Maybe实现join方法
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">Maybe.prototype.join = function () &#123;</div><div class="line">	return this.isNothing() ? Maybe.of(null) : this.__value;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">Example</div><div class="line">//  join :: Monad m =&gt; m (m a) -&gt; m a</div><div class="line">var join = function(mma)&#123; return mma.join(); &#125;</div><div class="line"></div><div class="line">//  firstAddressStreet :: User -&gt; Maybe Street</div><div class="line">var firstAddressStreet = compose(</div><div class="line">  join, map(safeProp(&apos;street&apos;)), join, map(safeHead), safeProp(&apos;addresses&apos;)</div><div class="line">);</div><div class="line"></div><div class="line">firstAddressStreet(</div><div class="line">  &#123;addresses: [&#123;street: &#123;name: &apos;Mulburry&apos;, number: 8402&#125;, postcode: &quot;WC2N&quot; &#125;]&#125;</div><div class="line">);</div><div class="line">// Maybe(&#123;name: &apos;Mulburry&apos;, number: 8402&#125;)</div></pre></td></tr></table></figure>
+</code></pre><h3 id="chain-函数"><a href="#chain-函数" class="headerlink" title="chain 函数"></a>chain 函数</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">// 使用 chain封装（map的后面调用join）</div><div class="line">//  chain :: Monad m =&gt; (a -&gt; m b) -&gt; m a -&gt; m b</div><div class="line">var chain = curry(function(f, m)&#123;</div><div class="line">  return m.map(f).join(); // 或者 compose(join, map(f))(m)</div><div class="line">&#125;);</div><div class="line"></div><div class="line">// map/join</div><div class="line">var firstAddressStreet = compose(</div><div class="line">  join, map(safeProp(&apos;street&apos;)), join, map(safeHead), safeProp(&apos;addresses&apos;)</div><div class="line">);</div><div class="line"></div><div class="line">// chain</div><div class="line">var firstAddressStreet = compose(</div><div class="line">  chain(safeProp(&apos;street&apos;)), chain(safeHead), safeProp(&apos;addresses&apos;)</div><div class="line">);</div><div class="line"></div><div class="line">Example</div><div class="line">Maybe.of(3).chain(function(three) &#123;</div><div class="line">  return Maybe.of(2).map(add(three));</div><div class="line">&#125;);</div><div class="line">// Maybe(5);</div></pre></td></tr></table></figure>
+</code></pre><h3 id="理论"><a href="#理论" class="headerlink" title="理论"></a>理论</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"> // 结合律</div><div class="line">compose(join, map(join)) == compose(join, join)</div></pre></td></tr></table></figure>
+
+总结：monad 能够借给我们从盒子中取出的值，而且知道我们会在结束使用后还给它。
+monad 让我们深入到嵌套的运算当中，使我们能够在完全避免回调金字塔（pyramid of doom）情况下，为变量赋值，运行有序的作用，执行异步任务等等。
+</code></pre>
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/07/22/js函数式编程-4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1831,7 +2042,7 @@ compose(id, f) === compose(f, id) === f;
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">127</span>
+                <span class="site-state-item-count">128</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1970,7 +2181,7 @@ compose(id, f) === compose(f, id) === f;
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共159.2k字</span>
+  <span class="post-count">博客全站共163.0k字</span>
 </div>
         
 

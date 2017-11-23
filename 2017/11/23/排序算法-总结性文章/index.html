@@ -1,0 +1,1040 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="算法," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="余真帆的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="排序算法的基本概念什么叫排序？排序(Sorting) 是计算机程序设计中的一种重要操作，它的功能是将一个数据元素（或记录）的任意序列，重新排列成一个关键字有序的序列。 排序算法的性质稳定性稳定的算法，就是当有两个相等记录的关键字R和S，且在原本的列表中R出现在S之前，在排序过的列表中R也将会是在S之前。反之，不稳定的算法，就是当有两个相等记录的关键字R和S，且在原本的列表中R出现在S之前，在排序过">
+<meta name="keywords" content="算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="排序算法-总结性文章">
+<meta property="og:url" content="https://fanerge.github.io/2017/11/23/排序算法-总结性文章/index.html">
+<meta property="og:site_name" content="余真帆的博客">
+<meta property="og:description" content="排序算法的基本概念什么叫排序？排序(Sorting) 是计算机程序设计中的一种重要操作，它的功能是将一个数据元素（或记录）的任意序列，重新排列成一个关键字有序的序列。 排序算法的性质稳定性稳定的算法，就是当有两个相等记录的关键字R和S，且在原本的列表中R出现在S之前，在排序过的列表中R也将会是在S之前。反之，不稳定的算法，就是当有两个相等记录的关键字R和S，且在原本的列表中R出现在S之前，在排序过">
+<meta property="og:image" content="http://oz5ii8zjo.bkt.clouddn.com/%E6%8E%92%E5%BA%8F%E6%80%BB%E7%BB%93.png">
+<meta property="og:updated_time" content="2017-11-23T14:44:55.921Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="排序算法-总结性文章">
+<meta name="twitter:description" content="排序算法的基本概念什么叫排序？排序(Sorting) 是计算机程序设计中的一种重要操作，它的功能是将一个数据元素（或记录）的任意序列，重新排列成一个关键字有序的序列。 排序算法的性质稳定性稳定的算法，就是当有两个相等记录的关键字R和S，且在原本的列表中R出现在S之前，在排序过的列表中R也将会是在S之前。反之，不稳定的算法，就是当有两个相等记录的关键字R和S，且在原本的列表中R出现在S之前，在排序过">
+<meta name="twitter:image" content="http://oz5ii8zjo.bkt.clouddn.com/%E6%8E%92%E5%BA%8F%E6%80%BB%E7%BB%93.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://fanerge.github.io/2017/11/23/排序算法-总结性文章/"/>
+
+
+
+
+
+  <title> 排序算法-总结性文章 | 余真帆的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?947609e8bcc46de32a1dca9cc56cd8a1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+	<a href="https://github.com/fanerge/"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">余真帆的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/11/23/排序算法-总结性文章/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                排序算法-总结性文章
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-23T20:26:14+08:00">
+                2017-11-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/算法/" itemprop="url" rel="index">
+                    <span itemprop="name">算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/11/23/排序算法-总结性文章/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/11/23/排序算法-总结性文章/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  3,845
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  14
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="排序算法的基本概念"><a href="#排序算法的基本概念" class="headerlink" title="排序算法的基本概念"></a>排序算法的基本概念</h1><h2 id="什么叫排序？"><a href="#什么叫排序？" class="headerlink" title="什么叫排序？"></a>什么叫排序？</h2><p>排序(Sorting) 是计算机程序设计中的一种重要操作，它的功能是将一个数据元素（或记录）的任意序列，重新排列成一个关键字有序的序列。</p>
+<h2 id="排序算法的性质"><a href="#排序算法的性质" class="headerlink" title="排序算法的性质"></a>排序算法的性质</h2><h3 id="稳定性"><a href="#稳定性" class="headerlink" title="稳定性"></a>稳定性</h3><p>稳定的算法，就是当有两个相等记录的关键字R和S，且在原本的列表中R出现在S之前，在排序过的列表中R也将会是在S之前。<br>反之，不稳定的算法，就是当有两个相等记录的关键字R和S，且在原本的列表中R出现在S之前，在排序过的列表中S在R之前。</p>
+<h3 id="时间复杂度（最差、平均、和最好性能）T-n"><a href="#时间复杂度（最差、平均、和最好性能）T-n" class="headerlink" title="时间复杂度（最差、平均、和最好性能）T(n)"></a>时间复杂度（最差、平均、和最好性能）T(n)</h3><p>一般情况下，算法中基本操作重复执行的次数是问题规模n的某个函数，用T(n)表示，若有某个辅助函数f(n)，使得当n趋近于无穷大时，T(n)/f(n)的极限值为不等于零的常数，则称f(n)是T(n)的同数量级函数。记作T(n)=O(f(n))，称O(f(n))为算法的渐进时间复杂度(O是数量级的符号 )，简称时间复杂度。<br>    T(n) = O(f(n))<br>一般而言，好的性能是 O(nlogn)，且坏的性能是 O(n^2)。对于一个排序理想的性能是 O(n)。<br><a href="https://fanerge.github.io/2017/11/08/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">查看时间复杂度计算方式</a></p>
+<h3 id="空间复杂度S-n"><a href="#空间复杂度S-n" class="headerlink" title="空间复杂度S(n)"></a>空间复杂度S(n)</h3><p>空间复杂度(Space Complexity)是对一个算法在运行过程中临时占用存储空间大小的量度，记做S(n)=O(f(n))。</p>
+<h3 id="排序方式"><a href="#排序方式" class="headerlink" title="排序方式"></a>排序方式</h3><p>内排序：所有排序操作都在内存中完成。<br>外排序：由于数据太大，因此把数据放在磁盘中，而排序通过磁盘和内存的数据传输才能进行。<br><a href="https://fanerge.github.io/2017/11/08/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/">更多详情</a></p>
+<h1 id="先来张总结性图片"><a href="#先来张总结性图片" class="headerlink" title="先来张总结性图片"></a>先来张总结性图片</h1><p><img src="http://oz5ii8zjo.bkt.clouddn.com/%E6%8E%92%E5%BA%8F%E6%80%BB%E7%BB%93.png" alt=""></p>
+<h1 id="冒泡排序（Bubble-Sort）"><a href="#冒泡排序（Bubble-Sort）" class="headerlink" title="冒泡排序（Bubble Sort）"></a>冒泡排序（Bubble Sort）</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>它重复地走访过要排序的数列，一次比较两个元素，如果他们的顺序错误就把他们交换过来。走访数列的工作是重复地进行直到没有再需要交换，也就是说该数列已经排序完成。<br>这个算法的名字由来是因为越大的元素会经由交换慢慢“浮”到数列的顶端（尾部），故名。</p>
+<h2 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h2><p>1.比较相邻的元素。如果第一个比第二个大，就交换他们两个。<br>2.对每一对相邻元素作同样的工作，从开始第一对到结尾的最后一对。在这一点，最后的元素应该会是最大的数。<br>3.针对所有的元素重复以上的步骤，除了最后一个（因为每次最后遍历的最后一个数都是最大的，所以不需要再次比较了）。<br>4.持续每次对越来越少的元素重复上面的步骤，直到没有任何一对数字需要比较。<br><a href="https://fanerge.github.io/2017/11/08/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95-%E5%86%92%E6%B3%A1%E6%8E%92%E5%BA%8F/">或许你还是不太了解，这里有该算法的详细实现过程</a></p>
+<h1 id="选择排序（Selection-Sort）"><a href="#选择排序（Selection-Sort）" class="headerlink" title="选择排序（Selection Sort）"></a>选择排序（Selection Sort）</h1><h2 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h2><p>选择排序法是对定位比较交换法（也就是冒泡排序法）的一种改进。选择排序的基本思想是：每一趟在n-i+1（i=1，2，…n-1）个记录中选取关键字最小的记录作为有序序列中第i个记录。<br>基于此思想的算法主要有简单选择排序、树型选择排序和堆排序。</p>
+<h2 id="实现步骤-1"><a href="#实现步骤-1" class="headerlink" title="实现步骤"></a>实现步骤</h2><p>1.第1趟，在待排序记录r[0]~r[n-1]中选出最小的记录，将它与r[0]交换，<br>2.第2趟，在待排序记录r[1]~r[n-1]中选出最小的记录，将它与r[1]交换，<br>3.以此类推…<br>4.第i趟，在待排序记录r[i-1]~r[n-1]中选出最小的记录，将它与r[i-1]交换，<br>5.使有序序列不断增长直到全部排序完毕。<br>PS：冒泡排序是逐次把当前序列中最大值<span style="color: red;">推</span>到后面去。<br>    选择排序是逐次把当前序列中最小值<span style="color: red;">放</span>到前面去。<br><a href="https://fanerge.github.io/2017/11/09/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95-%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F/">或许你还是不太了解，这里有该算法的详细实现过程</a></p>
+<h1 id="插入排序（Insertion-Sort）"><a href="#插入排序（Insertion-Sort）" class="headerlink" title="插入排序（Insertion Sort）"></a>插入排序（Insertion Sort）</h1><h2 id="定义-2"><a href="#定义-2" class="headerlink" title="定义"></a>定义</h2><p>每步将一个待排序的记录，按其关键码值的大小插入前面已经排序的文件中适当位置上，直到全部插入完为止。<br>包括：直接插入排序，二分插入排序（又称折半插入排序），链表插入排序，希尔排序（又称缩小增量排序）。</p>
+<h2 id="直接插入排序实现步骤"><a href="#直接插入排序实现步骤" class="headerlink" title="直接插入排序实现步骤"></a>直接插入排序实现步骤</h2><p>n个记录的文件的直接选择排序可经过n-1趟直接选择排序得到有序结果：<br>①初始状态：无序区为R[1..n]，有序区为空。<br>②第1趟排序<br>在无序区R[1..n]中选出关键字最小的记录R[k]，将它与无序区的第1个记录R[1]交换，使R[1..1]和R[2..n]分别变为记录个数增加1个的新有序区和记录个数减少1个的新无序区。<br>……<br>③第i趟排序<br>第i趟排序开始时，当前有序区和无序区分别为R[1..i-1]和R(i..n）。该趟排序从当前无序区中选出关键字最小的记录 R[k]，将它与无序区的第1个记录R交换，使R[1..i]和R分别变为记录个数增加1个的新有序区和记录个数减少1个的新无序区。<br><a href="https://fanerge.github.io/2017/11/10/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95-%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/">或许你还是不太了解，这里有该算法的详细实现过程</a></p>
+<h1 id="二分法排序"><a href="#二分法排序" class="headerlink" title="二分法排序"></a>二分法排序</h1><h2 id="定义-3"><a href="#定义-3" class="headerlink" title="定义"></a>定义</h2><p>二分法插入排序是在插入第i个元素时，对前面的0～i-1元素进行折半，先跟他们中间的那个元素比，如果小，则对前半再进行折半，否则对后半进行折半，直到left&lt;right，然后再把第i个元素前1位与目标位置之间的所有元素后移，再把第i个元素放在目标位置上。</p>
+<h2 id="实现步骤-2"><a href="#实现步骤-2" class="headerlink" title="实现步骤"></a>实现步骤</h2><p>1.二分法查找插入位置<br>    如果R&lt;R[m]成立，那右指针就要向左移动中间指针一位，否则，左指针要向右移动中间指针一位。反复查找，直到左指针大于右指针时停止。<br>2.后移，有点迷惑，什么时候需要后移呢？有哪些记录需要移动呢？<br>    虽然我们很清楚的知道，我们需要后移那些排序码大于R的记录，但难免会问自己这样几个问题。其实它相当于需要移动从i-1到左指针的记录。<br>3.插入<br>    由1中得到的左指针其实就是元素要插入的位置。<br><a href="https://fanerge.github.io/2017/11/10/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95-%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/">或许你还是不太了解，这里有该算法的详细实现过程</a></p>
+<h1 id="希尔排序（Shell-Sort）"><a href="#希尔排序（Shell-Sort）" class="headerlink" title="希尔排序（Shell Sort）"></a>希尔排序（Shell Sort）</h1><h2 id="定义-4"><a href="#定义-4" class="headerlink" title="定义"></a>定义</h2><p>先取一个小于n的整数d1作为第一个增量，把文件的全部记录分组。所有距离为d1的倍数的记录放在同一个组中。先在各组内进行直接插入排序；然后，取第二个增量d2&lt;d1重复上述的分组和排序，直至所取的增量  =1(  &lt;  …&lt;d2&lt;d1)，即所有记录放在同一组中进行直接插入排序为止。</p>
+<h2 id="实现步骤-3"><a href="#实现步骤-3" class="headerlink" title="实现步骤"></a>实现步骤</h2><p>对数组arr，长度为n进行排序<br>1.第一个增量为Math.floor(n/2)，再最每个小的分租进行直接插入排序；<br>2.第二个增量为Math.floor(n/4)，再最每个小的分租进行直接插入排序；<br>3.以此类推…，直到增量为1，这是排序完成。<br><a href="https://fanerge.github.io/2017/11/12/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95-%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F/">或许你还是不太了解，这里有该算法的详细实现过程</a></p>
+<h1 id="归并排序（Merge-Sort）"><a href="#归并排序（Merge-Sort）" class="headerlink" title="归并排序（Merge Sort）"></a>归并排序（Merge Sort）</h1><h2 id="定义-5"><a href="#定义-5" class="headerlink" title="定义"></a>定义</h2><p>归并排序（MERGE-SORT）是建立在归并操作上的一种有效的排序算法,该算法是采用分治法（Divide and Conquer）的一个非常典型的应用。将已有序的子序列合并，得到完全有序的序列；即先使每个子序列有序，再使子序列段间有序。若将两个有序表合并成一个有序表，称为二路归并。</p>
+<h2 id="实现步骤-4"><a href="#实现步骤-4" class="headerlink" title="实现步骤"></a>实现步骤</h2><p>1.申请空间，使其大小为两个已经排序序列之和，该空间用来存放合并后的序列<br>2.设定两个指针，最初位置分别为两个已经排序序列的起始位置<br>3.比较两个指针所指向的元素，选择相对小的元素放入到合并空间，并移动指针到下一位置<br>重复步骤3直到某一指针超出序列尾<br>将另一序列剩下的所有元素直接复制到合并序列尾,这时完成排序。<br><a href="https://fanerge.github.io/2017/11/13/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95-%E5%BD%92%E5%B9%B6%E7%AE%97%E6%B3%95/">或许你还是不太了解，这里有该算法的详细实现过程</a></p>
+<h1 id="快速排序（Quicksort）"><a href="#快速排序（Quicksort）" class="headerlink" title="快速排序（Quicksort）"></a>快速排序（Quicksort）</h1><h2 id="定义-6"><a href="#定义-6" class="headerlink" title="定义"></a>定义</h2><p>通过一趟排序将要排序的数据分割成独立的两部分，其中一部分的所有数据都比另外一部分的所有数据都要小，然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。</p>
+<h2 id="实现步骤-5"><a href="#实现步骤-5" class="headerlink" title="实现步骤"></a>实现步骤</h2><p>一趟快速排序的算法是：排序序列A，N为排序序列长度<br>1.找基准（一般是以当前数组的第一项的值）<br>2.遍历数组，小于基准的放在left，大于基准的放在right<br>3.递归（再分别对数组 left 和 right 1,2步骤，直到不能再分组为止）<br><a href="https://fanerge.github.io/2017/11/14/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95-%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">或许你还是不太了解，这里有该算法的详细实现过程</a></p>
+<h1 id="堆排序-Heapsort"><a href="#堆排序-Heapsort" class="headerlink" title="堆排序(Heapsort)"></a>堆排序(Heapsort)</h1><h2 id="定义-7"><a href="#定义-7" class="headerlink" title="定义"></a>定义</h2><p>堆排序是指利用堆积树（堆）这种数据结构所设计的一种排序算法，它是选择排序的一种。可以利用数组的特点快速定位指定索引的元素。堆分为大根堆和小根堆，是完全二叉树。大根堆的要求是每个节点的值都不大于其父节点的值，即A[PARENT[i]] &gt;= A[i]。在数组的非降序排序中，需要使用的就是大根堆，因为根据大根堆的要求可知，最大的值一定在堆顶。</p>
+<h2 id="实现步骤-6"><a href="#实现步骤-6" class="headerlink" title="实现步骤"></a>实现步骤</h2><p>1.将初始待排序关键字序列(R1,R2….Rn)构建成大顶堆，此堆为初始的无序区；<br>2.将堆顶元素R[1]与最后一个元素R[n]交换，此时得到新的无序区(R1,R2,……Rn-1)和新的有序区(Rn),且满足R[1,2…n-1]&lt;=R[n]；<br>3.由于交换后新的堆顶R[1]可能违反堆的性质，因此需要对当前无序区(R1,R2,……Rn-1)调整为新堆，然后再次将R[1]与无序区最后一个元素交换，得到新的无序区(R1,R2….Rn-2)和新的有序区(Rn-1,Rn)。不断重复此过程直到有序区的元素个数为n-1，则整个排序过程完成。<br><a href="https://fanerge.github.io/2017/11/15/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95-%E5%A0%86%E6%8E%92%E5%BA%8F/">或许你还是不太了解，这里有该算法的详细实现过程</a></p>
+<h1 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h1><h2 id="定义-8"><a href="#定义-8" class="headerlink" title="定义"></a>定义</h2><p>计数排序的基本思想是对于给定的输入序列中的每一个元素x，确定该序列中值小于x的元素的个数（此处并非比较各元素的大小，而是通过对元素值的计数和计数值的累加来确定）。一旦有了这个信息，就可以将x直接存放到最终的输出序列的正确位置上。例如，如果输入序列中只有17个元素的值小于x的值，则x可以直接存放在输出序列的第18个位置上。当然，如果有多个元素具有相同的值时，我们不能将这些元素放在输出序列的同一个位置上，因此，上述方案还要作适当的修改。</p>
+<h2 id="实现步骤-7"><a href="#实现步骤-7" class="headerlink" title="实现步骤"></a>实现步骤</h2><p>1.找出待排序的数组中最大和最小的元素；<br>2.统计数组中每个值为i的元素出现的次数，存入数组C的第i项；<br>3.对所有的计数累加（从C中的第一个元素开始，每一项和前一项相加）；<br>4.反向填充目标数组：将每个元素i放在新数组的第C[i]项，每放一个元素就将C[i]减去1。<br><a href="https://fanerge.github.io/2017/11/20/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95-%E8%AE%A1%E6%95%B0%E6%8E%92%E5%BA%8F/">或许你还是不太了解，这里有该算法的详细实现过程</a></p>
+<h1 id="桶排序-Bucket-SORT）"><a href="#桶排序-Bucket-SORT）" class="headerlink" title="桶排序 (Bucket SORT）"></a>桶排序 (Bucket SORT）</h1><h2 id="定义-9"><a href="#定义-9" class="headerlink" title="定义"></a>定义</h2><p>输入是由一个随机过程产生的[0, 1)区间上均匀分布的实数。将区间[0, 1)划分为n个大小相等的子区间（桶），每桶大小1/n：[0, 1/n)， [1/n, 2/n)， [2/n, 3/n)，…，[k/n, (k+1)/n )，…将n个输入元素分配到这些桶中，对桶中元素进行排序，然后依次连接桶输入0 ≤A[1..n] &lt;1辅助数组B[0..n-1]是一指针数组，指向桶（链表）。</p>
+<h2 id="实现步骤-8"><a href="#实现步骤-8" class="headerlink" title="实现步骤"></a>实现步骤</h2><p>1.找出排序数组 arr 中最小值min和最大值max，并设定用来排序的桶的数量 N。<br>2.计算出每个桶中的数据范围为 L = (max - min)/N。<br>3.再计算出 N 个桶的数值范围，如第一个桶[min, min + L),第二个桶[min + L, min + 2L),依次类推…<br>4.将数组arr分配到相应的桶中，再在每个桶的数据进行排序（一般插入排序就可）。<br>5.将桶中的数据依次取出放入新数组，这时新数组就是排好序的数组了。<br><a href="https://fanerge.github.io/2017/11/21/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95-%E6%A1%B6%E6%8E%92%E7%AE%97%E6%B3%95/">或许你还是不太了解，这里有该算法的详细实现过程</a></p>
+<h1 id="基数排序（Radix-Sort）"><a href="#基数排序（Radix-Sort）" class="headerlink" title="基数排序（Radix Sort）"></a>基数排序（Radix Sort）</h1><h2 id="定义-10"><a href="#定义-10" class="headerlink" title="定义"></a>定义</h2><p>基数排序属于“分配式排序”（distribution sort），又称“桶子法”（bucket sort）或bin sort，顾名思义，它是透过键值的部份资讯，将要排序的元素分配至某些“桶”中，藉以达到排序的作用，基数排序法是属于稳定性的排序，其时间复杂度为O (nlog(r)m)，其中r为所采取的基数，而m为堆数，在某些时候，基数排序法的效率高于其它的稳定性排序法。</p>
+<h2 id="实现步骤-9"><a href="#实现步骤-9" class="headerlink" title="实现步骤"></a>实现步骤</h2><ol>
+<li><p>首先根据个位数的数值，在走访数值时将它们分配至编号0到9的桶子中。<br>以下<span style="color: red;">红色</span>字体代表桶编号<br>得到：<br><span style="color: red;">0</span><br><span style="color: red;">1</span> 81<br><span style="color: red;">2</span> 22<br><span style="color: red;">3</span> 73 93 43<br><span style="color: red;">4</span> 14<br><span style="color: red;">5</span> 55 65<br><span style="color: red;">6</span><br><span style="color: red;">7</span><br><span style="color: red;">8</span> 28<br><span style="color: red;">9</span> 39<br>再将这些桶子中的数值重新串接起来，成为以下的数列。<br>81, 22, 73, 93, 43, 14, 55, 65, 28, 39</p>
+</li>
+<li><p>接着再进行一次分配，这次是根据十位数来分配<br><span style="color: red;">0</span><br><span style="color: red;">1</span> 14<br><span style="color: red;">2</span> 22 28<br><span style="color: red;">3</span> 39<br><span style="color: red;">4</span> 43<br><span style="color: red;">5</span> 55<br><span style="color: red;">6</span> 65<br><span style="color: red;">7</span> 73<br><span style="color: red;">8</span> 81<br><span style="color: red;">9</span> 93<br>接下来将这些桶子中的数值重新串接起来，成为以下的数列：<br>14, 22, 28, 39, 43, 55, 65, 73, 81, 93<br><a href="https://fanerge.github.io/2017/11/22/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95-%E5%9F%BA%E6%95%B0%E6%8E%92%E5%BA%8F/">或许你还是不太了解，这里有该算法的详细实现过程</a></p>
+</li>
+</ol>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这些算法我还记得在大学时学过的，只不过当然并没有太在意，这也许就是–欠下的债，终究是要还的。</p>
+
+      
+    </div>
+	<div>
+	  
+		
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+  <p><span>本文标题:</span><a href="/2017/11/23/排序算法-总结性文章/">排序算法-总结性文章</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 余真帆-fanerge 的个人博客">余真帆-fanerge</a></p>
+  <p><span>发布时间:</span>2017年11月23日 - 20:11</p>
+  <p><span>最后更新:</span>2017年11月23日 - 22:11</p>
+  <p><span>原始链接:</span><a href="/2017/11/23/排序算法-总结性文章/" title="排序算法-总结性文章">https://fanerge.github.io/2017/11/23/排序算法-总结性文章/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://fanerge.github.io/2017/11/23/排序算法-总结性文章/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+
+	  
+	</div>
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+	<div>
+	  
+		<div>
+    
+        <div style="text-align:center;color: #aaa;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>fanerge在此感谢您的阅读-------------</div>
+    
+</div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/算法/" rel="tag"><i class="fa fa-tag"></i> 算法</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/22/排序算法-基数排序/" rel="next" title="排序算法-基数排序">
+                <i class="fa fa-chevron-left"></i> 排序算法-基数排序
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="余真帆-fanerge" />
+          <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">128</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/fanerge/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="twitter" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="weibo" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金">
+                  
+                    <i class="fa fa-fw fa-spinner"></i>
+                  
+                  掘金
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#排序算法的基本概念"><span class="nav-number">1.</span> <span class="nav-text">排序算法的基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么叫排序？"><span class="nav-number">1.1.</span> <span class="nav-text">什么叫排序？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#排序算法的性质"><span class="nav-number">1.2.</span> <span class="nav-text">排序算法的性质</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#稳定性"><span class="nav-number">1.2.1.</span> <span class="nav-text">稳定性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#时间复杂度（最差、平均、和最好性能）T-n"><span class="nav-number">1.2.2.</span> <span class="nav-text">时间复杂度（最差、平均、和最好性能）T(n)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#空间复杂度S-n"><span class="nav-number">1.2.3.</span> <span class="nav-text">空间复杂度S(n)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#排序方式"><span class="nav-number">1.2.4.</span> <span class="nav-text">排序方式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#先来张总结性图片"><span class="nav-number">2.</span> <span class="nav-text">先来张总结性图片</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#冒泡排序（Bubble-Sort）"><span class="nav-number">3.</span> <span class="nav-text">冒泡排序（Bubble Sort）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">3.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现步骤"><span class="nav-number">3.2.</span> <span class="nav-text">实现步骤</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#选择排序（Selection-Sort）"><span class="nav-number">4.</span> <span class="nav-text">选择排序（Selection Sort）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义-1"><span class="nav-number">4.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现步骤-1"><span class="nav-number">4.2.</span> <span class="nav-text">实现步骤</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#插入排序（Insertion-Sort）"><span class="nav-number">5.</span> <span class="nav-text">插入排序（Insertion Sort）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义-2"><span class="nav-number">5.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#直接插入排序实现步骤"><span class="nav-number">5.2.</span> <span class="nav-text">直接插入排序实现步骤</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二分法排序"><span class="nav-number">6.</span> <span class="nav-text">二分法排序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义-3"><span class="nav-number">6.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现步骤-2"><span class="nav-number">6.2.</span> <span class="nav-text">实现步骤</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#希尔排序（Shell-Sort）"><span class="nav-number">7.</span> <span class="nav-text">希尔排序（Shell Sort）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义-4"><span class="nav-number">7.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现步骤-3"><span class="nav-number">7.2.</span> <span class="nav-text">实现步骤</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#归并排序（Merge-Sort）"><span class="nav-number">8.</span> <span class="nav-text">归并排序（Merge Sort）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义-5"><span class="nav-number">8.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现步骤-4"><span class="nav-number">8.2.</span> <span class="nav-text">实现步骤</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#快速排序（Quicksort）"><span class="nav-number">9.</span> <span class="nav-text">快速排序（Quicksort）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义-6"><span class="nav-number">9.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现步骤-5"><span class="nav-number">9.2.</span> <span class="nav-text">实现步骤</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#堆排序-Heapsort"><span class="nav-number">10.</span> <span class="nav-text">堆排序(Heapsort)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义-7"><span class="nav-number">10.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现步骤-6"><span class="nav-number">10.2.</span> <span class="nav-text">实现步骤</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#计数排序"><span class="nav-number">11.</span> <span class="nav-text">计数排序</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义-8"><span class="nav-number">11.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现步骤-7"><span class="nav-number">11.2.</span> <span class="nav-text">实现步骤</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#桶排序-Bucket-SORT）"><span class="nav-number">12.</span> <span class="nav-text">桶排序 (Bucket SORT）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义-9"><span class="nav-number">12.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现步骤-8"><span class="nav-number">12.2.</span> <span class="nav-text">实现步骤</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基数排序（Radix-Sort）"><span class="nav-number">13.</span> <span class="nav-text">基数排序（Radix Sort）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义-10"><span class="nav-number">13.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现步骤-9"><span class="nav-number">13.2.</span> <span class="nav-text">实现步骤</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">14.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+</div>
+
+
+
+<div class="powered-by">
+	<i class="fa fa-user-md"></i>
+	<span id="busuanzi_container_site_pv">
+		本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共163.0k字</span>
+</div>
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fanerge.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://fanerge.github.io/2017/11/23/排序算法-总结性文章/';
+          this.page.identifier = '2017/11/23/排序算法-总结性文章/';
+          this.page.title = '排序算法-总结性文章';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fanerge.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+    <script type="text/javascript" src="/live2d/script.js"></script>
+    <canvas id="live2dcanvas" width="80" height="160" class="live2d"></canvas>
+    <style>
+      #live2dcanvas {
+        position: fixed;
+        right: 0px;
+        z-index: 999;
+        pointer-events: none;
+        bottom: 100px;
+      }
+    </style>
+    <script>loadlive2d("live2dcanvas" ,"/live2d/assets/hibiki/hibiki.model.json",0.5)</script>
+  
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
