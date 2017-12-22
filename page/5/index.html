@@ -306,6 +306,340 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/20/vue开发规范/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/20/vue开发规范/" itemprop="url">
+                  vue开发规范
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-20T21:44:22+08:00">
+                2017-10-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/vue/" itemprop="url" rel="index">
+                    <span itemprop="name">vue</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/20/vue开发规范/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/20/vue开发规范/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,770
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  7
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="组件名为多个单词"><a href="#组件名为多个单词" class="headerlink" title="组件名为多个单词"></a>组件名为多个单词</h2><pre><code>组件名应该始终是多个单词的，根组件 App 除外。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Vue.component(&apos;todo-item&apos;, &#123; //  自动将组件的 name 设置为 todo-item</div><div class="line">  // ...</div><div class="line">&#125;)</div><div class="line">export default &#123;</div><div class="line">  name: &apos;TodoItem&apos;, // 最佳实践为组件带上 name 调试有好处 </div><div class="line">  // ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h2 id="组件数据"><a href="#组件数据" class="headerlink" title="组件数据"></a>组件数据</h2><pre><code>组件的 data 必须是一个函数。
+每次返回一个新的纯对象。
+</code></pre><h2 id="Prop定义"><a href="#Prop定义" class="headerlink" title="Prop定义"></a>Prop定义</h2><pre><code>Prop 定义应该尽量详细（至少为其指定 type ）。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">props: &#123;</div><div class="line">  status: &#123;</div><div class="line">	type: String,</div><div class="line">	required: true,</div><div class="line">	validator: function (value) &#123;</div><div class="line">	  return [</div><div class="line">		&apos;syncing&apos;,</div><div class="line">		&apos;synced&apos;,</div><div class="line">		&apos;version-conflict&apos;,</div><div class="line">		&apos;error&apos;</div><div class="line">	  ].indexOf(value) !== -1</div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h2 id="为-v-for-设置键值"><a href="#为-v-for-设置键值" class="headerlink" title="为 v-for 设置键值"></a>为 v-for 设置键值</h2><pre><code>总是用 key 配合 v-for。
+</code></pre><h2 id="为组件样式设置作用域"><a href="#为组件样式设置作用域" class="headerlink" title="为组件样式设置作用域"></a>为组件样式设置作用域</h2><pre><code>下面对于单文件组件。
+对于应用来说，顶级 App 组件和布局组件中的样式可以是全局的，
+但是其它所有组件都应该是有作用域的（3种方式）。
+</code></pre><ol>
+<li>scoped <style scoped></style>    </li>
+<li><p>css Modules</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;button :class=&quot;[$style.button]&quot;&gt;X&lt;/button&gt;</div><div class="line">&lt;style module&gt;</div><div class="line">.button &#123;</div><div class="line">  border: none;</div><div class="line">  border-radius: 2px;</div><div class="line">&#125;</div><div class="line">.buttonClose &#123;</div><div class="line">  background-color: red;</div><div class="line">&#125;</div><div class="line">&lt;/style&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p>BEM 约定</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;button class=&quot;c-Button c-Button--close&quot;&gt;X&lt;/button&gt;</div><div class="line">&lt;style&gt;</div><div class="line">.c-Button &#123;</div><div class="line">  border: none;</div><div class="line">  border-radius: 2px;</div><div class="line">&#125;</div><div class="line">&lt;/style&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p>私有属性名 必要<br>在插件、混入等扩展中始终为自定义的私有属性使用 $_ 前缀。<br>并附带一个命名空间以回避和其它作者的冲突 (比如 $<em>yourPluginName</em>)。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">var myGreatMixin = &#123;</div><div class="line">  // ...</div><div class="line">  methods: &#123;</div><div class="line">	$_myGreatMixin_update: function () &#123;</div><div class="line">	  // ...</div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="组件文件"><a href="#组件文件" class="headerlink" title="组件文件"></a>组件文件</h2><pre><code>只要有能够拼接文件的构建系统，就把每个组件单独分成文件。
+components/
+|- TodoList.vue
+|- TodoItem.vue
+</code></pre><h2 id="单文件组件文件的大小写（大驼峰）"><a href="#单文件组件文件的大小写（大驼峰）" class="headerlink" title="单文件组件文件的大小写（大驼峰）"></a>单文件组件文件的大小写（大驼峰）</h2><pre><code>单文件组件的文件名应该要么始终是单词大写开头 (PascalCase)，要么始终是横线连接 (kebab-case)。
+</code></pre><h2 id="基础组件名"><a href="#基础组件名" class="headerlink" title="基础组件名"></a>基础组件名</h2><pre><code>应用特定样式和约定的基础组件 (也就是展示类的、无逻辑的或无状态的组件) 应该全部以一个特定的前缀开头，
+比如 Base、App 或 V。
+components/
+|- BaseButton.vue
+|- BaseTable.vue
+|- BaseIcon.vue
+</code></pre><h2 id="单例组件名"><a href="#单例组件名" class="headerlink" title="单例组件名"></a>单例组件名</h2><pre><code>只应该拥有单个活跃实例的组件应该以 The 前缀命名，以示其唯一性。
+components/
+|- TheHeading.vue
+|- TheSidebar.vue
+</code></pre><h2 id="紧密耦合的组件名"><a href="#紧密耦合的组件名" class="headerlink" title="紧密耦合的组件名"></a>紧密耦合的组件名</h2><pre><code>和父组件紧密耦合的子组件应该以父组件名作为前缀命名。
+components/
+|- TodoList.vue
+|- TodoListItem.vue
+|- TodoListItemButton.vue
+</code></pre><h2 id="组件名中的单词顺序"><a href="#组件名中的单词顺序" class="headerlink" title="组件名中的单词顺序"></a>组件名中的单词顺序</h2><pre><code>组件名应该以高级别的 (通常是一般化描述的) 单词开头，以描述性的修饰词结尾。
+components/
+|- SearchButtonClear.vue
+|- SearchButtonRun.vue
+|- SearchInputQuery.vue
+|- SearchInputExcludeGlob.vue
+|- SettingsCheckboxTerms.vue
+|- SettingsCheckboxLaunchOnStartup.vue
+</code></pre><h2 id="自闭合组件"><a href="#自闭合组件" class="headerlink" title="自闭合组件"></a>自闭合组件</h2><pre><code>在单文件组件、字符串模板和 JSX 中没有内容的组件应该是自闭合的——但在 DOM 模板里永远不要这样做。    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 在单文件组件、字符串模板和 JSX 中 --&gt;</div><div class="line">&lt;MyComponent/&gt;</div><div class="line">&lt;!-- 在 DOM 模板中 --&gt;</div><div class="line">&lt;my-component&gt;&lt;/my-component&gt;</div></pre></td></tr></table></figure>
+</code></pre><h2 id="模板中的组件名大小写"><a href="#模板中的组件名大小写" class="headerlink" title="模板中的组件名大小写"></a>模板中的组件名大小写</h2><pre><code>对于绝大多数项目来说，在单文件组件和字符串模板中组件名应该总是 PascalCase 的——但是在 DOM 模板中总是 kebab-case 的。
+&lt;!-- 在所有地方 --&gt;
+&lt;my-component&gt;&lt;/my-component&gt;
+</code></pre><h2 id="JS-JSX-中的组件名大小写"><a href="#JS-JSX-中的组件名大小写" class="headerlink" title="JS/JSX 中的组件名大小写"></a>JS/JSX 中的组件名大小写</h2><pre><code>JS/JSX 中的组件名应该始终是 PascalCase 的，尽管在较为简单的应用中只使用 Vue.component 进行全局组件注册时，
+可以使用 kebab-case 字符串。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">Vue.component(&apos;MyComponent&apos;, &#123;</div><div class="line">  // ...</div><div class="line">&#125;)</div><div class="line">Vue.component(&apos;my-component&apos;, &#123;</div><div class="line">  // ...</div><div class="line">&#125;)</div><div class="line">import MyComponent from &apos;./MyComponent.vue&apos;</div><div class="line">export default &#123;</div><div class="line">  name: &apos;MyComponent&apos;,</div><div class="line">  // ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h2 id="完整单词的组件名"><a href="#完整单词的组件名" class="headerlink" title="完整单词的组件名"></a>完整单词的组件名</h2><pre><code>组件名应该倾向于完整单词而不是缩写。
+components/
+|- StudentDashboardSettings.vue 学生面板设置
+|- UserProfileOptions.vue
+</code></pre><h2 id="Prop-名大小写"><a href="#Prop-名大小写" class="headerlink" title="Prop 名大小写"></a>Prop 名大小写</h2><pre><code>在声明 prop 的时候，其命名应该始终使用 camelCase，而在模板和 JSX 中应该始终使用 kebab-case。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">props: &#123;</div><div class="line">  greetingText: String</div><div class="line">&#125;</div><div class="line">// 在 html 中</div><div class="line">&lt;WelcomeMessage greeting-text=&quot;hi&quot;/&gt;</div></pre></td></tr></table></figure>
+</code></pre><h2 id="多个特性的元素"><a href="#多个特性的元素" class="headerlink" title="多个特性的元素"></a>多个特性的元素</h2><pre><code>多个特性的元素应该分多行撰写，每个特性一行。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;img</div><div class="line">  src=&quot;https://vuejs.org/images/logo.png&quot;</div><div class="line">  alt=&quot;Vue Logo&quot;</div><div class="line">&gt;</div></pre></td></tr></table></figure>
+</code></pre><h2 id="模板中简单的表达式"><a href="#模板中简单的表达式" class="headerlink" title="模板中简单的表达式"></a>模板中简单的表达式</h2><pre><code>组件模板应该只包含简单的表达式，复杂的表达式则应该重构为计算属性或方法。
+</code></pre><h2 id="简单的计算属性"><a href="#简单的计算属性" class="headerlink" title="简单的计算属性"></a>简单的计算属性</h2><pre><code>应该把复杂计算属性分割为尽可能多的更简单的属性。
+</code></pre><h2 id="带引号的特性值（双引号）"><a href="#带引号的特性值（双引号）" class="headerlink" title="带引号的特性值（双引号）"></a>带引号的特性值（双引号）</h2><pre><code>非空 HTML 特性值应该始终带引号 (单引号或双引号，选你 JS 里不用的那个)。
+</code></pre><h2 id="指令缩写"><a href="#指令缩写" class="headerlink" title="指令缩写"></a>指令缩写</h2><pre><code>指令缩写 (用 : 表示 v-bind: 和用 @ 表示 v-on:) 应该要么都用要么都不用。
+</code></pre><h2 id="组件-实例的选项的顺序"><a href="#组件-实例的选项的顺序" class="headerlink" title="组件/实例的选项的顺序"></a>组件/实例的选项的顺序</h2><pre><code>组件/实例的选项应该有统一的顺序。
+副作用 (触发组件外的影响)
+    el
+全局感知 (要求组件以外的知识)
+    name
+    parent
+组件类型 (更改组件的类型)
+    functional
+模板修改器 (改变模板的编译方式)
+    delimiters
+    comments
+模板依赖 (模板内使用的资源)
+    components
+    directives
+    filters
+组合 (向选项里合并属性)
+    extends
+    mixins
+接口 (组件的接口)
+    inheritAttrs
+    model
+    props/propsData
+本地状态 (本地的响应式属性)
+    data
+    computed
+事件 (通过响应式事件触发的回调)
+    watch
+生命周期钩子 (按照它们被调用的顺序)
+非响应式的属性 (不依赖响应系统的实例属性)
+    methods
+渲染 (组件输出的声明式描述)
+    template/render
+    renderError
+</code></pre><h2 id="元素特性的顺序"><a href="#元素特性的顺序" class="headerlink" title="元素特性的顺序"></a>元素特性的顺序</h2><pre><code>元素 (包括组件) 的特性应该有统一的顺序。    
+定义 (提供组件的选项)
+    is
+列表渲染 (创建多个变化的相同元素)
+    v-for
+条件渲染 (元素是否渲染/显示)
+    v-if
+    v-else-if
+    v-else
+    v-show
+    v-cloak
+渲染方式 (改变元素的渲染方式)
+    v-pre
+    v-once
+全局感知 (需要超越组件的知识)
+    id
+唯一的特性 (需要唯一值的特性)
+    ref
+    key
+    slot
+双向绑定 (把绑定和事件结合起来)
+    v-model
+其它特性 (所有普通的绑定或未绑定的特性)
+事件 (组件事件监听器)
+    v-on
+内容 (复写元素的内容)
+    v-html
+    v-text
+</code></pre><h2 id="组件-实例选项中的空行"><a href="#组件-实例选项中的空行" class="headerlink" title="组件/实例选项中的空行"></a>组件/实例选项中的空行</h2><pre><code>你可能想在多个属性之间增加一个空行，特别是在这些选项一屏放不下，
+需要滚动才能都看到的时候。
+</code></pre><h2 id="单文件组件的顶级元素的顺序"><a href="#单文件组件的顶级元素的顺序" class="headerlink" title="单文件组件的顶级元素的顺序"></a>单文件组件的顶级元素的顺序</h2><pre><code>单文件组件应该总是让 template、script 和 style 标签的顺序保持一致。
+且 &lt;style&gt; 要放在最后，因为另外两个标签至少要有一个。
+&lt;template&gt;...&lt;/template&gt;
+&lt;script&gt;/* ... */&lt;/script&gt;
+&lt;style&gt;/* ... */&lt;/style&gt;
+</code></pre><h2 id="没有在-v-if-v-if-else-v-else-中使用-key-谨慎使用"><a href="#没有在-v-if-v-if-else-v-else-中使用-key-谨慎使用" class="headerlink" title="没有在 v-if/v-if-else/v-else 中使用 key 谨慎使用"></a>没有在 v-if/v-if-else/v-else 中使用 key 谨慎使用</h2><pre><code>如果一组 v-if + v-else 的元素类型相同，最好使用 key (比如两个 &lt;div&gt; 元素)。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;div v-if=&quot;error&quot; key=&quot;search-status&quot;&gt;</div><div class="line">  错误：&#123;&#123; error &#125;&#125;</div><div class="line">&lt;/div&gt;</div><div class="line">&lt;div v-else key=&quot;search-results&quot;&gt;</div><div class="line">  &#123;&#123; results &#125;&#125;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
+</code></pre><h2 id="scoped-中的元素选择器-谨慎使用"><a href="#scoped-中的元素选择器-谨慎使用" class="headerlink" title="scoped 中的元素选择器 谨慎使用"></a>scoped 中的元素选择器 谨慎使用</h2><pre><code>元素选择器应该避免在 scoped 中出现。
+</code></pre><h2 id="隐性的父子组件通信-谨慎使用"><a href="#隐性的父子组件通信-谨慎使用" class="headerlink" title="隐性的父子组件通信 谨慎使用"></a>隐性的父子组件通信 谨慎使用</h2><pre><code>应该优先通过 prop 和事件进行父子组件之间的通信，而不是 this.$parent 或改变 prop。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Vue.component(&apos;TodoItem&apos;, &#123;</div><div class="line">  props: &#123;</div><div class="line">	todo: &#123;</div><div class="line">	  type: Object,</div><div class="line">	  required: true</div><div class="line">	&#125;</div><div class="line">  &#125;,</div><div class="line">  template: `</div><div class="line">	&lt;input</div><div class="line">	  :value=&quot;todo.text&quot;</div><div class="line">	  @input=&quot;$emit(&apos;input&apos;, $event.target.value)&quot;</div><div class="line">	&gt;</div><div class="line">  `</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+</code></pre><h2 id="非-Flux-的全局状态管理-谨慎使用"><a href="#非-Flux-的全局状态管理-谨慎使用" class="headerlink" title="非 Flux 的全局状态管理 谨慎使用"></a>非 Flux 的全局状态管理 谨慎使用</h2><pre><code>应该优先通过 Vuex 管理全局状态，而不是通过 this.$root 或一个全局事件总线。
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="https://cn.vuejs.org/v2/style-guide" target="_blank" rel="external">vue代码指南</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/19/css实现水平和垂直居中方案总结/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2369,222 +2703,11 @@ MVC 模式中的Control/Mediator 层，就是本设计模式的中介者 (它必
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/15/js设计模式-代理模式/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/10/15/js设计模式-代理模式/" itemprop="url">
-                  js设计模式-代理模式
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-15T20:24:36+08:00">
-                2017-10-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/设计模式/" itemprop="url" rel="index">
-                    <span itemprop="name">设计模式</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/15/js设计模式-代理模式/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/15/js设计模式-代理模式/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  679
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  3
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="代理模式"><a href="#代理模式" class="headerlink" title="代理模式"></a>代理模式</h1><pre><code>定义：为一个对象提供一个代用品或占位符，以便控制对它的访问。
-    代理对象和本体对象实现了同样的接口，并且会把任何方法调用传递给本体对象；
-举例：
-    图片预加载、图片懒加载、
-    合并HTTP请求（代理收集一定时间内的所有HTTP请求，然后一次性发给服务器）、
-    惰性加载（通过代理处理和收集一些基本操作，然后仅在真正需要本体的时候才加载本体）、
-    缓存代理（缓存请求结果、计算结果）
-</code></pre><h1 id="缓存代理"><a href="#缓存代理" class="headerlink" title="缓存代理"></a>缓存代理</h1><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">// 先实现具体的两个算法</div><div class="line">const mult = function() &#123;</div><div class="line">	let a = 1;</div><div class="line">	for (let i = 0; i &lt; arguments.length; i++) &#123;</div><div class="line">		a *= arguments[i];</div><div class="line">	&#125;</div><div class="line">	return a;</div><div class="line">&#125;;</div><div class="line">const plus = function() &#123;</div><div class="line">	let a = 0;</div><div class="line">	for (let i = 0; i &lt; arguments.length; i++) &#123;</div><div class="line">		a += arguments[i];</div><div class="line">	&#125;</div><div class="line">	return a;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">// 创建缓存代理</div><div class="line">const createProxyFactory = function(fn) &#123;</div><div class="line">	let cache = &#123;&#125;; // 保存计算的结果</div><div class="line">	// 使用闭包在内存中保留对cache的引用</div><div class="line">	return function() &#123;</div><div class="line">		let args = Array.from(arguments).join(&apos;,&apos;); // 将所有参数转化为字符串作为缓存的 key</div><div class="line">		if (args in cache) &#123;</div><div class="line">			return cache[args];</div><div class="line">		&#125; else &#123;</div><div class="line">			return cache[args] = fn.apply(this, arguments);</div><div class="line">		&#125;</div><div class="line">	&#125;;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">// 使用代理对象</div><div class="line">const proxyMult = createProxyFactory(mult);</div><div class="line">const proxyPlus = createProxyFactory(plus);</div><div class="line">console.log(proxyMult(1,2,3,4)); // 24</div><div class="line">console.log(proxyPlus(1,2,3,4)); // 10</div></pre></td></tr></table></figure>
-
-说明：这里每次进行同类的计算时（乘法和加法两类），先判断缓存对象cache中是否存在该参数连接成的字符串作为key的属性。
-如果有，则直接从cache中读取，否则就进行计算并保存其结果。
-</code></pre><h1 id="虚拟代理"><a href="#虚拟代理" class="headerlink" title="虚拟代理"></a>虚拟代理</h1><pre><code>虚拟代理：某一个花销很大的操作，可以通过虚拟代理的方式延迟到这种需要它的时候才去创建
-例：使用虚拟代理实现图片懒加载
-下面以虚拟代理来说明：
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">// 本体对象</div><div class="line">const imgFunc = (function() &#123;</div><div class="line">	const imgNode = document.createElement(&apos;img&apos;);</div><div class="line">	document.body.appendChild(imgNode);</div><div class="line">	return &#123;</div><div class="line">		setSrc(src)&#123;</div><div class="line">			imgNode.src = src;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;)();</div><div class="line"></div><div class="line">// 代理对象</div><div class="line">const proxyImage = (function() &#123;</div><div class="line">	const img = new Image();</div><div class="line">	img.onload = function() &#123;</div><div class="line">		imgFunc.setSrc(this.src);</div><div class="line">	&#125;;</div><div class="line">	return &#123;</div><div class="line">		setSrc(src)&#123;</div><div class="line">			imgFunc.setSrc(&apos;./loading.gif&apos;);</div><div class="line">			img.src = src;</div><div class="line">		&#125;</div><div class="line">	&#125;;</div><div class="line">&#125;)();</div><div class="line"></div><div class="line">// 使用代理对象</div><div class="line">proxyImage.setSrc(&apos;./reality.png&apos;);</div></pre></td></tr></table></figure>
-
-说明：图片懒加载的方式：先通过一张loading图占位，然后通过异步的方式加载图片，等图片加载好了再把完成的图片加载到img标签里面。
-这里讲述一下代理对象做了那些事：
-    1.创建了一个 Image 对象，并为其绑定了 onload 事件。
-    2.将 imgNode 先设置为 &apos;./loading.gif&apos; 加载的菊花图。
-    3.当 Image 对象加载完真实的图片，也就是上文的 &apos;./reality.png&apos; ,将 imgNode 设置为 &apos;./reality.png&apos;。 
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="http://www.cnblogs.com/shamoguying1140/p/3169206.html" target="_blank" rel="external">js设计模式（9）—代理模式</a><br>    <a href="https://juejin.im/post/59df4f74f265da430f311909" target="_blank" rel="external">JavaScript设计模式</a><br>    <a href="http://blog.csdn.net/hi_xiexialing/article/details/54605065" target="_blank" rel="external"> js用高阶函数动态创建缓存代理</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2629,7 +2752,7 @@ MVC 模式中的Control/Mediator 层，就是本设计模式的中介者 (它必
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">130</span>
+                <span class="site-state-item-count">131</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2640,7 +2763,7 @@ MVC 模式中的Control/Mediator 层，就是本设计模式的中介者 (它必
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-count">18</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -2651,7 +2774,7 @@ MVC 模式中的Control/Mediator 层，就是本设计模式的中介者 (它必
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-count">34</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -2768,7 +2891,7 @@ MVC 模式中的Control/Mediator 层，就是本设计模式的中介者 (它必
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共174.2k字</span>
+  <span class="post-count">博客全站共174.8k字</span>
 </div>
         
 

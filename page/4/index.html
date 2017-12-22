@@ -306,6 +306,358 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/29/React-routerV4总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/10/29/React-routerV4总结/" itemprop="url">
+                  React-routerV4总结
+                </a>
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-29T20:01:36+08:00">
+                2017-10-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React/" itemprop="url" rel="index">
+                    <span itemprop="name">React</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/10/29/React-routerV4总结/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/10/29/React-routerV4总结/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,521
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  6
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="BrowserRouter"><a href="#BrowserRouter" class="headerlink" title="BrowserRouter"></a>BrowserRouter</h1><pre><code>作用：
+    &lt;Router&gt; 使用 HTML5 提供的 history API (pushState, replaceState 和 popstate 事件) 来保持 UI 和 URL 的同步。
+属性：
+    basename: string
+        当前位置的基准 URL。如果你的页面部署在服务器的二级（子）目录，你需要将 basename 设置到此子目录。 正确的 URL 格式是前面有一个前导斜杠，但不能有尾部斜杠。
+    getUserConfirmation: func
+        当导航需要确认时执行的函数。默认使用 window.confirm。
+    forceRefresh: bool
+        当设置为 true 时，在导航的过程中整个页面将会刷新。 只有当浏览器不支持 HTML5 的 history API 时，才设置为 true。
+    keyLength: number
+        location.key 的长度。默认是 6。
+    children: node
+        渲染单一子组件（元素）。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">import &#123; BrowserRouter &#125; from &apos;react-router-dom&apos;</div><div class="line"></div><div class="line">&lt;BrowserRouter</div><div class="line">  basename=&quot;/calendar&quot;</div><div class="line">  forceRefresh=&quot;false&quot;</div><div class="line">  getUserConfirmation=&#123;optionalFunc&#125;</div><div class="line">  keyLength=&quot;10&quot;</div><div class="line">&gt;</div><div class="line">  &lt;Link to=&quot;/today&quot; /&gt; // 渲染为 &lt;a href=&quot;/calendar/today&quot;&gt;</div><div class="line">&lt;/BrowserRouter&gt;</div></pre></td></tr></table></figure>
+</code></pre><h1 id="HashRouter"><a href="#HashRouter" class="headerlink" title="HashRouter"></a>HashRouter</h1><pre><code>作用：
+    HashRouter 是一种特定的 &lt;Router&gt;， HashRouter 使用 URL 的 hash (例如：window.location.hash) 来保持 UI 和 URL 的同步。
+属性：
+    basename: string
+        当前位置的基准 URL。正确的 URL 格式是前面有一个前导斜杠，但不能有尾部斜杠。
+    getUserConfirmation: func
+        当导航需要确认时执行的函数。默认使用 window.confirm。
+    hashType: string
+        window.location.hash 使用的 hash 类型。有如下几种：
+        &quot;slash&quot; - 后面跟一个斜杠，例如 #/ 和 #/sunshine/lollipops
+        &quot;noslash&quot; - 后面没有斜杠，例如 # 和 #sunshine/lollipops
+        &quot;hashbang&quot; - Google 风格的 “ajax crawlable”，例如 #!/ 和 #!/sunshine/lollipops
+        默认为 &quot;slash&quot;。
+    children: node
+        渲染单一子组件（元素）。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">import &#123; HashRouter &#125; from &apos;react-router-dom&apos;</div><div class="line"></div><div class="line">&lt;HashRouter&gt;</div><div class="line">  &lt;App/&gt;</div><div class="line">&lt;/HashRouter&gt;</div></pre></td></tr></table></figure>
+</code></pre><h1 id="Link"><a href="#Link" class="headerlink" title="Link"></a>Link</h1><pre><code>作用：
+    为您的应用提供声明式的、无障碍导航。        
+属性：    
+    to: string/object
+        需要跳转到的路径(pathname)或地址（location）。
+        需要跳转到的地址（location）。
+    replace: bool
+        当设置为 true 时，点击链接后将使用新地址替换掉访问历史记录里面的原地址。
+        当设置为 false 时，点击链接后将在原有访问历史记录的基础上添加一个新的纪录。默认为 false。    
+</code></pre><pre><code>&lt;Link to=&quot;/about&quot;&gt;关于&lt;/Link&gt;
+&lt;Link to={{
+  pathname: '/courses',
+  search: '?sort=name',
+  hash: '#the-hash',
+  state: { fromDashboard: true }
+}}/&gt;
+</code></pre><h1 id="NavLink"><a href="#NavLink" class="headerlink" title="NavLink"></a>NavLink</h1><pre><code>作用：    
+    为当前 URL 添加 class 和 style。
+属性：
+    activeClassName: string
+        选中 URL 是添加的class。
+    activeStyle：object
+        选中 URL 是添加的style。
+    exact: bool    
+        如果为 true，path 为 &apos;/one&apos; 的路由将不能匹配 &apos;/one/two&apos;，反之，亦然。    
+    strict: bool
+        对路径末尾斜杠的匹配。如果为 true。path 为 &apos;/one/&apos; 将不能匹配 &apos;/one&apos; 但可以匹配 &apos;/one/two&apos;。
+    isActive: func    
+        为URL匹配添加更严谨的逻辑函数。    
+</code></pre><h1 id="Prompt"><a href="#Prompt" class="headerlink" title="Prompt"></a>Prompt</h1><pre><code>作用：    
+    当用户离开当前页面前做出一些提示。
+属性：
+    message: string/func
+        当用户离开当前页面时，设置的提示信息。
+        当用户离开当前页面时，设置的回掉函数
+    when: bool
+        通过设置一定条件要决定是否启用 Prompt
+</code></pre><h1 id="MemoryRouter"><a href="#MemoryRouter" class="headerlink" title="MemoryRouter"></a>MemoryRouter</h1><pre><code>作用：
+    无 DOM 的环境。
+
+属性：
+    initialEntries: array
+        一个 history 堆栈的数组。
+    initialIndex: number
+        在 initialEntries 数组中的初始index。
+    getUserConfirmation: func
+    keyLength: number
+    children: node
+</code></pre><h1 id="Redirect"><a href="#Redirect" class="headerlink" title="Redirect"></a>Redirect</h1><pre><code>作用：
+    重定向将替代当前的location 中的 history。
+属性：
+    to: string/object
+        重定向string
+        重定向object
+    push: bool
+        当为 true 时，替换掉整个history，而不是当前这一条。
+    from: string    
+        重定向的路径名。
+</code></pre><h1 id="Route"><a href="#Route" class="headerlink" title="Route"></a>Route</h1><pre><code>作用：
+    它最基本的职责就是当页面的访问地址与 Route 上的 path 匹配时，就渲染出对应的 UI 界面。
+属性：
+    component: func
+        只有当访问地址和路由匹配时，一个 React component 才会被渲染，此时此组件接受 route props (match, location, history)。
+    render: func    
+        此方法适用于内联渲染，而且不会产生上文说的重复装载问题。
+    children: func
+        有时候你可能只想知道访问地址是否被匹配，然后改变下别的东西，而不仅仅是对应的页面。
+    path: string
+    exact: bool
+    strict: bool
+</code></pre><h1 id="Router"><a href="#Router" class="headerlink" title="Router"></a>Router</h1><pre><code>作用：底层路由接口组件，使用封装后的组件代替。    
+    &lt;BrowserRouter&gt;
+    &lt;HashRouter&gt;
+    &lt;MemoryRouter&gt;
+    &lt;NativeRouter&gt;
+    &lt;StaticRouter&gt;
+属性：
+    history：object
+        导航的history对象
+    children: node
+</code></pre><h1 id="StaticRouter"><a href="#StaticRouter" class="headerlink" title="StaticRouter"></a>StaticRouter</h1><pre><code>定义：
+    不会更改location的 &lt;Router&gt;，服务端渲染。
+属性：
+    basename: string
+    location: string    
+    context: object    
+    children: node    
+</code></pre><h1 id="Switch"><a href="#Switch" class="headerlink" title="Switch"></a>Switch</h1><pre><code>定义：
+    只渲染出第一个与当前访问地址匹配的 &lt;Route&gt; 或 &lt;Redirect&gt;。
+    我们只想渲染出第一个匹配的路由就可以了，于是 &lt;Switch&gt; 应运而生！
+属性：
+    children: node
+</code></pre><h1 id="对象和方法"><a href="#对象和方法" class="headerlink" title="对象和方法"></a>对象和方法</h1><h2 id="history"><a href="#history" class="headerlink" title="history"></a>history</h2><h3 id="路由分类"><a href="#路由分类" class="headerlink" title="路由分类"></a>路由分类</h3><pre><code>1.browser history -- HTML5 history API
+2.hash history    -- 低版本浏览器
+3.memory history  -- 无DOM环境（RN 和 Node）
+</code></pre><h3 id="histoty对象详解"><a href="#histoty对象详解" class="headerlink" title="histoty对象详解"></a>histoty对象详解</h3><pre><code>length -- number 浏览历史堆栈中的条目数。        
+action -- string 路由跳转到当前执行页面的动作，分为 PUSH、REPLACE、POP。
+location -- object 当前访问地址信息组成的对象
+    （pathname、search、hash、state）
+
+push(path, [state]) 在历史堆栈信息里加入一个新条目。
+replace(path, [state]) 在历史堆栈信息里替换掉当前的条目
+go(n) 将 history 堆栈中的指针向前移动 n。
+goBack() 等同于 go(-1)
+goForward 等同于 go(1)
+block(prompt) 阻止跳转
+</code></pre><h2 id="location"><a href="#location" class="headerlink" title="location"></a>location</h2><pre><code>location 是指你当前的位置，将要去的位置，或是之前所在的位置
+在以下情境中可以获取 location 对象:
+    1.在 Route component 中，以 this.props.location 获取
+    2.在 Route render 中，以 ({location}) =&gt; () 方式获取
+    3.在 Route children 中，以 ({location}) =&gt; () 方式获取
+    4.在 withRouter 中，以 this.props.location 的方式获取
+可以在不同情境中使用 location：
+    1.&lt;Link to={location} /&gt;
+    2.&lt;NaviveLink to={location} /&gt;
+    3.&lt;Redirect to={location /&gt;
+    4.history.push(location)
+    5.history.replace(location)
+</code></pre><h2 id="match"><a href="#match" class="headerlink" title="match"></a>match</h2><pre><code>match 对象包含了 &lt;Route path&gt; 如何与 URL 匹配的信息，具有以下属性：
+    1.params: object 路径参数，通过解析 URL 中的动态部分获得键值对
+    2.isExact: bool 为 true 时，整个 URL 都需要匹配
+    3.path: string 用来匹配的路径模式，用于创建嵌套的 &lt;Route&gt;
+    4.url: string URL 匹配的部分，用于嵌套的 &lt;Link&gt;
+在以下情境中可以获取 match 对象
+    1.在 Route component 中，以 this.props.match获取
+    2.在 Route render 中，以 ({match}) =&gt; () 方式获取
+    3.在 Route children 中，以 ({match}) =&gt; () 方式获取
+    4.在 withRouter 中，以 this.props.match的方式获取
+    5.matchPath 的返回值
+注：当一个 Route 没有 path 时，它会匹配一切路径。
+</code></pre><h2 id="matchPath"><a href="#matchPath" class="headerlink" title="matchPath"></a>matchPath</h2><pre><code>pathname
+props
+</code></pre><h2 id="withRouter"><a href="#withRouter" class="headerlink" title="withRouter"></a>withRouter</h2><blockquote>
+<p>   参考文档：<br>    <a href="https://developer.mozilla.org/en-US/docs/Web/API/History" target="_blank" rel="external">MDN-history</a><br>    <a href="http://blog.csdn.net/sinat_17775997/article/details/69218382" target="_blank" rel="external">初探 React Router 4.0</a></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+	<div>
+	  
+	</div>
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+	<div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/29/Redux总结/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2503,345 +2855,11 @@ PS：这里说明一下，如果前面的上传方案可以使用就使用，否
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/10/20/vue开发规范/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="余真帆-fanerge">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="余真帆的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/10/20/vue开发规范/" itemprop="url">
-                  vue开发规范
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-20T21:44:22+08:00">
-                2017-10-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/vue/" itemprop="url" rel="index">
-                    <span itemprop="name">vue</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2017/10/20/vue开发规范/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count disqus-comment-count"
-                        data-disqus-identifier="2017/10/20/vue开发规范/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  1,770
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  7
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="组件名为多个单词"><a href="#组件名为多个单词" class="headerlink" title="组件名为多个单词"></a>组件名为多个单词</h2><pre><code>组件名应该始终是多个单词的，根组件 App 除外。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Vue.component(&apos;todo-item&apos;, &#123; //  自动将组件的 name 设置为 todo-item</div><div class="line">  // ...</div><div class="line">&#125;)</div><div class="line">export default &#123;</div><div class="line">  name: &apos;TodoItem&apos;, // 最佳实践为组件带上 name 调试有好处 </div><div class="line">  // ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h2 id="组件数据"><a href="#组件数据" class="headerlink" title="组件数据"></a>组件数据</h2><pre><code>组件的 data 必须是一个函数。
-每次返回一个新的纯对象。
-</code></pre><h2 id="Prop定义"><a href="#Prop定义" class="headerlink" title="Prop定义"></a>Prop定义</h2><pre><code>Prop 定义应该尽量详细（至少为其指定 type ）。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">props: &#123;</div><div class="line">  status: &#123;</div><div class="line">	type: String,</div><div class="line">	required: true,</div><div class="line">	validator: function (value) &#123;</div><div class="line">	  return [</div><div class="line">		&apos;syncing&apos;,</div><div class="line">		&apos;synced&apos;,</div><div class="line">		&apos;version-conflict&apos;,</div><div class="line">		&apos;error&apos;</div><div class="line">	  ].indexOf(value) !== -1</div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h2 id="为-v-for-设置键值"><a href="#为-v-for-设置键值" class="headerlink" title="为 v-for 设置键值"></a>为 v-for 设置键值</h2><pre><code>总是用 key 配合 v-for。
-</code></pre><h2 id="为组件样式设置作用域"><a href="#为组件样式设置作用域" class="headerlink" title="为组件样式设置作用域"></a>为组件样式设置作用域</h2><pre><code>下面对于单文件组件。
-对于应用来说，顶级 App 组件和布局组件中的样式可以是全局的，
-但是其它所有组件都应该是有作用域的（3种方式）。
-</code></pre><ol>
-<li>scoped <style scoped></style>    </li>
-<li><p>css Modules</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;button :class=&quot;[$style.button]&quot;&gt;X&lt;/button&gt;</div><div class="line">&lt;style module&gt;</div><div class="line">.button &#123;</div><div class="line">  border: none;</div><div class="line">  border-radius: 2px;</div><div class="line">&#125;</div><div class="line">.buttonClose &#123;</div><div class="line">  background-color: red;</div><div class="line">&#125;</div><div class="line">&lt;/style&gt;</div></pre></td></tr></table></figure>
-</li>
-<li><p>BEM 约定</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;button class=&quot;c-Button c-Button--close&quot;&gt;X&lt;/button&gt;</div><div class="line">&lt;style&gt;</div><div class="line">.c-Button &#123;</div><div class="line">  border: none;</div><div class="line">  border-radius: 2px;</div><div class="line">&#125;</div><div class="line">&lt;/style&gt;</div></pre></td></tr></table></figure>
-</li>
-<li><p>私有属性名 必要<br>在插件、混入等扩展中始终为自定义的私有属性使用 $_ 前缀。<br>并附带一个命名空间以回避和其它作者的冲突 (比如 $<em>yourPluginName</em>)。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">var myGreatMixin = &#123;</div><div class="line">  // ...</div><div class="line">  methods: &#123;</div><div class="line">	$_myGreatMixin_update: function () &#123;</div><div class="line">	  // ...</div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="组件文件"><a href="#组件文件" class="headerlink" title="组件文件"></a>组件文件</h2><pre><code>只要有能够拼接文件的构建系统，就把每个组件单独分成文件。
-components/
-|- TodoList.vue
-|- TodoItem.vue
-</code></pre><h2 id="单文件组件文件的大小写（大驼峰）"><a href="#单文件组件文件的大小写（大驼峰）" class="headerlink" title="单文件组件文件的大小写（大驼峰）"></a>单文件组件文件的大小写（大驼峰）</h2><pre><code>单文件组件的文件名应该要么始终是单词大写开头 (PascalCase)，要么始终是横线连接 (kebab-case)。
-</code></pre><h2 id="基础组件名"><a href="#基础组件名" class="headerlink" title="基础组件名"></a>基础组件名</h2><pre><code>应用特定样式和约定的基础组件 (也就是展示类的、无逻辑的或无状态的组件) 应该全部以一个特定的前缀开头，
-比如 Base、App 或 V。
-components/
-|- BaseButton.vue
-|- BaseTable.vue
-|- BaseIcon.vue
-</code></pre><h2 id="单例组件名"><a href="#单例组件名" class="headerlink" title="单例组件名"></a>单例组件名</h2><pre><code>只应该拥有单个活跃实例的组件应该以 The 前缀命名，以示其唯一性。
-components/
-|- TheHeading.vue
-|- TheSidebar.vue
-</code></pre><h2 id="紧密耦合的组件名"><a href="#紧密耦合的组件名" class="headerlink" title="紧密耦合的组件名"></a>紧密耦合的组件名</h2><pre><code>和父组件紧密耦合的子组件应该以父组件名作为前缀命名。
-components/
-|- TodoList.vue
-|- TodoListItem.vue
-|- TodoListItemButton.vue
-</code></pre><h2 id="组件名中的单词顺序"><a href="#组件名中的单词顺序" class="headerlink" title="组件名中的单词顺序"></a>组件名中的单词顺序</h2><pre><code>组件名应该以高级别的 (通常是一般化描述的) 单词开头，以描述性的修饰词结尾。
-components/
-|- SearchButtonClear.vue
-|- SearchButtonRun.vue
-|- SearchInputQuery.vue
-|- SearchInputExcludeGlob.vue
-|- SettingsCheckboxTerms.vue
-|- SettingsCheckboxLaunchOnStartup.vue
-</code></pre><h2 id="自闭合组件"><a href="#自闭合组件" class="headerlink" title="自闭合组件"></a>自闭合组件</h2><pre><code>在单文件组件、字符串模板和 JSX 中没有内容的组件应该是自闭合的——但在 DOM 模板里永远不要这样做。    
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 在单文件组件、字符串模板和 JSX 中 --&gt;</div><div class="line">&lt;MyComponent/&gt;</div><div class="line">&lt;!-- 在 DOM 模板中 --&gt;</div><div class="line">&lt;my-component&gt;&lt;/my-component&gt;</div></pre></td></tr></table></figure>
-</code></pre><h2 id="模板中的组件名大小写"><a href="#模板中的组件名大小写" class="headerlink" title="模板中的组件名大小写"></a>模板中的组件名大小写</h2><pre><code>对于绝大多数项目来说，在单文件组件和字符串模板中组件名应该总是 PascalCase 的——但是在 DOM 模板中总是 kebab-case 的。
-&lt;!-- 在所有地方 --&gt;
-&lt;my-component&gt;&lt;/my-component&gt;
-</code></pre><h2 id="JS-JSX-中的组件名大小写"><a href="#JS-JSX-中的组件名大小写" class="headerlink" title="JS/JSX 中的组件名大小写"></a>JS/JSX 中的组件名大小写</h2><pre><code>JS/JSX 中的组件名应该始终是 PascalCase 的，尽管在较为简单的应用中只使用 Vue.component 进行全局组件注册时，
-可以使用 kebab-case 字符串。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">Vue.component(&apos;MyComponent&apos;, &#123;</div><div class="line">  // ...</div><div class="line">&#125;)</div><div class="line">Vue.component(&apos;my-component&apos;, &#123;</div><div class="line">  // ...</div><div class="line">&#125;)</div><div class="line">import MyComponent from &apos;./MyComponent.vue&apos;</div><div class="line">export default &#123;</div><div class="line">  name: &apos;MyComponent&apos;,</div><div class="line">  // ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</code></pre><h2 id="完整单词的组件名"><a href="#完整单词的组件名" class="headerlink" title="完整单词的组件名"></a>完整单词的组件名</h2><pre><code>组件名应该倾向于完整单词而不是缩写。
-components/
-|- StudentDashboardSettings.vue 学生面板设置
-|- UserProfileOptions.vue
-</code></pre><h2 id="Prop-名大小写"><a href="#Prop-名大小写" class="headerlink" title="Prop 名大小写"></a>Prop 名大小写</h2><pre><code>在声明 prop 的时候，其命名应该始终使用 camelCase，而在模板和 JSX 中应该始终使用 kebab-case。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">props: &#123;</div><div class="line">  greetingText: String</div><div class="line">&#125;</div><div class="line">// 在 html 中</div><div class="line">&lt;WelcomeMessage greeting-text=&quot;hi&quot;/&gt;</div></pre></td></tr></table></figure>
-</code></pre><h2 id="多个特性的元素"><a href="#多个特性的元素" class="headerlink" title="多个特性的元素"></a>多个特性的元素</h2><pre><code>多个特性的元素应该分多行撰写，每个特性一行。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;img</div><div class="line">  src=&quot;https://vuejs.org/images/logo.png&quot;</div><div class="line">  alt=&quot;Vue Logo&quot;</div><div class="line">&gt;</div></pre></td></tr></table></figure>
-</code></pre><h2 id="模板中简单的表达式"><a href="#模板中简单的表达式" class="headerlink" title="模板中简单的表达式"></a>模板中简单的表达式</h2><pre><code>组件模板应该只包含简单的表达式，复杂的表达式则应该重构为计算属性或方法。
-</code></pre><h2 id="简单的计算属性"><a href="#简单的计算属性" class="headerlink" title="简单的计算属性"></a>简单的计算属性</h2><pre><code>应该把复杂计算属性分割为尽可能多的更简单的属性。
-</code></pre><h2 id="带引号的特性值（双引号）"><a href="#带引号的特性值（双引号）" class="headerlink" title="带引号的特性值（双引号）"></a>带引号的特性值（双引号）</h2><pre><code>非空 HTML 特性值应该始终带引号 (单引号或双引号，选你 JS 里不用的那个)。
-</code></pre><h2 id="指令缩写"><a href="#指令缩写" class="headerlink" title="指令缩写"></a>指令缩写</h2><pre><code>指令缩写 (用 : 表示 v-bind: 和用 @ 表示 v-on:) 应该要么都用要么都不用。
-</code></pre><h2 id="组件-实例的选项的顺序"><a href="#组件-实例的选项的顺序" class="headerlink" title="组件/实例的选项的顺序"></a>组件/实例的选项的顺序</h2><pre><code>组件/实例的选项应该有统一的顺序。
-副作用 (触发组件外的影响)
-    el
-全局感知 (要求组件以外的知识)
-    name
-    parent
-组件类型 (更改组件的类型)
-    functional
-模板修改器 (改变模板的编译方式)
-    delimiters
-    comments
-模板依赖 (模板内使用的资源)
-    components
-    directives
-    filters
-组合 (向选项里合并属性)
-    extends
-    mixins
-接口 (组件的接口)
-    inheritAttrs
-    model
-    props/propsData
-本地状态 (本地的响应式属性)
-    data
-    computed
-事件 (通过响应式事件触发的回调)
-    watch
-生命周期钩子 (按照它们被调用的顺序)
-非响应式的属性 (不依赖响应系统的实例属性)
-    methods
-渲染 (组件输出的声明式描述)
-    template/render
-    renderError
-</code></pre><h2 id="元素特性的顺序"><a href="#元素特性的顺序" class="headerlink" title="元素特性的顺序"></a>元素特性的顺序</h2><pre><code>元素 (包括组件) 的特性应该有统一的顺序。    
-定义 (提供组件的选项)
-    is
-列表渲染 (创建多个变化的相同元素)
-    v-for
-条件渲染 (元素是否渲染/显示)
-    v-if
-    v-else-if
-    v-else
-    v-show
-    v-cloak
-渲染方式 (改变元素的渲染方式)
-    v-pre
-    v-once
-全局感知 (需要超越组件的知识)
-    id
-唯一的特性 (需要唯一值的特性)
-    ref
-    key
-    slot
-双向绑定 (把绑定和事件结合起来)
-    v-model
-其它特性 (所有普通的绑定或未绑定的特性)
-事件 (组件事件监听器)
-    v-on
-内容 (复写元素的内容)
-    v-html
-    v-text
-</code></pre><h2 id="组件-实例选项中的空行"><a href="#组件-实例选项中的空行" class="headerlink" title="组件/实例选项中的空行"></a>组件/实例选项中的空行</h2><pre><code>你可能想在多个属性之间增加一个空行，特别是在这些选项一屏放不下，
-需要滚动才能都看到的时候。
-</code></pre><h2 id="单文件组件的顶级元素的顺序"><a href="#单文件组件的顶级元素的顺序" class="headerlink" title="单文件组件的顶级元素的顺序"></a>单文件组件的顶级元素的顺序</h2><pre><code>单文件组件应该总是让 template、script 和 style 标签的顺序保持一致。
-且 &lt;style&gt; 要放在最后，因为另外两个标签至少要有一个。
-&lt;template&gt;...&lt;/template&gt;
-&lt;script&gt;/* ... */&lt;/script&gt;
-&lt;style&gt;/* ... */&lt;/style&gt;
-</code></pre><h2 id="没有在-v-if-v-if-else-v-else-中使用-key-谨慎使用"><a href="#没有在-v-if-v-if-else-v-else-中使用-key-谨慎使用" class="headerlink" title="没有在 v-if/v-if-else/v-else 中使用 key 谨慎使用"></a>没有在 v-if/v-if-else/v-else 中使用 key 谨慎使用</h2><pre><code>如果一组 v-if + v-else 的元素类型相同，最好使用 key (比如两个 &lt;div&gt; 元素)。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;div v-if=&quot;error&quot; key=&quot;search-status&quot;&gt;</div><div class="line">  错误：&#123;&#123; error &#125;&#125;</div><div class="line">&lt;/div&gt;</div><div class="line">&lt;div v-else key=&quot;search-results&quot;&gt;</div><div class="line">  &#123;&#123; results &#125;&#125;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure>
-</code></pre><h2 id="scoped-中的元素选择器-谨慎使用"><a href="#scoped-中的元素选择器-谨慎使用" class="headerlink" title="scoped 中的元素选择器 谨慎使用"></a>scoped 中的元素选择器 谨慎使用</h2><pre><code>元素选择器应该避免在 scoped 中出现。
-</code></pre><h2 id="隐性的父子组件通信-谨慎使用"><a href="#隐性的父子组件通信-谨慎使用" class="headerlink" title="隐性的父子组件通信 谨慎使用"></a>隐性的父子组件通信 谨慎使用</h2><pre><code>应该优先通过 prop 和事件进行父子组件之间的通信，而不是 this.$parent 或改变 prop。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">Vue.component(&apos;TodoItem&apos;, &#123;</div><div class="line">  props: &#123;</div><div class="line">	todo: &#123;</div><div class="line">	  type: Object,</div><div class="line">	  required: true</div><div class="line">	&#125;</div><div class="line">  &#125;,</div><div class="line">  template: `</div><div class="line">	&lt;input</div><div class="line">	  :value=&quot;todo.text&quot;</div><div class="line">	  @input=&quot;$emit(&apos;input&apos;, $event.target.value)&quot;</div><div class="line">	&gt;</div><div class="line">  `</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
-</code></pre><h2 id="非-Flux-的全局状态管理-谨慎使用"><a href="#非-Flux-的全局状态管理-谨慎使用" class="headerlink" title="非 Flux 的全局状态管理 谨慎使用"></a>非 Flux 的全局状态管理 谨慎使用</h2><pre><code>应该优先通过 Vuex 管理全局状态，而不是通过 this.$root 或一个全局事件总线。
-</code></pre><blockquote>
-<p>   参考文档：<br>    <a href="https://cn.vuejs.org/v2/style-guide" target="_blank" rel="external">vue代码指南</a></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-	<div>
-	  
-	</div>
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-	<div>
-	  
-	</div>
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2886,7 +2904,7 @@ components/
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">130</span>
+                <span class="site-state-item-count">131</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2897,7 +2915,7 @@ components/
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-count">18</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -2908,7 +2926,7 @@ components/
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">33</span>
+                <span class="site-state-item-count">34</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -3025,7 +3043,7 @@ components/
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共174.2k字</span>
+  <span class="post-count">博客全站共174.8k字</span>
 </div>
         
 
