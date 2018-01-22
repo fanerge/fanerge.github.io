@@ -1,0 +1,1113 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="代码重构," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="余真帆的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="重构技巧任何不会被修改的变量都可以当做参数传入新的函数；一个变量会被修改可以把它当做返回值。 重构方法-重新组织函数Extract Method（提炼函数）将这段代码放进一个独立地函数中，并让函数名称解释该函数的用途。包装函数的粒度小，复用的几率就大。适用于：为一些代码提供一个清晰的函数名。函数命名：以它“做什么”来命名，而不是以它“怎么做”命名。 Inline Method（内联函数）在函数调用">
+<meta name="keywords" content="代码重构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="代码重构技巧">
+<meta property="og:url" content="https://fanerge.github.io/2018/01/16/代码重构技巧/index.html">
+<meta property="og:site_name" content="余真帆的博客">
+<meta property="og:description" content="重构技巧任何不会被修改的变量都可以当做参数传入新的函数；一个变量会被修改可以把它当做返回值。 重构方法-重新组织函数Extract Method（提炼函数）将这段代码放进一个独立地函数中，并让函数名称解释该函数的用途。包装函数的粒度小，复用的几率就大。适用于：为一些代码提供一个清晰的函数名。函数命名：以它“做什么”来命名，而不是以它“怎么做”命名。 Inline Method（内联函数）在函数调用">
+<meta property="og:updated_time" content="2018-01-22T12:34:16.082Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="代码重构技巧">
+<meta name="twitter:description" content="重构技巧任何不会被修改的变量都可以当做参数传入新的函数；一个变量会被修改可以把它当做返回值。 重构方法-重新组织函数Extract Method（提炼函数）将这段代码放进一个独立地函数中，并让函数名称解释该函数的用途。包装函数的粒度小，复用的几率就大。适用于：为一些代码提供一个清晰的函数名。函数命名：以它“做什么”来命名，而不是以它“怎么做”命名。 Inline Method（内联函数）在函数调用">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('由于这是公司内部面试题，需要密码进行访问，如有不便敬请谅解！') !== ''){
+                alert('对不起，密码错误不能访问。');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+  <link rel="canonical" href="https://fanerge.github.io/2018/01/16/代码重构技巧/"/>
+
+
+
+
+
+  <title> 代码重构技巧 | 余真帆的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?947609e8bcc46de32a1dca9cc56cd8a1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+	<a href="https://github.com/fanerge/"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">余真帆的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2018/01/16/代码重构技巧/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                代码重构技巧
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-16T20:34:50+08:00">
+                2018-01-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/代码规范/" itemprop="url" rel="index">
+                    <span itemprop="name">代码规范</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/16/代码重构技巧/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/01/16/代码重构技巧/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  5,106
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  19
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="重构技巧"><a href="#重构技巧" class="headerlink" title="重构技巧"></a>重构技巧</h1><p>任何不会被修改的变量都可以当做参数传入新的函数；一个变量会被修改可以把它当做返回值。</p>
+<h1 id="重构方法-重新组织函数"><a href="#重构方法-重新组织函数" class="headerlink" title="重构方法-重新组织函数"></a>重构方法-重新组织函数</h1><h2 id="Extract-Method（提炼函数）"><a href="#Extract-Method（提炼函数）" class="headerlink" title="Extract Method（提炼函数）"></a>Extract Method（提炼函数）</h2><p>将这段代码放进一个独立地函数中，并让函数名称解释该函数的用途。<br>包装函数的粒度小，复用的几率就大。<br>适用于：为一些代码提供一个清晰的函数名。<br>函数命名：以它“做什么”来命名，而不是以它“怎么做”命名。</p>
+<h2 id="Inline-Method（内联函数）"><a href="#Inline-Method（内联函数）" class="headerlink" title="Inline Method（内联函数）"></a>Inline Method（内联函数）</h2><p>在函数调用点插入函数本体，然后移除该函数。<br>适用于：原函数内部代码清晰易读，不需要提炼为一个单独的函数。</p>
+<h2 id="Inline-Temp（内联临时变量）"><a href="#Inline-Temp（内联临时变量）" class="headerlink" title="Inline Temp（内联临时变量）"></a>Inline Temp（内联临时变量）</h2><p>将所有对该变量的引用动作，替换为对它赋值的哪个表达式自身。<br>适用于：只使用了一次，或许可以移除该临时变量。</p>
+<h2 id="Replace-Temp-with-Query（以查询取代临时变量）"><a href="#Replace-Temp-with-Query（以查询取代临时变量）" class="headerlink" title="Replace Temp with Query（以查询取代临时变量）"></a>Replace Temp with Query（以查询取代临时变量）</h2><p>将这个表达式提炼到一个独立函数中。将这个临时变量的所有引用点替换为对新函数的调用。此后，新函数就可以被其它函数使用。<br>适用于：由于临时变量作用域只在函数内部，如果把临时变量替换为一个查询，那么同一个类中的所有函数都可以获取这份信息。</p>
+<h2 id="Introduce-Explaining-Variable（引入解释性变量）"><a href="#Introduce-Explaining-Variable（引入解释性变量）" class="headerlink" title="Introduce Explaining Variable（引入解释性变量）"></a>Introduce Explaining Variable（引入解释性变量）</h2><p>将该复杂表达式（或其中一部分）的结果放进一个临时变量，以此变量名称来解释表达式用途。<br>适用于：用一个命名清晰的变量来代替难以理解的代码或函数。</p>
+<h2 id="Split-Temporary-Variable（分解临时变量）"><a href="#Split-Temporary-Variable（分解临时变量）" class="headerlink" title="Split Temporary Variable（分解临时变量）"></a>Split Temporary Variable（分解临时变量）</h2><p>针对每次赋值，创造一个独立、对应的临时变量（再多一个临时变量）。<br>适用于：你的程序有某个临时变量被赋值超过一次，它即不是循环变量，而不被用于收集计算结果。</p>
+<h2 id="Remove-Assignments-to-Parameters（移除对参数的赋值）"><a href="#Remove-Assignments-to-Parameters（移除对参数的赋值）" class="headerlink" title="Remove Assignments to Parameters（移除对参数的赋值）"></a>Remove Assignments to Parameters（移除对参数的赋值）</h2><p>以一个临时变量取代该参数的位置。<br>适用于：用一个临时变量（有意义的名字）保存参数。</p>
+<h2 id="Replace-Method-with-Method-Object（以函数对象取代函数）"><a href="#Replace-Method-with-Method-Object（以函数对象取代函数）" class="headerlink" title="Replace Method with Method Object（以函数对象取代函数）"></a>Replace Method with Method Object（以函数对象取代函数）</h2><p>将这个函数放进一个单独对象中，如此一来局部变量就成了对象内的字段。<br>然后你可以在同一个对象中将这个大型函数分解为多个小型函数。<br>适用于：你有一个大型函数，其中对局部变量的使用使你无法采用Extract Method。</p>
+<h2 id="Substitute-Algorithm（替换算法）"><a href="#Substitute-Algorithm（替换算法）" class="headerlink" title="Substitute Algorithm（替换算法）"></a>Substitute Algorithm（替换算法）</h2><p>将函数本体代替为另一个算法。<br>适用于：你想要把某个算法替换为另一个更加清晰的算法。</p>
+<h1 id="重构方法-在对象之间搬移特性"><a href="#重构方法-在对象之间搬移特性" class="headerlink" title="重构方法-在对象之间搬移特性"></a>重构方法-在对象之间搬移特性</h1><h2 id="Move-Method（搬移函数）"><a href="#Move-Method（搬移函数）" class="headerlink" title="Move Method（搬移函数）"></a>Move Method（搬移函数）</h2><p>在该函数最常引用的类中建立一个有着类似行为的新函数。<br>将旧函数编程一个单纯的委托函数，或是将旧函数完全移除。<br>适用于：一个类有太多行为，或一个类与另一个类有太多合作而形成高度耦合。</p>
+<h2 id="Move-Field（搬移字段）"><a href="#Move-Field（搬移字段）" class="headerlink" title="Move Field（搬移字段）"></a>Move Field（搬移字段）</h2><p>在目标类新建一个字段，修改源字段的所有用户，令它们改用新字段。<br>适用于：对于一个字段，在其所驻类之外的另一个类中有更多函数使用了它。</p>
+<h2 id="Extract-Class（提炼类）"><a href="#Extract-Class（提炼类）" class="headerlink" title="Extract Class（提炼类）"></a>Extract Class（提炼类）</h2><p>建立一个新类，将相关的字段和函数从旧类搬移到新类。<br>适用于：某个类做了应该由两个类做的事。</p>
+<h2 id="Inline-Class（将类内联化）"><a href="#Inline-Class（将类内联化）" class="headerlink" title="Inline Class（将类内联化）"></a>Inline Class（将类内联化）</h2><p>将这个类的所有特性搬移到另一个类中，然后移除原类。<br>适用于：某个类没有做太多事情。</p>
+<h2 id="Hide-Delegate（隐藏“委托关系”）"><a href="#Hide-Delegate（隐藏“委托关系”）" class="headerlink" title="Hide Delegate（隐藏“委托关系”）"></a>Hide Delegate（隐藏“委托关系”）</h2><p>在服务类上建立客户所需的所有函数，用以隐藏委托关系。<br>适用于：客户通过一个委托类来调用另一个对象。</p>
+<h2 id="Remove-Middle-Man（移除中间人）"><a href="#Remove-Middle-Man（移除中间人）" class="headerlink" title="Remove Middle Man（移除中间人）"></a>Remove Middle Man（移除中间人）</h2><p>让客户直接调用受托类。<br>适用于：某个类做了过多的简单委托动作。</p>
+<h2 id="Introduce-Foreign-Method（引入外加函数）"><a href="#Introduce-Foreign-Method（引入外加函数）" class="headerlink" title="Introduce Foreign Method（引入外加函数）"></a>Introduce Foreign Method（引入外加函数）</h2><p>在客户类中建立一个函数，并以第一参数形式传入一个服务类实例。<br>适用于：你需要为提供服务的类添加一个函数，但你无法修改这个类。<br>外加函数终归是权益之计，尽量将其搬移到服务类中去（Introduce Local Extension）。</p>
+<h2 id="Introduce-Local-Extension（引入本地扩展）"><a href="#Introduce-Local-Extension（引入本地扩展）" class="headerlink" title="Introduce Local Extension（引入本地扩展）"></a>Introduce Local Extension（引入本地扩展）</h2><p>建立一个新类，使它包含这些额外函数。让这个扩展品成为源类的子类或包装类。<br>适用于：你需要为服务类提供一些额外函数，但你无法修改这个类。</p>
+<h1 id="重构方法-重新组织数据"><a href="#重构方法-重新组织数据" class="headerlink" title="重构方法-重新组织数据"></a>重构方法-重新组织数据</h1><h2 id="Self-Encapsulate-Field（自封装字段）"><a href="#Self-Encapsulate-Field（自封装字段）" class="headerlink" title="Self Encapsulate Field（自封装字段）"></a>Self Encapsulate Field（自封装字段）</h2><p>为这个字段建立取值/设置函数，并且只以这些函数来访问字段。<br>适用于：你直接访问一个字段，但与字段之间的耦合关系逐渐变得笨拙。</p>
+<h2 id="Replace-Data-Value-with-Object（以对象取代数据值）"><a href="#Replace-Data-Value-with-Object（以对象取代数据值）" class="headerlink" title="Replace Data Value with Object（以对象取代数据值）"></a>Replace Data Value with Object（以对象取代数据值）</h2><p>将数据项变成对象。<br>适用于：你有一个数据项，需要与其他数据和行为一起使用才有意义。</p>
+<h2 id="Change-Value-to-Reference（将值对象改为引用对象）"><a href="#Change-Value-to-Reference（将值对象改为引用对象）" class="headerlink" title="Change Value to Reference（将值对象改为引用对象）"></a>Change Value to Reference（将值对象改为引用对象）</h2><p>将这个值对象变成引用对象。<br>适用于：你从一个类衍生出许多彼此相等的实例，希望将它们替换为同一个对象。</p>
+<h2 id="Change-Reference-to-Value（将引用对象改为值对象）"><a href="#Change-Reference-to-Value（将引用对象改为值对象）" class="headerlink" title="Change Reference to Value（将引用对象改为值对象）"></a>Change Reference to Value（将引用对象改为值对象）</h2><p>将它变成一个值对象。<br>适用于：你有一个引用对象，很小且不可该表，而且不易管理。</p>
+<h2 id="Replace-Array-with-Object（以对象取代数组）"><a href="#Replace-Array-with-Object（以对象取代数组）" class="headerlink" title="Replace Array with Object（以对象取代数组）"></a>Replace Array with Object（以对象取代数组）</h2><p>以对象替换数组。对于数组中的每个元素，以一个字段来表示。<br>适用于：你有一个数组，其中的元素各自代表不同的东西。</p>
+<h2 id="Duplicate-Observed-Data（复制“被监视数据”）"><a href="#Duplicate-Observed-Data（复制“被监视数据”）" class="headerlink" title="Duplicate Observed Data（复制“被监视数据”）"></a>Duplicate Observed Data（复制“被监视数据”）</h2><p>将该数据复制到一个领域对象中。建立一个Observer模式，用以同步领域对象和GUI对象内的重复数据。<br>MVC模型</p>
+<h2 id="Change-Unidirectional-Association-to-Bidirectional（将单向关联改为双向关联）"><a href="#Change-Unidirectional-Association-to-Bidirectional（将单向关联改为双向关联）" class="headerlink" title="Change Unidirectional Association to Bidirectional（将单向关联改为双向关联）"></a>Change Unidirectional Association to Bidirectional（将单向关联改为双向关联）</h2><p>添加一个反向指针，并使修改函数能够同时更新两条连接。<br>适用于：两个类都需要使用对方特性，但其间只有一条单向连接。</p>
+<h2 id="Change-Bidirectional-Association-to-Unidirectional（将双向关联改为单向关联）"><a href="#Change-Bidirectional-Association-to-Unidirectional（将双向关联改为单向关联）" class="headerlink" title="Change Bidirectional Association to Unidirectional（将双向关联改为单向关联）"></a>Change Bidirectional Association to Unidirectional（将双向关联改为单向关联）</h2><p>去除不必要的关联。<br>适用于：两个类之间有双向关联，但其中一个类如今不需要另一个类的特性。</p>
+<h2 id="Replace-Magic-Number-with-Symbolic-Constant（以字面常量取代魔法数）"><a href="#Replace-Magic-Number-with-Symbolic-Constant（以字面常量取代魔法数）" class="headerlink" title="Replace Magic Number with Symbolic Constant（以字面常量取代魔法数）"></a>Replace Magic Number with Symbolic Constant（以字面常量取代魔法数）</h2><p>创造一个常量，根据其意义为它命名，并将上述的字面量替换为这个常量。<br>适用于：你有一个字面数值，带上特别含义。</p>
+<h2 id="Encapsulate-Field（封装字段）"><a href="#Encapsulate-Field（封装字段）" class="headerlink" title="Encapsulate Field（封装字段）"></a>Encapsulate Field（封装字段）</h2><p>将它声明为private，并提供相应的访问函数get和set。<br>适用于：你的类中存在一个public字段。</p>
+<h3 id="Encapsulate-Collection（封装集合）"><a href="#Encapsulate-Collection（封装集合）" class="headerlink" title="Encapsulate Collection（封装集合）"></a>Encapsulate Collection（封装集合）</h3><p>让这个函数返回集合的一个只读副本，并在这个类中提供添加/移除集合元素的函数。<br>适用于：有一个函数返回一个集合。</p>
+<h2 id="Replace-Record-with-Data-Class（以数据类取代记录）"><a href="#Replace-Record-with-Data-Class（以数据类取代记录）" class="headerlink" title="Replace Record with Data Class（以数据类取代记录）"></a>Replace Record with Data Class（以数据类取代记录）</h2><p>为该记录创建一个“哑”数据对象。<br>适用于：你需要面对传统编程环境中的记录结构。</p>
+<h2 id="Replace-Type-Code-with-Class（以类取代类型码）"><a href="#Replace-Type-Code-with-Class（以类取代类型码）" class="headerlink" title="Replace Type Code with Class（以类取代类型码）"></a>Replace Type Code with Class（以类取代类型码）</h2><p>以一个新的类替换该数值类型码。<br>适用于：类之中有一个数值类型码，但它并不影响类的行为。</p>
+<h2 id="Replace-Type-Code-with-Subclasses（以子类取代类型码）"><a href="#Replace-Type-Code-with-Subclasses（以子类取代类型码）" class="headerlink" title="Replace Type Code with Subclasses（以子类取代类型码）"></a>Replace Type Code with Subclasses（以子类取代类型码）</h2><p>以自带取代这个类型码（多态）。<br>适用于：你有一个不可变的类型码，它会影响类的行为。</p>
+<h2 id="Replace-Type-Code-with-State-Strategy（以State-Strategy取代类型码）"><a href="#Replace-Type-Code-with-State-Strategy（以State-Strategy取代类型码）" class="headerlink" title="Replace Type Code with State/Strategy（以State/Strategy取代类型码）"></a>Replace Type Code with State/Strategy（以State/Strategy取代类型码）</h2><p>以状态对象取代类型码。<br>适用于：你有一个类型码，它会影响类的行为，但你无法通过继承手法消除它。</p>
+<h2 id="Replace-Subclass-with-Fields（以字段取代子类）"><a href="#Replace-Subclass-with-Fields（以字段取代子类）" class="headerlink" title="Replace Subclass with Fields（以字段取代子类）"></a>Replace Subclass with Fields（以字段取代子类）</h2><p>修改这些函数，使它们返回超类中的某个（新增）字段，然后销毁子类。<br>适用于：你的各个子类的唯一差别只在“返回常量数据”的函数身上。</p>
+<h1 id="重构方法-简化条件表达式"><a href="#重构方法-简化条件表达式" class="headerlink" title="重构方法-简化条件表达式"></a>重构方法-简化条件表达式</h1><h2 id="Decompose-Conditional（分解条件表达式）"><a href="#Decompose-Conditional（分解条件表达式）" class="headerlink" title="Decompose Conditional（分解条件表达式）"></a>Decompose Conditional（分解条件表达式）</h2><p>从if、then、else三个段落中分别提炼出独立函数。<br>适用于：你有一个复杂的条件（if-then-else）语句。</p>
+<h2 id="Consolidate-Conditional-Expression（合并条件表达式）"><a href="#Consolidate-Conditional-Expression（合并条件表达式）" class="headerlink" title="Consolidate Conditional Expression（合并条件表达式）"></a>Consolidate Conditional Expression（合并条件表达式）</h2><p>将这些测试合并为一个条件表达式，并将这个表达式提炼成一个独立的函数。<br>适用于：你有一系列条件测试，都得到相同结果。</p>
+<h2 id="Consilidate-Duplicate-Conditional-Fragments（合并重复的条件片段）"><a href="#Consilidate-Duplicate-Conditional-Fragments（合并重复的条件片段）" class="headerlink" title="Consilidate Duplicate Conditional Fragments（合并重复的条件片段）"></a>Consilidate Duplicate Conditional Fragments（合并重复的条件片段）</h2><p>将这个端重复代码搬移到条件表达式之外。<br>适用于：在条件表达式的每个分支上有着相同的一段代码。</p>
+<h2 id="Remove-Control-Flag（移除控制标记）"><a href="#Remove-Control-Flag（移除控制标记）" class="headerlink" title="Remove Control Flag（移除控制标记）"></a>Remove Control Flag（移除控制标记）</h2><p>以break语句或return语句取代控制标记。<br>适用于：在一系列布尔表达式中，某个变量带有“控制标记”（control flag）的作用。</p>
+<h2 id="Replace-Nested-Conditional-with-Guard-Clauses（以卫语句取代嵌套条件表达式）"><a href="#Replace-Nested-Conditional-with-Guard-Clauses（以卫语句取代嵌套条件表达式）" class="headerlink" title="Replace Nested Conditional with Guard Clauses（以卫语句取代嵌套条件表达式）"></a>Replace Nested Conditional with Guard Clauses（以卫语句取代嵌套条件表达式）</h2><p>使用卫语句表现所有特殊情况（尽量不要转换成嵌套）。<br>适用于：函数中的条件逻辑使人难以看清正常的执行路径。</p>
+<h2 id="Replace-Conditional-with-Polymorphism（以多态取代条件表达式）"><a href="#Replace-Conditional-with-Polymorphism（以多态取代条件表达式）" class="headerlink" title="Replace Conditional with Polymorphism（以多态取代条件表达式）"></a>Replace Conditional with Polymorphism（以多态取代条件表达式）</h2><p>将这个条件表达式的每个分支放进一个子类内的覆写函数中，然后将原始函数声明为抽象函数。<br>适用于：你手上有个条件表达式，它根据对象类型的不同而选择不同的行为。</p>
+<h2 id="Introduce-Null-Object（引入Null对象）"><a href="#Introduce-Null-Object（引入Null对象）" class="headerlink" title="Introduce Null Object（引入Null对象）"></a>Introduce Null Object（引入Null对象）</h2><p>将null值替换为null对象。<br>适用于：你需要再三检查对象是否为null。</p>
+<h2 id="Introduce-Assertion（引入断言）"><a href="#Introduce-Assertion（引入断言）" class="headerlink" title="Introduce Assertion（引入断言）"></a>Introduce Assertion（引入断言）</h2><p>以断言明确表现这种假设。<br>适用于：某一段代码需要对程序状态做出某种假设。</p>
+<h1 id="重构方法-简化函数调用"><a href="#重构方法-简化函数调用" class="headerlink" title="重构方法-简化函数调用"></a>重构方法-简化函数调用</h1><h2 id="Rename-Method（函数改名）"><a href="#Rename-Method（函数改名）" class="headerlink" title="Rename Method（函数改名）"></a>Rename Method（函数改名）</h2><p>修改函数的名称。<br>适用于：函数的名称未能解释函数的用途。<br>函数命名，参考“做什么”而不是“怎么做”。</p>
+<h2 id="Add-Parameter（添加参数）"><a href="#Add-Parameter（添加参数）" class="headerlink" title="Add Parameter（添加参数）"></a>Add Parameter（添加参数）</h2><p>为此函数添加一个对象参数，让该对象带进函数所需信息。<br>适用于：某个函数需要从调用端得到更对信息。<br>这样做有一个好处，不用关心参数的位置。</p>
+<h2 id="Remove-Parameter（移除参数）"><a href="#Remove-Parameter（移除参数）" class="headerlink" title="Remove Parameter（移除参数）"></a>Remove Parameter（移除参数）</h2><p>将该参数去除。<br>适用于：函数本体不再需要某个参数。</p>
+<h2 id="Separate-Query-from-Modifier（将查询函数和修改函数分离）"><a href="#Separate-Query-from-Modifier（将查询函数和修改函数分离）" class="headerlink" title="Separate Query from Modifier（将查询函数和修改函数分离）"></a>Separate Query from Modifier（将查询函数和修改函数分离）</h2><p>建立两个不同的函数，其中一个负责查询，另一个负责修改。<br>适用于：某个函数既返回对象状态值，又修改对象状态。</p>
+<h2 id="Parameterize-Method（令函数携带参数）"><a href="#Parameterize-Method（令函数携带参数）" class="headerlink" title="Parameterize Method（令函数携带参数）"></a>Parameterize Method（令函数携带参数）</h2><p>建立单一函数，以参数表达那些不同的值。<br>适用于：若干函数做了类似的工作，但在函数本体中却包含了不同的值。</p>
+<h2 id="Replace-Parameter-with-Explicit-Methods（以明确函数取代参数）"><a href="#Replace-Parameter-with-Explicit-Methods（以明确函数取代参数）" class="headerlink" title="Replace Parameter with Explicit Methods（以明确函数取代参数）"></a>Replace Parameter with Explicit Methods（以明确函数取代参数）</h2><p>针对该参数的每一个可能值，建立一个独立函数。<br>适用于：你有一个函数，其中完全取决于参数值而不采取不同行为。</p>
+<h2 id="Preserve-Whole-Object（保持对象完整）"><a href="#Preserve-Whole-Object（保持对象完整）" class="headerlink" title="Preserve Whole Object（保持对象完整）"></a>Preserve Whole Object（保持对象完整）</h2><p>改为传递整个对象（传递整个对象，不要值传递对象的某些属性）。<br>适用于：你从某个对象中取出若干值，将它们作为某一次函数调用时的参数。</p>
+<h2 id="Replace-Parameter-with-Methods（以函数取代参数）"><a href="#Replace-Parameter-with-Methods（以函数取代参数）" class="headerlink" title="Replace Parameter with Methods（以函数取代参数）"></a>Replace Parameter with Methods（以函数取代参数）</h2><p>让参数接受者去除该项参数，并直接调用前一个函数。<br>适用于：对象调用某一个函数，并将所得结果作为参数，传递给另一个函数。<br>而接受参数的函数本身也能够用前一个函数。</p>
+<h2 id="Introduce-Parameter-Object（引入参数对象）"><a href="#Introduce-Parameter-Object（引入参数对象）" class="headerlink" title="Introduce Parameter Object（引入参数对象）"></a>Introduce Parameter Object（引入参数对象）</h2><p>以一个对象取代这些参数。<br>适用于：某些参数总是很自然地同时出现。</p>
+<h2 id="Remove-Setting-Method（移除设置函数）"><a href="#Remove-Setting-Method（移除设置函数）" class="headerlink" title="Remove Setting Method（移除设置函数）"></a>Remove Setting Method（移除设置函数）</h2><p>去掉该字段的所有设值函数。<br>适用于：类中的某个字段应该在对象创建时被设值，然后不再改变。</p>
+<h2 id="Hide-Method（隐藏函数）"><a href="#Hide-Method（隐藏函数）" class="headerlink" title="Hide Method（隐藏函数）"></a>Hide Method（隐藏函数）</h2><p>将这个函数修改为private。<br>适用于：有一个函数，从来没有被其他任何类用到。</p>
+<h2 id="Replace-Constructor-with-Factory-Method（以工厂函数取代构造函数）"><a href="#Replace-Constructor-with-Factory-Method（以工厂函数取代构造函数）" class="headerlink" title="Replace Constructor with Factory Method（以工厂函数取代构造函数）"></a>Replace Constructor with Factory Method（以工厂函数取代构造函数）</h2><p>将构造函数替换为工厂函数。<br>适用于：你希望在创建对象时不仅仅时做简单的建构动作。</p>
+<h2 id="Enucapsulate-Downcast（封装向下转型）"><a href="#Enucapsulate-Downcast（封装向下转型）" class="headerlink" title="Enucapsulate Downcast（封装向下转型）"></a>Enucapsulate Downcast（封装向下转型）</h2><p>将向下转型动作移到函数中。<br>适用于：某个函数返回的对象，需要由函数调用者执行向下转型（downcast）。</p>
+<h2 id="Replace-Error-Code-with-Exception（异常取代错误代码）"><a href="#Replace-Error-Code-with-Exception（异常取代错误代码）" class="headerlink" title="Replace Error Code with Exception（异常取代错误代码）"></a>Replace Error Code with Exception（异常取代错误代码）</h2><p>改用异常。<br>适用于：某个函数返回一个特定的代码，用以表示某种错误情况。</p>
+<h2 id="Replace-Exception-with-Test（以测试取代异常）"><a href="#Replace-Exception-with-Test（以测试取代异常）" class="headerlink" title="Replace Exception with Test（以测试取代异常）"></a>Replace Exception with Test（以测试取代异常）</h2><p>修改调用者，使它在调用函数之前先做检查。<br>适用于：面对一个调用这可以预先检查的条件，你抛出了一个异常。</p>
+<h1 id="重构方法-处理概括关系（继承关系）"><a href="#重构方法-处理概括关系（继承关系）" class="headerlink" title="重构方法-处理概括关系（继承关系）"></a>重构方法-处理概括关系（继承关系）</h1><h2 id="Pull-Up-Field（字段上移）"><a href="#Pull-Up-Field（字段上移）" class="headerlink" title="Pull Up Field（字段上移）"></a>Pull Up Field（字段上移）</h2><p>将该字段移至超类。<br>适用于：两个子类都拥有相同的字段。</p>
+<h2 id="Pull-Up-Method（函数上移）"><a href="#Pull-Up-Method（函数上移）" class="headerlink" title="Pull Up Method（函数上移）"></a>Pull Up Method（函数上移）</h2><p>将函数移至超类。<br>适用于：有些函数，在各个子类中产生完全相同的结果。</p>
+<h2 id="Pull-Up-Constructor-Body（构造函数本体上移）"><a href="#Pull-Up-Constructor-Body（构造函数本体上移）" class="headerlink" title="Pull Up Constructor Body（构造函数本体上移）"></a>Pull Up Constructor Body（构造函数本体上移）</h2><p>在超类中新建一个构造函数，并在子类构造函数中调用它。<br>适用于：你在各个子类中拥有一些构造函数，它们的本体机会完全一致。</p>
+<h2 id="Push-Down-Method（函数下移）"><a href="#Push-Down-Method（函数下移）" class="headerlink" title="Push Down Method（函数下移）"></a>Push Down Method（函数下移）</h2><p>将这个函数移到相关的那些子类去。<br>适用于：超类中的某个函数只与部分（而非全部）子类有关。</p>
+<h2 id="Push-Down-Field（字段下移）"><a href="#Push-Down-Field（字段下移）" class="headerlink" title="Push Down Field（字段下移）"></a>Push Down Field（字段下移）</h2><p>将这个字段移到需要它的那些子类去。<br>适用于：超类中的某个字段只被部分（而非全部）子类用到。</p>
+<h2 id="Extract-Subclass（提炼子类）"><a href="#Extract-Subclass（提炼子类）" class="headerlink" title="Extract Subclass（提炼子类）"></a>Extract Subclass（提炼子类）</h2><p>新建一个子类，将上面所说的那一部分特性移到子类中。<br>适用于：类中的某些特性只被某些（而非全部）实例用到。</p>
+<h2 id="Extract-Superclass（提炼超类）"><a href="#Extract-Superclass（提炼超类）" class="headerlink" title="Extract Superclass（提炼超类）"></a>Extract Superclass（提炼超类）</h2><p>为这两个类建立建立一个超类，将相同特性移至超类。<br>适用于：这两个类有相似特性。</p>
+<h2 id="Extract-Interface（提炼接口）"><a href="#Extract-Interface（提炼接口）" class="headerlink" title="Extract Interface（提炼接口）"></a>Extract Interface（提炼接口）</h2><p>将相同的子集提炼到一个独立接口中。<br>适用于：若干客户适用类接口中的同一子集，或者两个类的接口有部分相同。</p>
+<h2 id="Collapse-Hierarchy（折叠继承体系）"><a href="#Collapse-Hierarchy（折叠继承体系）" class="headerlink" title="Collapse Hierarchy（折叠继承体系）"></a>Collapse Hierarchy（折叠继承体系）</h2><p>将它们合为一体。<br>适用于：超类和子类之间无太大区别。</p>
+<h2 id="Form-Template-Method（塑造模板函数）"><a href="#Form-Template-Method（塑造模板函数）" class="headerlink" title="Form Template Method（塑造模板函数）"></a>Form Template Method（塑造模板函数）</h2><p>将这些操作分别放进独立函数中，并保持它们都有相同的签名，于是原函数也就变得相同了。然后将原函数上移至超类。<br>适用于：你有一些子类，其中相应的某些函数以相同顺序执行类似的操作，但各个操作的细节有所不同。</p>
+<h2 id="Replace-Inheritance-with-Delegation（以委托取代继承）"><a href="#Replace-Inheritance-with-Delegation（以委托取代继承）" class="headerlink" title="Replace Inheritance with Delegation（以委托取代继承）"></a>Replace Inheritance with Delegation（以委托取代继承）</h2><p>在子类中新建一个字段用以保存超类；调整子类函数，令它改而委托超类；然后去掉两者之间的继承关系。<br>适用于：某个子类只适用超类接口中的一部分，或是根本不需要继承而来的数据。</p>
+<h2 id="Replace-Delegation-with-Inheritance（以继承取代委托）"><a href="#Replace-Delegation-with-Inheritance（以继承取代委托）" class="headerlink" title="Replace Delegation with Inheritance（以继承取代委托）"></a>Replace Delegation with Inheritance（以继承取代委托）</h2><p>让委托类继承受托类。<br>适用于：你在两个类之间委托关系，并经常为整个接口编写许多极简单的委托函数。</p>
+<h1 id="重构方法-大型重构"><a href="#重构方法-大型重构" class="headerlink" title="重构方法-大型重构"></a>重构方法-大型重构</h1><h2 id="Tease-Apart-Inheritance（梳理并分解继承体系）"><a href="#Tease-Apart-Inheritance（梳理并分解继承体系）" class="headerlink" title="Tease Apart Inheritance（梳理并分解继承体系）"></a>Tease Apart Inheritance（梳理并分解继承体系）</h2><p>建立两个继承体系，并通过委托关系让其中一个可以调用另一个。<br>适用于：某个继承体系同时承担两项责任。</p>
+<h2 id="ConvertProcedural-Design-to-Objects（将过程化设计转化为对象设计）"><a href="#ConvertProcedural-Design-to-Objects（将过程化设计转化为对象设计）" class="headerlink" title="ConvertProcedural Design to Objects（将过程化设计转化为对象设计）"></a>ConvertProcedural Design to Objects（将过程化设计转化为对象设计）</h2><p>将数据记录变成对象，将大块的行为分成小块，并将行为移入相关对象之中。<br>适用于：你手上有一些传统过程化风格的代码。</p>
+<h2 id="Separate-Domain-from-Presentation（将领域和表述-显示分离）"><a href="#Separate-Domain-from-Presentation（将领域和表述-显示分离）" class="headerlink" title="Separate Domain from Presentation（将领域和表述/显示分离）"></a>Separate Domain from Presentation（将领域和表述/显示分离）</h2><p>将领域逻辑分离出来，为它们建立独立地领域类。<br>适用于：某些GUI类之中包含了领域逻辑。</p>
+<h2 id="Extract-Hierarchy（提炼继承体系）"><a href="#Extract-Hierarchy（提炼继承体系）" class="headerlink" title="Extract Hierarchy（提炼继承体系）"></a>Extract Hierarchy（提炼继承体系）</h2><p>建立继承体系，以一个子类表示一种特殊情况。<br>适用于：你有某个类做了太多工作，其中一部分工作是以大量表达式完成的。</p>
+<h1 id="代码的坏味道–及解决方案"><a href="#代码的坏味道–及解决方案" class="headerlink" title="代码的坏味道–及解决方案"></a>代码的坏味道–及解决方案</h1><h2 id="Duplicated-Code（重复代码）"><a href="#Duplicated-Code（重复代码）" class="headerlink" title="Duplicated Code（重复代码）"></a>Duplicated Code（重复代码）</h2><p>Extract Method（提炼函数）<br>Pull Up Method（函数上移到超类）<br>Form Template Method（塑造模板函数）<br>Substitute Algorithm（替换算法）<br>Extract Class（提炼类）</p>
+<h2 id="Long-Method（过长函数）"><a href="#Long-Method（过长函数）" class="headerlink" title="Long Method（过长函数）"></a>Long Method（过长函数）</h2><p>Extract Method（提炼函数）<br>Replace Temp with Query（以查询取代临时变量）<br>Introduce Parameter Object（引入参数对象）<br>Preserve Whole Object（保持对象完整）<br>Replace Method with Method Object（以函数对象取代函数）<br>Decompose Conditional（分解条件表达式）</p>
+<h2 id="Large-Class（过大的类）"><a href="#Large-Class（过大的类）" class="headerlink" title="Large Class（过大的类）"></a>Large Class（过大的类）</h2><p>Extract Class（提炼类）<br>Extract Subclass（提炼子类）<br>Extract Interface（提炼接口）<br>Duplicate Observed Data（复制“被监视数据”）</p>
+<h2 id="Long-Parameter-List（过长参数列）"><a href="#Long-Parameter-List（过长参数列）" class="headerlink" title="Long Parameter List（过长参数列）"></a>Long Parameter List（过长参数列）</h2><p>Replace Parameter with Method（用函数替换参数）<br>Preserve Whole Object（保持对象完整）<br>Introduce Parameter Object（引入参数对象）</p>
+<h2 id="Divergent-Change（发散式变化）"><a href="#Divergent-Change（发散式变化）" class="headerlink" title="Divergent Change（发散式变化）"></a>Divergent Change（发散式变化）</h2><p>Extract Class（提炼类）</p>
+<h2 id="Shotgun-Surgery（霰xian弹式修改）"><a href="#Shotgun-Surgery（霰xian弹式修改）" class="headerlink" title="Shotgun Surgery（霰xian弹式修改）"></a>Shotgun Surgery（霰xian弹式修改）</h2><p>Move Method（移动函数）<br>Move Field（移动字段）<br>Inline Class（内联类）</p>
+<h2 id="Feature-Envy（依恋情结）"><a href="#Feature-Envy（依恋情结）" class="headerlink" title="Feature Envy（依恋情结）"></a>Feature Envy（依恋情结）</h2><p>Move Method（移动函数）<br>Extract Method（提炼方法）</p>
+<h2 id="Data-Clumps（数据泥团）"><a href="#Data-Clumps（数据泥团）" class="headerlink" title="Data Clumps（数据泥团）"></a>Data Clumps（数据泥团）</h2><p>Extract Class（提炼类）<br>Introduce Parameter Object（引入参数对象）<br>Preserve Whole Object（保持整个对象）</p>
+<h2 id="Primitive-Obsession（基本类型偏执）"><a href="#Primitive-Obsession（基本类型偏执）" class="headerlink" title="Primitive Obsession（基本类型偏执）"></a>Primitive Obsession（基本类型偏执）</h2><p>Replace Data Value with Object（用对象替换数据值）<br>Replace Type Code with Class（用类替换类型代码）<br>Extract Class（提炼类）<br>Introduce Parameter Object（引入参数对象）<br>Replace Array with Object（用对象代替数组）</p>
+<h2 id="Switch-Statements（switch-惊悚现身）"><a href="#Switch-Statements（switch-惊悚现身）" class="headerlink" title="Switch Statements（switch 惊悚现身）"></a>Switch Statements（switch 惊悚现身）</h2><p>Extract Method（提炼函数）<br>Move Method（移动函数）<br>Replace Type Code with Subclass（以子类替换类型代码）<br>Replace Type Code with State/Strategy（以State/Strategy取代类型码）<br>Replace Conditional with Polymorphism（以多态取代条件表达式）<br>Replace Parameter with Explicit Methods（以明确函数取代参数）<br>Introduce Null Object（引入null对象）</p>
+<h2 id="Parallel-Inheritance-Hierarchies（平行继承体系）"><a href="#Parallel-Inheritance-Hierarchies（平行继承体系）" class="headerlink" title="Parallel Inheritance Hierarchies（平行继承体系）"></a>Parallel Inheritance Hierarchies（平行继承体系）</h2><p>Move Method（移动函数）<br>Move Field（移动字段）</p>
+<h2 id="Lazy-Class（冗赘类）"><a href="#Lazy-Class（冗赘类）" class="headerlink" title="Lazy Class（冗赘类）"></a>Lazy Class（冗赘类）</h2><p>Collapse Hierarchy（折叠继承体系）<br>Inline Class（内联类）</p>
+<h2 id="Speculative-Generality（夸夸其谈未来性）"><a href="#Speculative-Generality（夸夸其谈未来性）" class="headerlink" title="Speculative Generality（夸夸其谈未来性）"></a>Speculative Generality（夸夸其谈未来性）</h2><p>Collapse Hierarchy（折叠继承体系）<br>Inline Class（内联类）<br>Remove Parameter（移除参数）<br>Rename Method（移除函数）</p>
+<h2 id="Temporary-Field（令人迷惑的暂时字段）"><a href="#Temporary-Field（令人迷惑的暂时字段）" class="headerlink" title="Temporary Field（令人迷惑的暂时字段）"></a>Temporary Field（令人迷惑的暂时字段）</h2><p>Extract Class（提炼类）<br>Introduce Null Object（引入Null对象）</p>
+<h2 id="Message-Chains（过渡耦合的消息链）"><a href="#Message-Chains（过渡耦合的消息链）" class="headerlink" title="Message Chains（过渡耦合的消息链）"></a>Message Chains（过渡耦合的消息链）</h2><p>Hide Delegate（隐藏“委托关系”）<br>Extract Method（提炼函数）<br>Move Method（移动函数）</p>
+<h2 id="Middle-Man（中间人）"><a href="#Middle-Man（中间人）" class="headerlink" title="Middle Man（中间人）"></a>Middle Man（中间人）</h2><p>Remove Middle Man（中间人）<br>Inline Method（内联方法）<br>Replace Delegation with Inheritance（以继承取代委托）</p>
+<h2 id="Inappropriate-Intimacy（狎昵关系）–两个类过于亲密"><a href="#Inappropriate-Intimacy（狎昵关系）–两个类过于亲密" class="headerlink" title="Inappropriate Intimacy（狎昵关系）–两个类过于亲密"></a>Inappropriate Intimacy（狎昵关系）–两个类过于亲密</h2><p>Move Method（移动函数）<br>Move Field（移动字段）<br>Change Bidirectional Association to Unidirectional（将双向关联改为单向关联）<br>Extract Class（提炼类）<br>Hide Delegate（隐藏“委托关系”）<br>Replace Inheritance with Delegation（以委托取代继承）</p>
+<h2 id="Alternative-Classes-with-Different-Interfaces（异曲同工的类）"><a href="#Alternative-Classes-with-Different-Interfaces（异曲同工的类）" class="headerlink" title="Alternative Classes with Different Interfaces（异曲同工的类）"></a>Alternative Classes with Different Interfaces（异曲同工的类）</h2><p>Rename Method（重命名函数）<br>Move Method（移动函数）<br>Extract Superclass（提炼超类）</p>
+<h2 id="Incomplete-Library-Class（不完美的库类）"><a href="#Incomplete-Library-Class（不完美的库类）" class="headerlink" title="Incomplete Library Class（不完美的库类）"></a>Incomplete Library Class（不完美的库类）</h2><p>Move Method（移动函数）<br>Intorduce Foreign Method（引入外加函数）<br>Introduce Local Extension（引入本地扩展）</p>
+<h2 id="Data-Class（纯稚的数据类）"><a href="#Data-Class（纯稚的数据类）" class="headerlink" title="Data Class（纯稚的数据类）"></a>Data Class（纯稚的数据类）</h2><p>Encapsulate Field（自封装字段）<br>Encapsulate Collection（封装集合）<br>Remove Setting Method（移除设置函数）<br>Move Method（移除函数）<br>Extract Method（提炼函数）<br>Hide Method（隐藏函数）</p>
+<h2 id="Refused-Bequest（被拒绝的馈赠）"><a href="#Refused-Bequest（被拒绝的馈赠）" class="headerlink" title="Refused Bequest（被拒绝的馈赠）"></a>Refused Bequest（被拒绝的馈赠）</h2><p>Push Down Method（函数下移）–移动子类<br>Push Down Field（字段下移）<br>Replace Inheritance with Delegation（以委托取代继承）</p>
+<h2 id="Comments（过多的注释）"><a href="#Comments（过多的注释）" class="headerlink" title="Comments（过多的注释）"></a>Comments（过多的注释）</h2><p>Rename Metho（重命名方法）<br>Introduce Assertion（引入断言）</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本文整理于《重构改善既有代码的设计》，这本书是用java写的，整理的目的是为了自己能写出更健壮、更具扩展性的代码，为以后的编码做参考。<br>个人能力有限，如有理解不当还望指出，更深入的了解还请参阅次书籍。</p>
+
+      
+    </div>
+	<div>
+	  
+		
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+  <p><span>本文标题:</span><a href="/2018/01/16/代码重构技巧/">代码重构技巧</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 余真帆-fanerge 的个人博客">余真帆-fanerge</a></p>
+  <p><span>发布时间:</span>2018年01月16日 - 20:01</p>
+  <p><span>最后更新:</span>2018年01月22日 - 20:01</p>
+  <p><span>原始链接:</span><a href="/2018/01/16/代码重构技巧/" title="代码重构技巧">https://fanerge.github.io/2018/01/16/代码重构技巧/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://fanerge.github.io/2018/01/16/代码重构技巧/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+
+	  
+	</div>
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+	<div>
+	  
+		<div>
+    
+        <div style="text-align:center;color: #aaa;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>fanerge在此感谢您的阅读-------------</div>
+    
+</div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/代码重构/" rel="tag"><i class="fa fa-tag"></i> 代码重构</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/13/git使用手册/" rel="next" title="git使用手册">
+                <i class="fa fa-chevron-left"></i> git使用手册
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/22/html5-MathML/" rel="prev" title="html5-MathML">
+                html5-MathML <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="余真帆-fanerge" />
+          <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">139</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/fanerge/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="twitter" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="weibo" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金">
+                  
+                    <i class="fa fa-fw fa-spinner"></i>
+                  
+                  掘金
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#重构技巧"><span class="nav-number">1.</span> <span class="nav-text">重构技巧</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#重构方法-重新组织函数"><span class="nav-number">2.</span> <span class="nav-text">重构方法-重新组织函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Extract-Method（提炼函数）"><span class="nav-number">2.1.</span> <span class="nav-text">Extract Method（提炼函数）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Inline-Method（内联函数）"><span class="nav-number">2.2.</span> <span class="nav-text">Inline Method（内联函数）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Inline-Temp（内联临时变量）"><span class="nav-number">2.3.</span> <span class="nav-text">Inline Temp（内联临时变量）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Replace-Temp-with-Query（以查询取代临时变量）"><span class="nav-number">2.4.</span> <span class="nav-text">Replace Temp with Query（以查询取代临时变量）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduce-Explaining-Variable（引入解释性变量）"><span class="nav-number">2.5.</span> <span class="nav-text">Introduce Explaining Variable（引入解释性变量）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Split-Temporary-Variable（分解临时变量）"><span class="nav-number">2.6.</span> <span class="nav-text">Split Temporary Variable（分解临时变量）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Remove-Assignments-to-Parameters（移除对参数的赋值）"><span class="nav-number">2.7.</span> <span class="nav-text">Remove Assignments to Parameters（移除对参数的赋值）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Replace-Method-with-Method-Object（以函数对象取代函数）"><span class="nav-number">2.8.</span> <span class="nav-text">Replace Method with Method Object（以函数对象取代函数）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Substitute-Algorithm（替换算法）"><span class="nav-number">2.9.</span> <span class="nav-text">Substitute Algorithm（替换算法）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#重构方法-在对象之间搬移特性"><span class="nav-number">3.</span> <span class="nav-text">重构方法-在对象之间搬移特性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Move-Method（搬移函数）"><span class="nav-number">3.1.</span> <span class="nav-text">Move Method（搬移函数）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Move-Field（搬移字段）"><span class="nav-number">3.2.</span> <span class="nav-text">Move Field（搬移字段）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Extract-Class（提炼类）"><span class="nav-number">3.3.</span> <span class="nav-text">Extract Class（提炼类）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Inline-Class（将类内联化）"><span class="nav-number">3.4.</span> <span class="nav-text">Inline Class（将类内联化）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hide-Delegate（隐藏“委托关系”）"><span class="nav-number">3.5.</span> <span class="nav-text">Hide Delegate（隐藏“委托关系”）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Remove-Middle-Man（移除中间人）"><span class="nav-number">3.6.</span> <span class="nav-text">Remove Middle Man（移除中间人）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduce-Foreign-Method（引入外加函数）"><span class="nav-number">3.7.</span> <span class="nav-text">Introduce Foreign Method（引入外加函数）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduce-Local-Extension（引入本地扩展）"><span class="nav-number">3.8.</span> <span class="nav-text">Introduce Local Extension（引入本地扩展）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#重构方法-重新组织数据"><span class="nav-number">4.</span> <span class="nav-text">重构方法-重新组织数据</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Self-Encapsulate-Field（自封装字段）"><span class="nav-number">4.1.</span> <span class="nav-text">Self Encapsulate Field（自封装字段）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Replace-Data-Value-with-Object（以对象取代数据值）"><span class="nav-number">4.2.</span> <span class="nav-text">Replace Data Value with Object（以对象取代数据值）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Change-Value-to-Reference（将值对象改为引用对象）"><span class="nav-number">4.3.</span> <span class="nav-text">Change Value to Reference（将值对象改为引用对象）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Change-Reference-to-Value（将引用对象改为值对象）"><span class="nav-number">4.4.</span> <span class="nav-text">Change Reference to Value（将引用对象改为值对象）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Replace-Array-with-Object（以对象取代数组）"><span class="nav-number">4.5.</span> <span class="nav-text">Replace Array with Object（以对象取代数组）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Duplicate-Observed-Data（复制“被监视数据”）"><span class="nav-number">4.6.</span> <span class="nav-text">Duplicate Observed Data（复制“被监视数据”）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Change-Unidirectional-Association-to-Bidirectional（将单向关联改为双向关联）"><span class="nav-number">4.7.</span> <span class="nav-text">Change Unidirectional Association to Bidirectional（将单向关联改为双向关联）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Change-Bidirectional-Association-to-Unidirectional（将双向关联改为单向关联）"><span class="nav-number">4.8.</span> <span class="nav-text">Change Bidirectional Association to Unidirectional（将双向关联改为单向关联）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Replace-Magic-Number-with-Symbolic-Constant（以字面常量取代魔法数）"><span class="nav-number">4.9.</span> <span class="nav-text">Replace Magic Number with Symbolic Constant（以字面常量取代魔法数）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Encapsulate-Field（封装字段）"><span class="nav-number">4.10.</span> <span class="nav-text">Encapsulate Field（封装字段）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Encapsulate-Collection（封装集合）"><span class="nav-number">4.10.1.</span> <span class="nav-text">Encapsulate Collection（封装集合）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Replace-Record-with-Data-Class（以数据类取代记录）"><span class="nav-number">4.11.</span> <span class="nav-text">Replace Record with Data Class（以数据类取代记录）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Replace-Type-Code-with-Class（以类取代类型码）"><span class="nav-number">4.12.</span> <span class="nav-text">Replace Type Code with Class（以类取代类型码）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Replace-Type-Code-with-Subclasses（以子类取代类型码）"><span class="nav-number">4.13.</span> <span class="nav-text">Replace Type Code with Subclasses（以子类取代类型码）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Replace-Type-Code-with-State-Strategy（以State-Strategy取代类型码）"><span class="nav-number">4.14.</span> <span class="nav-text">Replace Type Code with State/Strategy（以State/Strategy取代类型码）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Replace-Subclass-with-Fields（以字段取代子类）"><span class="nav-number">4.15.</span> <span class="nav-text">Replace Subclass with Fields（以字段取代子类）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#重构方法-简化条件表达式"><span class="nav-number">5.</span> <span class="nav-text">重构方法-简化条件表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Decompose-Conditional（分解条件表达式）"><span class="nav-number">5.1.</span> <span class="nav-text">Decompose Conditional（分解条件表达式）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Consolidate-Conditional-Expression（合并条件表达式）"><span class="nav-number">5.2.</span> <span class="nav-text">Consolidate Conditional Expression（合并条件表达式）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Consilidate-Duplicate-Conditional-Fragments（合并重复的条件片段）"><span class="nav-number">5.3.</span> <span class="nav-text">Consilidate Duplicate Conditional Fragments（合并重复的条件片段）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Remove-Control-Flag（移除控制标记）"><span class="nav-number">5.4.</span> <span class="nav-text">Remove Control Flag（移除控制标记）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Replace-Nested-Conditional-with-Guard-Clauses（以卫语句取代嵌套条件表达式）"><span class="nav-number">5.5.</span> <span class="nav-text">Replace Nested Conditional with Guard Clauses（以卫语句取代嵌套条件表达式）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Replace-Conditional-with-Polymorphism（以多态取代条件表达式）"><span class="nav-number">5.6.</span> <span class="nav-text">Replace Conditional with Polymorphism（以多态取代条件表达式）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduce-Null-Object（引入Null对象）"><span class="nav-number">5.7.</span> <span class="nav-text">Introduce Null Object（引入Null对象）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduce-Assertion（引入断言）"><span class="nav-number">5.8.</span> <span class="nav-text">Introduce Assertion（引入断言）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#重构方法-简化函数调用"><span class="nav-number">6.</span> <span class="nav-text">重构方法-简化函数调用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Rename-Method（函数改名）"><span class="nav-number">6.1.</span> <span class="nav-text">Rename Method（函数改名）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Add-Parameter（添加参数）"><span class="nav-number">6.2.</span> <span class="nav-text">Add Parameter（添加参数）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Remove-Parameter（移除参数）"><span class="nav-number">6.3.</span> <span class="nav-text">Remove Parameter（移除参数）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Separate-Query-from-Modifier（将查询函数和修改函数分离）"><span class="nav-number">6.4.</span> <span class="nav-text">Separate Query from Modifier（将查询函数和修改函数分离）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Parameterize-Method（令函数携带参数）"><span class="nav-number">6.5.</span> <span class="nav-text">Parameterize Method（令函数携带参数）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Replace-Parameter-with-Explicit-Methods（以明确函数取代参数）"><span class="nav-number">6.6.</span> <span class="nav-text">Replace Parameter with Explicit Methods（以明确函数取代参数）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Preserve-Whole-Object（保持对象完整）"><span class="nav-number">6.7.</span> <span class="nav-text">Preserve Whole Object（保持对象完整）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Replace-Parameter-with-Methods（以函数取代参数）"><span class="nav-number">6.8.</span> <span class="nav-text">Replace Parameter with Methods（以函数取代参数）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduce-Parameter-Object（引入参数对象）"><span class="nav-number">6.9.</span> <span class="nav-text">Introduce Parameter Object（引入参数对象）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Remove-Setting-Method（移除设置函数）"><span class="nav-number">6.10.</span> <span class="nav-text">Remove Setting Method（移除设置函数）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hide-Method（隐藏函数）"><span class="nav-number">6.11.</span> <span class="nav-text">Hide Method（隐藏函数）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Replace-Constructor-with-Factory-Method（以工厂函数取代构造函数）"><span class="nav-number">6.12.</span> <span class="nav-text">Replace Constructor with Factory Method（以工厂函数取代构造函数）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Enucapsulate-Downcast（封装向下转型）"><span class="nav-number">6.13.</span> <span class="nav-text">Enucapsulate Downcast（封装向下转型）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Replace-Error-Code-with-Exception（异常取代错误代码）"><span class="nav-number">6.14.</span> <span class="nav-text">Replace Error Code with Exception（异常取代错误代码）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Replace-Exception-with-Test（以测试取代异常）"><span class="nav-number">6.15.</span> <span class="nav-text">Replace Exception with Test（以测试取代异常）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#重构方法-处理概括关系（继承关系）"><span class="nav-number">7.</span> <span class="nav-text">重构方法-处理概括关系（继承关系）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Pull-Up-Field（字段上移）"><span class="nav-number">7.1.</span> <span class="nav-text">Pull Up Field（字段上移）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pull-Up-Method（函数上移）"><span class="nav-number">7.2.</span> <span class="nav-text">Pull Up Method（函数上移）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pull-Up-Constructor-Body（构造函数本体上移）"><span class="nav-number">7.3.</span> <span class="nav-text">Pull Up Constructor Body（构造函数本体上移）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Push-Down-Method（函数下移）"><span class="nav-number">7.4.</span> <span class="nav-text">Push Down Method（函数下移）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Push-Down-Field（字段下移）"><span class="nav-number">7.5.</span> <span class="nav-text">Push Down Field（字段下移）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Extract-Subclass（提炼子类）"><span class="nav-number">7.6.</span> <span class="nav-text">Extract Subclass（提炼子类）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Extract-Superclass（提炼超类）"><span class="nav-number">7.7.</span> <span class="nav-text">Extract Superclass（提炼超类）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Extract-Interface（提炼接口）"><span class="nav-number">7.8.</span> <span class="nav-text">Extract Interface（提炼接口）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Collapse-Hierarchy（折叠继承体系）"><span class="nav-number">7.9.</span> <span class="nav-text">Collapse Hierarchy（折叠继承体系）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Form-Template-Method（塑造模板函数）"><span class="nav-number">7.10.</span> <span class="nav-text">Form Template Method（塑造模板函数）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Replace-Inheritance-with-Delegation（以委托取代继承）"><span class="nav-number">7.11.</span> <span class="nav-text">Replace Inheritance with Delegation（以委托取代继承）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Replace-Delegation-with-Inheritance（以继承取代委托）"><span class="nav-number">7.12.</span> <span class="nav-text">Replace Delegation with Inheritance（以继承取代委托）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#重构方法-大型重构"><span class="nav-number">8.</span> <span class="nav-text">重构方法-大型重构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Tease-Apart-Inheritance（梳理并分解继承体系）"><span class="nav-number">8.1.</span> <span class="nav-text">Tease Apart Inheritance（梳理并分解继承体系）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ConvertProcedural-Design-to-Objects（将过程化设计转化为对象设计）"><span class="nav-number">8.2.</span> <span class="nav-text">ConvertProcedural Design to Objects（将过程化设计转化为对象设计）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Separate-Domain-from-Presentation（将领域和表述-显示分离）"><span class="nav-number">8.3.</span> <span class="nav-text">Separate Domain from Presentation（将领域和表述/显示分离）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Extract-Hierarchy（提炼继承体系）"><span class="nav-number">8.4.</span> <span class="nav-text">Extract Hierarchy（提炼继承体系）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代码的坏味道–及解决方案"><span class="nav-number">9.</span> <span class="nav-text">代码的坏味道–及解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Duplicated-Code（重复代码）"><span class="nav-number">9.1.</span> <span class="nav-text">Duplicated Code（重复代码）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Long-Method（过长函数）"><span class="nav-number">9.2.</span> <span class="nav-text">Long Method（过长函数）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Large-Class（过大的类）"><span class="nav-number">9.3.</span> <span class="nav-text">Large Class（过大的类）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Long-Parameter-List（过长参数列）"><span class="nav-number">9.4.</span> <span class="nav-text">Long Parameter List（过长参数列）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Divergent-Change（发散式变化）"><span class="nav-number">9.5.</span> <span class="nav-text">Divergent Change（发散式变化）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shotgun-Surgery（霰xian弹式修改）"><span class="nav-number">9.6.</span> <span class="nav-text">Shotgun Surgery（霰xian弹式修改）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Feature-Envy（依恋情结）"><span class="nav-number">9.7.</span> <span class="nav-text">Feature Envy（依恋情结）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Data-Clumps（数据泥团）"><span class="nav-number">9.8.</span> <span class="nav-text">Data Clumps（数据泥团）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Primitive-Obsession（基本类型偏执）"><span class="nav-number">9.9.</span> <span class="nav-text">Primitive Obsession（基本类型偏执）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Switch-Statements（switch-惊悚现身）"><span class="nav-number">9.10.</span> <span class="nav-text">Switch Statements（switch 惊悚现身）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Parallel-Inheritance-Hierarchies（平行继承体系）"><span class="nav-number">9.11.</span> <span class="nav-text">Parallel Inheritance Hierarchies（平行继承体系）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Lazy-Class（冗赘类）"><span class="nav-number">9.12.</span> <span class="nav-text">Lazy Class（冗赘类）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Speculative-Generality（夸夸其谈未来性）"><span class="nav-number">9.13.</span> <span class="nav-text">Speculative Generality（夸夸其谈未来性）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Temporary-Field（令人迷惑的暂时字段）"><span class="nav-number">9.14.</span> <span class="nav-text">Temporary Field（令人迷惑的暂时字段）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Message-Chains（过渡耦合的消息链）"><span class="nav-number">9.15.</span> <span class="nav-text">Message Chains（过渡耦合的消息链）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Middle-Man（中间人）"><span class="nav-number">9.16.</span> <span class="nav-text">Middle Man（中间人）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Inappropriate-Intimacy（狎昵关系）–两个类过于亲密"><span class="nav-number">9.17.</span> <span class="nav-text">Inappropriate Intimacy（狎昵关系）–两个类过于亲密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Alternative-Classes-with-Different-Interfaces（异曲同工的类）"><span class="nav-number">9.18.</span> <span class="nav-text">Alternative Classes with Different Interfaces（异曲同工的类）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Incomplete-Library-Class（不完美的库类）"><span class="nav-number">9.19.</span> <span class="nav-text">Incomplete Library Class（不完美的库类）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Data-Class（纯稚的数据类）"><span class="nav-number">9.20.</span> <span class="nav-text">Data Class（纯稚的数据类）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Refused-Bequest（被拒绝的馈赠）"><span class="nav-number">9.21.</span> <span class="nav-text">Refused Bequest（被拒绝的馈赠）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Comments（过多的注释）"><span class="nav-number">9.22.</span> <span class="nav-text">Comments（过多的注释）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">10.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+</div>
+
+
+
+<div class="powered-by">
+	<i class="fa fa-user-md"></i>
+	<span id="busuanzi_container_site_pv">
+		本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共218.0k字</span>
+</div>
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fanerge.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://fanerge.github.io/2018/01/16/代码重构技巧/';
+          this.page.identifier = '2018/01/16/代码重构技巧/';
+          this.page.title = '代码重构技巧';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fanerge.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+    <script type="text/javascript" src="/live2d/script.js"></script>
+    <canvas id="live2dcanvas" width="80" height="160" class="live2d"></canvas>
+    <style>
+      #live2dcanvas {
+        position: fixed;
+        right: 0px;
+        z-index: 999;
+        pointer-events: none;
+        bottom: 100px;
+      }
+    </style>
+    <script>loadlive2d("live2dcanvas" ,"/live2d/assets/hibiki/hibiki.model.json",0.5)</script>
+  
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
