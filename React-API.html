@@ -1,0 +1,1078 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="baidu-site-verification" content="u3EKLjdYkx" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="React," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="余真帆的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="React 高阶 APICreating React Elements     123推荐使用 JSXcreateElement() -- 根据给定的类型创建并返回新的 React element。createFactory() -- 根据给定的类型返回一个创建React元素的函数。  Transforming Elements     12345678cloneElement() -- 以 el">
+<meta name="keywords" content="React">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React-API">
+<meta property="og:url" content="https://fanerge.github.io/React-API.html">
+<meta property="og:site_name" content="余真帆的博客">
+<meta property="og:description" content="React 高阶 APICreating React Elements     123推荐使用 JSXcreateElement() -- 根据给定的类型创建并返回新的 React element。createFactory() -- 根据给定的类型返回一个创建React元素的函数。  Transforming Elements     12345678cloneElement() -- 以 el">
+<meta property="og:updated_time" content="2017-10-26T13:03:33.437Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React-API">
+<meta name="twitter:description" content="React 高阶 APICreating React Elements     123推荐使用 JSXcreateElement() -- 根据给定的类型创建并返回新的 React element。createFactory() -- 根据给定的类型返回一个创建React元素的函数。  Transforming Elements     12345678cloneElement() -- 以 el">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('由于这是公司内部面试题，需要密码进行访问，如有不便敬请谅解！') !== ''){
+                alert('对不起，密码错误不能访问。');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+  <link rel="canonical" href="https://fanerge.github.io/React-API.html"/>
+
+
+
+
+
+  <title> React-API | 余真帆的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?947609e8bcc46de32a1dca9cc56cd8a1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+	<a href="https://github.com/fanerge/"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">余真帆的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/React-API.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                React-API
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-26T20:28:33+08:00">
+                2017-10-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React/" itemprop="url" rel="index">
+                    <span itemprop="name">React</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/React-API.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="React-API.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,684
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  7
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="React-高阶-API"><a href="#React-高阶-API" class="headerlink" title="React 高阶 API"></a>React 高阶 API</h1><pre><code>Creating React Elements
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">推荐使用 JSX</div><div class="line">createElement() -- 根据给定的类型创建并返回新的 React element。</div><div class="line">createFactory() -- 根据给定的类型返回一个创建React元素的函数。</div></pre></td></tr></table></figure>
+
+Transforming Elements
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">cloneElement() -- 以 element 作为起点，克隆并返回一个新的 React Element。</div><div class="line">isValidElement() -- 验证对象是否是一个React元素。返回 true 或 false 。</div><div class="line">React.Children() -- React.Children 提供了处理 this.props.children 这个不透明数据结构的工具。</div><div class="line">	React.Children.map(children, function[(thisArg)]) -- 返回数组</div><div class="line">	React.Children.forEach(children, function[(thisArg)]) -- 对数组每项进行操作</div><div class="line">	React.Children.count(children) -- 返回组件总数</div><div class="line">	React.Children.only(children) -- 返回仅有的子级</div><div class="line">	React.Children.toArray(children) -- 返回扁平数组</div></pre></td></tr></table></figure>
+</code></pre><h1 id="Components"><a href="#Components" class="headerlink" title="Components"></a>Components</h1><pre><code>React 组件可以让你把UI分割为独立、可复用的片段，并将每一片段视为相互独立的部分。
+React组件可以通过继承 React.Component 或 React.PureComponent 来定义。
+</code></pre><h2 id="React-Component"><a href="#React-Component" class="headerlink" title="React.Component"></a>React.Component</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">class Greeting extends React.Component &#123;</div><div class="line">  render() &#123;</div><div class="line">	return &lt;h1&gt;Hello, &#123;this.props.name&#125;&lt;/h1&gt;;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+组件生命周期
+    装配 -- 这些方法会在组件实例被创建和插入DOM中时被调用
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">constructor()</div><div class="line">componentWillMount()</div><div class="line">render()</div><div class="line">componentDidMount()</div></pre></td></tr></table></figure>
+
+    更新 -- 属性或状态的改变会触发一次更新。当一个组件在被重渲时，这些方法将会被调用
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">componentWillReceiveProps()</div><div class="line">shouldComponentUpdate()</div><div class="line">componentWillUpdate()</div><div class="line">render()</div><div class="line">componentDidUpdate()</div></pre></td></tr></table></figure>
+
+    卸载 -- 当一个组件被从DOM中移除时，该方法被调用
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">componentWillUnmount()</div></pre></td></tr></table></figure>
+
+其他API
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">setState() 参数为对象或函数</div><div class="line">forceUpdate()</div></pre></td></tr></table></figure>
+
+类属性
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">defaultProps</div><div class="line">	defaultProps可以被定义为组件类的一个属性，用以为类设置默认的属性。</div><div class="line">displayName</div><div class="line">	displayName被用在调试信息中。</div></pre></td></tr></table></figure>
+
+实例属性
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">props</div><div class="line">	this.props包含了组件该调用者定义的属性。</div><div class="line">state</div><div class="line">	状态是该组件的特定数据，其可能改变多次。</div></pre></td></tr></table></figure>
+
+参考
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">render()</div><div class="line">	可以返回：React元素、字符串和数字、Portals、null、布尔值（null和布尔值什么都不渲染）</div><div class="line">constructor(props)</div><div class="line">	super(props) 有两个作用：</div><div class="line">		this 指向（子类的实例）</div><div class="line">		在构造函数中使用 this.props  </div><div class="line">componentWillMount()		</div><div class="line">	在装配发生前被立刻调用。</div><div class="line">	其在render()之前被调用。</div><div class="line">componentDidMount()	</div><div class="line">	在组件被装配后立即调用。	</div><div class="line">	初始化使得DOM节点应该进行到这里。ajax 和 定时器</div><div class="line">componentWillReceiveProps(nextProps)	</div><div class="line">	在装配了的组件接收到新属性前调用。</div><div class="line">shouldComponentUpdate(nextProps, nextState)	</div><div class="line">	使用shouldComponentUpdate()以让React知道当前状态或属性的改变是否不影响组件的输出。</div><div class="line">componentWillUpdate(nextProps, nextState)	</div><div class="line">	当接收到新属性或状态时，componentWillUpdate()为在渲染前被立即调用。</div><div class="line">componentDidUpdate(prevProps, prevState)	</div><div class="line">	在更新发生后立即被调用。该方法并不会在初始化渲染时调用。</div><div class="line">componentWillUnmount()	</div><div class="line">	在组件被卸载和销毁之前立刻调用。	</div><div class="line">	可以在该方法里处理任何必要的清理工作，例如解绑定时器，取消网络请求，清理任何在componentDidMount环节创建的DOM元素。</div><div class="line">setState(updater, [callback])</div><div class="line">	参数为对象 &#123;name: &apos;fanerge&apos;&#125;</div><div class="line">	参数为函数(prevState, props) =&gt; stateChange</div><div class="line">component.forceUpdate(callback)	</div><div class="line">	调用forceUpdate()将会导致组件的 render()方法被调用，并忽略shouldComponentUpdate()。</div></pre></td></tr></table></figure>
+</code></pre><h2 id="React-PureComponent"><a href="#React-PureComponent" class="headerlink" title="React.PureComponent"></a>React.PureComponent</h2><pre><code>浅对比继承该类来对 prop 和 state 进行比较，并调用 shouldComponentUpate()。 
+深对比使用 forceUpdate() 和 不可变对象 来促进嵌套数据的快速比较。        
+</code></pre><h1 id="ReactDOM"><a href="#ReactDOM" class="headerlink" title="ReactDOM"></a>ReactDOM</h1><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">react-dom这个软件包提供了针对DOM的方法，可以在你应用的顶级域中调用，也可以在有需要的情况下用作跳出React模型的出口。</div><div class="line">render()</div><div class="line">	渲染一个React元素，添加到位于提供的container里的DOM元素中，并返回这个组件的一个引用 (或者对于无状态组件返回null).</div></pre></td></tr></table></figure>
+
+    ReactDOM.render(
+      element,
+      container,
+      [callback]
+    )
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ReactDOM.unmountComponentAtNode(container)</div><div class="line">	从DOM元素中移除已挂载的React组件，清除它的事件处理器和state。</div><div class="line">	有组件被卸载的时候返回true，没有组件可供卸载时返回 false。</div><div class="line">ReactDOM.findDOMNode(component)</div><div class="line">	如果这个组件已经被挂载到DOM中，函数会返回对应的浏览器中生成的DOM元素 。</div><div class="line">	大多数情况下，你可以添加一个指向DOM节点的引用，从而完全避免使用 findDOMNode 这个函数.</div></pre></td></tr></table></figure>
+</code></pre><h1 id="ReactDOMServer"><a href="#ReactDOMServer" class="headerlink" title="ReactDOMServer"></a>ReactDOMServer</h1><pre><code>ReactDOMServer 类可以让你在服务端渲染你的组件。
+</code></pre><h2 id="ReactDOMServer-renderToString-element"><a href="#ReactDOMServer-renderToString-element" class="headerlink" title="ReactDOMServer.renderToString(element)"></a>ReactDOMServer.renderToString(element)</h2><pre><code>把一个React元素渲染为原始的HTML。
+你可以用这个方法在服务端生成HTML，并根据初始请求发送标记来加快页面的加载速度，
+同时让搜索引擎可以抓取你的页面来达到优化SEO的目的。    
+</code></pre><h2 id="ReactDOMServer-renderToStaticMarkup-element"><a href="#ReactDOMServer-renderToStaticMarkup-element" class="headerlink" title="ReactDOMServer.renderToStaticMarkup(element)"></a>ReactDOMServer.renderToStaticMarkup(element)</h2><pre><code>类似 renderToString，但是不会创建额外的DOM属性，例如 data-reactid 这些仅在React内部使用的属性。
+如果你希望把React当作一个简单的静态页面生成器来使用，这很有用，因为去掉
+</code></pre><h1 id="DOM-Elements"><a href="#DOM-Elements" class="headerlink" title="DOM Elements"></a>DOM Elements</h1><h2 id="React实现了一套与浏览器无关的DOM系统，兼顾了性能和跨浏览器的兼容性。"><a href="#React实现了一套与浏览器无关的DOM系统，兼顾了性能和跨浏览器的兼容性。" class="headerlink" title="React实现了一套与浏览器无关的DOM系统，兼顾了性能和跨浏览器的兼容性。"></a>React实现了一套与浏览器无关的DOM系统，兼顾了性能和跨浏览器的兼容性。</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">class -- className</div><div class="line">for -- htmlFor</div><div class="line">tabindex -- tabIndex</div><div class="line">aria-* （对于残障人士更易使用的各种机制）小写字母命名 </div><div class="line">data-* （自定义属性）小写字母命名</div></pre></td></tr></table></figure>
+</code></pre><h2 id="React和HTML-DOM属性的区别"><a href="#React和HTML-DOM属性的区别" class="headerlink" title="React和HTML DOM属性的区别"></a>React和HTML DOM属性的区别</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">checked属性</div><div class="line">	受控组件 -- &lt;input&gt;标签type属性值为checkbox或radio时，支持checked属性。</div><div class="line">	非受控组件 -- defaultChecked这是非受控组件的属性</div><div class="line">类名属性</div><div class="line">	class -- className</div><div class="line">dangerouslySetInnerHTML函数</div><div class="line">	处理Cross-site scripting (XSS) </div><div class="line">	dangerouslySetInnerHTML是React提供的替换浏览器DOM中的innerHTML接口的一个函数。</div><div class="line">htmlFor</div><div class="line">	for -- htmlFor</div><div class="line">绑定事件</div><div class="line">	onchange -- onChange</div><div class="line">selected</div><div class="line">	受控组件 -- 使用selected属性，设定组件是否选中的状态。</div><div class="line">style属性</div><div class="line">	&lt;Hello style=&#123;&#123;color: &apos;blue&apos;&#125;&#125; /&gt;</div><div class="line">	浏览器后缀除了ms以外，都应该以大写字母开头。</div><div class="line">	这就是为什么WebkitTransition有一个大写字母W。</div><div class="line">suppressContentEditableWarning</div><div class="line">	contentEditable 该属性少使用。</div><div class="line">value</div><div class="line">	受控组件 -- &lt;input&gt; 和 &lt;textarea&gt; 组件都支持value属性。</div><div class="line">	非受控组件 -- defaultValue属性对应的是非受控组件的属性，用来设置组件第一次加载时的值。</div><div class="line">支持所有的HTMl属性</div></pre></td></tr></table></figure>
+</code></pre><h1 id="SyntheticEvent"><a href="#SyntheticEvent" class="headerlink" title="SyntheticEvent"></a>SyntheticEvent</h1><h2 id="您的事件处理函数将会接收SyntheticEvent的实例，一个基于浏览器原生事件的跨浏览器实现。"><a href="#您的事件处理函数将会接收SyntheticEvent的实例，一个基于浏览器原生事件的跨浏览器实现。" class="headerlink" title="您的事件处理函数将会接收SyntheticEvent的实例，一个基于浏览器原生事件的跨浏览器实现。"></a>您的事件处理函数将会接收SyntheticEvent的实例，一个基于浏览器原生事件的跨浏览器实现。</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">boolean bubbles</div><div class="line">boolean cancelable</div><div class="line">DOMEventTarget currentTarget</div><div class="line">boolean defaultPrevented</div><div class="line">number eventPhase</div><div class="line">boolean isTrusted</div><div class="line">DOMEvent nativeEvent</div><div class="line">void preventDefault()</div><div class="line">boolean isDefaultPrevented()</div><div class="line">void stopPropagation()</div><div class="line">boolean isPropagationStopped()</div><div class="line">DOMEventTarget target</div><div class="line">number timeStamp</div><div class="line">string type</div></pre></td></tr></table></figure>
+</code></pre><h2 id="事件池"><a href="#事件池" class="headerlink" title="事件池"></a>事件池</h2><pre><code>SyntheticEvent是共享的。那就意味着在调用事件回调之后，SyntheticEvent对象将会被重用，并且所有属性会被置空。
+</code></pre><h2 id="支持的事件"><a href="#支持的事件" class="headerlink" title="支持的事件"></a>支持的事件</h2><pre><code>在事件名后面加Capture就能在事件捕获阶段注册事件处理函数。
+你可以使用onClickCapture代替onClick在事件捕获阶段来处理点击事件。
+[查看所有支持的事件](https://doc.react-china.org/docs/events.html)
+</code></pre><h1 id="Test-Utilities"><a href="#Test-Utilities" class="headerlink" title="Test Utilities"></a>Test Utilities</h1><pre><code>导入 -- import ReactTestUtils from &apos;react-dom/test-utils&apos;;
+[单元测试](https://doc.react-china.org/docs/test-utils.html)
+</code></pre><h1 id="浅层渲染"><a href="#浅层渲染" class="headerlink" title="浅层渲染"></a>浅层渲染</h1><pre><code>[浅层渲染](https://doc.react-china.org/docs/shallow-renderer.html)
+</code></pre><h1 id="Test-Renderer"><a href="#Test-Renderer" class="headerlink" title="Test Renderer"></a>Test Renderer</h1><pre><code>[Test Renderer](https://doc.react-china.org/docs/test-renderer.html)        
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="https://doc.react-china.org/docs/react-api.html" target="_blank" rel="external">React官方API</a></p>
+</blockquote>
+
+      
+    </div>
+	<div>
+	  
+		
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+  <p><span>本文标题:</span><a href="/React-API.html">React-API</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 余真帆-fanerge 的个人博客">余真帆-fanerge</a></p>
+  <p><span>发布时间:</span>2017年10月26日 - 20:10</p>
+  <p><span>最后更新:</span>2017年10月26日 - 21:10</p>
+  <p><span>原始链接:</span><a href="/React-API.html" title="React-API">https://fanerge.github.io/React-API.html</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://fanerge.github.io/React-API.html"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+
+	  
+	</div>
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+	<div>
+	  
+		<div>
+    
+        <div style="text-align:center;color: #aaa;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>fanerge在此感谢您的阅读-------------</div>
+    
+</div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/React/" rel="tag"><i class="fa fa-tag"></i> React</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/web常见的安全问题及解决方法.html" rel="next" title="web常见的安全问题及解决方法">
+                <i class="fa fa-chevron-left"></i> web常见的安全问题及解决方法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Redux总结.html" rel="prev" title="Redux总结">
+                Redux总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      a
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="余真帆-fanerge" />
+          <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives" rel="external nofollow">
+                <span class="site-state-item-count">142</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a rel="external nofollow" href="/categories/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a rel="external nofollow" href="/tags/index.html">
+                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://github.com/fanerge/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="twitter" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="weibo" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金">
+                  
+                    <i class="fa fa-fw fa-spinner"></i>
+                  
+                  掘金
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#React-高阶-API"><span class="nav-number">1.</span> <span class="nav-text">React 高阶 API</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Components"><span class="nav-number">2.</span> <span class="nav-text">Components</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#React-Component"><span class="nav-number">2.1.</span> <span class="nav-text">React.Component</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React-PureComponent"><span class="nav-number">2.2.</span> <span class="nav-text">React.PureComponent</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ReactDOM"><span class="nav-number">3.</span> <span class="nav-text">ReactDOM</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ReactDOMServer"><span class="nav-number">4.</span> <span class="nav-text">ReactDOMServer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ReactDOMServer-renderToString-element"><span class="nav-number">4.1.</span> <span class="nav-text">ReactDOMServer.renderToString(element)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ReactDOMServer-renderToStaticMarkup-element"><span class="nav-number">4.2.</span> <span class="nav-text">ReactDOMServer.renderToStaticMarkup(element)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DOM-Elements"><span class="nav-number">5.</span> <span class="nav-text">DOM Elements</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#React实现了一套与浏览器无关的DOM系统，兼顾了性能和跨浏览器的兼容性。"><span class="nav-number">5.1.</span> <span class="nav-text">React实现了一套与浏览器无关的DOM系统，兼顾了性能和跨浏览器的兼容性。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React和HTML-DOM属性的区别"><span class="nav-number">5.2.</span> <span class="nav-text">React和HTML DOM属性的区别</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SyntheticEvent"><span class="nav-number">6.</span> <span class="nav-text">SyntheticEvent</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#您的事件处理函数将会接收SyntheticEvent的实例，一个基于浏览器原生事件的跨浏览器实现。"><span class="nav-number">6.1.</span> <span class="nav-text">您的事件处理函数将会接收SyntheticEvent的实例，一个基于浏览器原生事件的跨浏览器实现。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事件池"><span class="nav-number">6.2.</span> <span class="nav-text">事件池</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#支持的事件"><span class="nav-number">6.3.</span> <span class="nav-text">支持的事件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Test-Utilities"><span class="nav-number">7.</span> <span class="nav-text">Test Utilities</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#浅层渲染"><span class="nav-number">8.</span> <span class="nav-text">浅层渲染</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Test-Renderer"><span class="nav-number">9.</span> <span class="nav-text">Test Renderer</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+</div>
+
+
+
+<div class="powered-by">
+	<i class="fa fa-user-md"></i>
+	<span id="busuanzi_container_site_pv">
+		本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io" rel="external nofollow">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共221.7k字</span>
+</div>
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fanerge.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://fanerge.github.io/React-API.html';
+          this.page.identifier = 'React-API.html';
+          this.page.title = 'React-API';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fanerge.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+    <script type="text/javascript" src="/live2d/script.js"></script>
+    <canvas id="live2dcanvas" width="80" height="160" class="live2d"></canvas>
+    <style>
+      #live2dcanvas {
+        position: fixed;
+        right: 0px;
+        z-index: 999;
+        pointer-events: none;
+        bottom: 100px;
+      }
+    </style>
+    <script>loadlive2d("live2dcanvas" ,"/live2d/assets/hibiki/hibiki.model.json",0.5)</script>
+  
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>

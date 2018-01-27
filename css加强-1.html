@@ -1,0 +1,1029 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="baidu-site-verification" content="u3EKLjdYkx" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="css,web开发,读书笔记," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="余真帆的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="在接下来的一段时间学习看云上购买的一本Web开发实战书籍，来提升自己的软实力。本部分为css实战部分。 水中倒影要实现倒影，有两种方式：box-reflect方式和transform方式。 box-reflect效果     box-reflect方式（存在兼容性）属性介绍box-reflect: &amp;lt;direction&amp;gt; &amp;lt;offset&amp;gt;? &amp;lt;mask-box-ima">
+<meta name="keywords" content="css,web开发,读书笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="css加强（水中倒影、工具提示tooltip）">
+<meta property="og:url" content="https://fanerge.github.io/css加强-1.html">
+<meta property="og:site_name" content="余真帆的博客">
+<meta property="og:description" content="在接下来的一段时间学习看云上购买的一本Web开发实战书籍，来提升自己的软实力。本部分为css实战部分。 水中倒影要实现倒影，有两种方式：box-reflect方式和transform方式。 box-reflect效果     box-reflect方式（存在兼容性）属性介绍box-reflect: &amp;lt;direction&amp;gt; &amp;lt;offset&amp;gt;? &amp;lt;mask-box-ima">
+<meta property="og:image" content="https://fanerge.github.io/images/box_reflect.png">
+<meta property="og:image" content="https://fanerge.github.io/images/transform_reflect.png">
+<meta property="og:image" content="https://fanerge.github.io/images/tooltip.png">
+<meta property="og:updated_time" content="2017-08-30T13:27:38.643Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="css加强（水中倒影、工具提示tooltip）">
+<meta name="twitter:description" content="在接下来的一段时间学习看云上购买的一本Web开发实战书籍，来提升自己的软实力。本部分为css实战部分。 水中倒影要实现倒影，有两种方式：box-reflect方式和transform方式。 box-reflect效果     box-reflect方式（存在兼容性）属性介绍box-reflect: &amp;lt;direction&amp;gt; &amp;lt;offset&amp;gt;? &amp;lt;mask-box-ima">
+<meta name="twitter:image" content="https://fanerge.github.io/images/box_reflect.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('由于这是公司内部面试题，需要密码进行访问，如有不便敬请谅解！') !== ''){
+                alert('对不起，密码错误不能访问。');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+  <link rel="canonical" href="https://fanerge.github.io/css加强-1.html"/>
+
+
+
+
+
+  <title> css加强（水中倒影、工具提示tooltip） | 余真帆的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?947609e8bcc46de32a1dca9cc56cd8a1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+	<a href="https://github.com/fanerge/"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">余真帆的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/css加强-1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                css加强（水中倒影、工具提示tooltip）
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-30T19:39:15+08:00">
+                2017-08-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/css/" itemprop="url" rel="index">
+                    <span itemprop="name">css</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/css加强-1.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="css加强-1.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  940
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  5
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在接下来的一段时间学习看云上购买的一本<a href="https://www.kancloud.cn/dennis/javascriptmethod/261472" target="_blank" rel="external">Web开发实战</a>书籍，来提升自己的软实力。<br>本部分为css实战部分。</p>
+<h4 id="水中倒影"><a href="#水中倒影" class="headerlink" title="水中倒影"></a>水中倒影</h4><pre><code>要实现倒影，有两种方式：box-reflect方式和transform方式。
+</code></pre><p>box-reflect效果<br>    <img src="/images/box_reflect.png" alt="box-reflect方式"></p>
+<h5 id="box-reflect方式（存在兼容性）"><a href="#box-reflect方式（存在兼容性）" class="headerlink" title="box-reflect方式（存在兼容性）"></a>box-reflect方式（存在兼容性）</h5><h6 id="属性介绍"><a href="#属性介绍" class="headerlink" title="属性介绍"></a>属性介绍</h6><pre><code>box-reflect: &lt;direction&gt; &lt;offset&gt;? &lt;mask-box-image&gt;?
+参数说明：
+</code></pre><ol>
+<li>表示倒影的方向，可能值：above、below、left、right（上下左右）；</li>
+<li>表示倒影与元素之间的间隔；</li>
+<li>表示遮罩图像，可为url地址、渐变<h6 id="创建模版"><a href="#创建模版" class="headerlink" title="创建模版"></a>创建模版</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;img src=&quot;./img/demo.png&quot; alt=&quot;&quot; /&gt;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h6 id="设置样式"><a href="#设置样式" class="headerlink" title="设置样式"></a>设置样式</h6><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">img &#123;</div><div class="line">       -webkit-box-reflect: below 0 -webkit-linear-gradient(top, rgba(250, 250, 250, 0), rgba(250, 250, 250, .1) 20%, rgba(250, 250, 250, .3));</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+</code></pre><h5 id="transform方式"><a href="#transform方式" class="headerlink" title="transform方式"></a>transform方式</h5><pre><code>这种方式其实就是复制图片，然后翻转，最后同样是使用渐变来充当遮罩层，覆盖在翻转的图片之上。
+</code></pre><p>transform效果<br>    <img src="/images/transform_reflect.png" alt="transform方式"></p>
+<h6 id="创建模版-1"><a href="#创建模版-1" class="headerlink" title="创建模版"></a>创建模版</h6><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;div class=&quot;box-reflect&quot;&gt;</div><div class="line">       &lt;img src=&quot;img/demo.png&quot; alt=&quot;&quot; /&gt;</div><div class="line">   &lt;/div&gt;</div></pre></td></tr></table></figure>
+</code></pre><h6 id="设置样式-1"><a href="#设置样式-1" class="headerlink" title="设置样式"></a>设置样式</h6><pre><code>使用伪类元素将我们需要将图片克隆一份，然后翻转过来，before存放背景图片，after达到渐变效果，这样after的z-index在before大，就达到了我们想要的效果。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">.box-reflect &#123;</div><div class="line">       position: relative;</div><div class="line">       width: 150px;</div><div class="line">       float: left;</div><div class="line">       margin-right: 40px;</div><div class="line">   &#125;</div><div class="line">   .box-reflect img &#123;</div><div class="line">       width: 100%;</div><div class="line">       height: 100%;</div><div class="line">   &#125;</div><div class="line">   .box-reflect:before &#123;</div><div class="line">       background: url(img/demo.png) no-repeat;</div><div class="line">       background-size: 100% 100%;</div><div class="line">       transform: scaleY(-1);</div><div class="line">       /*添加半透明是为了更真实*/</div><div class="line">       opacity: 0.5;</div><div class="line">       filter: alpha(opacity=&apos;50&apos;);</div><div class="line">   &#125;</div><div class="line">   .box-reflect:before, .box-reflect:after &#123;</div><div class="line">       position: absolute;</div><div class="line">       width: 100%;</div><div class="line">       height: 100%;</div><div class="line">       top: 100%;</div><div class="line">       left: 0;</div><div class="line">       content: &quot;&quot;;</div><div class="line">   &#125;</div><div class="line">   .box-reflect:after &#123;</div><div class="line">       background-image: -webkit-linear-gradient(bottom,rgb(0,0,0) 20%,rgba(0,0,0,0) 90%);</div><div class="line">       filter: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColor=0, EndColorStr=#000000);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+</code></pre><h4 id="工具提示（tooltip）"><a href="#工具提示（tooltip）" class="headerlink" title="工具提示（tooltip）"></a>工具提示（tooltip）</h4><p>css3设计的tooltip工具<br>    <img src="/images/tooltip.png" alt="tooltip"></p>
+<h5 id="创建模版-2"><a href="#创建模版-2" class="headerlink" title="创建模版"></a>创建模版</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">&lt;div class=&quot;toop-group&quot;&gt;</div><div class="line">       &lt;button class=&quot;btn btn-primary tooltip&quot; data-tooltip=&quot;在上方&quot; data-direction=&quot;up&quot;&gt;</div><div class="line">           在上方</div><div class="line">       &lt;/button&gt;</div><div class="line">       &lt;button class=&quot;btn btn-primary tooltip&quot; data-tooltip=&quot;在右方&quot; data-direction=&quot;right&quot;&gt;</div><div class="line">           在右方</div><div class="line">       &lt;/button&gt;</div><div class="line">       &lt;button class=&quot;btn btn-primary tooltip&quot; data-tooltip=&quot;在下方&quot; data-direction=&quot;down&quot;&gt;</div><div class="line">           在下方</div><div class="line">       &lt;/button&gt;</div><div class="line">       &lt;button class=&quot;btn btn-primary tooltip&quot; data-tooltip=&quot;在左方&quot; data-direction=&quot;left&quot;&gt;</div><div class="line">           在左方</div><div class="line">       &lt;/button&gt;</div><div class="line">   &lt;/div&gt;</div></pre></td></tr></table></figure>
+</code></pre><h5 id="设置样式-2"><a href="#设置样式-2" class="headerlink" title="设置样式"></a>设置样式</h5><pre><code>总体思路：
+</code></pre><ol>
+<li>利用伪类before生成提示工具的三角形border来形成。</li>
+<li>利用伪类after生成提示内容（长方形）以及获取提示文本content(attr(data-tooltip)),来获取自身的自定义属性data-tooltip。</li>
+<li>利用hover效果让其展现，在加入一些css3动画将表现的更好。</li>
+<li>使用了calc用于动态计算长度值，使我们的组件更通用。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div></pre></td><td class="code"><pre><div class="line">.tooltip</div><div class="line">&#123;</div><div class="line">	position: relative;</div><div class="line">&#125;</div><div class="line">.tooltip:before</div><div class="line">&#123;</div><div class="line">	position: absolute;</div><div class="line">	content: &apos;&apos;;</div><div class="line">	border: 5px solid transparent;</div><div class="line">&#125;</div><div class="line">.tooltip:after</div><div class="line">&#123;</div><div class="line">	font-size: 14px;</div><div class="line">	line-height: normal;</div><div class="line"></div><div class="line">	position: absolute;</div><div class="line"></div><div class="line">	padding: 5px 10px;</div><div class="line">	content: attr(data-tooltip);</div><div class="line">	white-space: nowrap;</div><div class="line"></div><div class="line">	color: #fff;</div><div class="line">	border-radius: 3px;</div><div class="line">	background: #383838;</div><div class="line">&#125;</div><div class="line">.tooltip:before,</div><div class="line">.tooltip:after</div><div class="line">&#123;</div><div class="line">	z-index: 1000000;</div><div class="line"></div><div class="line">	visibility: hidden;</div><div class="line"></div><div class="line">	-webkit-transition: .3s ease;</div><div class="line">	   -moz-transition: .3s ease;</div><div class="line">			transition: .3s ease;</div><div class="line">	-webkit-transition-delay: 0ms;</div><div class="line">	   -moz-transition-delay: 0ms;</div><div class="line">			transition-delay: 0ms;</div><div class="line">	pointer-events: none;</div><div class="line"></div><div class="line">	opacity: 0;</div><div class="line">&#125;</div><div class="line">.tooltip:hover:before,</div><div class="line">.tooltip:hover:after</div><div class="line">&#123;</div><div class="line">	visibility: visible;</div><div class="line"></div><div class="line">	opacity: 1;</div><div class="line">&#125;</div><div class="line">[data-direction=&apos;down&apos;]:before</div><div class="line">&#123;</div><div class="line">	top: -webkit-calc(100% - 5px);</div><div class="line">	top:    -moz-calc(100% - 5px);</div><div class="line">	top:         calc(100% - 5px);</div><div class="line"></div><div class="line">	border-bottom-color: #383838;</div><div class="line">&#125;</div><div class="line">[data-direction=&apos;down&apos;]:after</div><div class="line">&#123;</div><div class="line">	top: -webkit-calc(100% + 5px);</div><div class="line">	top:    -moz-calc(100% + 5px);</div><div class="line">	top:         calc(100% + 5px);</div><div class="line">&#125;</div><div class="line">[data-direction=&apos;down&apos;]:before,</div><div class="line">[data-direction=&apos;down&apos;]:after,</div><div class="line">[data-direction=&apos;up&apos;]:before,</div><div class="line">[data-direction=&apos;up&apos;]:after</div><div class="line">&#123;</div><div class="line">	left: 50%;</div><div class="line">	-webkit-transform: translate3d(-50%,0,0);</div><div class="line">	   -moz-transform: translate3d(-50%,0,0);</div><div class="line">			transform: translate3d(-50%,0,0);</div><div class="line">&#125;</div><div class="line">[data-direction=&apos;up&apos;]:before</div><div class="line">&#123;</div><div class="line">	bottom: -webkit-calc(100% - 5px);</div><div class="line">	bottom:    -moz-calc(100% - 5px);</div><div class="line">	bottom:         calc(100% - 5px);</div><div class="line"></div><div class="line">	border-top-color: #383838;</div><div class="line">&#125;</div><div class="line">[data-direction=&apos;up&apos;]:after</div><div class="line">&#123;</div><div class="line">	bottom: -webkit-calc(100% + 5px);</div><div class="line">	bottom:    -moz-calc(100% + 5px);</div><div class="line">	bottom:         calc(100% + 5px);</div><div class="line">&#125;</div><div class="line">[data-direction=&apos;left&apos;]:before,</div><div class="line">[data-direction=&apos;left&apos;]:after,</div><div class="line">[data-direction=&apos;right&apos;]:before,</div><div class="line">[data-direction=&apos;right&apos;]:after</div><div class="line">&#123;</div><div class="line">	top: 50%;</div><div class="line">	-webkit-transform: translate3d(0,-50%,0);</div><div class="line">	   -moz-transform: translate3d(0,-50%,0);</div><div class="line">			transform: translate3d(0,-50%,0);</div><div class="line">&#125;</div><div class="line">[data-direction=&apos;left&apos;]:before</div><div class="line">&#123;</div><div class="line">	left: -5px;</div><div class="line">	border-left-color: #383838;</div><div class="line">&#125;</div><div class="line">[data-direction=&apos;left&apos;]:after</div><div class="line">&#123;</div><div class="line">	right: -webkit-calc(100% + 5px);</div><div class="line">	right:    -moz-calc(100% + 5px);</div><div class="line">	right:         calc(100% + 5px);</div><div class="line">&#125;</div><div class="line">[data-direction=&apos;right&apos;]:before</div><div class="line">&#123;</div><div class="line">	left: -webkit-calc(100% - 5px);</div><div class="line">	left:    -moz-calc(100% - 5px);</div><div class="line">	left:         calc(100% - 5px);</div><div class="line"></div><div class="line">	border-right-color: #383838;</div><div class="line">&#125;</div><div class="line">[data-direction=&apos;right&apos;]:after</div><div class="line">&#123;</div><div class="line">	left: -webkit-calc(100% + 5px);</div><div class="line">	left:    -moz-calc(100% + 5px);</div><div class="line">	left:         calc(100% + 5px);</div><div class="line">&#125;</div><div class="line">.toop-group &#123;</div><div class="line">	padding-top: 100px;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<blockquote>
+<p>   参考文档：</p>
+<ol>
+<li><a href="https://www.kancloud.cn/dennis/javascriptmethod/261476" target="_blank" rel="external">web开发实战</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-box-reflect" target="_blank" rel="external">MDN box-reflect</a><br><a href="https://github.com/fanerge/web-/tree/master" target="_blank" rel="external">代码仓库</a></li>
+</ol>
+</blockquote>
+
+      
+    </div>
+	<div>
+	  
+		
+
+	  
+	</div>
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+	<div>
+	  
+		<div>
+    
+        <div style="text-align:center;color: #aaa;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>fanerge在此感谢您的阅读-------------</div>
+    
+</div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/css/" rel="tag"><i class="fa fa-tag"></i> css</a>
+          
+            <a href="/tags/web开发/" rel="tag"><i class="fa fa-tag"></i> web开发</a>
+          
+            <a href="/tags/读书笔记/" rel="tag"><i class="fa fa-tag"></i> 读书笔记</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/css加强.html" rel="next" title="css-加强（白光划过效果、3D立方体）">
+                <i class="fa fa-chevron-left"></i> css-加强（白光划过效果、3D立方体）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/css加强-2.html" rel="prev" title="css加强（单选复选Switch、Loading）">
+                css加强（单选复选Switch、Loading） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      a
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="余真帆-fanerge" />
+          <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives" rel="external nofollow">
+                <span class="site-state-item-count">142</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a rel="external nofollow" href="/categories/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a rel="external nofollow" href="/tags/index.html">
+                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://github.com/fanerge/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="twitter" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="weibo" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金">
+                  
+                    <i class="fa fa-fw fa-spinner"></i>
+                  
+                  掘金
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#水中倒影"><span class="nav-number">1.</span> <span class="nav-text">水中倒影</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#box-reflect方式（存在兼容性）"><span class="nav-number">1.1.</span> <span class="nav-text">box-reflect方式（存在兼容性）</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#属性介绍"><span class="nav-number">1.1.1.</span> <span class="nav-text">属性介绍</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#创建模版"><span class="nav-number">1.1.2.</span> <span class="nav-text">创建模版</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#设置样式"><span class="nav-number">1.1.3.</span> <span class="nav-text">设置样式</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#transform方式"><span class="nav-number">1.2.</span> <span class="nav-text">transform方式</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#创建模版-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">创建模版</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#设置样式-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">设置样式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#工具提示（tooltip）"><span class="nav-number">2.</span> <span class="nav-text">工具提示（tooltip）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#创建模版-2"><span class="nav-number">2.1.</span> <span class="nav-text">创建模版</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#设置样式-2"><span class="nav-number">2.2.</span> <span class="nav-text">设置样式</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+</div>
+
+
+
+<div class="powered-by">
+	<i class="fa fa-user-md"></i>
+	<span id="busuanzi_container_site_pv">
+		本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io" rel="external nofollow">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共221.7k字</span>
+</div>
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fanerge.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://fanerge.github.io/css加强-1.html';
+          this.page.identifier = 'css加强-1.html';
+          this.page.title = 'css加强（水中倒影、工具提示tooltip）';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fanerge.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+    <script type="text/javascript" src="/live2d/script.js"></script>
+    <canvas id="live2dcanvas" width="80" height="160" class="live2d"></canvas>
+    <style>
+      #live2dcanvas {
+        position: fixed;
+        right: 0px;
+        z-index: 999;
+        pointer-events: none;
+        bottom: 100px;
+      }
+    </style>
+    <script>loadlive2d("live2dcanvas" ,"/live2d/assets/hibiki/hibiki.model.json",0.5)</script>
+  
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>

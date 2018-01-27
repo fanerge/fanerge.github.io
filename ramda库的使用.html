@@ -1,0 +1,1002 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="baidu-site-verification" content="u3EKLjdYkx" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="js,函数式编程,ramda," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="余真帆的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="学习源代码地址 了解Pointfree的概念概念：fn = R.pipe(f1, f2, f3); 可以把数据处理的过程，定义成一种与参数无关的合成运算。 **不使用所要处理的值，只合成运算过程。** 一些小例子1234567891011121314151617181920212223242526// pointfree例子var addOne = x =&amp;gt; x + 1;var square">
+<meta name="keywords" content="js,函数式编程,ramda">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ramda库的使用">
+<meta property="og:url" content="https://fanerge.github.io/ramda库的使用.html">
+<meta property="og:site_name" content="余真帆的博客">
+<meta property="og:description" content="学习源代码地址 了解Pointfree的概念概念：fn = R.pipe(f1, f2, f3); 可以把数据处理的过程，定义成一种与参数无关的合成运算。 **不使用所要处理的值，只合成运算过程。** 一些小例子1234567891011121314151617181920212223242526// pointfree例子var addOne = x =&amp;gt; x + 1;var square">
+<meta property="og:updated_time" content="2017-08-16T14:39:03.457Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ramda库的使用">
+<meta name="twitter:description" content="学习源代码地址 了解Pointfree的概念概念：fn = R.pipe(f1, f2, f3); 可以把数据处理的过程，定义成一种与参数无关的合成运算。 **不使用所要处理的值，只合成运算过程。** 一些小例子1234567891011121314151617181920212223242526// pointfree例子var addOne = x =&amp;gt; x + 1;var square">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('由于这是公司内部面试题，需要密码进行访问，如有不便敬请谅解！') !== ''){
+                alert('对不起，密码错误不能访问。');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+  <link rel="canonical" href="https://fanerge.github.io/ramda库的使用.html"/>
+
+
+
+
+
+  <title> ramda库的使用 | 余真帆的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?947609e8bcc46de32a1dca9cc56cd8a1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+	<a href="https://github.com/fanerge/"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">余真帆的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/ramda库的使用.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                ramda库的使用
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-16T20:24:01+08:00">
+                2017-08-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/函数式编程/" itemprop="url" rel="index">
+                    <span itemprop="name">函数式编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/ramda库的使用.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="ramda库的使用.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  714
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  4
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a href="https://github.com/fanerge/Ramda-study/blob/master/ramda/js/pointfree.js" target="_blank" rel="external">学习源代码地址</a></p>
+<h4 id="了解Pointfree的概念"><a href="#了解Pointfree的概念" class="headerlink" title="了解Pointfree的概念"></a>了解Pointfree的概念</h4><pre><code>概念：fn = R.pipe(f1, f2, f3);
+可以把数据处理的过程，定义成一种与参数无关的合成运算。
+**不使用所要处理的值，只合成运算过程。**
+</code></pre><h5 id="一些小例子"><a href="#一些小例子" class="headerlink" title="一些小例子"></a>一些小例子</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">// pointfree例子</div><div class="line">var addOne = x =&gt; x + 1;</div><div class="line">var square = x =&gt; x * x;</div><div class="line">var addOneThenSquare = R.pipe(square, addOne);</div><div class="line">var pointfree1 = addOneThenSquare(3);</div><div class="line">console.log(pointfree1); // 10</div><div class="line">// addOneThenSquare是一个合成函数。定义它的时候，根本不需要提到要处理的值，这就是 Pointfree。</div><div class="line"></div><div class="line">var prop = (p, obj) =&gt; obj[p]; // 封装了读取操作，它需要两个参数p（属性名）和obj（对象）。</div><div class="line">var propRole = R.curry(prop)(&apos;role&apos;); // 将函数柯里化</div><div class="line">var demo1 = propRole(&#123;role: &apos;fan&apos;&#125;);</div><div class="line">console.log(demo1); // fan</div><div class="line"></div><div class="line">var data = [</div><div class="line">  &#123;name: &apos;张三&apos;, role: &apos;worker&apos;&#125;,</div><div class="line">  &#123;name: &apos;李四&apos;, role: &apos;worker&apos;&#125;,</div><div class="line">  &#123;name: &apos;王五&apos;, role: &apos;manager&apos;&#125;,</div><div class="line">];</div><div class="line">var isWorker = r =&gt; r === &apos;worker&apos;;</div><div class="line">var getWorkers = R.filter(R.pipe(R.prop(&apos;role&apos;), isWorker));</div><div class="line">var demo2 = getWorkers(data);</div><div class="line">// console.log(demo2); </div><div class="line">// [</div><div class="line">//   &#123;&quot;name&quot;: &quot;张三&quot;, &quot;role&quot;: &quot;worker&quot;&#125;,</div><div class="line">//   &#123;&quot;name&quot;: &quot;李四&quot;, &quot;role&quot;: &quot;worker&quot;&#125;</div><div class="line">// ]</div></pre></td></tr></table></figure>
+</code></pre><h5 id="Pointfree示例一"><a href="#Pointfree示例一" class="headerlink" title="Pointfree示例一"></a>Pointfree示例一</h5><pre><code>**求下面字符串，请问其中最长的单词有多少个字符？**
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">var str = &apos;Lorem ipsum dolor sit amet consectetur adipiscing elit&apos;;</div><div class="line">// 以空格分割单词</div><div class="line">var splitBySpace = s =&gt; s.split(&apos; &apos;);</div><div class="line">// 获得每个单词的长度</div><div class="line">var getLength = w =&gt; w.length;</div><div class="line">// 单词数组转化为单词长度的数组</div><div class="line">var getLengArr = arr =&gt; R.map(getLength, arr);</div><div class="line">// 返回较大的数字</div><div class="line">var getBiggerNumber = (a, b) =&gt; a &gt; b ? a : b;</div><div class="line">// 返回最大的一个数字</div><div class="line">var findBiggestNumber = arr =&gt; R.reduce(getBiggerNumber, 0, arr);</div><div class="line"></div><div class="line">var getLongestWordLength = R.pipe(  </div><div class="line">	splitBySpace,</div><div class="line">	getLengArr,</div><div class="line">	findBiggestNumber</div><div class="line">  );</div><div class="line">var demo3 = getLongestWordLength(str);</div><div class="line">console.log(demo3); // 11</div><div class="line"></div><div class="line">// 使用ramda库</div><div class="line">var getLongestWordLength = R.pipe(</div><div class="line">	R.split(&apos; &apos;),</div><div class="line">	R.map(R.length),</div><div class="line">	R.reduce(R.max, 0)</div><div class="line">  );</div><div class="line">var demo3 = getLongestWordLength(str);</div><div class="line">// console.log(demo3); // 11</div></pre></td></tr></table></figure>
+</code></pre><h4 id="Pointfree-示例二"><a href="#Pointfree-示例二" class="headerlink" title="Pointfree 示例二"></a>Pointfree 示例二</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div></pre></td><td class="code"><pre><div class="line">// 下面是一段服务器返回的 JSON 数据。</div><div class="line">var data = &#123;</div><div class="line">	result: &quot;SUCCESS&quot;,</div><div class="line">	interfaceVersion: &quot;1.0.3&quot;,</div><div class="line">	requested: &quot;10/17/2013 15:31:20&quot;,</div><div class="line">	lastUpdated: &quot;10/16/2013 10:52:39&quot;,</div><div class="line">	tasks: [</div><div class="line">		&#123;id: 104, complete: false,            priority: &quot;high&quot;,</div><div class="line">				  dueDate: &quot;2013-11-29&quot;,      username: &quot;Scott&quot;,</div><div class="line">				  title: &quot;Do something&quot;,      created: &quot;9/22/2013&quot;&#125;,</div><div class="line">		&#123;id: 105, complete: false,            priority: &quot;medium&quot;,</div><div class="line">				  dueDate: &quot;2013-11-22&quot;,      username: &quot;Lena&quot;,</div><div class="line">				  title: &quot;Do something else&quot;, created: &quot;9/22/2013&quot;&#125;,</div><div class="line">		&#123;id: 107, complete: true,             priority: &quot;high&quot;,</div><div class="line">				  dueDate: &quot;2013-11-22&quot;,      username: &quot;Mike&quot;,</div><div class="line">				  title: &quot;Fix the foo&quot;,       created: &quot;9/22/2013&quot;&#125;,</div><div class="line">		&#123;id: 108, complete: false,            priority: &quot;low&quot;,</div><div class="line">				  dueDate: &quot;2013-11-15&quot;,      username: &quot;Punam&quot;,</div><div class="line">				  title: &quot;Adjust the bar&quot;,    created: &quot;9/25/2013&quot;&#125;,</div><div class="line">		&#123;id: 110, complete: false,            priority: &quot;medium&quot;,</div><div class="line">				  dueDate: &quot;2013-11-15&quot;,      username: &quot;Scott&quot;,</div><div class="line">				  title: &quot;Rename everything&quot;, created: &quot;10/2/2013&quot;&#125;,</div><div class="line">		&#123;id: 112, complete: true,             priority: &quot;high&quot;,</div><div class="line">				  dueDate: &quot;2013-11-27&quot;,      username: &quot;Lena&quot;,</div><div class="line">				  title: &quot;Alter all quuxes&quot;,  created: &quot;10/5/2013&quot;&#125;</div><div class="line">	]</div><div class="line">&#125;;</div><div class="line"></div><div class="line">var fetchData = function (data) &#123;</div><div class="line">  return Promise.resolve(data);</div><div class="line">&#125;;</div><div class="line">// 提取 tasks 属性</div><div class="line">var SelectTasks = R.prop(&apos;tasks&apos;);</div><div class="line"></div><div class="line">// 过滤出指定的用户</div><div class="line">var filterMember = member =&gt; R.filter(</div><div class="line">  R.propEq(&apos;username&apos;, member)</div><div class="line">  );</div><div class="line"></div><div class="line">// 排除已经完成的任务</div><div class="line">var excludeCompletedTasks = R.reject(R.propEq(&apos;complete&apos;, true));</div><div class="line"></div><div class="line">// 选取指定属性</div><div class="line">var selectFields = R.map(</div><div class="line">	R.pick([&apos;id&apos;, &apos;dueDate&apos;, &apos;title&apos;, &apos;priority&apos;])</div><div class="line">  );</div><div class="line"></div><div class="line">// 按照到期日期排序</div><div class="line">var sortByDueDate = R.sortBy(R.prop(&apos;dueDate&apos;));</div><div class="line"></div><div class="line">// 合成函数</div><div class="line">var getIncompleteTaskSummaries = function (membername) &#123;</div><div class="line">  return fetchData(data)</div><div class="line">  .then(R.prop(&apos;tasks&apos;))</div><div class="line">  .then(R.filter(R.propEq(&apos;username&apos;, membername)))</div><div class="line">  .then(R.reject(R.propEq(&apos;complete&apos;, true)))</div><div class="line">  .then(R.map(R.pick([&apos;id&apos;, &apos;dueData&apos;, &apos;title&apos;, &apos;priority&apos;])))</div><div class="line">  .then(R.sortBy(R.prop(&apos;dueData&apos;)));</div><div class="line">&#125;;</div><div class="line"></div><div class="line">var scottList = getIncompleteTaskSummaries(&apos;Scott&apos;);</div><div class="line">console.log(scottList);	</div><div class="line">[[object Object] &#123;</div><div class="line">  dueDate: &quot;2013-11-15&quot;,</div><div class="line">  id: 110,</div><div class="line">  priority: &quot;medium&quot;,</div><div class="line">  title: &quot;Rename everything&quot;</div><div class="line">&#125;, [object Object] &#123;</div><div class="line">  dueDate: &quot;2013-11-29&quot;,</div><div class="line">  id: 104,</div><div class="line">  priority: &quot;high&quot;,</div><div class="line">  title: &quot;Do something&quot;</div><div class="line">&#125;]</div></pre></td></tr></table></figure>
+</code></pre><blockquote>
+<p>   参考文档：<br><a href="http://www.ruanyifeng.com/blog/2017/03/pointfree.html" target="_blank" rel="external">阮老师–Pointfree 编程风格指南</a><br><a href="http://ramda.cn/" target="_blank" rel="external">Ramda 中文</a>    </p>
+</blockquote>
+
+      
+    </div>
+	<div>
+	  
+		
+
+	  
+	</div>
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+	<div>
+	  
+		<div>
+    
+        <div style="text-align:center;color: #aaa;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>fanerge在此感谢您的阅读-------------</div>
+    
+</div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/js/" rel="tag"><i class="fa fa-tag"></i> js</a>
+          
+            <a href="/tags/函数式编程/" rel="tag"><i class="fa fa-tag"></i> 函数式编程</a>
+          
+            <a href="/tags/ramda/" rel="tag"><i class="fa fa-tag"></i> ramda</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/Ramda库学习.html" rel="next" title="Ramda库学习">
+                <i class="fa fa-chevron-left"></i> Ramda库学习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/ramda运用.html" rel="prev" title="ramda入门和函数组合">
+                ramda入门和函数组合 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      a
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="余真帆-fanerge" />
+          <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives" rel="external nofollow">
+                <span class="site-state-item-count">142</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a rel="external nofollow" href="/categories/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a rel="external nofollow" href="/tags/index.html">
+                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://github.com/fanerge/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="twitter" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="weibo" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金">
+                  
+                    <i class="fa fa-fw fa-spinner"></i>
+                  
+                  掘金
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#了解Pointfree的概念"><span class="nav-number">1.</span> <span class="nav-text">了解Pointfree的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#一些小例子"><span class="nav-number">1.1.</span> <span class="nav-text">一些小例子</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Pointfree示例一"><span class="nav-number">1.2.</span> <span class="nav-text">Pointfree示例一</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pointfree-示例二"><span class="nav-number">2.</span> <span class="nav-text">Pointfree 示例二</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+</div>
+
+
+
+<div class="powered-by">
+	<i class="fa fa-user-md"></i>
+	<span id="busuanzi_container_site_pv">
+		本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io" rel="external nofollow">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共221.7k字</span>
+</div>
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fanerge.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://fanerge.github.io/ramda库的使用.html';
+          this.page.identifier = 'ramda库的使用.html';
+          this.page.title = 'ramda库的使用';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fanerge.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+    <script type="text/javascript" src="/live2d/script.js"></script>
+    <canvas id="live2dcanvas" width="80" height="160" class="live2d"></canvas>
+    <style>
+      #live2dcanvas {
+        position: fixed;
+        right: 0px;
+        z-index: 999;
+        pointer-events: none;
+        bottom: 100px;
+      }
+    </style>
+    <script>loadlive2d("live2dcanvas" ,"/live2d/assets/hibiki/hibiki.model.json",0.5)</script>
+  
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>

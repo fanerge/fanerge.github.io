@@ -1,0 +1,1183 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="baidu-site-verification" content="u3EKLjdYkx" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="路由," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="余真帆的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="BrowserRouter作用：     &amp;lt;Router&amp;gt; 使用 HTML5 提供的 history API (pushState, replaceState 和 popstate 事件) 来保持 UI 和 URL 的同步。 属性：     basename: string         当前位置的基准 URL。如果你的页面部署在服务器的二级（子）目录，你需要将 basename 设">
+<meta name="keywords" content="路由">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React-routerV4总结">
+<meta property="og:url" content="https://fanerge.github.io/React-routerV4总结.html">
+<meta property="og:site_name" content="余真帆的博客">
+<meta property="og:description" content="BrowserRouter作用：     &amp;lt;Router&amp;gt; 使用 HTML5 提供的 history API (pushState, replaceState 和 popstate 事件) 来保持 UI 和 URL 的同步。 属性：     basename: string         当前位置的基准 URL。如果你的页面部署在服务器的二级（子）目录，你需要将 basename 设">
+<meta property="og:updated_time" content="2017-10-29T12:26:24.770Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React-routerV4总结">
+<meta name="twitter:description" content="BrowserRouter作用：     &amp;lt;Router&amp;gt; 使用 HTML5 提供的 history API (pushState, replaceState 和 popstate 事件) 来保持 UI 和 URL 的同步。 属性：     basename: string         当前位置的基准 URL。如果你的页面部署在服务器的二级（子）目录，你需要将 basename 设">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('由于这是公司内部面试题，需要密码进行访问，如有不便敬请谅解！') !== ''){
+                alert('对不起，密码错误不能访问。');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+  <link rel="canonical" href="https://fanerge.github.io/React-routerV4总结.html"/>
+
+
+
+
+
+  <title> React-routerV4总结 | 余真帆的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?947609e8bcc46de32a1dca9cc56cd8a1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+	<a href="https://github.com/fanerge/"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">余真帆的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/React-routerV4总结.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                React-routerV4总结
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-29T20:01:36+08:00">
+                2017-10-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React/" itemprop="url" rel="index">
+                    <span itemprop="name">React</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/React-routerV4总结.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="React-routerV4总结.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,521
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  6
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="BrowserRouter"><a href="#BrowserRouter" class="headerlink" title="BrowserRouter"></a>BrowserRouter</h1><pre><code>作用：
+    &lt;Router&gt; 使用 HTML5 提供的 history API (pushState, replaceState 和 popstate 事件) 来保持 UI 和 URL 的同步。
+属性：
+    basename: string
+        当前位置的基准 URL。如果你的页面部署在服务器的二级（子）目录，你需要将 basename 设置到此子目录。 正确的 URL 格式是前面有一个前导斜杠，但不能有尾部斜杠。
+    getUserConfirmation: func
+        当导航需要确认时执行的函数。默认使用 window.confirm。
+    forceRefresh: bool
+        当设置为 true 时，在导航的过程中整个页面将会刷新。 只有当浏览器不支持 HTML5 的 history API 时，才设置为 true。
+    keyLength: number
+        location.key 的长度。默认是 6。
+    children: node
+        渲染单一子组件（元素）。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">import &#123; BrowserRouter &#125; from &apos;react-router-dom&apos;</div><div class="line"></div><div class="line">&lt;BrowserRouter</div><div class="line">  basename=&quot;/calendar&quot;</div><div class="line">  forceRefresh=&quot;false&quot;</div><div class="line">  getUserConfirmation=&#123;optionalFunc&#125;</div><div class="line">  keyLength=&quot;10&quot;</div><div class="line">&gt;</div><div class="line">  &lt;Link to=&quot;/today&quot; /&gt; // 渲染为 &lt;a href=&quot;/calendar/today&quot;&gt;</div><div class="line">&lt;/BrowserRouter&gt;</div></pre></td></tr></table></figure>
+</code></pre><h1 id="HashRouter"><a href="#HashRouter" class="headerlink" title="HashRouter"></a>HashRouter</h1><pre><code>作用：
+    HashRouter 是一种特定的 &lt;Router&gt;， HashRouter 使用 URL 的 hash (例如：window.location.hash) 来保持 UI 和 URL 的同步。
+属性：
+    basename: string
+        当前位置的基准 URL。正确的 URL 格式是前面有一个前导斜杠，但不能有尾部斜杠。
+    getUserConfirmation: func
+        当导航需要确认时执行的函数。默认使用 window.confirm。
+    hashType: string
+        window.location.hash 使用的 hash 类型。有如下几种：
+        &quot;slash&quot; - 后面跟一个斜杠，例如 #/ 和 #/sunshine/lollipops
+        &quot;noslash&quot; - 后面没有斜杠，例如 # 和 #sunshine/lollipops
+        &quot;hashbang&quot; - Google 风格的 “ajax crawlable”，例如 #!/ 和 #!/sunshine/lollipops
+        默认为 &quot;slash&quot;。
+    children: node
+        渲染单一子组件（元素）。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">import &#123; HashRouter &#125; from &apos;react-router-dom&apos;</div><div class="line"></div><div class="line">&lt;HashRouter&gt;</div><div class="line">  &lt;App/&gt;</div><div class="line">&lt;/HashRouter&gt;</div></pre></td></tr></table></figure>
+</code></pre><h1 id="Link"><a href="#Link" class="headerlink" title="Link"></a>Link</h1><pre><code>作用：
+    为您的应用提供声明式的、无障碍导航。        
+属性：    
+    to: string/object
+        需要跳转到的路径(pathname)或地址（location）。
+        需要跳转到的地址（location）。
+    replace: bool
+        当设置为 true 时，点击链接后将使用新地址替换掉访问历史记录里面的原地址。
+        当设置为 false 时，点击链接后将在原有访问历史记录的基础上添加一个新的纪录。默认为 false。    
+</code></pre><pre><code>&lt;Link to=&quot;/about&quot;&gt;关于&lt;/Link&gt;
+&lt;Link to={{
+  pathname: '/courses',
+  search: '?sort=name',
+  hash: '#the-hash',
+  state: { fromDashboard: true }
+}}/&gt;
+</code></pre><h1 id="NavLink"><a href="#NavLink" class="headerlink" title="NavLink"></a>NavLink</h1><pre><code>作用：    
+    为当前 URL 添加 class 和 style。
+属性：
+    activeClassName: string
+        选中 URL 是添加的class。
+    activeStyle：object
+        选中 URL 是添加的style。
+    exact: bool    
+        如果为 true，path 为 &apos;/one&apos; 的路由将不能匹配 &apos;/one/two&apos;，反之，亦然。    
+    strict: bool
+        对路径末尾斜杠的匹配。如果为 true。path 为 &apos;/one/&apos; 将不能匹配 &apos;/one&apos; 但可以匹配 &apos;/one/two&apos;。
+    isActive: func    
+        为URL匹配添加更严谨的逻辑函数。    
+</code></pre><h1 id="Prompt"><a href="#Prompt" class="headerlink" title="Prompt"></a>Prompt</h1><pre><code>作用：    
+    当用户离开当前页面前做出一些提示。
+属性：
+    message: string/func
+        当用户离开当前页面时，设置的提示信息。
+        当用户离开当前页面时，设置的回掉函数
+    when: bool
+        通过设置一定条件要决定是否启用 Prompt
+</code></pre><h1 id="MemoryRouter"><a href="#MemoryRouter" class="headerlink" title="MemoryRouter"></a>MemoryRouter</h1><pre><code>作用：
+    无 DOM 的环境。
+
+属性：
+    initialEntries: array
+        一个 history 堆栈的数组。
+    initialIndex: number
+        在 initialEntries 数组中的初始index。
+    getUserConfirmation: func
+    keyLength: number
+    children: node
+</code></pre><h1 id="Redirect"><a href="#Redirect" class="headerlink" title="Redirect"></a>Redirect</h1><pre><code>作用：
+    重定向将替代当前的location 中的 history。
+属性：
+    to: string/object
+        重定向string
+        重定向object
+    push: bool
+        当为 true 时，替换掉整个history，而不是当前这一条。
+    from: string    
+        重定向的路径名。
+</code></pre><h1 id="Route"><a href="#Route" class="headerlink" title="Route"></a>Route</h1><pre><code>作用：
+    它最基本的职责就是当页面的访问地址与 Route 上的 path 匹配时，就渲染出对应的 UI 界面。
+属性：
+    component: func
+        只有当访问地址和路由匹配时，一个 React component 才会被渲染，此时此组件接受 route props (match, location, history)。
+    render: func    
+        此方法适用于内联渲染，而且不会产生上文说的重复装载问题。
+    children: func
+        有时候你可能只想知道访问地址是否被匹配，然后改变下别的东西，而不仅仅是对应的页面。
+    path: string
+    exact: bool
+    strict: bool
+</code></pre><h1 id="Router"><a href="#Router" class="headerlink" title="Router"></a>Router</h1><pre><code>作用：底层路由接口组件，使用封装后的组件代替。    
+    &lt;BrowserRouter&gt;
+    &lt;HashRouter&gt;
+    &lt;MemoryRouter&gt;
+    &lt;NativeRouter&gt;
+    &lt;StaticRouter&gt;
+属性：
+    history：object
+        导航的history对象
+    children: node
+</code></pre><h1 id="StaticRouter"><a href="#StaticRouter" class="headerlink" title="StaticRouter"></a>StaticRouter</h1><pre><code>定义：
+    不会更改location的 &lt;Router&gt;，服务端渲染。
+属性：
+    basename: string
+    location: string    
+    context: object    
+    children: node    
+</code></pre><h1 id="Switch"><a href="#Switch" class="headerlink" title="Switch"></a>Switch</h1><pre><code>定义：
+    只渲染出第一个与当前访问地址匹配的 &lt;Route&gt; 或 &lt;Redirect&gt;。
+    我们只想渲染出第一个匹配的路由就可以了，于是 &lt;Switch&gt; 应运而生！
+属性：
+    children: node
+</code></pre><h1 id="对象和方法"><a href="#对象和方法" class="headerlink" title="对象和方法"></a>对象和方法</h1><h2 id="history"><a href="#history" class="headerlink" title="history"></a>history</h2><h3 id="路由分类"><a href="#路由分类" class="headerlink" title="路由分类"></a>路由分类</h3><pre><code>1.browser history -- HTML5 history API
+2.hash history    -- 低版本浏览器
+3.memory history  -- 无DOM环境（RN 和 Node）
+</code></pre><h3 id="histoty对象详解"><a href="#histoty对象详解" class="headerlink" title="histoty对象详解"></a>histoty对象详解</h3><pre><code>length -- number 浏览历史堆栈中的条目数。        
+action -- string 路由跳转到当前执行页面的动作，分为 PUSH、REPLACE、POP。
+location -- object 当前访问地址信息组成的对象
+    （pathname、search、hash、state）
+
+push(path, [state]) 在历史堆栈信息里加入一个新条目。
+replace(path, [state]) 在历史堆栈信息里替换掉当前的条目
+go(n) 将 history 堆栈中的指针向前移动 n。
+goBack() 等同于 go(-1)
+goForward 等同于 go(1)
+block(prompt) 阻止跳转
+</code></pre><h2 id="location"><a href="#location" class="headerlink" title="location"></a>location</h2><pre><code>location 是指你当前的位置，将要去的位置，或是之前所在的位置
+在以下情境中可以获取 location 对象:
+    1.在 Route component 中，以 this.props.location 获取
+    2.在 Route render 中，以 ({location}) =&gt; () 方式获取
+    3.在 Route children 中，以 ({location}) =&gt; () 方式获取
+    4.在 withRouter 中，以 this.props.location 的方式获取
+可以在不同情境中使用 location：
+    1.&lt;Link to={location} /&gt;
+    2.&lt;NaviveLink to={location} /&gt;
+    3.&lt;Redirect to={location /&gt;
+    4.history.push(location)
+    5.history.replace(location)
+</code></pre><h2 id="match"><a href="#match" class="headerlink" title="match"></a>match</h2><pre><code>match 对象包含了 &lt;Route path&gt; 如何与 URL 匹配的信息，具有以下属性：
+    1.params: object 路径参数，通过解析 URL 中的动态部分获得键值对
+    2.isExact: bool 为 true 时，整个 URL 都需要匹配
+    3.path: string 用来匹配的路径模式，用于创建嵌套的 &lt;Route&gt;
+    4.url: string URL 匹配的部分，用于嵌套的 &lt;Link&gt;
+在以下情境中可以获取 match 对象
+    1.在 Route component 中，以 this.props.match获取
+    2.在 Route render 中，以 ({match}) =&gt; () 方式获取
+    3.在 Route children 中，以 ({match}) =&gt; () 方式获取
+    4.在 withRouter 中，以 this.props.match的方式获取
+    5.matchPath 的返回值
+注：当一个 Route 没有 path 时，它会匹配一切路径。
+</code></pre><h2 id="matchPath"><a href="#matchPath" class="headerlink" title="matchPath"></a>matchPath</h2><pre><code>pathname
+props
+</code></pre><h2 id="withRouter"><a href="#withRouter" class="headerlink" title="withRouter"></a>withRouter</h2><blockquote>
+<p>   参考文档：<br>    <a href="https://developer.mozilla.org/en-US/docs/Web/API/History" target="_blank" rel="external">MDN-history</a><br>    <a href="http://blog.csdn.net/sinat_17775997/article/details/69218382" target="_blank" rel="external">初探 React Router 4.0</a></p>
+</blockquote>
+
+      
+    </div>
+	<div>
+	  
+		
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+  <p><span>本文标题:</span><a href="/React-routerV4总结.html">React-routerV4总结</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 余真帆-fanerge 的个人博客">余真帆-fanerge</a></p>
+  <p><span>发布时间:</span>2017年10月29日 - 20:10</p>
+  <p><span>最后更新:</span>2017年10月29日 - 20:10</p>
+  <p><span>原始链接:</span><a href="/React-routerV4总结.html" title="React-routerV4总结">https://fanerge.github.io/React-routerV4总结.html</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://fanerge.github.io/React-routerV4总结.html"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+
+	  
+	</div>
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+	<div>
+	  
+		<div>
+    
+        <div style="text-align:center;color: #aaa;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>fanerge在此感谢您的阅读-------------</div>
+    
+</div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/路由/" rel="tag"><i class="fa fa-tag"></i> 路由</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/Redux总结.html" rel="next" title="Redux总结">
+                <i class="fa fa-chevron-left"></i> Redux总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Redux-API整理.html" rel="prev" title="Redux-API整理">
+                Redux-API整理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      a
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="余真帆-fanerge" />
+          <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives" rel="external nofollow">
+                <span class="site-state-item-count">142</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a rel="external nofollow" href="/categories/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a rel="external nofollow" href="/tags/index.html">
+                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://github.com/fanerge/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="twitter" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="weibo" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金">
+                  
+                    <i class="fa fa-fw fa-spinner"></i>
+                  
+                  掘金
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#BrowserRouter"><span class="nav-number">1.</span> <span class="nav-text">BrowserRouter</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HashRouter"><span class="nav-number">2.</span> <span class="nav-text">HashRouter</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Link"><span class="nav-number">3.</span> <span class="nav-text">Link</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NavLink"><span class="nav-number">4.</span> <span class="nav-text">NavLink</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Prompt"><span class="nav-number">5.</span> <span class="nav-text">Prompt</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MemoryRouter"><span class="nav-number">6.</span> <span class="nav-text">MemoryRouter</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Redirect"><span class="nav-number">7.</span> <span class="nav-text">Redirect</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Route"><span class="nav-number">8.</span> <span class="nav-text">Route</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Router"><span class="nav-number">9.</span> <span class="nav-text">Router</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#StaticRouter"><span class="nav-number">10.</span> <span class="nav-text">StaticRouter</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Switch"><span class="nav-number">11.</span> <span class="nav-text">Switch</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#对象和方法"><span class="nav-number">12.</span> <span class="nav-text">对象和方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#history"><span class="nav-number">12.1.</span> <span class="nav-text">history</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#路由分类"><span class="nav-number">12.1.1.</span> <span class="nav-text">路由分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#histoty对象详解"><span class="nav-number">12.1.2.</span> <span class="nav-text">histoty对象详解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#location"><span class="nav-number">12.2.</span> <span class="nav-text">location</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#match"><span class="nav-number">12.3.</span> <span class="nav-text">match</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#matchPath"><span class="nav-number">12.4.</span> <span class="nav-text">matchPath</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#withRouter"><span class="nav-number">12.5.</span> <span class="nav-text">withRouter</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+</div>
+
+
+
+<div class="powered-by">
+	<i class="fa fa-user-md"></i>
+	<span id="busuanzi_container_site_pv">
+		本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io" rel="external nofollow">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共221.7k字</span>
+</div>
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fanerge.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://fanerge.github.io/React-routerV4总结.html';
+          this.page.identifier = 'React-routerV4总结.html';
+          this.page.title = 'React-routerV4总结';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fanerge.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+    <script type="text/javascript" src="/live2d/script.js"></script>
+    <canvas id="live2dcanvas" width="80" height="160" class="live2d"></canvas>
+    <style>
+      #live2dcanvas {
+        position: fixed;
+        right: 0px;
+        z-index: 999;
+        pointer-events: none;
+        bottom: 100px;
+      }
+    </style>
+    <script>loadlive2d("live2dcanvas" ,"/live2d/assets/hibiki/hibiki.model.json",0.5)</script>
+  
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
