@@ -1,0 +1,1075 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="baidu-site-verification" content="u3EKLjdYkx" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="svg" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="余真帆的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="svg开发手册">
+<meta name="keywords" content="svg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="html5-svg开发手册">
+<meta property="og:url" content="https://fanerge.github.io/html5-svg开发手册.html">
+<meta property="og:site_name" content="余真帆的博客">
+<meta property="og:description" content="svg开发手册">
+<meta property="og:updated_time" content="2018-01-30T13:04:14.312Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="html5-svg开发手册">
+<meta name="twitter:description" content="svg开发手册">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('由于这是公司内部面试题，需要密码进行访问，如有不便敬请谅解！') !== ''){
+                alert('对不起，密码错误不能访问。');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+  <link rel="canonical" href="https://fanerge.github.io/html5-svg开发手册.html"/>
+
+
+
+
+
+  <title> html5-svg开发手册 | 余真帆的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?947609e8bcc46de32a1dca9cc56cd8a1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+	<a href="https://github.com/fanerge/"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">余真帆的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/html5-svg开发手册.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                html5-svg开发手册
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-30T20:28:14+08:00">
+                2018-01-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/html5/" itemprop="url" rel="index">
+                    <span itemprop="name">html5</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/html5-svg开发手册.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="html5-svg开发手册.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  2,470
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  11
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  svg开发手册
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="svg-介绍"><a href="#svg-介绍" class="headerlink" title="svg 介绍"></a>svg 介绍</h1><p>SVG 意为可缩放矢量图形（Scalable Vector Graphics）。<br>SVG 使用 XML 格式定义图像。</p>
+<h2 id="简单例子"><a href="#简单例子" class="headerlink" title="简单例子"></a>简单例子</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;&gt;</div><div class="line">  &lt;circle cx=&quot;100&quot; cy=&quot;50&quot; r=&quot;40&quot; stroke=&quot;black&quot;</div><div class="line">  stroke-width=&quot;2&quot; fill=&quot;red&quot; /&gt;</div><div class="line">&lt;/svg&gt;</div></pre></td></tr></table></figure>
+<h2 id="svg的特点"><a href="#svg的特点" class="headerlink" title="svg的特点"></a>svg的特点</h2><p>SVG 指可伸缩矢量图形 (Scalable Vector Graphics)<br>SVG 用来定义用于网络的基于矢量的图形<br>SVG 使用 XML 格式定义图形<br>SVG 图像在放大或改变尺寸的情况下其图形质量不会有所损失<br>SVG 是万维网联盟的标准<br>SVG 与诸如 DOM 和 XSL 之类的 W3C 标准是一个整体</p>
+<h2 id="一个单独的-svg文件"><a href="#一个单独的-svg文件" class="headerlink" title="一个单独的 .svg文件"></a>一个单独的 .svg文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; standalone=&quot;no&quot;?&gt;</div><div class="line">&lt;!DOCTYPE svg PUBLIC &quot;-//W3C//DTD SVG 1.1//EN&quot; &quot;http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd&quot;&gt;</div><div class="line">&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;&gt;</div><div class="line">  &lt;circle cx=&quot;100&quot; cy=&quot;50&quot; r=&quot;40&quot; stroke=&quot;black&quot;</div><div class="line">  stroke-width=&quot;2&quot; fill=&quot;red&quot; /&gt;</div><div class="line">&lt;/svg&gt;</div></pre></td></tr></table></figure>
+<h2 id="SVG-在-HTML-页面"><a href="#SVG-在-HTML-页面" class="headerlink" title="SVG 在 HTML 页面"></a>SVG 在 HTML 页面</h2><h3 id="使用-embed-标签"><a href="#使用-embed-标签" class="headerlink" title="使用 embed 标签"></a>使用 embed 标签</h3><p><code>&lt;embed src=&quot;circle1.svg&quot; type=&quot;image/svg+xml&quot; /&gt;</code></p>
+<h3 id="使用-object-标签"><a href="#使用-object-标签" class="headerlink" title="使用 object 标签"></a>使用 object 标签</h3><p><code>&lt;object data=&quot;circle1.svg&quot; type=&quot;image/svg+xml&quot;&gt;&lt;/object&gt;</code></p>
+<h3 id="使用-iframe-标签"><a href="#使用-iframe-标签" class="headerlink" title="使用 iframe 标签"></a>使用 iframe 标签</h3><p><code>&lt;iframe src=&quot;circle1.svg&quot;&gt;&lt;/iframe&gt;</code></p>
+<h3 id="直接在HTML嵌入SVG代码"><a href="#直接在HTML嵌入SVG代码" class="headerlink" title="直接在HTML嵌入SVG代码"></a>直接在HTML嵌入SVG代码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;&gt;</div><div class="line">   &lt;circle cx=&quot;100&quot; cy=&quot;50&quot; r=&quot;40&quot; stroke=&quot;black&quot; stroke-width=&quot;2&quot; fill=&quot;red&quot; /&gt;</div><div class="line">&lt;/svg&gt;</div></pre></td></tr></table></figure>
+<h3 id="链接到SVG文件"><a href="#链接到SVG文件" class="headerlink" title="链接到SVG文件"></a>链接到SVG文件</h3><p><code>&lt;a href=&quot;circle1.svg&quot;&gt;View SVG file&lt;/a&gt;</code></p>
+<h1 id="svg-形状元素"><a href="#svg-形状元素" class="headerlink" title="svg 形状元素"></a>svg 形状元素</h1><p>下面所有样式均可以写成属性，建议属性和样式区分。<br>通用样式：fill、fill-opacity、stroke、stroke-width、stroke-opacity、opacity</p>
+<h2 id="rect"><a href="#rect" class="headerlink" title="rect"></a>rect</h2><p>用来创建矩形及其变种<br>属性：x（矩形到浏览器窗口左侧的距离）、y、width、height、rx、ry（圆角半径）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;&gt;</div><div class="line">  &lt;rect x=&quot;50&quot; y=&quot;20&quot; rx=&quot;20&quot; ry=&quot;20&quot; width=&quot;150&quot; height=&quot;150&quot;</div><div class="line">  style=&quot;fill:red;stroke:black;stroke-width:5;opacity:0.5&quot;/&gt;</div><div class="line">&lt;/svg&gt;</div></pre></td></tr></table></figure></p>
+<h2 id="circle"><a href="#circle" class="headerlink" title="circle"></a>circle</h2><p>用来创建一个圆<br>属性：cx、cy（园中心坐标）、r<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;&gt;</div><div class="line">  &lt;circle cx=&quot;100&quot; cy=&quot;50&quot; r=&quot;40&quot; stroke=&quot;black&quot;</div><div class="line">  stroke-width=&quot;2&quot; fill=&quot;red&quot;/&gt;</div><div class="line">&lt;/svg&gt;</div></pre></td></tr></table></figure></p>
+<h2 id="elipse"><a href="#elipse" class="headerlink" title="elipse"></a>elipse</h2><p>用来创建一个椭圆<br>属性：cx（椭圆坐标）、cy、rx、ry（椭圆半径）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;&gt;</div><div class="line">  &lt;ellipse cx=&quot;240&quot; cy=&quot;50&quot; rx=&quot;220&quot; ry=&quot;30&quot; style=&quot;fill:yellow&quot;/&gt;</div><div class="line">  &lt;ellipse cx=&quot;220&quot; cy=&quot;50&quot; rx=&quot;190&quot; ry=&quot;20&quot; style=&quot;fill:white&quot;/&gt;</div><div class="line">&lt;/svg&gt;</div></pre></td></tr></table></figure></p>
+<h2 id="line"><a href="#line" class="headerlink" title="line"></a>line</h2><p>用来创建一个直线<br>属性：x1、y1、x2、y2（分别对应起点和终点的坐标）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;&gt;</div><div class="line">  &lt;line x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;200&quot; y2=&quot;200&quot;</div><div class="line">  style=&quot;stroke:rgb(255,0,0);stroke-width:2&quot;/&gt;</div><div class="line">&lt;/svg&gt;</div></pre></td></tr></table></figure></p>
+<h2 id="polygon"><a href="#polygon" class="headerlink" title="polygon"></a>polygon</h2><p>用来创建含有不少于三个边的图形<br>属性：points 属性定义多边形每个角所在点的 x 和 y 坐标<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;&gt;</div><div class="line">  &lt;polygon points=&quot;100,10 40,180 190,60 10,60 160,180&quot;</div><div class="line">  style=&quot;fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;&quot; /&gt;</div><div class="line">&lt;/svg&gt;</div></pre></td></tr></table></figure></p>
+<p>样式：fill-rule: nonzero | evenodd | inherit<br>nonzero：<br>    按该规则，要判断一个点是否在图形内，从该点作任意方向的一条射线，然后检测射线与图形路径的交点情况。从0开始计数，路径从左向右穿过射线则计数加1，从右向左穿过射线则计数减1。<br>evenodd：<br>    按该规则，要判断一个点是否在图形内，从该点作任意方向的一条射线，然后检测射线与图形路径的交点的数量。如果结果是奇数则认为点在内部，是偶数则认为点在外部。</p>
+<h2 id="polyline"><a href="#polyline" class="headerlink" title="polyline"></a>polyline</h2><p>用来创建任何只有直线的形状<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;&gt;</div><div class="line">  &lt;polyline points=&quot;0,40 40,40 40,80 80,80 80,120 120,120 120,160&quot; style=&quot;fill:white;stroke:red;stroke-width:4&quot; /&gt;</div><div class="line">&lt;/svg&gt;</div></pre></td></tr></table></figure></p>
+<h2 id="path"><a href="#path" class="headerlink" title="path"></a>path</h2><p>用来定义一个路径<br>属性：d（路径数据）<br>下列的命令可用于路径数据：<br>M = moveto<br>L = lineto<br>H = horizontal lineto<br>V = vertical lineto<br>C = curveto<br>S = smooth curveto<br>Q = quadratic Bézier curve<br>T = smooth quadratic Bézier curveto<br>A = elliptical Arc<br>Z = closepath<br>PS：以上所有命令均允许小写字母。大写表示绝对定位，小写表示相对定位。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;&gt;</div><div class="line">  &lt;path d=&quot;M150 0 L75 200 L225 200 Z&quot; /&gt;</div><div class="line">&lt;/svg&gt;</div></pre></td></tr></table></figure></p>
+<h2 id="text"><a href="#text" class="headerlink" title="text"></a>text</h2><p>用来定义文本<br>属性：x、y、transform（rotate、skew、scale、translate）</p>
+<h3 id="配合-defs-path-使用"><a href="#配合-defs-path-使用" class="headerlink" title="配合 defs-path 使用"></a>配合 defs-path 使用</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;</div><div class="line">xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot;&gt;</div><div class="line">   &lt;defs&gt;</div><div class="line">    &lt;path id=&quot;path1&quot; d=&quot;M75,20 a1,1 0 0,0 100,0&quot; /&gt;</div><div class="line">  &lt;/defs&gt;</div><div class="line">  &lt;text x=&quot;10&quot; y=&quot;100&quot; style=&quot;fill:red;&quot;&gt;</div><div class="line">    &lt;textPath xlink:href=&quot;#path1&quot;&gt;I love SVG I love SVG&lt;/textPath&gt;</div><div class="line">  &lt;/text&gt;</div><div class="line">&lt;/svg&gt;</div></pre></td></tr></table></figure>
+<h3 id="tspan"><a href="#tspan" class="headerlink" title="tspan"></a>tspan</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;&gt;</div><div class="line">  &lt;text x=&quot;10&quot; y=&quot;20&quot; style=&quot;fill:red;&quot;&gt;Several lines:</div><div class="line">    &lt;tspan x=&quot;10&quot; y=&quot;45&quot;&gt;First line&lt;/tspan&gt;</div><div class="line">    &lt;tspan x=&quot;10&quot; y=&quot;70&quot;&gt;Second line&lt;/tspan&gt;</div><div class="line">  &lt;/text&gt;</div><div class="line">&lt;/svg&gt;</div></pre></td></tr></table></figure>
+<h3 id="配合-a"><a href="#配合-a" class="headerlink" title="配合 a"></a>配合 a</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;</div><div class="line">xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot;&gt;</div><div class="line">  &lt;a xlink:href=&quot;http://www.w3schools.com/svg/&quot; target=&quot;_blank&quot;&gt;</div><div class="line">    &lt;text x=&quot;0&quot; y=&quot;15&quot; fill=&quot;red&quot;&gt;I love SVG&lt;/text&gt;</div><div class="line">  &lt;/a&gt;</div><div class="line">&lt;/svg&gt;</div></pre></td></tr></table></figure>
+<h1 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h1><h2 id="Stroke-属性"><a href="#Stroke-属性" class="headerlink" title="Stroke 属性"></a>Stroke 属性</h2><p>用于线条(path)、文字(text)、元素(rect)<br>颜色（6中颜色均支持）– stroke=”red”<br>宽度 – stroke-width=””<br>路劲的终结 – stroke-dasharray=”20 10 5 3” // 20和5表示实线的长度，10和3表示空白的长度</p>
+<h2 id="滤镜"><a href="#滤镜" class="headerlink" title="滤镜"></a>滤镜</h2><p>用来增加对SVG图形的特殊效果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot;&gt;</div><div class="line">    &lt;filter id=&quot;feBlend1&quot;&gt;</div><div class="line">        &lt;feFlood result=&quot;floodFill&quot; x=&quot;0&quot; y=&quot;0&quot; width=&quot;100%&quot; height=&quot;100%&quot; flood-color=&quot;green&quot; flood-opacity=&quot;0.9&quot;/&gt;</div><div class="line">        &lt;feBlend in=&quot;SourceGraphic&quot; in2=&quot;floodFill&quot; mode=&quot;normal&quot;/&gt;</div><div class="line">    &lt;/filter&gt;</div><div class="line">    &lt;circle cx=&quot;150&quot; cy=&quot;50&quot; r=&quot;40&quot; fill=&quot;red&quot; filter=&quot;url(#feBlend1)&quot;/&gt;</div><div class="line">&lt;/svg&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="feBlend"><a href="#feBlend" class="headerlink" title="feBlend"></a>feBlend</h3><p>使用不同的混合模式把两个对象合成在一起<br>专有属性：<br>1.in=顶层生效<br>    SourceGraphic<br>        该关键词表示图形元素自身将作为<filter>原语的原始输入.<br>    SourceAlpha<br>        该关键词表示图形元素自身将作为<filter>原语的原始输入. SourceAlpha与SourceGraphic具有相同的规则除了SourceAlpha只使用元素的透明度.<br>    BackgroundImage<br>        该关键词表示filter元素当前底下的区域的图形快照将被调用.<br>    BackgroundAlpha<br>        跟BackgroundImage相同除了只使用透明度.<br>    FillPaint<br>    StrokePaint<br>2.in2=底层生效<br>    同上<br>3.mode=normal | multiply | screen | darken | lighten // 混合模式</filter></filter></p>
+<h3 id="feColorMatrix"><a href="#feColorMatrix" class="headerlink" title="feColorMatrix"></a>feColorMatrix</h3><p>该滤镜基于转换矩阵对颜色进行变换<br>专有属性：<br>1.in<br>    同上<br>2.type<br>3.values<br>PS：2和3会根据不同滤镜效果参数不一样</p>
+<h3 id="feComponentTransfer"><a href="#feComponentTransfer" class="headerlink" title="feComponentTransfer"></a>feComponentTransfer</h3><p>对每个像素执行颜色分量的数据重映射.它允许进行像亮度调整,对比度调整,色彩平衡或阈值的操作<br>专有属性：</p>
+<h3 id="feComposite"><a href="#feComposite" class="headerlink" title="feComposite"></a>feComposite</h3><p>该滤镜执行两个输入图像的智能像素组合，在图像空间中使用以下Porter-Duff合成操作之一：over、in、atop、xor。</p>
+<h3 id="feConvolveMatrix"><a href="#feConvolveMatrix" class="headerlink" title="feConvolveMatrix"></a>feConvolveMatrix</h3><p>应用了一个矩阵卷积滤镜效果。一个卷积在输入图像中把像素与邻近像素组合起来制作出结果图像。通过卷积可以实现各种成像操作，包括模糊、边缘检测、锐化、压花和斜角。</p>
+<h3 id="feDiffuseLighting"><a href="#feDiffuseLighting" class="headerlink" title="feDiffuseLighting"></a>feDiffuseLighting</h3><p>滤镜光照一个图像，使用alpha通道作为隆起映射。结果图像，是一个RGBA不透明图像，取决于光的颜色、光的位置以及输入隆起映射的表面几何形状。</p>
+<h3 id="feDisplacementMap"><a href="#feDisplacementMap" class="headerlink" title="feDisplacementMap"></a>feDisplacementMap</h3><p>映射置换滤镜，该滤镜用来自图像中从in2到空间的像素值置换图像从in到空间的像素值</p>
+<h3 id="feFlood"><a href="#feFlood" class="headerlink" title="feFlood"></a>feFlood</h3><p>该滤镜用flood-color元素定义的颜色和flood-opacity元素定义的不透明度填充了滤镜子区域</p>
+<h3 id="feGaussianBlur"><a href="#feGaussianBlur" class="headerlink" title="feGaussianBlur"></a>feGaussianBlur</h3><p>该滤镜对输入图像进行高斯模糊，属性stdDeviation中指定的数量定义了钟形</p>
+<h3 id="feImage"><a href="#feImage" class="headerlink" title="feImage"></a>feImage</h3><p>滤镜从外部来源取得图像数据，并提供像素数据作为输出（意味着如果外部来源是一个SVG图像，这个图像将被栅格化。）</p>
+<h3 id="feMerge"><a href="#feMerge" class="headerlink" title="feMerge"></a>feMerge</h3><p>滤镜允许同时应用滤镜效果而不是按顺序应用滤镜效果。利用result存储别的滤镜的输出可以实现这一点，然后在一个 <femergenode>子元素中访问它。</femergenode></p>
+<h3 id="feMorphology"><a href="#feMorphology" class="headerlink" title="feMorphology"></a>feMorphology</h3><p>该滤镜用来侵蚀或扩张输入的图像。它在增肥或瘦身效果方面特别有用。</p>
+<h3 id="feOffset"><a href="#feOffset" class="headerlink" title="feOffset"></a>feOffset</h3><p>该输入图像作为一个整体，在属性dx和属性dy的值指定了它的偏移量。</p>
+<h3 id="feSpecularLighting"><a href="#feSpecularLighting" class="headerlink" title="feSpecularLighting"></a>feSpecularLighting</h3><p>该滤镜照亮一个源图形，使用alpha通道作为隆起映射。该结果图像是一个基于光色的RGBA图象。</p>
+<h3 id="feTile"><a href="#feTile" class="headerlink" title="feTile"></a>feTile</h3><p>输入图像是平铺的，结果用来填充目标。它的效果近似于一个<pattern>图案对象。</pattern></p>
+<h3 id="feTurbulence"><a href="#feTurbulence" class="headerlink" title="feTurbulence"></a>feTurbulence</h3><p>该滤镜利用Perlin噪声函数创建了一个图像。它实现了人造纹理比如说云纹、大理石纹的合成。</p>
+<h3 id="feDistantLight"><a href="#feDistantLight" class="headerlink" title="feDistantLight"></a>feDistantLight</h3><p>该滤镜定义了一个距离光源，可以用在灯光滤镜<fediffuselighting>元素或<fespecularlighting>元素的内部。</fespecularlighting></fediffuselighting></p>
+<h3 id="fePointLight"><a href="#fePointLight" class="headerlink" title="fePointLight"></a>fePointLight</h3><p>该元素实现了 SVGFEPointLightElement 接口。</p>
+<h3 id="feSpotLight"><a href="#feSpotLight" class="headerlink" title="feSpotLight"></a>feSpotLight</h3><p>feSpotLight 元素是一种光源元素，用于SVG文件。<br>PS：您可以在每个 SVG 元素上使用多个滤镜</p>
+<h2 id="模糊效果"><a href="#模糊效果" class="headerlink" title="模糊效果"></a>模糊效果</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;defs&gt;元素定义短并含有特殊元素（如滤镜）定义。</div><div class="line">&lt;filter&gt;标签使用必需的id属性来定义向图形应用哪个滤镜。</div></pre></td></tr></table></figure>
+<p>实例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;&gt;</div><div class="line">	// 定义id为f1的滤镜</div><div class="line">	// in=&quot;SourceGraphic&quot;这个部分定义了由整个图像创建效果</div><div class="line">	// stdDeviation属性定义模糊量</div><div class="line">	&lt;filter id=&quot;f1&quot; x=&quot;0&quot; y=&quot;0&quot;&gt;</div><div class="line">	  &lt;feGaussianBlur in=&quot;SourceGraphic&quot; stdDeviation=&quot;15&quot; /&gt;</div><div class="line">	&lt;/filter&gt;</div><div class="line">	// 使用id为f1的滤镜</div><div class="line">	&lt;rect width=&quot;90&quot; height=&quot;90&quot; stroke=&quot;green&quot; stroke-width=&quot;3&quot; fill=&quot;yellow&quot; filter=&quot;url(#f1)&quot; /&gt;</div><div class="line">&lt;/svg&gt;</div></pre></td></tr></table></figure></p>
+<h2 id="阴影"><a href="#阴影" class="headerlink" title="阴影"></a>阴影</h2><p>实例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;&gt;</div><div class="line">	&lt;filter id=&quot;f1&quot; x=&quot;0&quot; y=&quot;0&quot; width=&quot;200%&quot; height=&quot;200%&quot;&gt;</div><div class="line">		&lt;feOffset result=&quot;offOut&quot; in=&quot;SourceGraphic&quot; dx=&quot;30&quot; dy=&quot;20&quot; /&gt;</div><div class="line">		&lt;feBlend in=&quot;SourceGraphic&quot; in2=&quot;offOut&quot; mode=&quot;normal&quot; /&gt;</div><div class="line">	&lt;/filter&gt;</div><div class="line">	&lt;rect width=&quot;90&quot; height=&quot;90&quot; stroke=&quot;green&quot; stroke-width=&quot;3&quot;</div><div class="line">	fill=&quot;yellow&quot; filter=&quot;url(#f1)&quot; /&gt;</div><div class="line">&lt;/svg&gt;</div></pre></td></tr></table></figure></p>
+<h2 id="渐变"><a href="#渐变" class="headerlink" title="渐变"></a>渐变</h2><h3 id="线性"><a href="#线性" class="headerlink" title="线性"></a>线性</h3><p>实例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;&gt;</div><div class="line">    &lt;linearGradient id=&quot;grad1&quot; x1=&quot;0%&quot; y1=&quot;0%&quot; x2=&quot;100%&quot; y2=&quot;0%&quot;&gt;</div><div class="line">      &lt;stop offset=&quot;0%&quot; style=&quot;stop-color:rgb(255,255,0);stop-opacity:1&quot; /&gt;</div><div class="line">      &lt;stop offset=&quot;100%&quot; style=&quot;stop-color:rgb(255,0,0);stop-opacity:1&quot; /&gt;</div><div class="line">    &lt;/linearGradient&gt;</div><div class="line">	&lt;ellipse cx=&quot;200&quot; cy=&quot;70&quot; rx=&quot;85&quot; ry=&quot;55&quot; fill=&quot;url(#grad1)&quot; /&gt;</div><div class="line">&lt;/svg&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="径向"><a href="#径向" class="headerlink" title="径向"></a>径向</h3><p>实例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; version=&quot;1.1&quot;&gt;</div><div class="line">    &lt;radialGradient id=&quot;grad1&quot; cx=&quot;50%&quot; cy=&quot;50%&quot; r=&quot;50%&quot; fx=&quot;50%&quot; fy=&quot;50%&quot;&gt;</div><div class="line">      &lt;stop offset=&quot;0%&quot; style=&quot;stop-color:rgb(255,255,255);</div><div class="line">      stop-opacity:0&quot; /&gt;</div><div class="line">      &lt;stop offset=&quot;100%&quot; style=&quot;stop-color:rgb(0,0,255);stop-opacity:1&quot; /&gt;</div><div class="line">    &lt;/radialGradient&gt;</div><div class="line">	&lt;ellipse cx=&quot;200&quot; cy=&quot;70&quot; rx=&quot;85&quot; ry=&quot;55&quot; fill=&quot;url(#grad1)&quot; /&gt;</div><div class="line">&lt;/svg&gt;</div></pre></td></tr></table></figure></p>
+<p><a href="http://www.runoob.com/svg/svg-reference.html" target="_blank" rel="external">svg参考手册</a></p>
+
+      
+    </div>
+	<div>
+	  
+		
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+  <p><span>本文标题:</span><a href="/html5-svg开发手册.html">html5-svg开发手册</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 余真帆-fanerge 的个人博客">余真帆-fanerge</a></p>
+  <p><span>发布时间:</span>2018年01月30日 - 20:01</p>
+  <p><span>最后更新:</span>2018年01月30日 - 21:01</p>
+  <p><span>原始链接:</span><a href="/html5-svg开发手册.html" title="html5-svg开发手册">https://fanerge.github.io/html5-svg开发手册.html</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://fanerge.github.io/html5-svg开发手册.html"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+
+	  
+	</div>
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+	<div>
+	  
+		<div>
+    
+        <div style="text-align:center;color: #aaa;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>fanerge在此感谢您的阅读-------------</div>
+    
+</div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/svg/" rel="tag"><i class="fa fa-tag"></i> svg</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/html5-webWorker.html" rel="next" title="Web Worker">
+                <i class="fa fa-chevron-left"></i> Web Worker
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      a
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="余真帆-fanerge" />
+          <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives" rel="external nofollow">
+                <span class="site-state-item-count">143</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a rel="external nofollow" href="/categories/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a rel="external nofollow" href="/tags/index.html">
+                <span class="site-state-item-count">42</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://github.com/fanerge/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="twitter" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="weibo" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金">
+                  
+                    <i class="fa fa-fw fa-spinner"></i>
+                  
+                  掘金
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#svg-介绍"><span class="nav-number">1.</span> <span class="nav-text">svg 介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简单例子"><span class="nav-number">1.1.</span> <span class="nav-text">简单例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#svg的特点"><span class="nav-number">1.2.</span> <span class="nav-text">svg的特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一个单独的-svg文件"><span class="nav-number">1.3.</span> <span class="nav-text">一个单独的 .svg文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SVG-在-HTML-页面"><span class="nav-number">1.4.</span> <span class="nav-text">SVG 在 HTML 页面</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-embed-标签"><span class="nav-number">1.4.1.</span> <span class="nav-text">使用 embed 标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-object-标签"><span class="nav-number">1.4.2.</span> <span class="nav-text">使用 object 标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-iframe-标签"><span class="nav-number">1.4.3.</span> <span class="nav-text">使用 iframe 标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#直接在HTML嵌入SVG代码"><span class="nav-number">1.4.4.</span> <span class="nav-text">直接在HTML嵌入SVG代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#链接到SVG文件"><span class="nav-number">1.4.5.</span> <span class="nav-text">链接到SVG文件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#svg-形状元素"><span class="nav-number">2.</span> <span class="nav-text">svg 形状元素</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#rect"><span class="nav-number">2.1.</span> <span class="nav-text">rect</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#circle"><span class="nav-number">2.2.</span> <span class="nav-text">circle</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#elipse"><span class="nav-number">2.3.</span> <span class="nav-text">elipse</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#line"><span class="nav-number">2.4.</span> <span class="nav-text">line</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#polygon"><span class="nav-number">2.5.</span> <span class="nav-text">polygon</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#polyline"><span class="nav-number">2.6.</span> <span class="nav-text">polyline</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#path"><span class="nav-number">2.7.</span> <span class="nav-text">path</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#text"><span class="nav-number">2.8.</span> <span class="nav-text">text</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配合-defs-path-使用"><span class="nav-number">2.8.1.</span> <span class="nav-text">配合 defs-path 使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tspan"><span class="nav-number">2.8.2.</span> <span class="nav-text">tspan</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配合-a"><span class="nav-number">2.8.3.</span> <span class="nav-text">配合 a</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#效果"><span class="nav-number">3.</span> <span class="nav-text">效果</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Stroke-属性"><span class="nav-number">3.1.</span> <span class="nav-text">Stroke 属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#滤镜"><span class="nav-number">3.2.</span> <span class="nav-text">滤镜</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#feBlend"><span class="nav-number">3.2.1.</span> <span class="nav-text">feBlend</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feColorMatrix"><span class="nav-number">3.2.2.</span> <span class="nav-text">feColorMatrix</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feComponentTransfer"><span class="nav-number">3.2.3.</span> <span class="nav-text">feComponentTransfer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feComposite"><span class="nav-number">3.2.4.</span> <span class="nav-text">feComposite</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feConvolveMatrix"><span class="nav-number">3.2.5.</span> <span class="nav-text">feConvolveMatrix</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feDiffuseLighting"><span class="nav-number">3.2.6.</span> <span class="nav-text">feDiffuseLighting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feDisplacementMap"><span class="nav-number">3.2.7.</span> <span class="nav-text">feDisplacementMap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feFlood"><span class="nav-number">3.2.8.</span> <span class="nav-text">feFlood</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feGaussianBlur"><span class="nav-number">3.2.9.</span> <span class="nav-text">feGaussianBlur</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feImage"><span class="nav-number">3.2.10.</span> <span class="nav-text">feImage</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feMerge"><span class="nav-number">3.2.11.</span> <span class="nav-text">feMerge</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feMorphology"><span class="nav-number">3.2.12.</span> <span class="nav-text">feMorphology</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feOffset"><span class="nav-number">3.2.13.</span> <span class="nav-text">feOffset</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feSpecularLighting"><span class="nav-number">3.2.14.</span> <span class="nav-text">feSpecularLighting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feTile"><span class="nav-number">3.2.15.</span> <span class="nav-text">feTile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feTurbulence"><span class="nav-number">3.2.16.</span> <span class="nav-text">feTurbulence</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feDistantLight"><span class="nav-number">3.2.17.</span> <span class="nav-text">feDistantLight</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fePointLight"><span class="nav-number">3.2.18.</span> <span class="nav-text">fePointLight</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feSpotLight"><span class="nav-number">3.2.19.</span> <span class="nav-text">feSpotLight</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模糊效果"><span class="nav-number">3.3.</span> <span class="nav-text">模糊效果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#阴影"><span class="nav-number">3.4.</span> <span class="nav-text">阴影</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#渐变"><span class="nav-number">3.5.</span> <span class="nav-text">渐变</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线性"><span class="nav-number">3.5.1.</span> <span class="nav-text">线性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#径向"><span class="nav-number">3.5.2.</span> <span class="nav-text">径向</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+</div>
+
+
+
+<div class="powered-by">
+	<i class="fa fa-user-md"></i>
+	<span id="busuanzi_container_site_pv">
+		本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io" rel="external nofollow">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共224.2k字</span>
+</div>
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fanerge.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://fanerge.github.io/html5-svg开发手册.html';
+          this.page.identifier = 'html5-svg开发手册.html';
+          this.page.title = 'html5-svg开发手册';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fanerge.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2156704"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+    <script type="text/javascript" src="/live2d/script.js"></script>
+    <canvas id="live2dcanvas" width="80" height="160" class="live2d"></canvas>
+    <style>
+      #live2dcanvas {
+        position: fixed;
+        right: 0px;
+        z-index: 999;
+        pointer-events: none;
+        bottom: 100px;
+      }
+    </style>
+    <script>loadlive2d("live2dcanvas" ,"/live2d/assets/hibiki/hibiki.model.json",0.5)</script>
+  
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
