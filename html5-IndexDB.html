@@ -1,0 +1,1058 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="baidu-site-verification" content="u3EKLjdYkx" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="IndexDB" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="余真帆的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="IndexDB">
+<meta name="keywords" content="IndexDB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IndexDB探索之路">
+<meta property="og:url" content="https://fanerge.github.io/html5-IndexDB.html">
+<meta property="og:site_name" content="余真帆的博客">
+<meta property="og:description" content="IndexDB">
+<meta property="og:image" content="http://p26lefllv.bkt.clouddn.com/indexedDBIns.png">
+<meta property="og:image" content="http://p26lefllv.bkt.clouddn.com/indexed%20DBIns1.png">
+<meta property="og:image" content="http://p26lefllv.bkt.clouddn.com/indexedDBAdd.png">
+<meta property="og:image" content="http://p26lefllv.bkt.clouddn.com/indexedDBupdate.png">
+<meta property="og:updated_time" content="2018-02-08T13:28:18.761Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="IndexDB探索之路">
+<meta name="twitter:description" content="IndexDB">
+<meta name="twitter:image" content="http://p26lefllv.bkt.clouddn.com/indexedDBIns.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('由于这是公司内部面试题，需要密码进行访问，如有不便敬请谅解！') !== ''){
+                alert('对不起，密码错误不能访问。');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+  <link rel="canonical" href="https://fanerge.github.io/html5-IndexDB.html"/>
+
+
+
+
+
+  <title> IndexDB探索之路 | 余真帆的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?947609e8bcc46de32a1dca9cc56cd8a1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+	<a href="https://github.com/fanerge/"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">余真帆的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/html5-IndexDB.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                IndexDB探索之路
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-06T20:20:04+08:00">
+                2018-02-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/html5/" itemprop="url" rel="index">
+                    <span itemprop="name">html5</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/html5-IndexDB.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="html5-IndexDB.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  2,434
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  10
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  IndexDB
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a href="https://fanerge.github.io/indexedDB/static/">demo地址</a></p>
+<h1 id="什么是-IndexDB？"><a href="#什么是-IndexDB？" class="headerlink" title="什么是 IndexDB？"></a>什么是 IndexDB？</h1><p>IndexedDB 是一个用于在浏览器中储存较大数据结构的 Web API, 并提供索引功能以实现高性能查找. 像其他基于 SQL 的 关系型数据库管理系统 (RDBMS) 一样, IndexedDB 是一个事务型的数据库系统. 然而, 它是使用 JavaScript 对象而非列数固定的表格来储存数据的.</p>
+<h2 id="IndexDB-的特点"><a href="#IndexDB-的特点" class="headerlink" title="IndexDB 的特点"></a>IndexDB 的特点</h2><p>IndexDB 和大多数web存储解决方案相同，indexedDB也遵从同源协议(same-origin policy). 所以你只能访问同域中存储的数据，而不能访问其他域的。<br>IndexDB API包含异步(asynchronous) API 和同步(synchronous)API两种。  异步API适合大多数情况, 同步API必须同 WebWorkers一同使用.</p>
+<h2 id="为什么我们要使用-IndexDB？"><a href="#为什么我们要使用-IndexDB？" class="headerlink" title="为什么我们要使用 IndexDB？"></a>为什么我们要使用 IndexDB？</h2><p>WebStorage在浏览器中有大小限制，存放较大的数据就不能满足了。<br>IndexedDB 是 WebSQL 数据库的取代品, W3C组织在2010年11月18日废弃了webSql.<br>IndexedDB 和WebSQL的不同点在于WebSQL 是关系型数据库（复杂）IndexedDB 是key-value型数据库（简单好使）.</p>
+<h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><h2 id="IndexedDB-数据库使用key-value键值对储存数据"><a href="#IndexedDB-数据库使用key-value键值对储存数据" class="headerlink" title="IndexedDB 数据库使用key-value键值对储存数据"></a>IndexedDB 数据库使用key-value键值对储存数据</h2><p>key可以是二进制对象。<br>values 数据可以是结构非常复杂的对象，key可以是对象自身的属性。<br>你可以对对象的某个属性创建索引（index）以实现快速查询和列举排序。</p>
+<h2 id="IndexedDB-是事务模式的数据库"><a href="#IndexedDB-是事务模式的数据库" class="headerlink" title="IndexedDB 是事务模式的数据库"></a>IndexedDB 是事务模式的数据库</h2><p>任何操作都发生在事务(transaction)中。<br>IndexedDB API提供了索引(indexes), 表(tables), 指针(cursors)等等,<br>但是所有这些必须是依赖于某种事务的。因此，你不能在事务外执行命令或者打开指针。<br>当用户在不同的标签页同时打开Web应用的两个实例时，这个事务模型就会非常有用。<br>如果没有事务操作的支持，这两个实例就会互相影响对方的修改。</p>
+<h2 id="IndexedDB-API-基本上是异步的"><a href="#IndexedDB-API-基本上是异步的" class="headerlink" title="IndexedDB API 基本上是异步的"></a>IndexedDB API 基本上是异步的</h2><p>IndexedDB的API不通过return语句返回数据，而是需要你提供一个回调函数来接受数据。<br>执行API时，你不以同步（synchronous）方式对数据库进行“存储”和“读取”操作，而是向数据库发送一个操作“请求”。<br>当操作完成时，数据库会以DOM事件的方式通知你，同时事件的类型会告诉你这个操作是否成功完成。<br>类似于XMLHttpRequest。</p>
+<h2 id="IndexedDB数据库“请求”无处不在"><a href="#IndexedDB数据库“请求”无处不在" class="headerlink" title="IndexedDB数据库“请求”无处不在"></a>IndexedDB数据库“请求”无处不在</h2><p>数据库“请求”负责接受成功或失败的DOM事件。<br>每一个“请求”都包含onsuccess和onerror事件属性，同时你还对“事件”调用addEventListener()和removeEventListener()。<br>“请求”还包括readyState，result和errorCode属性，用来表示“请求”的状态。<br>result属性尤其神奇，他可以根据“请求”生成的方式变成不同的东西，例如：IDBCursor实例、刚插入数据库的数值对应的键值（key）等。</p>
+<h2 id="IndexedDB在结果准备好之后通过DOM事件通知用户"><a href="#IndexedDB在结果准备好之后通过DOM事件通知用户" class="headerlink" title="IndexedDB在结果准备好之后通过DOM事件通知用户"></a>IndexedDB在结果准备好之后通过DOM事件通知用户</h2><p>DOM事件总是有一个类型（type）属性（在IndexedDB中，该属性通常设置为success或error）。<br>DOM事件还有一个目标（target）属性，用来告诉事件是被谁触发的。通常情况下，目标（target）属性是数据库操作生成的IDBRequest。<br>成功（success）事件不弹出提示并且不能撤销，错误（error）事件会弹出提示且可以撤销。<br>这一点是非常重要的，因为除非错误事件被撤销，否则他们会终止所在的任何事务。</p>
+<h2 id="IndexedDB是面向对象的"><a href="#IndexedDB是面向对象的" class="headerlink" title="IndexedDB是面向对象的"></a>IndexedDB是面向对象的</h2><p>indexedDB不是用二维表来表示集合的关系型数据库。这一点非常重要，将影响你设计和建立你的应用程序。​​​​<br>传统的关系型数据库，你需要用到二维表来存储数据集合（每一行代表一个数据，每一列代表一个属性），indexedDB有所不同，它要求你为一种数据创建一个对象存储(object Store)，只要这种数据一个JavaScript对象即可。<br>每个对象存储都有一个索引(index)集合以方便查询和迭代遍历。</p>
+<h2 id="indexedDB不使用结构化查询语言（SQL）"><a href="#indexedDB不使用结构化查询语言（SQL）" class="headerlink" title="indexedDB不使用结构化查询语言（SQL）"></a>indexedDB不使用结构化查询语言（SQL）</h2><p>它通过索引(index)所产生的指针(cursor)来完成查询操作，从而使你可以迭代遍历到结果集合。</p>
+<h2 id="IndexedDB遵循同源（same-origin）策略"><a href="#IndexedDB遵循同源（same-origin）策略" class="headerlink" title="IndexedDB遵循同源（same-origin）策略"></a>IndexedDB遵循同源（same-origin）策略</h2><p>“源”指脚本所在文档URL的域名、应用层协议和端口。每一个“源”都有与其相关联的数据库。<br>在同一个“源”内的所有数据库都有唯一、可区别的名称。</p>
+<h1 id="使用-IndexedDB"><a href="#使用-IndexedDB" class="headerlink" title="使用 IndexedDB"></a>使用 IndexedDB</h1><h2 id="检测浏览器支持情况"><a href="#检测浏览器支持情况" class="headerlink" title="检测浏览器支持情况"></a>检测浏览器支持情况</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">if (window.indexedDB) &#123;</div><div class="line">	// todo</div><div class="line">&#125; else &#123;</div><div class="line">	alert(&apos;您的浏览器不支持indexdb&apos;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>下面我将会以demo来做常用的数据库操作说明，使用火狐浏览器做测试。</p>
+<h2 id="新建数据库-关闭数据库"><a href="#新建数据库-关闭数据库" class="headerlink" title="新建数据库/关闭数据库"></a>新建数据库/关闭数据库</h2><p>indexedDB 有一个open(indexDbName[, version])，这个方法会打开某个数据库，若不存在则新建。<br>第一个参数为数据库名称 ‘demo’，第二个参数为 版本号。<br>db为打开数据库成功回掉 event.target.result 戴白哦数据库实例，有 close() 为关闭该数据库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">function createDatabase(indexDbName) &#123;</div><div class="line">	</div><div class="line">	// 不存在则新建，存在则打开</div><div class="line">	let openRequest = indexedDB.open(indexDbName);</div><div class="line">	</div><div class="line">	openRequest.onerror = function(event) &#123;</div><div class="line">        console.log(&quot;Database error: &quot; + event.target.errorCode);</div><div class="line">    &#125;;</div><div class="line"> </div><div class="line">	openRequest.onsuccess = function(event) &#123;</div><div class="line">		console.log(&quot;Database created&quot;);</div><div class="line">		let db = event.target.result;</div><div class="line">		// db.close();</div><div class="line">		console.log(&quot;this is :&quot;+db);</div><div class="line">	&#125;;</div><div class="line">	</div><div class="line">	//更改数据库，或者存储对象时候在这里处理</div><div class="line">	openRequest.onupgradeneeded = function (e) &#123;</div><div class="line">		console.log(e);</div><div class="line">	&#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><img src="http://p26lefllv.bkt.clouddn.com/indexedDBIns.png" alt="新建数据库"></p>
+<h2 id="确定数据结构并添加数据"><a href="#确定数据结构并添加数据" class="headerlink" title="确定数据结构并添加数据"></a>确定数据结构并添加数据</h2><p>onupgradeneeded 唯一可以修改数据库结构的地方。<br>在 indexedDB 中一个数据库中可以包含多个objectStore，objectStore是一个灵活的数据结构，可以存放多种类型数据。<br>创建 objectStore 的方法为数据库实例的 createObjectStore(name[, options]);<br>删除 objectStore 的方法为数据库实例的 deleteObjectStore(name);<br>其中options 有两个可选key，分别是 keyPath（选择objectStore中某个指定字段作为键值）、autoIncrement（若为true，objectStore有一个key generator）<br>我们创建好的 objectStore 也有一些方法：<br>createIndex(indexName, keyPath[, objectParameters]) 该方法作用为创建一个索引来通过 indexName 搜索 objectStore 里的数据。<br>objectStore.add(value[, key]) 该方法作用为将数据添加到 objectStore 中。<br>介绍了相关的方法，我们就通过循环来向 objectStore 添加数据。<br>下面是具体实现代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">function insertData(indexDbName)&#123;</div><div class="line">	// 带写入的数据</div><div class="line">	const customerData = [</div><div class="line">	  &#123; ssn: &quot;444-44-4444&quot;, name: &quot;Bill&quot;, age: 35, email: &quot;bill@company.com&quot; &#125;,</div><div class="line">	  &#123; ssn: &quot;555-55-5555&quot;, name: &quot;Donna&quot;, age: 32, email: &quot;donna@home.org&quot; &#125;</div><div class="line">	];</div><div class="line">	</div><div class="line">	// 如果在没有新建数据库时写入数据，这里只能带高版本的数据库版本才能出发 onupgradeneeded 事件</div><div class="line">	let openRequest = indexedDB.open(indexDbName, &apos;3.0&apos;);</div><div class="line">	</div><div class="line">	openRequest.onerror = function(e) &#123;</div><div class="line">		console.log(&quot;Database error: &quot; + e.target.errorCode);</div><div class="line">	&#125;;</div><div class="line">	</div><div class="line">	openRequest.onsuccess = function(event) &#123;</div><div class="line">		console.log(&quot;Database created&quot;);</div><div class="line">	&#125;;</div><div class="line">	</div><div class="line">	openRequest.onupgradeneeded = function(event) &#123;</div><div class="line">		</div><div class="line">		console.log(&quot;开始写入数据&quot;);</div><div class="line">		let db = event.target.result;</div><div class="line">		// keyPath、autoIncrement</div><div class="line">		let objectStore = db.createObjectStore(&quot;customers&quot;, &#123; keyPath: &quot;ssn&quot; &#125;);</div><div class="line">		objectStore.createIndex(&quot;name&quot;, &quot;name&quot;, &#123; unique: false &#125;);</div><div class="line">		objectStore.createIndex(&quot;email&quot;, &quot;email&quot;, &#123; unique: true &#125;);</div><div class="line">		</div><div class="line">		for (let item of customerData) &#123;</div><div class="line">			objectStore.add(item);</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		// 删除 objectStore</div><div class="line">		// db.deleteObjectStore(&quot;customers&quot;);</div><div class="line">	&#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><img src="http://p26lefllv.bkt.clouddn.com/indexed%20DBIns1.png" alt="新建数据库"><br>PS： 这里有个坑，需要说明一下。<br>onupgradeneeded事件在下列情况下被触发：<br>1.数据库第一次被打开时即新建<br>2.打开数据库时指定的版本号高于当前被持久化的数据库版本号</p>
+<h2 id="添加数据"><a href="#添加数据" class="headerlink" title="添加数据"></a>添加数据</h2><p>添加数据在 onsuccess 钩子中进行。<br>IndexedDB 添加数据通过事务来添加数据。<br>下面重点介绍下 transaction(storeNames[, mode]);<br>第一个参数是事务希望跨越的对象存储空间的列表。<br>第二个参数事务中可以执行的访问类型。<br>返回一个事务对象。<br>事务可以接收三种不同类型的 DOM 事件： error，abort，以及 complete。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">function addData(storeName) &#123;</div><div class="line">	const datas = [</div><div class="line">	  &#123; ssn: &quot;666-66-6666&quot;, name: &quot;fanerge&quot;, age: 15, email: &quot;fanerge@company.com&quot; &#125;,</div><div class="line">	  &#123; ssn: &quot;777-77-7777&quot;, name: &quot;sdsd&quot;, age: 22, email: &quot;sdsd@home.org&quot; &#125;</div><div class="line">	];</div><div class="line">	</div><div class="line">	let openRequest = indexedDB.open(&apos;demo&apos;, &apos;3.0&apos;);</div><div class="line">	</div><div class="line">	openRequest.onerror = function(e) &#123;</div><div class="line">		console.log(&quot;Database error: &quot; + e.target.errorCode);</div><div class="line">	&#125;;</div><div class="line">	</div><div class="line">	openRequest.onsuccess = function(event) &#123;</div><div class="line">		let db = event.target.result;</div><div class="line">		let transaction=db.transaction(storeName,&apos;readwrite&apos;);</div><div class="line">        let store=transaction.objectStore(storeName); </div><div class="line">		</div><div class="line">		for(let i=0;i&lt;datas.length;i++)&#123;</div><div class="line">            store.add(datas[i]);</div><div class="line">        &#125;</div><div class="line">	&#125;;</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><img src="http://p26lefllv.bkt.clouddn.com/indexedDBAdd.png" alt="添加数据"></p>
+<h2 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h2><p>同样删除数据也使用 transaction。<br>唯一区别是使用了 objectStore的 delete(key)，该方法为删除指定key的数据项。<br>objectStore 还有一个方法 clear()清空该 store 中的数据。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">function del66(key)&#123;</div><div class="line">	let openRequest = indexedDB.open(&apos;demo&apos;, &apos;3.0&apos;);</div><div class="line">	</div><div class="line">	openRequest.onerror = function(e) &#123;</div><div class="line">		console.log(&quot;Database error: &quot; + e.target.errorCode);</div><div class="line">	&#125;;</div><div class="line">	</div><div class="line">	openRequest.onsuccess = function(event) &#123;</div><div class="line">		let db = event.target.result;</div><div class="line">		let transaction = db.transaction(&apos;customers&apos;,&apos;readwrite&apos;);</div><div class="line">		let store=transaction.objectStore(&apos;customers&apos;); </div><div class="line">		let request = store.delete(key);</div><div class="line">		</div><div class="line">		request.onsuccess = function(event) &#123;</div><div class="line">			console.log(&apos;删除成功&apos;);</div><div class="line">		&#125;;</div><div class="line">		</div><div class="line">		request.onerror = function(event) &#123;</div><div class="line">			console.log(&apos;删除失败&apos;);</div><div class="line">		&#125;;</div><div class="line">	&#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="查找数据"><a href="#查找数据" class="headerlink" title="查找数据"></a>查找数据</h2><p>同样查找数据也使用 transaction。<br>唯一区别是使用了 objectStore的 get(key)，该方法为删除指定key的数据项。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">function getDataByKey(key)&#123;</div><div class="line">	let openRequest = indexedDB.open(&apos;demo&apos;, &apos;3.0&apos;);</div><div class="line">	</div><div class="line">	openRequest.onerror = function(e) &#123;</div><div class="line">		console.log(&quot;Database error: &quot; + e.target.errorCode);</div><div class="line">	&#125;;</div><div class="line">	</div><div class="line">	openRequest.onsuccess = function(event) &#123;</div><div class="line">		let db = event.target.result;</div><div class="line">		let transaction = db.transaction(&apos;customers&apos;,&apos;readwrite&apos;);</div><div class="line">		let store=transaction.objectStore(&apos;customers&apos;); </div><div class="line">		let request = store.get(key);</div><div class="line">		</div><div class="line">		request.onsuccess = function(event) &#123;</div><div class="line">			let item =event.target.result; </div><div class="line">			console.log(item); // 获得的该数据项</div><div class="line">			console.log(&apos;查找成功&apos;);</div><div class="line">		&#125;;</div><div class="line">		</div><div class="line">		request.onerror = function(event) &#123;</div><div class="line">			console.log(&apos;查找失败&apos;);</div><div class="line">		&#125;;</div><div class="line">	&#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="更新数据"><a href="#更新数据" class="headerlink" title="更新数据"></a>更新数据</h2><p>可以调用object store的put方法更新数据，会自动替换键值相同的记录，达到更新目的，没有相同的则添加，以使用keyPath做键为例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">function updateDataByKey(key)&#123;</div><div class="line">	let openRequest = indexedDB.open(&apos;demo&apos;, &apos;3.0&apos;);</div><div class="line">	</div><div class="line">	openRequest.onerror = function(e) &#123;</div><div class="line">		console.log(&quot;Database error: &quot; + e.target.errorCode);</div><div class="line">	&#125;;</div><div class="line">	</div><div class="line">	openRequest.onsuccess = function(event) &#123;</div><div class="line">		let db = event.target.result;</div><div class="line">		let transaction = db.transaction(&apos;customers&apos;,&apos;readwrite&apos;);</div><div class="line">		let store=transaction.objectStore(&apos;customers&apos;); </div><div class="line">		let request = store.get(key);</div><div class="line">		</div><div class="line">		request.onsuccess = function(event) &#123;</div><div class="line">			let item =event.target.result; </div><div class="line">			 // &#123; ssn: &quot;666-66-6666&quot;, name: &quot;fanerge&quot;, age: 15, email: &quot;fanerge@company.com&quot; &#125;</div><div class="line">			item.ssn = &quot;666-66-6666&quot;</div><div class="line">			item.name = &quot;yuzhenfan&quot;</div><div class="line">			item.age = 18</div><div class="line">			item.email = &quot;yzf@alipay.com&quot;</div><div class="line">            store.put(item); </div><div class="line">			console.log(&apos;更新成功&apos;);</div><div class="line">		&#125;;</div><div class="line">		</div><div class="line">		request.onerror = function(event) &#123;</div><div class="line">			console.log(&apos;更新失败&apos;);</div><div class="line">		&#125;;</div><div class="line">	&#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><img src="http://p26lefllv.bkt.clouddn.com/indexedDBupdate.png" alt="更新数据"></p>
+<blockquote>
+<p>   参考文档<br><a href="https://www.cnblogs.com/lovelgx/articles/6026957.html" target="_blank" rel="external">数据库写入时机</a><br><a href="http://www.php.cn/html5-tutorial-359628.html" target="_blank" rel="external">html5使用indexdb的代码实例分享</a><br><a href="https://zh.wikipedia.org/wiki/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1" target="_blank" rel="external">wiki-数据库事务</a><br><a href="https://developer.mozilla.org/zh-CN/docs/Glossary/IndexedDB" target="_blank" rel="external">MDN-IndexedDB</a><br><a href="http://w3c.github.io/IndexedDB/" target="_blank" rel="external">w3c-IndexDB-API</a><br><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/IndexedDB_API/Basic_Concepts_Behind_IndexedDB" target="_blank" rel="external">IndexDB-Guides</a><br><a href="https://www.cnblogs.com/dolphinX/p/3415761.html" target="_blank" rel="external">HTML5本地存储——IndexedDB（一：基本使用）</a></p>
+</blockquote>
+
+      
+    </div>
+	<div>
+	  
+		
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+  <p><span>本文标题:</span><a href="/html5-IndexDB.html">IndexDB探索之路</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 余真帆-fanerge 的个人博客">余真帆-fanerge</a></p>
+  <p><span>发布时间:</span>2018年02月06日 - 20:02</p>
+  <p><span>最后更新:</span>2018年02月08日 - 21:02</p>
+  <p><span>原始链接:</span><a href="/html5-IndexDB.html" title="IndexDB探索之路">https://fanerge.github.io/html5-IndexDB.html</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://fanerge.github.io/html5-IndexDB.html"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+
+	  
+	</div>
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+	<div>
+	  
+		<div>
+    
+        <div style="text-align:center;color: #aaa;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>fanerge在此感谢您的阅读-------------</div>
+    
+</div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/html5/" rel="tag"><i class="fa fa-tag"></i> html5</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/html5-svg开发手册.html" rel="next" title="html5-svg开发手册">
+                <i class="fa fa-chevron-left"></i> html5-svg开发手册
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      a
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="余真帆-fanerge" />
+          <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives" rel="external nofollow">
+                <span class="site-state-item-count">144</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a rel="external nofollow" href="/categories/index.html">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a rel="external nofollow" href="/tags/index.html">
+                <span class="site-state-item-count">42</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://github.com/fanerge/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="twitter" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="weibo" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金">
+                  
+                    <i class="fa fa-fw fa-spinner"></i>
+                  
+                  掘金
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是-IndexDB？"><span class="nav-number">1.</span> <span class="nav-text">什么是 IndexDB？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IndexDB-的特点"><span class="nav-number">1.1.</span> <span class="nav-text">IndexDB 的特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么我们要使用-IndexDB？"><span class="nav-number">1.2.</span> <span class="nav-text">为什么我们要使用 IndexDB？</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基本概念"><span class="nav-number">2.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IndexedDB-数据库使用key-value键值对储存数据"><span class="nav-number">2.1.</span> <span class="nav-text">IndexedDB 数据库使用key-value键值对储存数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IndexedDB-是事务模式的数据库"><span class="nav-number">2.2.</span> <span class="nav-text">IndexedDB 是事务模式的数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IndexedDB-API-基本上是异步的"><span class="nav-number">2.3.</span> <span class="nav-text">IndexedDB API 基本上是异步的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IndexedDB数据库“请求”无处不在"><span class="nav-number">2.4.</span> <span class="nav-text">IndexedDB数据库“请求”无处不在</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IndexedDB在结果准备好之后通过DOM事件通知用户"><span class="nav-number">2.5.</span> <span class="nav-text">IndexedDB在结果准备好之后通过DOM事件通知用户</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IndexedDB是面向对象的"><span class="nav-number">2.6.</span> <span class="nav-text">IndexedDB是面向对象的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#indexedDB不使用结构化查询语言（SQL）"><span class="nav-number">2.7.</span> <span class="nav-text">indexedDB不使用结构化查询语言（SQL）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IndexedDB遵循同源（same-origin）策略"><span class="nav-number">2.8.</span> <span class="nav-text">IndexedDB遵循同源（same-origin）策略</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用-IndexedDB"><span class="nav-number">3.</span> <span class="nav-text">使用 IndexedDB</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#检测浏览器支持情况"><span class="nav-number">3.1.</span> <span class="nav-text">检测浏览器支持情况</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新建数据库-关闭数据库"><span class="nav-number">3.2.</span> <span class="nav-text">新建数据库/关闭数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#确定数据结构并添加数据"><span class="nav-number">3.3.</span> <span class="nav-text">确定数据结构并添加数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加数据"><span class="nav-number">3.4.</span> <span class="nav-text">添加数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除数据"><span class="nav-number">3.5.</span> <span class="nav-text">删除数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查找数据"><span class="nav-number">3.6.</span> <span class="nav-text">查找数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更新数据"><span class="nav-number">3.7.</span> <span class="nav-text">更新数据</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+</div>
+
+
+
+<div class="powered-by">
+	<i class="fa fa-user-md"></i>
+	<span id="busuanzi_container_site_pv">
+		本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io" rel="external nofollow">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共226.6k字</span>
+</div>
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fanerge.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://fanerge.github.io/html5-IndexDB.html';
+          this.page.identifier = 'html5-IndexDB.html';
+          this.page.title = 'IndexDB探索之路';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fanerge.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2156704"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+    <script type="text/javascript" src="/live2d/script.js"></script>
+    <canvas id="live2dcanvas" width="80" height="160" class="live2d"></canvas>
+    <style>
+      #live2dcanvas {
+        position: fixed;
+        right: 0px;
+        z-index: 999;
+        pointer-events: none;
+        bottom: 100px;
+      }
+    </style>
+    <script>loadlive2d("live2dcanvas" ,"/live2d/assets/hibiki/hibiki.model.json",0.5)</script>
+  
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
