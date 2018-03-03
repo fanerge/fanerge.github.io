@@ -1,0 +1,1157 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="baidu-site-verification" content="u3EKLjdYkx" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="webkit浏览器" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="余真帆的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="webkit浏览器">
+<meta name="keywords" content="webkit浏览器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="浏览器工作原理-webkit内核研究">
+<meta property="og:url" content="https://fanerge.github.io/浏览器工作原理-webkit内核研究.html">
+<meta property="og:site_name" content="余真帆的博客">
+<meta property="og:description" content="webkit浏览器">
+<meta property="og:image" content="http://p4yvw0vpm.bkt.clouddn.com/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%BC%95%E6%93%8E%E5%8F%91%E5%B1%95%E5%8E%86%E5%8F%B2.png">
+<meta property="og:image" content="http://p4yvw0vpm.bkt.clouddn.com/%E6%B8%B2%E6%9F%93%E5%BC%95%E6%93%8E%E7%9A%84%E5%8A%9F%E8%83%BD.png">
+<meta property="og:image" content="http://p4yvw0vpm.bkt.clouddn.com/url%E5%88%B0dom%E6%A0%91.png">
+<meta property="og:image" content="http://p4yvw0vpm.bkt.clouddn.com/html%E8%A7%A3%E9%87%8A%E5%99%A8.png">
+<meta property="og:image" content="http://p4yvw0vpm.bkt.clouddn.com/css%E5%92%8Cdom%E6%A0%91%E5%88%B0%E7%BB%98%E5%88%B6%E7%BD%91%E9%A1%B5.png">
+<meta property="og:image" content="http://p4yvw0vpm.bkt.clouddn.com/DOM%E5%88%B0RenderObject.png">
+<meta property="og:image" content="http://p4yvw0vpm.bkt.clouddn.com/RenderObject%E5%88%B0RenderLayer.png">
+<meta property="og:image" content="http://p4yvw0vpm.bkt.clouddn.com/javascript%E5%88%B0%E6%9C%AC%E5%9C%B0%E4%BB%A3%E7%A0%81.png">
+<meta property="og:updated_time" content="2018-03-03T04:32:43.412Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="浏览器工作原理-webkit内核研究">
+<meta name="twitter:description" content="webkit浏览器">
+<meta name="twitter:image" content="http://p4yvw0vpm.bkt.clouddn.com/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%BC%95%E6%93%8E%E5%8F%91%E5%B1%95%E5%8E%86%E5%8F%B2.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('由于这是公司内部面试题，需要密码进行访问，如有不便敬请谅解！') !== ''){
+                alert('对不起，密码错误不能访问。');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+  <link rel="canonical" href="https://fanerge.github.io/浏览器工作原理-webkit内核研究.html"/>
+
+
+
+
+
+  <title> 浏览器工作原理-webkit内核研究 | 余真帆的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?947609e8bcc46de32a1dca9cc56cd8a1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+	<a href="https://github.com/fanerge/"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">余真帆的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/浏览器工作原理-webkit内核研究.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                浏览器工作原理-webkit内核研究
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-03T10:10:00+08:00">
+                2018-03-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/webkit/" itemprop="url" rel="index">
+                    <span itemprop="name">webkit</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/浏览器工作原理-webkit内核研究.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="浏览器工作原理-webkit内核研究.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  5,120
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  19
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  webkit浏览器
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>从年前就开始梳理浏览器的工作原理（主要对webkit内核的浏览器进行分析）到现在差不多快一个月了，本文意在帮助前端工程师了解浏览器的工作原理，并据此来优化我们的网页性能。<br>主要查阅了<a href="https://book.douban.com/subject/25910556/" target="_blank" rel="external">WebKit技术内幕</a>、<a href="https://developer.mozilla.org/zh-CN/" target="_blank" rel="external">MDN</a>、<a href="https://www.w3.org/" target="_blank" rel="external">W3C</a>等网站资料，下文中有若干图片摘自于《WebKit技术内幕》，在此表示感谢。<br>本文略长，如有不适，实属意外。如有不正确的地方，还望指正，毕竟传播真理才不会误导其他同学，共同进步才是目的。</p>
+<h1 id="浏览器的内核"><a href="#浏览器的内核" class="headerlink" title="浏览器的内核"></a>浏览器的内核</h1><p>浏览器内核由渲染引擎和JS引擎组成，不同的浏览器、即使同一浏览器不同型号可能渲染引擎和JS引擎都不一样。</p>
+<h2 id="渲染引擎"><a href="#渲染引擎" class="headerlink" title="渲染引擎"></a>渲染引擎</h2><p>1)Trident渲染引擎 –&gt; 老版本IE系列浏览器<br>2)Edge渲染引擎 -&gt; Win10中IE浏览器<br>3)Gecko渲染引擎 –&gt; Mozilla Firefox<br>4)Presto渲染引擎 –&gt; Opera<br>5)KHTML渲染引擎 –&gt; 早期的Safafi和Google Chrome<br>6)Webkit渲染引擎 -&gt; 2001年后的Safari和Chrome以及国内的一些浏览器<br>7)Blink渲染引擎 -&gt; 新版本的Chromium浏览器Google项目</p>
+<h2 id="JavaScript引擎"><a href="#JavaScript引擎" class="headerlink" title="JavaScript引擎"></a>JavaScript引擎</h2><p>1)JScript引擎 –&gt; IE系列浏览器<br>2)spiderMonkey引擎 –&gt; Mozilla Firefox<br>3)V8引擎 –&gt; Google Chrome<br>4)linear b/futhark引擎 –&gt; Opera</p>
+<h2 id="浏览器渲染引擎的进度史"><a href="#浏览器渲染引擎的进度史" class="headerlink" title="浏览器渲染引擎的进度史"></a>浏览器渲染引擎的进度史</h2><p><img src="http://p4yvw0vpm.bkt.clouddn.com/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E5%BC%95%E6%93%8E%E5%8F%91%E5%B1%95%E5%8E%86%E5%8F%B2.png" alt="浏览器渲染引擎的进度史"><br>为大家提供两个开发常用查询网站：<br><a href="http://html5test.com/" target="_blank" rel="external">该浏览器对html5的支持程度</a><br><a href="https://caniuse.com" target="_blank" rel="external">不同与Can I use</a></p>
+<h1 id="浏览器的渲染引擎及依赖模块分析"><a href="#浏览器的渲染引擎及依赖模块分析" class="headerlink" title="浏览器的渲染引擎及依赖模块分析"></a>浏览器的渲染引擎及依赖模块分析</h1><p><img src="http://p4yvw0vpm.bkt.clouddn.com/%E6%B8%B2%E6%9F%93%E5%BC%95%E6%93%8E%E7%9A%84%E5%8A%9F%E8%83%BD.png" alt="渲染引擎的功能"><br>上图中虚线部分表示渲染引擎所提供的功能。<br>这里渲染引擎包含了JavaScript引擎，许多时候两者都不太区分。<br>下面的内容大部分都是基于这张图来分析的，我们将逐步解释从用户输入URL到页面展示给用户这个过程中都发生了什么？<br>我们先了解网页的基础知识。</p>
+<h1 id="网页基础知识"><a href="#网页基础知识" class="headerlink" title="网页基础知识"></a>网页基础知识</h1><p>html – 结构<br>css – 样式<br>JavaScript – 行为<br>还需要一些静态资源：png、gif、webp、MP4、font、svg等等。<br>由上面几部分就构成我们的网页。</p>
+<h2 id="输入URL到页面展示简图"><a href="#输入URL到页面展示简图" class="headerlink" title="输入URL到页面展示简图"></a>输入URL到页面展示简图</h2><p><img src="http://p4yvw0vpm.bkt.clouddn.com/url%E5%88%B0dom%E6%A0%91.png" alt="URL到页面展示"><br>读者不要太关心上图所标的顺序，在某些时候可能会有出入。</p>
+<h2 id="浏览器内核各部分解释"><a href="#浏览器内核各部分解释" class="headerlink" title="浏览器内核各部分解释"></a>浏览器内核各部分解释</h2><blockquote>
+<p>   HTML解释器：解释HTML文本的解释器，主要作用是将HTML文本解释成DOM树，DOM是一种文档表示方法。<br>CSS解释器：级联样式表的解释器，它的作用是为DOM中的各个元素对象计算出样式信息，从而为计算最后网页的布局提供基础设施。<br>布局：在DOM创建之后，webkit需要将其中的元素对象同样式信息结合起来，计算它们的大小位置等布局信息，形成一个能够表示这所有信息的内部比偶表示模型。<br>JavaScript引擎：使用JavaScript代码可以修改网页的内容，也能修改CSS的信息，JavaScript引擎能过解释JavaScript代码并通过DOM接口和CSSOM接口来修改网页内容和样式信息，从而改变渲染结果。<br>绘图：使用图形库将布局计算后的各个网页的节点绘制成图像结果。</p>
+</blockquote>
+<p>PS：这些模块依赖许多其他基础模块，其中包括网络、存储、2D/3D图形、音频视频和图片解码器等。这里就不对基础模块做相应说明了。</p>
+<p>下面，我就逐个过程进行分析，我这里省略一些非本文目的的过程，如DNS环节。</p>
+<h1 id="HTML解释器"><a href="#HTML解释器" class="headerlink" title="HTML解释器"></a>HTML解释器</h1><p>先来看看HTML解释器工作原理<br><img src="http://p4yvw0vpm.bkt.clouddn.com/html%E8%A7%A3%E9%87%8A%E5%99%A8.png" alt="HTML解释器工作原理"><br>字节流（Bytes）–&gt; 字符流（Characters）–&gt; 词语（Tokens）–&gt; 节点 –&gt; DOM树</p>
+<blockquote>
+<p>   首先是字节流，经过解码之后是字符流，然后通过词法分析器会被解释成词语（Tokens），时候经过分析器构建成节点，最后这些节点被组建成一棵DOM树。<br>词法分析：HTMLTokenizer 类（作用是词法分析，类似于状态机），输入的是字符串，输出的是一个个的词语。<br>XSSAuditor验证词语：XSSAuditor （验证词语流Token Stream）XSS指的是Cross Site Security，主要是针对安全方面的考虑。<br>词语到节点：webkit用来构建DOM节点，这一步骤由HTMLDocumentParser 类调用 HTMLTreeBuilder 类的 constructTree的函数来实现。<br>节点到DOM树：树中的元素节点创建属性节点等工作由HTMLConstructionSite类来完成，该类中包含一个 HTMLElementStack 作为保存元素节点的栈。<br>JavaScript的执行：webkit将DOM树创建过程中需要执行得我Javascript代码交由HTMLScriptRunner类来负责。<br>DOM的事件机制：webkit中用EventTarget类来表示DOM规范中Events部分定义的事件目标，Node 节点继承自 EventTarget类，所以Node拥有EventTarget类的相关的方法。</p>
+</blockquote>
+<p>这里需要提一下W3C新规范，影子（Shadow）DOM<br>Shadow DOM API的 ShadowRoot接口是一个DOM子树的根节点, 它与文档的主DOM树分开渲染。<br><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/ShadowRoot" target="_blank" rel="external">MDN-影子节点</a></p>
+<h2 id="影子（Shadow）DOM"><a href="#影子（Shadow）DOM" class="headerlink" title="影子（Shadow）DOM"></a>影子（Shadow）DOM</h2><p>定义：Shadow DOM 为Web组件中的 DOM和 CSS提供了封装。Shadow DOM 使得这些东西与主文档的DOM保持分离。<br>ShadowRoot 类继承自 DocumentFragment 类。<br>PS：可以使用document.createDocumentFragment 方法或者构造函数来创建一个空的 DocumentFragment.</p>
+<h1 id="CSS解释器和样式布局"><a href="#CSS解释器和样式布局" class="headerlink" title="CSS解释器和样式布局"></a>CSS解释器和样式布局</h1><p>先看看CSS怎么和DOM结合展示页面的呢？<br><img src="http://p4yvw0vpm.bkt.clouddn.com/css%E5%92%8Cdom%E6%A0%91%E5%88%B0%E7%BB%98%E5%88%B6%E7%BD%91%E9%A1%B5.png" alt="CSS+DOM形成简单页面"><br>css解释器和规则匹配处于DOM树建立之后，RenderObject树建立之前，css解释器解释后的结果会保存起来，然后RenderObject树基于该结果来进行规范匹配和布局计算。</p>
+<h2 id="CSSOM（CSS-Object-Model）"><a href="#CSSOM（CSS-Object-Model）" class="headerlink" title="CSSOM（CSS Object Model）"></a>CSSOM（CSS Object Model）</h2><p>CSSOM视图模块(CSSOM View Module)定义了一些 API，Web 开发人员使用这些 API 可以进行检查，也可以以编程方式更改文档及其内容的视觉属性，包括布局框定位、视区宽度和元素滚动。<br>document.styleSheets 可以查看当前页面的StyleSheetList对象，每个link、style都会产生 CSSStyleSheet 作为 StyleSheetList对象的value。</p>
+<h2 id="CSS解释器和规则匹配（本区块内容会使我们对css选择器权重有更好的理解）"><a href="#CSS解释器和规则匹配（本区块内容会使我们对css选择器权重有更好的理解）" class="headerlink" title="CSS解释器和规则匹配（本区块内容会使我们对css选择器权重有更好的理解）"></a>CSS解释器和规则匹配（本区块内容会使我们对css选择器权重有更好的理解）</h2><p>DocumentStyleSheetCollection类（属于Document类），该类包含了所有CSS样式表，还包括了webkit的内部表示类CSSStyleSheet，它包含了CSS的href、类型、内容等信息。<br>CSS解释过程：css字符串经过css解释器处理后变成渲染引擎的内部规则的过程，使用CSSParser类来负责该过程。<br>在解释网页中自定义的CSS样式之前，实际上webkit渲染引擎会为每个网页设置一个默认样式，这也是我们为什么要重置浏览器样式的根本原因。<br>规则匹配：StyleResolver类为DOM的元素节点匹配样式，StyleResolver类根据元素的信息，例如标签名、类别等，从样式规则中查找最匹配的规则，然后将样式信息保存到新建的RenderStyle对象中。最后，这些RenderStyle对象被RenderObject类所管理和使用。<br>    其中，规则的匹配则是由ElementRuleCollector类来计算并获得，它根据元素的属性等信息，并从DocumentRuleSets类中获取规则集合，依次按照ID、CLASS、标签等选择器信息逐次匹配获得元素的样式。<br>    然后webkit对这些规则进行排序，对于该元素需要的样式属性，webkit选择从高优先级规则中选取，并将样式属性值返回。<br>这里，我引入一个不太相关的知识点，块格式化上下文（Block Formatting Context，BFC） 是Web页面的可视化CSS渲染的部分，是块级盒布局发生的区域，也是浮动元素与其他元素交互的区域。<br><a href="https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Block_formatting_context" target="_blank" rel="external">不太了解的同学，请异步MDN-BFC</a></p>
+<h1 id="webkit布局"><a href="#webkit布局" class="headerlink" title="webkit布局"></a>webkit布局</h1><p>当webkit创建RenderObject对象之后，每个对象是不知道自己的位置、大小等信息的，webkit根据盒模型来计算他们的位置、大小等信息的过程称为布局计算/排版。<br>    布局计算分类：第一类是对整个RenderObject树进行的计算；第二类是对RenderObject树中某个子树的计算，常见于文本元素或者overflow：auto块的计算。<br>    布局计算：布局计算是一个递归的过程，这是因为一个节点的大小通常需要先计算它的子节点的位置、大小等信息。</p>
+<h2 id="扩展知识点"><a href="#扩展知识点" class="headerlink" title="扩展知识点"></a>扩展知识点</h2><p>我们常说的reflow和repaint。涉及到元素的几何属性改变会造成reflow会降低性能（transform、opacity等属性不会造成reflow）。<br>扩展为什么说transform实现动画较直接设置几何属性性能较好？<br>1.webkit渲染过程：style -&gt; Layout(reflow发生在这) -&gt; Paint（repaint发生在这） -&gt; Composite，transform是位于’Composite（渲染层合并）‘，而width、left、margin等则是位于‘Layout（布局）’层，这必定导致reflow。<br>2.现代浏览器针对transform等开启GPU加速。<br>    style -&gt; Layout(reflow发生在这) -&gt; Paint（repaint发生在这） -&gt; Composite（transform发生在这个时候）<br>由这个过程我们可以看出，这也是为什么发生reflow必定会发生repaint的根本原因。<br><a href="https://www.w3cplus.com/animation/animation-performance.html" target="_blank" rel="external">CSS Animation性能优化</a><br><a href="https://segmentfault.com/a/1190000008650975" target="_blank" rel="external">从重绘重排角度讲解transform的动画性能</a></p>
+<h1 id="渲染过程的一些理论"><a href="#渲染过程的一些理论" class="headerlink" title="渲染过程的一些理论"></a>渲染过程的一些理论</h1><p>RenderObject树同其他树（如RenderLayer树等），构成了webkit渲染的主要基础设施。</p>
+<h2 id="RenderObject树（DOM树-gt-RenderObject树）"><a href="#RenderObject树（DOM树-gt-RenderObject树）" class="headerlink" title="RenderObject树（DOM树 -&gt; RenderObject树）"></a>RenderObject树（DOM树 -&gt; RenderObject树）</h2><p><img src="http://p4yvw0vpm.bkt.clouddn.com/DOM%E5%88%B0RenderObject.png" alt="DOM到RenderObject"><br>一个RenderObject对象保存了为绘制DOM节点所需要的各种信息，例如样式布局信息，经过webkit的处理之后，RenderObject对象知道如何绘制自己。<br>下列情况会使DOM树节点创建一个RenderObject对象（DOM和RenderObject并非一一对应）。<br>1.DOM树的document节点。<br>2.DOM树种的可视节点，例如html、body、div等。而webkit不会为非可视化节点创建RenderObject节点，例如meta、script。<br>3.某些情况下webkit需要建立匿名的RenderObject节点，该节点不对应于DOM树种的任何节点，而是webkit处理上的需要，典型的例子例如匿名的RenderBlock节点。<br>在html组建页面结构时，webkit为了提升网页性能，会引入分层结构。</p>
+<h2 id="网页层次结构（css也会对网页的分层策略产生重要影响）"><a href="#网页层次结构（css也会对网页的分层策略产生重要影响）" class="headerlink" title="网页层次结构（css也会对网页的分层策略产生重要影响）"></a>网页层次结构（css也会对网页的分层策略产生重要影响）</h2><p>对于一个html文件webkit会为某些元素和它的子节点建立新层，这样webkit可以单独对某层操作提升性能，下列情况会产生新层。<br>1.video标签 – webkit在新层中有效的处理视频解码器和浏览器之间的交互和渲染问题。<br>2.div、p等普通标签 – 涉及到3D变换时。<br>3.canvas标签 – 复杂的2D和3D绘图操作。</p>
+<h2 id="RenderLayer树"><a href="#RenderLayer树" class="headerlink" title="RenderLayer树"></a>RenderLayer树</h2><p><img src="http://p4yvw0vpm.bkt.clouddn.com/RenderObject%E5%88%B0RenderLayer.png" alt="RenderObject到RenderLayer"><br>webkit会为网页的层次创建相应的RenderLayer对象。当某些类型RenderObject的节点或者某些css样式的RenderObject节点出现的时候，webkit就会为这些节点创建RenderLayer对象。<br>RenderLayer树是基于RenderObject树建立起来的一棵新树。RenderLayer节点和RenderObject节点不是一一对应关系，而是一对多的关系。<br>哪些情况下的RenderObject节点需要建立新的RenderLayer节点呢？<br>1.DOM树的Document节点对应的RenderView节点。<br>2.DOM树中的Document的子节点，也就是HTML节点对应RenderBlock节点。<br>3.显式的制定css位置的RenderObject节点。<br>4.有透明效果的RenderObject节点。<br>5.节点有溢出（overflow）、alpha或者反射效果的RenderObject节点。<br>6.使用Canvas 2D和3D（WebGL）技术的RenderObject节点。<br>7.Video节点对应的RenderObject节点。</p>
+<h2 id="渲染方式"><a href="#渲染方式" class="headerlink" title="渲染方式"></a>渲染方式</h2><p>绘图上下文（绘图上下文可以分成两种类型）：<br>    第一种是用来绘制2D图形的上下文，称之为2D绘图上下文（GraphicsContext）。<br>    第二种是绘制3D图形的上下文，称之为3D绘图上下文（GraphicsContext3D）。<br>网页的三种渲染方式：<br>1.软件渲染（CPU内存）<br>2.使用软件绘图的合成化渲染（GPU内存）css3D、WebGL<br>3.硬件加速的合成化渲染（GPU内存）</p>
+<h2 id="webkit软件渲染技术"><a href="#webkit软件渲染技术" class="headerlink" title="webkit软件渲染技术"></a>webkit软件渲染技术</h2><p>在不需要硬件加速内容的时候（包括但不限于css3 3D变形、css3 3D变换、WebGL和视频），webkit就可以使用软件渲染技术来完成页面绘制。<br>对于每个RenderObject对象，需要三个阶段绘制自己：<br>第一阶段是绘制该层中所有块的背景和边框。<br>第二阶段是绘制浮动内容。<br>第三阶段是前景（Foreground），也就是内容部分、轮廓、字体颜色、大小等（内嵌元素的背景、边框等发生在这一阶段）。</p>
+<h2 id="硬件加速机制"><a href="#硬件加速机制" class="headerlink" title="硬件加速机制"></a>硬件加速机制</h2><p>硬件加速技术是指使用GPU的硬件能力来帮助渲染网页（GPU的作用主要是用来绘制3D图形并且性能特别好）。</p>
+<h3 id="Chrome的硬件加速机制"><a href="#Chrome的硬件加速机制" class="headerlink" title="Chrome的硬件加速机制"></a>Chrome的硬件加速机制</h3><p>canvas开发，可以将画布分解为更小的画布，这样在更新时只需要更新小画布从而减少开销。<br>css3 3D变形技术，它能过让浏览器仅仅使用合成器来合成所有的层就可以达到动画效果（只触发Composite而不用触发style -&gt; Layout(reflow发生在这) -&gt; Paint）。</p>
+<h3 id="WebGL"><a href="#WebGL" class="headerlink" title="WebGL"></a>WebGL</h3><p>WebGL是Khronous组织提出的一套基于3D图形定义的javascript接口。<br>它基于canvas元素，跟canvas2D不同的是，Web开发者可以使用3D图形接口来绘制各种3D图形。</p>
+<h3 id="css-3D变形"><a href="#css-3D变形" class="headerlink" title="css 3D变形"></a>css 3D变形</h3><p>这里包括3D变形和动画。<br>webkit会建立一个新层来处理，从而提升性能。</p>
+<h1 id="JavaScript引擎-1"><a href="#JavaScript引擎-1" class="headerlink" title="JavaScript引擎"></a>JavaScript引擎</h1><p>推动JavaScript运行速度提高的利器JIT（Just-In-Time）。<br>JIT：就是代码在目标平台上运行的时候，实时的把代码编译为目标机器上的机器码。<br>编译原理：<br>C++：源代码 –&gt; 抽象语法树 –&gt; 本地代码<br>Java：源代码 –&gt; 抽象语法树  –&gt; 字节码（跨平台） –&gt; JIT –&gt; 本地代码</p>
+<h2 id="V8的一些特性（这里太多了，读者可以自己深究）"><a href="#V8的一些特性（这里太多了，读者可以自己深究）" class="headerlink" title="V8的一些特性（这里太多了，读者可以自己深究）"></a>V8的一些特性（这里太多了，读者可以自己深究）</h2><p>常用的javascript引擎有v8和JavaScriptCore<br>工作原理<br>在js中，基本数据类型Boolean、Number、String、Null、Undefined、Symbol，其他数据都是对象。</p>
+<h3 id="数据表示"><a href="#数据表示" class="headerlink" title="数据表示"></a>数据表示</h3><p>在V8中，数据的表示分成两个部分<br>    第一部分是数据的实际内容，它们是变长的，而且内容的类型也不一样，如String、对象等。<br>    第二部分是数据的句柄，句柄的大小是固定的，句柄中包含指向数据的指针。</p>
+<h3 id="数据的存储"><a href="#数据的存储" class="headerlink" title="数据的存储"></a>数据的存储</h3><p>Handle：句柄类，主要用来管理基础数据和对象，以便被垃圾回收器操作。<br>主要有两个类型，一个Local类（继承自Handle类），表示本地栈上的数据，所以比较轻量。<br>另一个是Persistent类（继承自Handle类）表示函数间的数据和对象访问。<br>对于整形数据，由Handle本身来存储，同时也为了快速访问。<br>其他的数据都是从堆中申请内存来存储它们，由于其他数据类型，受限于Handle的大小和变长等原因，都存储在堆中。<br>V8的延迟（deferred）特性：它使的许多javascript代码的编译直到运行的时候被调用到才会发生，这样可以减少时间开销。<br><img src="http://p4yvw0vpm.bkt.clouddn.com/javascript%E5%88%B0%E6%9C%AC%E5%9C%B0%E4%BB%A3%E7%A0%81.png" alt="v8将源代码-本地代码"></p>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><h3 id="常见的语言类型"><a href="#常见的语言类型" class="headerlink" title="常见的语言类型"></a>常见的语言类型</h3><p>机器语言（它是计算机唯一能直接执行的语言，电子计算机的机器指令是一列二进制数字。）<br>汇编语言 汇编指令是机器指令便于记忆的书写格式，但他需要进过编译器转换为机器语言，这样机器才能执行。</p>
+<h3 id="使用setTimeout或setInterval较requestAnimationFrame的缺点？"><a href="#使用setTimeout或setInterval较requestAnimationFrame的缺点？" class="headerlink" title="使用setTimeout或setInterval较requestAnimationFrame的缺点？"></a>使用setTimeout或setInterval较requestAnimationFrame的缺点？</h3><p>时间间隔应该设置为多少才合适呢。<br>跟屏幕的分辨率有关吗（不同浏览器存在一个极小值）。<br>设置的时间会按照会准确执行吗。<br>动画会被平滑地显示效果吗。<br>回调函数时复杂的好还是简单的好呢。<br><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestAnimationFrame" target="_blank" rel="external">window.requestAnimationFrame</a></p>
+<h1 id="其他浏览器相关知识"><a href="#其他浏览器相关知识" class="headerlink" title="其他浏览器相关知识"></a>其他浏览器相关知识</h1><h2 id="插件和Javascript扩展"><a href="#插件和Javascript扩展" class="headerlink" title="插件和Javascript扩展"></a>插件和Javascript扩展</h2><p>在早期的浏览器能力十分有限，Web前端开发者们希望能够通过一些机制来扩展浏览器的能力（插件机制如flash插件）。</p>
+<h3 id="NPAPI全称叫-Netscape-plugin-API"><a href="#NPAPI全称叫-Netscape-plugin-API" class="headerlink" title="NPAPI全称叫 Netscape plugin API"></a>NPAPI全称叫 Netscape plugin API</h3><p>NPAPI是当今最流行的插件架构，几乎所有浏览器都支持，不过存在很大的安全隐患，插件可以窃取系统底层权限，发起恶意攻击。</p>
+<h3 id="PPAPI也就是Pepper-Plugin-API"><a href="#PPAPI也就是Pepper-Plugin-API" class="headerlink" title="PPAPI也就是Pepper Plugin API"></a>PPAPI也就是Pepper Plugin API</h3><p>2010年，Google开发了新的PPAPI，将外挂插件全部放到沙盒里运行，2012年Windows、Mac版本的Chrome浏览器先后升级了PPAPI Flash Player，并希望今年底之前彻底淘汰NPAPI。</p>
+<h2 id="JavaScript引擎的扩展机制"><a href="#JavaScript引擎的扩展机制" class="headerlink" title="JavaScript引擎的扩展机制"></a>JavaScript引擎的扩展机制</h2><p>通过如下url参看当前chrome浏览器安装的extensions<br>chrome://extensions/ </p>
+<h2 id="多媒体"><a href="#多媒体" class="headerlink" title="多媒体"></a>多媒体</h2><h3 id="WebRTC"><a href="#WebRTC" class="headerlink" title="WebRTC"></a>WebRTC</h3><p>WebRTC实现了基于网页的视频会议，标准是WHATWG 协议，目的是通过浏览器提供简单的javascript就可以达到实时通讯（Real-Time Communications (RTC)）能力。<br><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/WebRTC_API" target="_blank" rel="external">MDN-WebRTC</a><br>最重要的方法：navigator.mediaDevices.getUserMedia(constraints)<br>还有Video、Audio等。</p>
+<h2 id="安全机制"><a href="#安全机制" class="headerlink" title="安全机制"></a>安全机制</h2><p>第一部分是网页的安全，包括但是不限于网页数据安全传输、跨域访问、用户数据安全等。<br>第二部分是浏览器的安全，具体是指虽然网页或者Javascript代码有一些安全问题或者存在安全漏洞，浏览器也能够在运行它们的时候保证吱声的安全，不受到攻击从而泄漏数据或者使系统遭受破坏。</p>
+<h3 id="网页安全模型"><a href="#网页安全模型" class="headerlink" title="网页安全模型"></a>网页安全模型</h3><p>安全模型基础：<br>域（Same Origin Policy）XMLHttpRequest、cookie的读写、DOM对象操作等。<br>XSS（Cross Site Scripting）执行跨域的js脚本代码。开发者可以将用户输入的数据进行字符转换来避免。webkit通过XSSAuditor对象帮我们过滤（默认开启）。<br>CSP （Content-Security-Policy）HTTP首部字段，内容安全策略（CSP）用于检测和减轻用于 Web 站点的特定类型的攻击，例如 XSS 和数据注入等。<br>CORS（Cross Origin Resource Sharing）跨域资源共享标准新增了一组 HTTP 首部字段，允许服务器声明哪些源站有权限访问哪些资源。<br>    具体服务端代码设置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// 请求头</div><div class="line">header(&apos;Access-Control-Allow-Origin: http://arunranga.com&apos;); // </div><div class="line">header(&apos;Access-Control-Allow-Methods: POST, GET, OPTIONS&apos;);</div><div class="line">header(&apos;Access-Control-Allow-Headers: X-PINGARUNER&apos;);</div><div class="line">// 响应头</div><div class="line">Access-Control-Allow-Origin、</div><div class="line">Access-Control-Allow-Credentials、</div><div class="line">Access-Control-Allow-Headers、</div><div class="line">Access-Control-Expose-Headers、</div><div class="line">Access-Control-Allow-Methods、</div><div class="line">Access-Control-Max-Age</div></pre></td></tr></table></figure></p>
+<p>Cross Document Messaging 通过 window.postMessage 和 message 事件来通信。<br>HTTPS（安全传输协议）<br>SPDY（读作“SPeeDY”）是Google开发的基于TCP的应用层协议，用以最小化网络延迟，提升网络速度，优化用户的网络使用体验。    SPDY核心思想为多路复用。<br>QUIC（Quick UDP Internet Connection）是谷歌制定的一种基于UDP的低时延的互联网传输层协议。</p>
+<h4 id="CSP和CORS的区别："><a href="#CSP和CORS的区别：" class="headerlink" title="CSP和CORS的区别："></a>CSP和CORS的区别：</h4><p>CSP定义了网页自身能够访问的某些域和资源。<br>CORS定义一个网页如何才能访问被同源策略禁止的跨域资源，并规定了两者交互的协议和方式。</p>
+<h3 id="沙箱模型"><a href="#沙箱模型" class="headerlink" title="沙箱模型"></a>沙箱模型</h3><p>浏览器的沙箱模型是利用系统提供的安全技术，让网页在执行过程中不会修改操作系统或者是访问系统中的隐私数据，而需要访问系统资源或者说是系统调用的时候，通过一个代理机制来完成。</p>
+<h1 id="chrome浏览其使用技巧（以实用性排列）"><a href="#chrome浏览其使用技巧（以实用性排列）" class="headerlink" title="chrome浏览其使用技巧（以实用性排列）"></a>chrome浏览其使用技巧（以实用性排列）</h1><p>一下url直接输入在浏览器中，enter即可</p>
+<table>
+<thead>
+<tr>
+<th>URL</th>
+<th style="text-align:center">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>chrome://inspect</td>
+<td style="text-align:center">移动端网页调试</td>
+</tr>
+<tr>
+<td>chrome://net-internals</td>
+<td style="text-align:center">net-internals是一套工具集合，用于帮助诊断网络请求与访问方面的问题，它通过监听和搜集 DNS，Sockets，SPDY，Caches等事件与数据来向开发者反馈各种网络请求的过程、状态以及可能产生影响的因素。如，查看DNS主机解析缓存chrome://net-internals/#dns</td>
+</tr>
+<tr>
+<td>chrome://view-http-cache/</td>
+<td style="text-align:center">查看内部存储内容及其详情</td>
+</tr>
+<tr>
+<td>chrome://downloads/</td>
+<td style="text-align:center">下载内容管理，其快捷键是Ctrl+J</td>
+</tr>
+<tr>
+<td>chrome://extensions/</td>
+<td style="text-align:center">扩展管理</td>
+</tr>
+<tr>
+<td>chrome://bookmarks/</td>
+<td style="text-align:center">书签管理  </td>
+</tr>
+<tr>
+<td>chrome://history</td>
+<td style="text-align:center">访问历史管理  </td>
+</tr>
+<tr>
+<td>chrome://restart</td>
+<td style="text-align:center">重启chrome浏览器 </td>
+</tr>
+<tr>
+<td>chrome://apps</td>
+<td style="text-align:center">chrome网上应用店  </td>
+</tr>
+<tr>
+<td>chrome://flags/</td>
+<td style="text-align:center">新特性管理 </td>
+</tr>
+<tr>
+<td>chrome://dns</td>
+<td style="text-align:center">查看DNS预取命名（从超链接等处来预测）  </td>
+</tr>
+<tr>
+<td>chrome://quota-internals</td>
+<td style="text-align:center">查看浏览器所使用磁盘空间配额 </td>
+</tr>
+<tr>
+<td>chrome://settings</td>
+<td style="text-align:center">浏览器的设置</td>
+</tr>
+<tr>
+<td>chrome://sync-internals</td>
+<td style="text-align:center">查看chrome 的同步状态 </td>
+</tr>
+<tr>
+<td>chrome://about/</td>
+<td style="text-align:center">查看所有chrome命令 </td>
+</tr>
+</tbody>
+</table>
+<p><a href="https://fanerge.github.io">期望加入一个技术氛围nice的团队-成都</a></p>
+
+      
+    </div>
+	<div>
+	  
+		
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+  <p><span>本文标题:</span><a href="/浏览器工作原理-webkit内核研究.html">浏览器工作原理-webkit内核研究</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 余真帆-fanerge 的个人博客">余真帆-fanerge</a></p>
+  <p><span>发布时间:</span>2018年03月03日 - 10:03</p>
+  <p><span>最后更新:</span>2018年03月03日 - 12:03</p>
+  <p><span>原始链接:</span><a href="/浏览器工作原理-webkit内核研究.html" title="浏览器工作原理-webkit内核研究">https://fanerge.github.io/浏览器工作原理-webkit内核研究.html</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://fanerge.github.io/浏览器工作原理-webkit内核研究.html"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+
+	  
+	</div>
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+	<div>
+	  
+		<div>
+    
+        <div style="text-align:center;color: #aaa;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>fanerge在此感谢您的阅读-------------</div>
+    
+</div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/浏览器/" rel="tag"><i class="fa fa-tag"></i> 浏览器</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/前端常识-gj.html" rel="next" title="前端常识-gj">
+                <i class="fa fa-chevron-left"></i> 前端常识-gj
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      a
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="余真帆-fanerge" />
+          <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives" rel="external nofollow">
+                <span class="site-state-item-count">146</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a rel="external nofollow" href="/categories/index.html">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a rel="external nofollow" href="/tags/index.html">
+                <span class="site-state-item-count">44</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://github.com/fanerge/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="twitter" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="weibo" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金">
+                  
+                    <i class="fa fa-fw fa-spinner"></i>
+                  
+                  掘金
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#浏览器的内核"><span class="nav-number">1.</span> <span class="nav-text">浏览器的内核</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#渲染引擎"><span class="nav-number">1.1.</span> <span class="nav-text">渲染引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaScript引擎"><span class="nav-number">1.2.</span> <span class="nav-text">JavaScript引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#浏览器渲染引擎的进度史"><span class="nav-number">1.3.</span> <span class="nav-text">浏览器渲染引擎的进度史</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#浏览器的渲染引擎及依赖模块分析"><span class="nav-number">2.</span> <span class="nav-text">浏览器的渲染引擎及依赖模块分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#网页基础知识"><span class="nav-number">3.</span> <span class="nav-text">网页基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#输入URL到页面展示简图"><span class="nav-number">3.1.</span> <span class="nav-text">输入URL到页面展示简图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#浏览器内核各部分解释"><span class="nav-number">3.2.</span> <span class="nav-text">浏览器内核各部分解释</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HTML解释器"><span class="nav-number">4.</span> <span class="nav-text">HTML解释器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#影子（Shadow）DOM"><span class="nav-number">4.1.</span> <span class="nav-text">影子（Shadow）DOM</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CSS解释器和样式布局"><span class="nav-number">5.</span> <span class="nav-text">CSS解释器和样式布局</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CSSOM（CSS-Object-Model）"><span class="nav-number">5.1.</span> <span class="nav-text">CSSOM（CSS Object Model）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CSS解释器和规则匹配（本区块内容会使我们对css选择器权重有更好的理解）"><span class="nav-number">5.2.</span> <span class="nav-text">CSS解释器和规则匹配（本区块内容会使我们对css选择器权重有更好的理解）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#webkit布局"><span class="nav-number">6.</span> <span class="nav-text">webkit布局</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展知识点"><span class="nav-number">6.1.</span> <span class="nav-text">扩展知识点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#渲染过程的一些理论"><span class="nav-number">7.</span> <span class="nav-text">渲染过程的一些理论</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RenderObject树（DOM树-gt-RenderObject树）"><span class="nav-number">7.1.</span> <span class="nav-text">RenderObject树（DOM树 -> RenderObject树）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网页层次结构（css也会对网页的分层策略产生重要影响）"><span class="nav-number">7.2.</span> <span class="nav-text">网页层次结构（css也会对网页的分层策略产生重要影响）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RenderLayer树"><span class="nav-number">7.3.</span> <span class="nav-text">RenderLayer树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#渲染方式"><span class="nav-number">7.4.</span> <span class="nav-text">渲染方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#webkit软件渲染技术"><span class="nav-number">7.5.</span> <span class="nav-text">webkit软件渲染技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#硬件加速机制"><span class="nav-number">7.6.</span> <span class="nav-text">硬件加速机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Chrome的硬件加速机制"><span class="nav-number">7.6.1.</span> <span class="nav-text">Chrome的硬件加速机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WebGL"><span class="nav-number">7.6.2.</span> <span class="nav-text">WebGL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#css-3D变形"><span class="nav-number">7.6.3.</span> <span class="nav-text">css 3D变形</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JavaScript引擎-1"><span class="nav-number">8.</span> <span class="nav-text">JavaScript引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#V8的一些特性（这里太多了，读者可以自己深究）"><span class="nav-number">8.1.</span> <span class="nav-text">V8的一些特性（这里太多了，读者可以自己深究）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据表示"><span class="nav-number">8.1.1.</span> <span class="nav-text">数据表示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据的存储"><span class="nav-number">8.1.2.</span> <span class="nav-text">数据的存储</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展"><span class="nav-number">8.2.</span> <span class="nav-text">扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常见的语言类型"><span class="nav-number">8.2.1.</span> <span class="nav-text">常见的语言类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用setTimeout或setInterval较requestAnimationFrame的缺点？"><span class="nav-number">8.2.2.</span> <span class="nav-text">使用setTimeout或setInterval较requestAnimationFrame的缺点？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他浏览器相关知识"><span class="nav-number">9.</span> <span class="nav-text">其他浏览器相关知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#插件和Javascript扩展"><span class="nav-number">9.1.</span> <span class="nav-text">插件和Javascript扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NPAPI全称叫-Netscape-plugin-API"><span class="nav-number">9.1.1.</span> <span class="nav-text">NPAPI全称叫 Netscape plugin API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PPAPI也就是Pepper-Plugin-API"><span class="nav-number">9.1.2.</span> <span class="nav-text">PPAPI也就是Pepper Plugin API</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JavaScript引擎的扩展机制"><span class="nav-number">9.2.</span> <span class="nav-text">JavaScript引擎的扩展机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多媒体"><span class="nav-number">9.3.</span> <span class="nav-text">多媒体</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#WebRTC"><span class="nav-number">9.3.1.</span> <span class="nav-text">WebRTC</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安全机制"><span class="nav-number">9.4.</span> <span class="nav-text">安全机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#网页安全模型"><span class="nav-number">9.4.1.</span> <span class="nav-text">网页安全模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CSP和CORS的区别："><span class="nav-number">9.4.1.1.</span> <span class="nav-text">CSP和CORS的区别：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#沙箱模型"><span class="nav-number">9.4.2.</span> <span class="nav-text">沙箱模型</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#chrome浏览其使用技巧（以实用性排列）"><span class="nav-number">10.</span> <span class="nav-text">chrome浏览其使用技巧（以实用性排列）</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+</div>
+
+
+
+<div class="powered-by">
+	<i class="fa fa-user-md"></i>
+	<span id="busuanzi_container_site_pv">
+		本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io" rel="external nofollow">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共237.1k字</span>
+</div>
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fanerge.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://fanerge.github.io/浏览器工作原理-webkit内核研究.html';
+          this.page.identifier = '浏览器工作原理-webkit内核研究.html';
+          this.page.title = '浏览器工作原理-webkit内核研究';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fanerge.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2156704"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+    <script type="text/javascript" src="/live2d/script.js"></script>
+    <canvas id="live2dcanvas" width="80" height="160" class="live2d"></canvas>
+    <style>
+      #live2dcanvas {
+        position: fixed;
+        right: 0px;
+        z-index: 999;
+        pointer-events: none;
+        bottom: 100px;
+      }
+    </style>
+    <script>loadlive2d("live2dcanvas" ,"/live2d/assets/hibiki/hibiki.model.json",0.5)</script>
+  
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
