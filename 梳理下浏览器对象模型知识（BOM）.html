@@ -1,0 +1,1044 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="baidu-site-verification" content="u3EKLjdYkx" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+<style>
+    .pace .pace-progress {
+        background: #1E92FB; /*进度条颜色*/
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB; /*阴影颜色*/
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;    /*上边框颜色*/
+        border-left-color: #1E92FB;    /*左边框颜色*/
+    }
+</style>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="BOM," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="余真帆的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="BOM介绍BOM(Browser Object Model) 是指浏览器对象模型，是用于描述这种对象与对象之间层次关系的模型，浏览器对象模型提供了独立于内容的、可以与浏览器窗口进行互动的对象结构。BOM由多个对象组成，其中代表浏览器窗口的Window对象是BOM的顶层对象，其他对象都是该对象的子对象（Screen、Location、History、Navigator）。浏览器对象模型的构成 Win">
+<meta name="keywords" content="BOM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="梳理下浏览器对象模型知识（BOM）">
+<meta property="og:url" content="https://fanerge.github.io/梳理下浏览器对象模型知识（BOM）.html">
+<meta property="og:site_name" content="余真帆的博客">
+<meta property="og:description" content="BOM介绍BOM(Browser Object Model) 是指浏览器对象模型，是用于描述这种对象与对象之间层次关系的模型，浏览器对象模型提供了独立于内容的、可以与浏览器窗口进行互动的对象结构。BOM由多个对象组成，其中代表浏览器窗口的Window对象是BOM的顶层对象，其他对象都是该对象的子对象（Screen、Location、History、Navigator）。浏览器对象模型的构成 Win">
+<meta property="og:image" content="http://p5hb0ypha.bkt.clouddn.com/BOM.svg">
+<meta property="og:image" content="http://p5hb0ypha.bkt.clouddn.com/window%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%B1%9E%E6%80%A7.svg">
+<meta property="og:image" content="http://p5hb0ypha.bkt.clouddn.com/window%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%96%B9%E6%B3%95%281%29.svg">
+<meta property="og:image" content="http://p5hb0ypha.bkt.clouddn.com/location%E5%AF%B9%E8%B1%A1.svg">
+<meta property="og:image" content="http://p5hb0ypha.bkt.clouddn.com/history%E5%AF%B9%E8%B1%A1.svg">
+<meta property="og:image" content="http://p5hb0ypha.bkt.clouddn.com/navigator%E5%AF%B9%E8%B1%A1.svg">
+<meta property="og:image" content="http://p5hb0ypha.bkt.clouddn.com/screen%E5%AF%B9%E8%B1%A1.svg">
+<meta property="og:image" content="http://p5hb0ypha.bkt.clouddn.com/document%E5%AF%B9%E8%B1%A1.svg">
+<meta property="og:updated_time" content="2018-03-12T13:55:15.113Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="梳理下浏览器对象模型知识（BOM）">
+<meta name="twitter:description" content="BOM介绍BOM(Browser Object Model) 是指浏览器对象模型，是用于描述这种对象与对象之间层次关系的模型，浏览器对象模型提供了独立于内容的、可以与浏览器窗口进行互动的对象结构。BOM由多个对象组成，其中代表浏览器窗口的Window对象是BOM的顶层对象，其他对象都是该对象的子对象（Screen、Location、History、Navigator）。浏览器对象模型的构成 Win">
+<meta name="twitter:image" content="http://p5hb0ypha.bkt.clouddn.com/BOM.svg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('由于这是公司内部面试题，需要密码进行访问，如有不便敬请谅解！') !== ''){
+                alert('对不起，密码错误不能访问。');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+
+  <link rel="canonical" href="https://fanerge.github.io/梳理下浏览器对象模型知识（BOM）.html"/>
+
+
+
+
+
+  <title> 梳理下浏览器对象模型知识（BOM） | 余真帆的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?947609e8bcc46de32a1dca9cc56cd8a1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+	<a href="https://github.com/fanerge/"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">余真帆的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/梳理下浏览器对象模型知识（BOM）.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                梳理下浏览器对象模型知识（BOM）
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-12T20:41:17+08:00">
+                2018-03-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/BOM/" itemprop="url" rel="index">
+                    <span itemprop="name">BOM</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/梳理下浏览器对象模型知识（BOM）.html#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="梳理下浏览器对象模型知识（BOM）.html" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  447
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  2
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="BOM介绍"><a href="#BOM介绍" class="headerlink" title="BOM介绍"></a>BOM介绍</h1><p>BOM(Browser Object Model) 是指浏览器对象模型，是用于描述这种对象与对象之间层次关系的模型，浏览器对象模型提供了独立于内容的、可以与浏览器窗口进行互动的对象结构。BOM由多个对象组成，其中代表浏览器窗口的Window对象是BOM的顶层对象，其他对象都是该对象的子对象（Screen、Location、History、Navigator）。<br>浏览器对象模型的构成<br><img src="http://p5hb0ypha.bkt.clouddn.com/BOM.svg" alt="浏览器对象模型的构成"></p>
+<h1 id="Window对象"><a href="#Window对象" class="headerlink" title="Window对象"></a>Window对象</h1><p>Window对象，它表示浏览器窗口，在浏览器中最顶层的对象。<br>在浏览器中，每个标签具有自己的 window 对象 。也就是说，同一个窗口的标签之间不会共享一个 window 对象。</p>
+<h2 id="Window对象的属性"><a href="#Window对象的属性" class="headerlink" title="Window对象的属性"></a>Window对象的属性</h2><p><img src="http://p5hb0ypha.bkt.clouddn.com/window%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%B1%9E%E6%80%A7.svg" alt="Window对象的属性"><br><a href="http://p5hb0ypha.bkt.clouddn.com/window%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%B1%9E%E6%80%A7.svg" target="_blank" rel="external">看不清，点这里</a></p>
+<h2 id="Window对象的方法"><a href="#Window对象的方法" class="headerlink" title="Window对象的方法"></a>Window对象的方法</h2><p><img src="http://p5hb0ypha.bkt.clouddn.com/window%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%96%B9%E6%B3%95%281%29.svg" alt="Window对象的方法"><br><a href="http://p5hb0ypha.bkt.clouddn.com/window%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%96%B9%E6%B3%95%281%29.svg" target="_blank" rel="external">看不清，点这里</a></p>
+<h1 id="Location对象"><a href="#Location对象" class="headerlink" title="Location对象"></a>Location对象</h1><p>Location 对象表示其链接到的对象的位置（URL）。所做的修改反映在与之相关的对象上。<br>Document 和 Window 接口都有这样一个链接的Location，分别通过 Document.location和Window.location 访问。<br><img src="http://p5hb0ypha.bkt.clouddn.com/location%E5%AF%B9%E8%B1%A1.svg" alt="Location对象"><br><a href="http://p5hb0ypha.bkt.clouddn.com/location%E5%AF%B9%E8%B1%A1.svg" target="_blank" rel="external">看不清，点这里</a></p>
+<h1 id="History对象"><a href="#History对象" class="headerlink" title="History对象"></a>History对象</h1><p>History 对象允许操作浏览器的曾经在标签页或者框架里访问的会话历史记录。<br><img src="http://p5hb0ypha.bkt.clouddn.com/history%E5%AF%B9%E8%B1%A1.svg" alt="History对象"><br><a href="http://p5hb0ypha.bkt.clouddn.com/history%E5%AF%B9%E8%B1%A1.svg" target="_blank" rel="external">看不清，点这里</a></p>
+<h1 id="Navigator对象"><a href="#Navigator对象" class="headerlink" title="Navigator对象"></a>Navigator对象</h1><p>Navigator 接口表示用户代理的状态和标识。 它允许脚本查询它和注册自己进行一些活动。<br><img src="http://p5hb0ypha.bkt.clouddn.com/navigator%E5%AF%B9%E8%B1%A1.svg" alt="Navigator对象"><br><a href="http://p5hb0ypha.bkt.clouddn.com/navigator%E5%AF%B9%E8%B1%A1.svg" target="_blank" rel="external">看不清，点这里</a></p>
+<h1 id="Screen对象"><a href="#Screen对象" class="headerlink" title="Screen对象"></a>Screen对象</h1><p>Screen 对象包含有关用户屏幕的信息。<br><img src="http://p5hb0ypha.bkt.clouddn.com/screen%E5%AF%B9%E8%B1%A1.svg" alt="Screen对象"><br><a href="http://p5hb0ypha.bkt.clouddn.com/screen%E5%AF%B9%E8%B1%A1.svg" target="_blank" rel="external">看不清，点这里</a></p>
+<h1 id="document对象"><a href="#document对象" class="headerlink" title="document对象"></a>document对象</h1><p>document虽然不属于BOM，在这里我也整理了一下。<br>Document 对象提供了一些在浏览器服务中作为页面内容入口点而加载的一些页面，也就是 DOM 树。<br><img src="http://p5hb0ypha.bkt.clouddn.com/document%E5%AF%B9%E8%B1%A1.svg" alt="document对象"><br><a href="http://p5hb0ypha.bkt.clouddn.com/document%E5%AF%B9%E8%B1%A1.svg" target="_blank" rel="external">看不清，点这里</a></p>
+
+      
+    </div>
+	<div>
+	  
+		
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script type="text/javascript" src="http://jslibs.wuxubj.cn/sweetalert_mini/jquery-1.7.1.min.js"></script>
+  <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
+  <p><span>本文标题:</span><a href="/梳理下浏览器对象模型知识（BOM）.html">梳理下浏览器对象模型知识（BOM）</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 余真帆-fanerge 的个人博客">余真帆-fanerge</a></p>
+  <p><span>发布时间:</span>2018年03月12日 - 20:03</p>
+  <p><span>最后更新:</span>2018年03月12日 - 21:03</p>
+  <p><span>原始链接:</span><a href="/梳理下浏览器对象模型知识（BOM）.html" title="梳理下浏览器对象模型知识（BOM）">https://fanerge.github.io/梳理下浏览器对象模型知识（BOM）.html</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://fanerge.github.io/梳理下浏览器对象模型知识（BOM）.html"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+    clipboard.on('success', $(function(){
+      $(".fa-clipboard").click(function(){
+        swal({   
+          title: "",   
+          text: '复制成功',   
+          html: false,
+          timer: 500,   
+          showConfirmButton: false
+        });
+      });
+    }));  
+</script>
+
+
+	  
+	</div>
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>坚持技术分享，您的支持将鼓励我继续创作！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+	<div>
+	  
+		<div>
+    
+        <div style="text-align:center;color: #aaa;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>fanerge在此感谢您的阅读-------------</div>
+    
+</div>
+	  
+	</div>
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/BOM/" rel="tag"><i class="fa fa-tag"></i> BOM</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/前端常识-gj2.html" rel="next" title="前端常识-gj2">
+                <i class="fa fa-chevron-left"></i> 前端常识-gj2
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/从对象的遍历到浅拷贝的思考.html" rel="prev" title="从对象的遍历到浅拷贝的思考">
+                从对象的遍历到浅拷贝的思考 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      a
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="余真帆-fanerge" />
+          <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives" rel="external nofollow">
+                <span class="site-state-item-count">150</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a rel="external nofollow" href="/categories/index.html">
+                <span class="site-state-item-count">24</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a rel="external nofollow" href="/tags/index.html">
+                <span class="site-state-item-count">46</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://github.com/fanerge/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="twitter" target="_blank" title="Twitter">
+                  
+                    <i class="fa fa-fw fa-twitter"></i>
+                  
+                  Twitter
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="weibo" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a rel="external nofollow" href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金">
+                  
+                    <i class="fa fa-fw fa-spinner"></i>
+                  
+                  掘金
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#BOM介绍"><span class="nav-number">1.</span> <span class="nav-text">BOM介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Window对象"><span class="nav-number">2.</span> <span class="nav-text">Window对象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Window对象的属性"><span class="nav-number">2.1.</span> <span class="nav-text">Window对象的属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Window对象的方法"><span class="nav-number">2.2.</span> <span class="nav-text">Window对象的方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Location对象"><span class="nav-number">3.</span> <span class="nav-text">Location对象</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#History对象"><span class="nav-number">4.</span> <span class="nav-text">History对象</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Navigator对象"><span class="nav-number">5.</span> <span class="nav-text">Navigator对象</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Screen对象"><span class="nav-number">6.</span> <span class="nav-text">Screen对象</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#document对象"><span class="nav-number">7.</span> <span class="nav-text">document对象</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+</div>
+
+
+
+<div class="powered-by">
+	<i class="fa fa-user-md"></i>
+	<span id="busuanzi_container_site_pv">
+		本站总访问量<span id="busuanzi_value_site_pv"></span>次
+	</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io" rel="external nofollow">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next" rel="external nofollow">
+    NexT.Mist
+  </a>
+</div>
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共249.4k字</span>
+</div>
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://fanerge.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://fanerge.github.io/梳理下浏览器对象模型知识（BOM）.html';
+          this.page.identifier = '梳理下浏览器对象模型知识（BOM）.html';
+          this.page.title = '梳理下浏览器对象模型知识（BOM）';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://fanerge.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2156704"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+    <script type="text/javascript" src="/live2d/script.js"></script>
+    <canvas id="live2dcanvas" width="80" height="160" class="live2d"></canvas>
+    <style>
+      #live2dcanvas {
+        position: fixed;
+        right: 0px;
+        z-index: 999;
+        pointer-events: none;
+        bottom: 100px;
+      }
+    </style>
+    <script>loadlive2d("live2dcanvas" ,"/live2d/assets/hibiki/hibiki.model.json",0.5)</script>
+  
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
