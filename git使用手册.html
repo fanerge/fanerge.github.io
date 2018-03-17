@@ -123,7 +123,7 @@
 <meta property="og:description" content="git基础知识git工作流你的本地仓库由 git 维护的三棵“树”组成。第一个是你的 工作目录，它持有实际文件；第二个是 暂存区（Index），它像个缓存区域，临时保存你的改动；最后是 HEAD，它指向你最后一次提交的结果。下图展示其关系 git配置用户信息Git是分布式版本控制系统，SVN都是集中式的版本控制系统（需要中央服务器）12git config --global user.name &amp;">
 <meta property="og:image" content="http://www.runoob.com/manual/git-guide/img/trees.png">
 <meta property="og:image" content="http://marklodato.github.io/visual-git-guide/basic-usage.svg">
-<meta property="og:updated_time" content="2018-01-14T14:01:12.638Z">
+<meta property="og:updated_time" content="2018-03-16T14:01:05.424Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git使用手册">
 <meta name="twitter:description" content="git基础知识git工作流你的本地仓库由 git 维护的三棵“树”组成。第一个是你的 工作目录，它持有实际文件；第二个是 暂存区（Index），它像个缓存区域，临时保存你的改动；最后是 HEAD，它指向你最后一次提交的结果。下图展示其关系 git配置用户信息Git是分布式版本控制系统，SVN都是集中式的版本控制系统（需要中央服务器）12git config --global user.name &amp;">
@@ -419,7 +419,7 @@
                   <span class="post-meta-item-text">字数统计</span>
                 
                 <span title="字数统计">
-                  4,827
+                  4,999
                 </span>
               
 
@@ -435,7 +435,7 @@
                   <span class="post-meta-item-text">阅读时长</span>
                 
                 <span title="阅读时长">
-                  18
+                  19
                 </span>
               
             </div>
@@ -459,8 +459,8 @@
 <p>PS：注意git config命令的–global参数，用了这个参数，表示你这台机器上所有的Git仓库都会使用这个配置，当然也可以对某个仓库指定不同的用户名和Email地址。</p>
 <h1 id="版本相关"><a href="#版本相关" class="headerlink" title="版本相关"></a>版本相关</h1><h2 id="创建版本库"><a href="#创建版本库" class="headerlink" title="创建版本库"></a>创建版本库</h2><p>版本库又名仓库，英文名repository，你可以简单理解成一个目录，这个目录里面的所有文件都可以被Git管理起来，每个文件的修改、删除，Git都能跟踪，以便任何时刻都可以追踪历史，或者在将来某个时刻可以“还原”。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">mkdir dirname </div><div class="line">cd dirname</div><div class="line">pwd // pwd命令用于显示当前目录(绝对路径)</div><div class="line">git init // 把这个目录变成Git可以管理的仓库</div></pre></td></tr></table></figure></p>
 <p>PS：目录名和文件名不可有中文<br>    .git 文件就是Git来跟踪管理版本库，千万别手动更改。<br>    如果没有.git 文件（系统隐藏关键文件），可以 ls -ah命令来查看</p>
-<h3 id="把文件添加到版本库"><a href="#把文件添加到版本库" class="headerlink" title="把文件添加到版本库"></a>把文件添加到版本库</h3><p>第一步，用命令git add告诉Git，把文件<span style="color: red">添加</span>到仓库：<br>实际上就是把文件修改添加到暂存区<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git add fileName</div><div class="line">git add *.js // 通配符</div></pre></td></tr></table></figure></p>
-<p>PS：可以向git库多次添加文件，并一次提交<br>第二步，用命令git commit告诉Git，把文件<span style="color: red">提交</span>到仓库：<br>实际上就是把暂存区的所有内容提交到当前分支（默认是master分支）<br><code>git commit -m &quot;说明文本&quot;</code><br>PS：-m后面输入的是本次提交的说明，方便以后查看<br>更好的理解：需要提交的文件修改通过放到暂存区，然后，一次性提交暂存区的所有修改。<br><code>git commit -am &#39;说明&#39;</code><br>PS：git add 和 git commit的简写<br>清屏<br><code>reset + Enter</code><br>该命令可以让我们时刻掌握仓库当前的状态（当前是否有需要提交的修改）<br><code>git mv &lt;oldName&gt; &lt;nemeName&gt;</code><br>PS：git mv 命令用于移动或重命名一个文件、目录、软连接。<br><code>git status</code><br>PS：列出当前目录所有还没有被git管理的文件和 被git管理且被修改但还未提交（git commit）的文件。<br>查看具体修改了什么内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">git diff</div><div class="line">git diff HEAD -- fileName // 比对某个文件</div><div class="line">git diff &lt;source_branch&gt; &lt;target_branch&gt;</div><div class="line">	比对两个分支</div><div class="line">尚未缓存的改动：git diff</div><div class="line">查看已缓存的改动： git diff --cached</div><div class="line">查看已缓存的与未缓存的所有改动：git diff HEAD</div><div class="line">显示摘要而非整个 diff：git diff --stat</div></pre></td></tr></table></figure></p>
+<h3 id="把文件添加到版本库"><a href="#把文件添加到版本库" class="headerlink" title="把文件添加到版本库"></a>把文件添加到版本库</h3><p>第一步，用命令git add告诉Git，把文件<span style="color: red">添加</span>到仓库：<br>实际上就是把文件修改添加到暂存区<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">git add fileName</div><div class="line">git add *.js // 通配符</div><div class="line">git add -u  提交被修改(modified)和被删除(deleted)文件，不包括新文件(new)</div><div class="line">git add .  提交新文件(new)和被修改(modified)文件，不包括被删除(deleted)文件</div><div class="line">git add -A  提交所有变化（是git add .和git add -u的结合，git add -all的简写）</div></pre></td></tr></table></figure></p>
+<p>git add . ：他会监控工作区的状态树，使用它会把工作时的所有变化提交到暂存区，包括文件内容修改(modified)以及新文件(new)，但不包括被删除的文件。<br>git add -u ：（git add –update的缩写）他仅监控已经被add的文件（即tracked file），他会将被修改的文件提交到暂存区。<br><strong>2018-03-16更新</strong><br>PS：可以向git库多次添加文件，并一次提交<br>第二步，用命令git commit告诉Git，把文件<span style="color: red">提交</span>到仓库：<br>实际上就是把暂存区的所有内容提交到当前分支（默认是master分支）<br><code>git commit -m &quot;说明文本&quot;</code><br>PS：-m后面输入的是本次提交的说明，方便以后查看<br>更好的理解：需要提交的文件修改通过放到暂存区，然后，一次性提交暂存区的所有修改。<br><code>git commit -am &#39;说明&#39;</code><br>PS：git add 和 git commit的简写<br>清屏<br><code>reset + Enter</code><br>该命令可以让我们时刻掌握仓库当前的状态（当前是否有需要提交的修改）<br><code>git mv &lt;oldName&gt; &lt;nemeName&gt;</code><br>PS：git mv 命令用于移动或重命名一个文件、目录、软连接。<br><code>git status</code><br>PS：列出当前目录所有还没有被git管理的文件和 被git管理且被修改但还未提交（git commit）的文件。<br>查看具体修改了什么内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">git diff</div><div class="line">git diff HEAD -- fileName // 比对某个文件</div><div class="line">git diff &lt;source_branch&gt; &lt;target_branch&gt;</div><div class="line">	比对两个分支</div><div class="line">尚未缓存的改动：git diff</div><div class="line">查看已缓存的改动： git diff --cached</div><div class="line">查看已缓存的与未缓存的所有改动：git diff HEAD</div><div class="line">显示摘要而非整个 diff：git diff --stat</div></pre></td></tr></table></figure></p>
 <p>PS：提交仓库前最好看一下，这是不是我们更改的。<br>经过对比后，就可以放心的添加和提交文件了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git add fileName</div><div class="line">git commit -m &apos;note&apos;</div></pre></td></tr></table></figure></p>
 <h2 id="版本回退"><a href="#版本回退" class="headerlink" title="版本回退"></a>版本回退</h2><p>该命令显示从最近到最远的提交日志<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">git log // 下面命令仅仅显示commit id（版本号），它是16进制数</div><div class="line">git log --oneline // 历史记录的简洁的版本</div><div class="line">git log --oneline --graph // 查看历史中什么时候出现了分支、合并</div><div class="line">git log --reverse --oneline // 逆向显示所有日志</div><div class="line">git log --author=fanerge // 查找指定用户的提交日志</div><div class="line">git log --oneline --before=&#123;3.weeks.ago&#125; --after=&#123;2010-04-18&#125; --no-merges </div><div class="line">// --since 和 --before，但是你也可以用 --until 和 --after</div></pre></td></tr></table></figure></p>
 <p>回到上一个版本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// 当前版本是HEAD，上一个版本就是HEAD^，上上一个版本就是HEAD^^，前100的版本HEAD~100</div><div class="line">git reset --hard HEAD^ // 回到上一个版本</div></pre></td></tr></table></figure></p>
@@ -553,7 +553,7 @@
   <p><span>本文标题:</span><a href="/git使用手册.html">git使用手册</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 余真帆-fanerge 的个人博客">余真帆-fanerge</a></p>
   <p><span>发布时间:</span>2018年01月13日 - 20:01</p>
-  <p><span>最后更新:</span>2018年01月14日 - 22:01</p>
+  <p><span>最后更新:</span>2018年03月16日 - 22:03</p>
   <p><span>原始链接:</span><a href="/git使用手册.html" title="git使用手册">https://fanerge.github.io/git使用手册.html</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://fanerge.github.io/git使用手册.html"  aria-label="复制成功！"></i></span>
   </p>
@@ -913,7 +913,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共249.4k字</span>
+  <span class="post-count">博客全站共249.7k字</span>
 </div>
         
 
