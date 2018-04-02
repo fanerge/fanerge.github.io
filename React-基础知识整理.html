@@ -115,7 +115,7 @@
 <meta property="og:url" content="https://fanerge.github.io/React-基础知识整理.html">
 <meta property="og:site_name" content="余真帆的博客">
 <meta property="og:description" content="父组件给子组件传递数据时向下 -- 通过 Props 传递数据 向上 -- 通过 Props 传递事件     在使用 ES6 的 classes 创建组件时构造方法 constructor 中包含：参数为 props     1.super(props);         在ES6中 只有使用 super() 方法才能在继承父类的子类中正确获取到子类的 this 。         super(">
-<meta property="og:updated_time" content="2017-10-25T13:56:11.468Z">
+<meta property="og:updated_time" content="2018-04-01T13:32:15.365Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="React-基础知识整理">
 <meta name="twitter:description" content="父组件给子组件传递数据时向下 -- 通过 Props 传递数据 向上 -- 通过 Props 传递事件     在使用 ES6 的 classes 创建组件时构造方法 constructor 中包含：参数为 props     1.super(props);         在ES6中 只有使用 super() 方法才能在继承父类的子类中正确获取到子类的 this 。         super(">
@@ -489,12 +489,17 @@ JSX 代表 Objects
     &lt;button onClick={activateLasers}&gt;
       Activate Lasers
     &lt;/button&gt;
-    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">我们通常建议在构造函数中绑定或使用属性初始化器语法来避免 this 的问题。</div></pre></td></tr></table></figure>
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">我们通常建议在构造函数中绑定或使用属性初始化器语法来避免 this 的问题，推荐1，3解决方案。</div></pre></td></tr></table></figure>
 
-    1.this.handleClick = this.handleClick.bind(this);
-    2.handleClick = () =&gt; {
-        console.log(&apos;this is:&apos;, this);
-      }
+    1.构造函数内绑定
+        this.handleClick = this.handleClick.bind(this);
+    2.箭头函数和Function.prototype.bind（案例为删除一行）
+        &lt;button onClick={(e) =&gt; this.deleteRow(id, e)}&gt;Delete Row&lt;/button&gt;
+        &lt;button onClick={this.deleteRow.bind(this, id)}&gt;Delete Row&lt;/button&gt;
+    3.Classes中直接赋值(ES7class fields syntax)
+        handleClick = () =&gt; {
+            console.log(&apos;this is:&apos;, this);
+        }
     <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#	条件渲染</div><div class="line">	操作符 if 或条件运算符</div><div class="line">	元素变量</div></pre></td></tr></table></figure>
 
 let button = null;
