@@ -117,7 +117,7 @@
 <meta property="og:description" content="防止网页被嵌入框架的代码任何页面都不可嵌套1234// 判断当前的window对象是否对顶层top对象还可以使用window.top !== window.selfif (window !== top) // 如果不是，将top对象的网址自动导向被嵌入网页的网址top.location.href = window.location.href; 本地域名可嵌套，其他域名不可12345678try&amp;#">
 <meta property="og:image" content="http://p677fntmi.bkt.clouddn.com/162385d14ae83726">
 <meta property="og:image" content="http://p677fntmi.bkt.clouddn.com/690666428-5ab0a22b5cbca_articlex.png">
-<meta property="og:updated_time" content="2018-04-18T12:48:39.555Z">
+<meta property="og:updated_time" content="2018-04-26T12:40:10.665Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="面试杂项">
 <meta name="twitter:description" content="防止网页被嵌入框架的代码任何页面都不可嵌套1234// 判断当前的window对象是否对顶层top对象还可以使用window.top !== window.selfif (window !== top) // 如果不是，将top对象的网址自动导向被嵌入网页的网址top.location.href = window.location.href; 本地域名可嵌套，其他域名不可12345678try&amp;#">
@@ -448,7 +448,7 @@
 <h2 id="堆、栈、队列"><a href="#堆、栈、队列" class="headerlink" title="堆、栈、队列"></a>堆、栈、队列</h2><h3 id="堆（heap）"><a href="#堆（heap）" class="headerlink" title="堆（heap）"></a>堆（heap）</h3><p>堆（heap）是指程序运行时申请的动态内存，在JS运行时用来存放对象。</p>
 <h3 id="栈（stack）"><a href="#栈（stack）" class="headerlink" title="栈（stack）"></a>栈（stack）</h3><p>栈（stack）遵循的原则是“先进后出”，JS种的基本数据类型与指向对象的地址存放在栈内存中，此外还有一块栈内存用来执行JS主线程–执行栈（execution context stack），这里只考虑执行栈。</p>
 <h3 id="队列（queue）"><a href="#队列（queue）" class="headerlink" title="队列（queue）"></a>队列（queue）</h3><p>队列（queue）遵循的原则是“先进先出”，JS中除了主线程之外还存在两个“任务队列”（微任务队列microTask和宏任务队列macroTask）。</p>
-<h2 id="js中的两个队列"><a href="#js中的两个队列" class="headerlink" title="js中的两个队列"></a>js中的两个队列</h2><p>在JavaScript中，任务被分为Task（又称为MacroTask,宏任务）和MicroTask（微任务）两种。<br>MicroTask: process.nextTick（node独有）, Promises, Object.observe(废弃), MutationObserver<br>MacroTask: script(整体代码), setTimeout, setInterval, setImmediate（node独有）, I/O, UI rendering<br>javascript执行：总的执行顺序为同步代码—&gt;microTask—&gt;macroTask，在执行microTask、macroTask是产生新的异步操作，如此一来就形成了循环。<br>具体来说，浏览器会不断从task队列中按顺序取task执行，每执行完一个task都会检查microtask队列是否为空（执行完一个task的具体标志是函数执行栈为空），如果不为空则会一次性执行完所有microtask。然后再进入下一个循环去task队列中取下一个task执行，以此类推。</p>
+<h2 id="js中的两个队列"><a href="#js中的两个队列" class="headerlink" title="js中的两个队列"></a>js中的两个队列</h2><p>在JavaScript中，任务被分为Task（又称为MacroTask,宏任务）和MicroTask（微任务）两种。<br>MicroTask: process.nextTick（node独有）, Promises, Object.observe(废弃), MutationObserver<br>MacroTask: script(同步代码), setTimeout, setInterval, setImmediate（node独有）, I/O, UI rendering<br>javascript执行：总的执行顺序为同步代码script—&gt;microTask—&gt;其他macroTask，在执行microTask、macroTask是产生新的异步操作，如此一来就形成了循环。<br>具体来说，浏览器会不断从task队列中按顺序取task执行，每执行完一个task都会检查microtask队列是否为空（执行完一个task的具体标志是函数执行栈为空），如果不为空则会一次性执行完所有microtask。然后再进入下一个循环去task队列中取下一个task执行，以此类推。</p>
 <h2 id="Philip-Roberts的演讲《Help-I’m-stuck-in-an-event-loop》的event-loop-图"><a href="#Philip-Roberts的演讲《Help-I’m-stuck-in-an-event-loop》的event-loop-图" class="headerlink" title="Philip Roberts的演讲《Help, I’m stuck in an event-loop》的event-loop 图"></a>Philip Roberts的演讲《Help, I’m stuck in an event-loop》的event-loop 图</h2><p><img src="http://p677fntmi.bkt.clouddn.com/162385d14ae83726" alt="Philip Roberts的演讲《Help, I&#39;m stuck in an event-loop》"></p>
 <h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><blockquote>
 <p>   当主线程运行的时候,JS会产生堆和栈(执行栈)<br>主线程中调用的webaip所产生的异步操作(dom事件、ajax回调、定时器等)只要产生结果，就把这个回调塞进“任务队列”中等待执行。<br>当主线程中的同步任务执行完毕，系统就会依次读取“任务队列”中的任务，将任务放进执行栈中执行。<br>执行任务时可能还会产生新的异步操作，会产生新的循环，整个过程是循环不断的。</p>
