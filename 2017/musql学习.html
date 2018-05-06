@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.6" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=6.0.6" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.0.6',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+  
+
+
+
+
+  <meta name="description" content="基础构架：database –&amp;gt; table –&amp;gt; row 和 col（数据块） RDBMS 术语 数据库: 数据库是一些关联表的集合。. 数据表: 表是数据的矩阵。在一个数据库中的表看起来像一个简单的电子表格。 列: 一列(数据元素) 包含了相同的数据, 例如邮政编码的数据。 行：一行（=元组，或记录）是一组相关的数据，例如一条用户订阅的数据。 冗余：存储两倍数据，冗余降低了性能，但">
+<meta name="keywords" content="mysql,数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql学习（上部分）">
+<meta property="og:url" content="https://fanerge.github.io/2017/musql学习.html">
+<meta property="og:site_name" content="余真帆的博客">
+<meta property="og:description" content="基础构架：database –&amp;gt; table –&amp;gt; row 和 col（数据块） RDBMS 术语 数据库: 数据库是一些关联表的集合。. 数据表: 表是数据的矩阵。在一个数据库中的表看起来像一个简单的电子表格。 列: 一列(数据元素) 包含了相同的数据, 例如邮政编码的数据。 行：一行（=元组，或记录）是一组相关的数据，例如一条用户订阅的数据。 冗余：存储两倍数据，冗余降低了性能，但">
+<meta property="og:image" content="https://fanerge.github.io/images/mysql_int.png">
+<meta property="og:image" content="https://fanerge.github.io/images/mysql_time.png">
+<meta property="og:image" content="https://fanerge.github.io/images/mysql_string.png">
+<meta property="og:image" content="https://fanerge.github.io/images/mysql_where.png">
+<meta property="og:updated_time" content="2017-09-14T12:11:48.717Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mysql学习（上部分）">
+<meta name="twitter:description" content="基础构架：database –&amp;gt; table –&amp;gt; row 和 col（数据块） RDBMS 术语 数据库: 数据库是一些关联表的集合。. 数据表: 表是数据的矩阵。在一个数据库中的表看起来像一个简单的电子表格。 列: 一列(数据元素) 包含了相同的数据, 例如邮政编码的数据。 行：一行（=元组，或记录）是一组相关的数据，例如一条用户订阅的数据。 冗余：存储两倍数据，冗余降低了性能，但">
+<meta name="twitter:image" content="https://fanerge.github.io/images/mysql_int.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="余真帆的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="https://fanerge.github.io/2017/musql学习.html"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>mysql学习（上部分） | 余真帆的博客</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+	<a href="https://github.com/fanerge" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#70B7FD; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+	</div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">余真帆的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-categories">
+    <a href="/categories" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Categories</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-archives">
+    <a href="/archives" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Archives</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-tags">
+    <a href="/tags" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Tags</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-about">
+    <a href="/about" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />About</a>
+</li>
+
+      
+
+      
+    </ul>
+  
+
+  
+    
+
+    
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+    
+
+  
+
+
+  
+
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/musql学习.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">mysql学习（上部分）</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-12T19:09:59+08:00">2017-09-12</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/sql/" itemprop="url" rel="index"><span itemprop="name">sql</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views: 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+		
+	  
+      
+
+      
+        <p>基础构架：database –&gt; table –&gt; row 和 col（数据块）</p>
+<h3 id="RDBMS-术语"><a href="#RDBMS-术语" class="headerlink" title="RDBMS 术语"></a>RDBMS 术语</h3><ol>
+<li>数据库: 数据库是一些关联表的集合。.</li>
+<li>数据表: 表是数据的矩阵。在一个数据库中的表看起来像一个简单的电子表格。</li>
+<li>列: 一列(数据元素) 包含了相同的数据, 例如邮政编码的数据。</li>
+<li>行：一行（=元组，或记录）是一组相关的数据，例如一条用户订阅的数据。</li>
+<li>冗余：存储两倍数据，冗余降低了性能，但提高了数据的安全性。</li>
+<li>主键：主键是唯一的。一个数据表中只能包含一个主键。你可以使用主键来查询数据。</li>
+<li>外键：外键用于关联两个表。</li>
+<li>复合键：复合键（组合键）将多个列作为一个索引键，一般用于复合索引。</li>
+<li>索引：使用索引可快速访问数据库表中的特定信息。索引是对数据库表中一列或多列的值进行排序的一种结构。类似于书籍的目录。</li>
+<li>参照完整性: 参照的完整性要求关系中不允许引用不存在的实体。与实体完整性是关系模型必须满足的完整性约束条件，目的是保证数据的一致性。</li>
+</ol>
+<h3 id="MySQL-创建数据库"><a href="#MySQL-创建数据库" class="headerlink" title="MySQL 创建数据库"></a>MySQL 创建数据库</h3><h4 id="使用-mysqladmin-创建数据库"><a href="#使用-mysqladmin-创建数据库" class="headerlink" title="使用 mysqladmin 创建数据库"></a>使用 mysqladmin 创建数据库</h4><pre><code>以下实例会创建一个 RUNOOB 数据库
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@host]# mysqladmin -u root -p create RUNOOB</div><div class="line">Enter password:******</div></pre></td></tr></table></figure>
+</code></pre><h4 id="SQL语句创建数据库-RUNOOB"><a href="#SQL语句创建数据库-RUNOOB" class="headerlink" title="SQL语句创建数据库 RUNOOB"></a>SQL语句创建数据库 RUNOOB</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&apos;CREATE DATABASE RUNOOB&apos;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="MySQL-删除数据库"><a href="#MySQL-删除数据库" class="headerlink" title="MySQL 删除数据库"></a>MySQL 删除数据库</h3><h4 id="使用-mysqladmin-删除数据库"><a href="#使用-mysqladmin-删除数据库" class="headerlink" title="使用 mysqladmin 删除数据库"></a>使用 mysqladmin 删除数据库</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@host]# mysqladmin -u root -p drop RUNOOB</div><div class="line">Enter password:******</div></pre></td></tr></table></figure>
+</code></pre><h4 id="SQL语句删除数据库-RUNOOB"><a href="#SQL语句删除数据库-RUNOOB" class="headerlink" title="SQL语句删除数据库 RUNOOB"></a>SQL语句删除数据库 RUNOOB</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&apos;DROP DATABASE RUNOOB&apos;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="MySQL-选择数据库"><a href="#MySQL-选择数据库" class="headerlink" title="MySQL 选择数据库"></a>MySQL 选择数据库</h3><h4 id="从命令提示窗口中选择MySQL数据库"><a href="#从命令提示窗口中选择MySQL数据库" class="headerlink" title="从命令提示窗口中选择MySQL数据库"></a>从命令提示窗口中选择MySQL数据库</h4><pre><code>使用 RUNOOB 数据库
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@host]# mysql -u root -p</div><div class="line">Enter password:******</div><div class="line">mysql&gt; use RUNOOB;</div></pre></td></tr></table></figure>
+</code></pre><h4 id="使用-NODE-js-选择数据库"><a href="#使用-NODE-js-选择数据库" class="headerlink" title="使用 NODE.js 选择数据库"></a>使用 NODE.js 选择数据库</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">var mysql = require(&apos;mysql&apos;);</div><div class="line">var connection = mysql.createConnetion(&#123;</div><div class="line">	host: &apos;localhost&apos;,</div><div class="line">	prot: 3306,</div><div class="line">	user: &apos;root&apos;,</div><div class="line">	password: &apos;****&apos;,</div><div class="line">	database: &apos;RUNOOB&apos;</div><div class="line">&#125;);</div><div class="line">connection.connect(); // 连接数据库</div><div class="line">connection.query(&apos;SQL命令&apos;, function (err, result) &#123; // 数据库相应的 CURD &#125;)	</div><div class="line">connection.end(); // 断开连接</div></pre></td></tr></table></figure>
+</code></pre><h3 id="MySQL-数据类型"><a href="#MySQL-数据类型" class="headerlink" title="MySQL 数据类型"></a>MySQL 数据类型</h3><pre><code>MySQL支持多种类型，大致可以分为三类：数值、日期/时间和字符串(字符)类型。
+</code></pre><h4 id="数值类型"><a href="#数值类型" class="headerlink" title="数值类型"></a>数值类型</h4><p><img src="/images/mysql_int.png" alt="mysql_int"></p>
+<h4 id="日期和时间类型"><a href="#日期和时间类型" class="headerlink" title="日期和时间类型"></a>日期和时间类型</h4><pre><code>每个时间类型有一个有效值范围和一个&quot;零&quot;值，当指定不合法的MySQL不能表示的值时使用&quot;零&quot;值。
+</code></pre><p><img src="/images/mysql_time.png" alt="mysql_time"></p>
+<h4 id="字符串类型"><a href="#字符串类型" class="headerlink" title="字符串类型"></a>字符串类型</h4><pre><code>字符串类型指CHAR、VARCHAR、BINARY、VARBINARY、BLOB、TEXT、ENUM和SET。
+</code></pre><p><img src="/images/mysql_string.png" alt="mysql_string"></p>
+<h3 id="MySQL-创建数据表"><a href="#MySQL-创建数据表" class="headerlink" title="MySQL 创建数据表"></a>MySQL 创建数据表</h3><pre><code>创建数据表需要：表名、表字段名、定义每个表字段
+</code></pre><h4 id="SQL命令"><a href="#SQL命令" class="headerlink" title="SQL命令"></a>SQL命令</h4><pre><code>语法：
+    CREATE TABLE table_name (column_name column_type)
+    CREATE TABLE IF NOT EXISTS table_name (column_name column_type) // 判断是否存在
+实例：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE IF NOT EXISTS `runoob_tbl`(</div><div class="line">   `runoob_id` INT UNSIGNED AUTO_INCREMENT,</div><div class="line">   `runoob_title` VARCHAR(100) NOT NULL,</div><div class="line">   `runoob_author` VARCHAR(40) NOT NULL,</div><div class="line">   `submission_date` DATE,</div><div class="line">   PRIMARY KEY ( `runoob_id` )</div><div class="line">)ENGINE=InnoDB DEFAULT CHARSET=utf8;</div><div class="line">1.如果你不想字段为 NULL 可以设置字段的属性为 NOT NULL</div><div class="line">2.AUTO_INCREMENT定义列为自增的属性，一般用于主键，数值会自动加1。</div><div class="line">3.PRIMARY KEY关键字用于定义列为主键。 您可以使用多列来定义主键，列间以逗号分隔。</div></pre></td></tr></table></figure>
+</code></pre><h4 id="在命令提示窗口中创建数据表"><a href="#在命令提示窗口中创建数据表" class="headerlink" title="在命令提示窗口中创建数据表"></a>在命令提示窗口中创建数据表</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">root@host# mysql -u root -p</div><div class="line">Enter password:*******</div><div class="line">mysql&gt; use RUNOOB;</div><div class="line">mysql&gt; CREATE TABLE runoob_tbl(</div><div class="line">   -&gt; runoob_id INT NOT NULL AUTO_INCREMENT,</div><div class="line">   -&gt; runoob_title VARCHAR(100) NOT NULL,</div><div class="line">   -&gt; runoob_author VARCHAR(40) NOT NULL,</div><div class="line">   -&gt; submission_date DATE,</div><div class="line">   -&gt; PRIMARY KEY ( runoob_id )</div><div class="line">   -&gt; )ENGINE=InnoDB DEFAULT CHARSET=utf8;</div></pre></td></tr></table></figure>
+</code></pre><h4 id="node-js中创建表"><a href="#node-js中创建表" class="headerlink" title="node.js中创建表"></a>node.js中创建表</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">connection.query(&quot;CREATE TABLE person(id int,user varchar(255),password varchar(255))&quot;, function(err,result)&#123;</div><div class="line">	if(err)&#123;throw err&#125;</div><div class="line">	console.log(&quot;创建表成功&quot;)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+</code></pre><h3 id="MySQL-删除数据表"><a href="#MySQL-删除数据表" class="headerlink" title="MySQL 删除数据表"></a>MySQL 删除数据表</h3><pre><code>语法：
+    DROP TABLE table_name
+</code></pre><h4 id="在命令提示窗口中删除数据表"><a href="#在命令提示窗口中删除数据表" class="headerlink" title="在命令提示窗口中删除数据表"></a>在命令提示窗口中删除数据表</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">root@host# mysql -u root -p</div><div class="line">Enter password:*******</div><div class="line">mysql&gt; use RUNOOB;</div><div class="line">mysql&gt; DROP TABLE runoob_tbl</div></pre></td></tr></table></figure>
+</code></pre><h4 id="node-js中删除表"><a href="#node-js中删除表" class="headerlink" title="node.js中删除表"></a>node.js中删除表</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">connection.query(&apos;DROP TABLE runoob_tbl&apos;, function (err, result) &#123;</div><div class="line">	if (err) throw err;</div><div class="line">	console.log(result);</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+</code></pre><h3 id="MySQL-插入数据"><a href="#MySQL-插入数据" class="headerlink" title="MySQL 插入数据"></a>MySQL 插入数据</h3><pre><code>语法：    
+    INSERT INTO table_name (field1, field2, ...filedN) VALUES (value1, value2, value3);
+</code></pre><h4 id="通过命令提示窗口插入数据"><a href="#通过命令提示窗口插入数据" class="headerlink" title="通过命令提示窗口插入数据"></a>通过命令提示窗口插入数据</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">root@host# mysql -u root -p password;</div><div class="line">Enter password:*******</div><div class="line">mysql&gt; use RUNOOB;</div><div class="line">mysql&gt; INSERT INTO runoob_tbl </div><div class="line">	-&gt; (runoob_title, runoob_author, submission_date)</div><div class="line">	-&gt; VALUES</div><div class="line">	-&gt; (&quot;学习 PHP&quot;, &quot;菜鸟教程&quot;, NOW());</div></pre></td></tr></table></figure>
+
+读取某张表 -- select * from runoob_tbl;
+</code></pre><h4 id="node-js插入数据"><a href="#node-js插入数据" class="headerlink" title="node.js插入数据"></a>node.js插入数据</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">connection.query(&apos;INSERT INTO websites(id, name, url, alexa, country) VALUES (0, &quot;fanerge&quot;, &quot;23213&quot;, &quot;234&quot;, &quot;成都&quot;)&apos;, function (err, result) &#123;</div><div class="line">	console.log(result);</div><div class="line">&#125;);</div><div class="line">// 占位符的形式</div><div class="line">connection.query(&apos;INSERT INTO websites(id, name, url, alexa, country) VALUES (0, ?, ?, ?)&apos;, [&quot;fanerge12&quot;, &quot;23213&quot;, &quot;234&quot;, &quot;成都&quot;], function (err, result) &#123;</div><div class="line">	console.log(&apos;DELETE affectedRows:&apos;, result);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h3 id="MySQL-查询数据"><a href="#MySQL-查询数据" class="headerlink" title="MySQL 查询数据"></a>MySQL 查询数据</h3><pre><code>语法：
+    SELECT column_name, column_name 
+    FROM table_name // 可以查询多张表以,分隔
+    [WHERE clause] // 查询条件
+    [OFFSET M][LIMIT N] // 偏移量 和 限制条数
+</code></pre><h4 id="通过命令提示符获取数据"><a href="#通过命令提示符获取数据" class="headerlink" title="通过命令提示符获取数据"></a>通过命令提示符获取数据</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from runoob_tbl</div></pre></td></tr></table></figure>
+</code></pre><h4 id="node-js查询数据"><a href="#node-js查询数据" class="headerlink" title="node.js查询数据"></a>node.js查询数据</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">connection.query(&apos;SELECT name, url FROM websites&apos;, function (err, result) &#123;</div><div class="line">	console.log(result);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h3 id="MySQL-WHERE-子句"><a href="#MySQL-WHERE-子句" class="headerlink" title="MySQL WHERE 子句"></a>MySQL WHERE 子句</h3><pre><code>可以用在：SELECT 和 DELETE 和 UPDATE 命令中。
+默认where语句不区分大小写，使用BINARY开启区分大小写。
+语法：
+    SELECT field1, field2, ...filedN
+    FROM table_name1, table_name2
+    [WHERE confition1 [AND [OR]]] condition2
+</code></pre><p><img src="/images/mysql_where.png" alt="mysql_where">    </p>
+<h4 id="从命令提示符中读取数据"><a href="#从命令提示符中读取数据" class="headerlink" title="从命令提示符中读取数据"></a>从命令提示符中读取数据</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">	SELECT name, url FROM user WHERE name=&quot;fanerge&quot; AND url=&quot;fanerge&quot;</div><div class="line">	```	</div><div class="line">####	node.js读取数据</div></pre></td></tr></table></figure>
+
+connection.query(&apos;SELECT name, url FROM user WHERE name=&quot;fanerge&quot; AND url=&quot;fanerge&quot;&apos;, function (err, result) {
+    console.log(result);
+});
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">###		MySQL UPDATE 查询	</div><div class="line">	语法：	</div><div class="line">		UPDATE table_name SET field1=new-value1, field1=new-value2</div><div class="line">		[WHERE clause]</div><div class="line">####	通过命令提示符更新数据</div></pre></td></tr></table></figure>
+
+UPDATE runoob_tbl SET runoob_title=&apos;学习 C++&apos; WHERE runoob_id=3;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">####	node.js更新数据</div></pre></td></tr></table></figure>
+
+connection.query(&apos;UPDATE user SET url=&quot;zhongguo&quot; WHERE name=&quot;1name&quot;&apos;, function (err, result) {
+    console.log(result);
+});
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">		</div><div class="line">###		MySQL DELETE 语句	</div><div class="line">	语法：	</div><div class="line">		DELETE FROM table_name [WHERE clause]</div><div class="line">####	从命令行中删除数据</div></pre></td></tr></table></figure>
+
+use RUNOOB;
+mysql&gt; DELETE FROM runoob_tbl WHERE runoob_id=3;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">####	node.js删除数据</div></pre></td></tr></table></figure>
+
+connection.query(&apos;DELETE FROM user WHERE name=&quot;1name&quot;&apos;, function (err, result) {
+    console.log(result);
+});
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">		</div><div class="line">###	MySQL LIKE 子句</div><div class="line">	我们需要获取 runoob_author 字段含有 &quot;COM&quot; 字符的所有记录，这时我们就需要在 WHERE 子句中使用 SQL LIKE 子句。	</div><div class="line">	如果没有使用百分号 %, LIKE 子句与等号 = 的效果是一样的。	</div><div class="line">	语法：</div><div class="line">		SELECT field1, field2, ...filedN</div><div class="line">		FROM table_name</div><div class="line">		WHERE field1 LIKE confition1 [AND [OR]] field2 = &apos;somevalue&apos;</div><div class="line">####	在命令提示符中使用 LIKE 子句</div><div class="line">	以下是我们将 runoob_tbl 表中获取 runoob_author 字段中以 COM 为结尾的的所有记录：</div></pre></td></tr></table></figure>
+
+use RUNOOB
+SELECT * from runoob_tl WHERE runoob_author LIKE &apos;%COM&apos;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">####	node.js中使用 LIKE 子句</div></pre></td></tr></table></figure>
+
+connection.query(&apos;SELECT * FROM websites WHERE BINARY name LIKE &quot;f%&quot;&apos;, function (err, result) {
+    console.log(result);
+});
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">		</div><div class="line">###	MySQL UNION 操作符</div><div class="line">	MySQL UNION 操作符用于连接两个以上的 SELECT 语句的结果组合到一个结果集合中。</div><div class="line">	多个 SELECT 语句会删除重复的数据。</div><div class="line">	UNION [ALL | DISTINCT]	// DISTINCT: 可选，删除结果集中重复的数据。ALL: 可选，返回所有结果集，包含重复数据。</div><div class="line">	语法：</div><div class="line">		SELECT column1, column2, ... columnN</div><div class="line">		FROM tables</div><div class="line">		[WHERE conditions]</div><div class="line">		UNION [ALL | DISTINCT]</div><div class="line">		SELECT column1, column2, ... columnN</div><div class="line">		FROM tables</div><div class="line">		[WHERE conditions];</div><div class="line">####	node.js 中使用 UNION</div></pre></td></tr></table></figure>
+
+connection.query(&apos;SELECT country FROM websites UNION ALL SELECT country FROM apps ORDER BY country&apos;, function (err, result) {
+    console.log(result);
+});
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">####	带有 WHERE 的 SQL UNION ALL</div></pre></td></tr></table></figure>
+
+connection.query(&apos;SELECT country, name FROM websites WHERE country LIKE &quot;C%&quot; UNION ALL SELECT country, app_name FROM apps WHERE country=&quot;CN&quot; ORDER BY country&apos;, function (err, result) {
+    console.log(result);
+});
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">		</div><div class="line">###	MySQL 排序	</div><div class="line">	语法：</div><div class="line">		SELECT field1, field2, ...filedN table_name1, table_name2</div><div class="line">		ORDER BY field1, [field2] [ASC [DESC]] </div><div class="line">####	在命令提示符中使用 ORDER BY 子句</div></pre></td></tr></table></figure>
+
+use RUNOOB;
+mysql&gt; SELECT * from runoob_tbl ORDER BY submission_date ASC;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">####	node.js 中 ORDER BY [ASC DESC]</div></pre></td></tr></table></figure>
+
+connection.query(&apos;SELECT * FROM websites ORDER BY id DESC&apos;, function (err, result) {
+    console.log(result);
+});
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">		</div><div class="line">###	MySQL GROUP BY 语句</div><div class="line">	语法：	</div><div class="line">		SELECT column_name, function(column_name)</div><div class="line">		FROM table_name</div><div class="line">		WHERE column_name operator value</div><div class="line">		GROUP BY column_name;</div><div class="line">####	我们使用 GROUP BY 语句 将数据表按名字进行分组，并统计每个人有多少条记录</div></pre></td></tr></table></figure>
+
+SELECT name, COUNT(*) FROM employee_tbl GROUP BY name;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">####	使用 WITH ROLLUP</div><div class="line">	WITH ROLLUP 可以实现在分组统计数据基础上再进行相同的统计（SUM,AVG,COUNT…）。</div><div class="line">	coalesce函数说明：name !== null ? name : &apos;总数&apos;。</div></pre></td></tr></table></figure>
+
+SELECT coalesce(name, &quot;总数&quot;), SUM(singin) as singin_count FROM employee_tbl GROUP BY name WITH ROLLUP
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">###	Mysql 连接的使用</div><div class="line">	从多个数据表中读取数据。</div><div class="line">	你可以在 SELECT, UPDATE 和 DELETE 语句中使用 Mysql 的 JOIN 来联合多表查询。</div><div class="line">	JOIN 按照功能大致分为如下三类：</div><div class="line">	1.	INNER JOIN（内连接,或等值连接）：获取两个表中字段匹配关系的记录。(类似于交集)</div><div class="line">	2.	LEFT JOIN（左连接）：获取左表所有记录，即使右表没有对应匹配的记录。</div><div class="line">	3.	RIGHT JOIN（右连接）： 与 LEFT JOIN 相反，用于获取右表所有记录，即使左表没有对应匹配的记录。	</div><div class="line">####	在命令提示符中使用 INNER JOIN(相当于交集)</div></pre></td></tr></table></figure>
+
+SELECT a.runoob_id, a.runoob_author, b.runoob_count FROM runoob_tbl a INNER JOIN tcount_tbl b ON a.runoob_author = b.runoob_author;
+SELECT a.runoob_id, a.runoob_author, b.runoob_count FROM runoob_tbl a, tcount_tbl b WHERE a.runoob_author = b.runoob_author;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">####	MySQL LEFT JOIN</div><div class="line">	MySQL left join 与 join 有所不同。 MySQL LEFT JOIN 会读取左边数据表的全部数据，即便右边表无对应数据。</div></pre></td></tr></table></figure>
+
+SELECT a.runoob_id, a.runoob_author, b.runoob_count FROM runoob_tbl a LEFT JOIN tcount_tbl b ON a.runoob_author = b.runoob_author;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">####	MySQL RIGHT JOIN</div><div class="line">	MySQL RIGHT JOIN 会读取右边数据表的全部数据，即便左边边表无对应数据。</div></pre></td></tr></table></figure>
+
+SELECT a.runoob_id, a.runoob_author, b.runoob_count FROM runoob_tbl a RIGHT JOIN tcount_tbl b ON a.runoob_author = b.runoob_author;
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">###	MySQL NULL 值处理</div><div class="line">	IS NULL: 当列的值是 NULL,此运算符返回 true。</div><div class="line">	IS NOT NULL: 当列的值不为 NULL, 运算符返回 true。</div><div class="line">	&lt;=&gt;: 比较操作符（不同于=运算符），当比较的的两个值为 NULL 时返回 true。</div><div class="line">####	在命令提示符中使用 NULL 值</div><div class="line">	SELECT * FROM runoob_test_tbl WHERE runoob_count IS NULL;</div><div class="line">	SELECT * FROM runoob_test_tbl WHERE runoob_count IS NOT NULL;</div><div class="line"></div><div class="line">###	MySQL 正则表达式</div><div class="line">![mysql_regexp](/images/mysql_regexp1.png)</div></pre></td></tr></table></figure>
+
+SELECT name FROM websites WHERE BINARY name REGEXP &apos;^F&apos;
+SELECT name FROM person_tbl WHERE name REGEXP &apos;ok$&apos;;
+```
+</code></pre><blockquote>
+<p>   参考文档<br>    <a href="http://www.runoob.com/mysql/mysql-tutorial.html" target="_blank" rel="external">MYSQL</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+	<div>
+		
+			<div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读，如果本文对你有帮助就记得<a href="https://github.com/fanerge/fanerge.github.io" title="谢谢亲的star">给个star</a>-------------</div>
+		
+	</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Donate comment here</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author: </strong>余真帆-fanerge</li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://fanerge.github.io/2017/musql学习.html" title="mysql学习（上部分）">https://fanerge.github.io/2017/musql学习.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mysql/" rel="tag"><i class="far fa-bell"></i> mysql</a>
+          
+            <a href="/tags/数据库/" rel="tag"><i class="far fa-bell"></i> 数据库</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/node-mysql.html" rel="next" title="node.js 和 mysql 结合使用">
+                <i class="fa fa-chevron-left"></i> node.js 和 mysql 结合使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/mysql学习.html" rel="prev" title="mysql学习（下部分）">
+                mysql学习（下部分） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=2156704" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTk4Mi8xMjUxOA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+              <p class="site-description motion-element" itemprop="description">前端、web</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">155</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">24</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">46</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/fanerge" target="_blank" title="GitHub" rel="external nofollow"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:fanege@qq.com" target="_blank" title="E-Mail" rel="external nofollow"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金" rel="external nofollow"><i class="fa fa-fw fa-globe"></i>掘金</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#RDBMS-术语"><span class="nav-number">1.</span> <span class="nav-text">RDBMS 术语</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL-创建数据库"><span class="nav-number">2.</span> <span class="nav-text">MySQL 创建数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-mysqladmin-创建数据库"><span class="nav-number">2.1.</span> <span class="nav-text">使用 mysqladmin 创建数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SQL语句创建数据库-RUNOOB"><span class="nav-number">2.2.</span> <span class="nav-text">SQL语句创建数据库 RUNOOB</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL-删除数据库"><span class="nav-number">3.</span> <span class="nav-text">MySQL 删除数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-mysqladmin-删除数据库"><span class="nav-number">3.1.</span> <span class="nav-text">使用 mysqladmin 删除数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SQL语句删除数据库-RUNOOB"><span class="nav-number">3.2.</span> <span class="nav-text">SQL语句删除数据库 RUNOOB</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL-选择数据库"><span class="nav-number">4.</span> <span class="nav-text">MySQL 选择数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#从命令提示窗口中选择MySQL数据库"><span class="nav-number">4.1.</span> <span class="nav-text">从命令提示窗口中选择MySQL数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-NODE-js-选择数据库"><span class="nav-number">4.2.</span> <span class="nav-text">使用 NODE.js 选择数据库</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL-数据类型"><span class="nav-number">5.</span> <span class="nav-text">MySQL 数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数值类型"><span class="nav-number">5.1.</span> <span class="nav-text">数值类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#日期和时间类型"><span class="nav-number">5.2.</span> <span class="nav-text">日期和时间类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字符串类型"><span class="nav-number">5.3.</span> <span class="nav-text">字符串类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL-创建数据表"><span class="nav-number">6.</span> <span class="nav-text">MySQL 创建数据表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SQL命令"><span class="nav-number">6.1.</span> <span class="nav-text">SQL命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在命令提示窗口中创建数据表"><span class="nav-number">6.2.</span> <span class="nav-text">在命令提示窗口中创建数据表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#node-js中创建表"><span class="nav-number">6.3.</span> <span class="nav-text">node.js中创建表</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL-删除数据表"><span class="nav-number">7.</span> <span class="nav-text">MySQL 删除数据表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#在命令提示窗口中删除数据表"><span class="nav-number">7.1.</span> <span class="nav-text">在命令提示窗口中删除数据表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#node-js中删除表"><span class="nav-number">7.2.</span> <span class="nav-text">node.js中删除表</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL-插入数据"><span class="nav-number">8.</span> <span class="nav-text">MySQL 插入数据</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#通过命令提示窗口插入数据"><span class="nav-number">8.1.</span> <span class="nav-text">通过命令提示窗口插入数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#node-js插入数据"><span class="nav-number">8.2.</span> <span class="nav-text">node.js插入数据</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL-查询数据"><span class="nav-number">9.</span> <span class="nav-text">MySQL 查询数据</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#通过命令提示符获取数据"><span class="nav-number">9.1.</span> <span class="nav-text">通过命令提示符获取数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#node-js查询数据"><span class="nav-number">9.2.</span> <span class="nav-text">node.js查询数据</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL-WHERE-子句"><span class="nav-number">10.</span> <span class="nav-text">MySQL WHERE 子句</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#从命令提示符中读取数据"><span class="nav-number">10.1.</span> <span class="nav-text">从命令提示符中读取数据</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" rel="external nofollow" href="https://github.com/theme-next/hexo-theme-next">NexT.Mist</a> v6.0.6</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.6"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.6"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.6"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.6"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>

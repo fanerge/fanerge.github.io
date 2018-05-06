@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.6" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=6.0.6" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.0.6',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+  
+
+
+
+
+  <meta name="description" content="head、options、get、put、post、delete含义与区别了解它们的区别，这对于 RESTful架构 来说非常有意义。 如果你还不知道什么叫 RESTful架构？ HEAD请求（判断资源是否存在）HEAD和GET本质是一样的，区别在于HEAD不含有呈现数据，而仅仅是HTTP头信息。 有的人可能觉得这个方法没什么用，其实不是这样的。想象一个业务情景：欲判断某个资源是否存在， 我们通常">
+<meta name="keywords" content="http">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端同学需要了解的通信知识">
+<meta property="og:url" content="https://fanerge.github.io/2017/前端同学需要了解通信知识.html">
+<meta property="og:site_name" content="余真帆的博客">
+<meta property="og:description" content="head、options、get、put、post、delete含义与区别了解它们的区别，这对于 RESTful架构 来说非常有意义。 如果你还不知道什么叫 RESTful架构？ HEAD请求（判断资源是否存在）HEAD和GET本质是一样的，区别在于HEAD不含有呈现数据，而仅仅是HTTP头信息。 有的人可能觉得这个方法没什么用，其实不是这样的。想象一个业务情景：欲判断某个资源是否存在， 我们通常">
+<meta property="og:image" content="http://oxpnrlb4j.bkt.clouddn.com/get%E5%92%8Cpost.png">
+<meta property="og:image" content="http://oxpnrlb4j.bkt.clouddn.com/http%E7%8A%B6%E6%80%81%E7%A0%81%E6%B1%87%E6%80%BB.png">
+<meta property="og:updated_time" content="2017-11-05T14:21:11.893Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前端同学需要了解的通信知识">
+<meta name="twitter:description" content="head、options、get、put、post、delete含义与区别了解它们的区别，这对于 RESTful架构 来说非常有意义。 如果你还不知道什么叫 RESTful架构？ HEAD请求（判断资源是否存在）HEAD和GET本质是一样的，区别在于HEAD不含有呈现数据，而仅仅是HTTP头信息。 有的人可能觉得这个方法没什么用，其实不是这样的。想象一个业务情景：欲判断某个资源是否存在， 我们通常">
+<meta name="twitter:image" content="http://oxpnrlb4j.bkt.clouddn.com/get%E5%92%8Cpost.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="余真帆的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="https://fanerge.github.io/2017/前端同学需要了解通信知识.html"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>前端同学需要了解的通信知识 | 余真帆的博客</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+	<a href="https://github.com/fanerge" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#70B7FD; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+	</div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">余真帆的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-categories">
+    <a href="/categories" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Categories</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-archives">
+    <a href="/archives" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Archives</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-tags">
+    <a href="/tags" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Tags</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-about">
+    <a href="/about" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />About</a>
+</li>
+
+      
+
+      
+    </ul>
+  
+
+  
+    
+
+    
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+    
+
+  
+
+
+  
+
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/前端同学需要了解通信知识.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">前端同学需要了解的通信知识</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-11-05T18:15:14+08:00">2017-11-05</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/通信协议/" itemprop="url" rel="index"><span itemprop="name">通信协议</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views: 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+		
+	  
+      
+
+      
+        <h1 id="head、options、get、put、post、delete含义与区别"><a href="#head、options、get、put、post、delete含义与区别" class="headerlink" title="head、options、get、put、post、delete含义与区别"></a>head、options、get、put、post、delete含义与区别</h1><pre><code>了解它们的区别，这对于 RESTful架构 来说非常有意义。
+</code></pre><p>如果你还不知道什么叫 <a href="https://fanerge.github.io/2017/10/13/RESTful-API-%E8%AE%BE%E8%AE%A1%E6%8C%87%E5%8D%97/">RESTful架构</a>？</p>
+<h2 id="HEAD请求（判断资源是否存在）"><a href="#HEAD请求（判断资源是否存在）" class="headerlink" title="HEAD请求（判断资源是否存在）"></a>HEAD请求（判断资源是否存在）</h2><pre><code>HEAD和GET本质是一样的，区别在于HEAD不含有呈现数据，而仅仅是HTTP头信息。
+有的人可能觉得这个方法没什么用，其实不是这样的。想象一个业务情景：欲判断某个资源是否存在，
+我们通常使用GET，但这里用HEAD则意义更加明确。
+</code></pre><h2 id="OPTIONS请求（获取当前URL支持的方法）"><a href="#OPTIONS请求（获取当前URL支持的方法）" class="headerlink" title="OPTIONS请求（获取当前URL支持的方法）"></a>OPTIONS请求（获取当前URL支持的方法）</h2><pre><code>这个方法很有趣，但极少使用。它用于获取当前URL所支持的方法。
+若请求成功，则它会在HTTP头中包含一个名为“Allow”的头，值是所支持的方法，如“GET, POST”。
+</code></pre><h2 id="POST请求（相当于数据库操作–增）"><a href="#POST请求（相当于数据库操作–增）" class="headerlink" title="POST请求（相当于数据库操作–增）"></a>POST请求（相当于数据库操作–增）</h2><pre><code>POST请求同PUT请求类似，都是向服务器端发送数据的，但是该请求会改变数据的种类等资源，
+就像数据库的insert操作一样，会创建新的内容。几乎目前所有的提交操作都是用POST请求的。
+</code></pre><h2 id="DELETE请求（相当于数据库操作–删）"><a href="#DELETE请求（相当于数据库操作–删）" class="headerlink" title="DELETE请求（相当于数据库操作–删）"></a>DELETE请求（相当于数据库操作–删）</h2><pre><code>DELETE请求顾名思义，就是用来删除某一个资源的，该请求就像数据库的delete操作。
+</code></pre><h2 id="PUT请求（相当于数据库操作–改）"><a href="#PUT请求（相当于数据库操作–改）" class="headerlink" title="PUT请求（相当于数据库操作–改）"></a>PUT请求（相当于数据库操作–改）</h2><pre><code>PUT请求是向服务器端发送数据的，从而改变信息，该请求就像数据库的update操作一样，
+用来修改数据的内容，但是不会增加数据的种类等，也就是说无论进行多少次PUT操作，其结果并没有不同。
+</code></pre><h2 id="GET请求（相当于数据库操作–查）"><a href="#GET请求（相当于数据库操作–查）" class="headerlink" title="GET请求（相当于数据库操作–查）"></a>GET请求（相当于数据库操作–查）</h2><pre><code>GET请求会向数据库发索取数据的请求，从而来获取信息，该请求就像数据库的select操作一样，
+只是用来查询一下数据，不会修改、增加数据，不会影响资源的内容，即该请求不会产生副作用。
+无论进行多少次操作，结果都是一样的。
+</code></pre><h1 id="常见的-GET-和-POST-的区别（浅比较）"><a href="#常见的-GET-和-POST-的区别（浅比较）" class="headerlink" title="常见的 GET 和 POST 的区别（浅比较）"></a>常见的 GET 和 POST 的区别（浅比较）</h1><p><img src="http://oxpnrlb4j.bkt.clouddn.com/get%E5%92%8Cpost.png" alt="get和post的区别"><br>    这些都是比较常见的，我就直接借用下<a href="https://sunshinevvv.coding.me/blog/2017/02/09/HttpGETv.s.POST/" target="_blank" rel="external">杨光</a>的总结。</p>
+<h1 id="也许这才是面试官想要的"><a href="#也许这才是面试官想要的" class="headerlink" title="也许这才是面试官想要的"></a>也许这才是面试官想要的</h1><p>上面我们的分析都是从<a href="https://fanerge.github.io/2017/10/14/OSI%E4%B8%83%E5%B1%82%E4%B8%8ETCP-IP%E4%BA%94%E5%B1%82%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84/">TCP/IP五层网络架构</a>中的 <span style="color: red;">应用层</span> 和 生产使用时做了区别，<br>这里我们就进入更底层的 <span style="color: red;">传输层 </span>的分析吧！</p>
+<blockquote>
+<p>GET和POST本质上就是TCP链接，并无差别。但是由于HTTP的规定和浏览器/服务器的限制，导致他们在应用过程中体现出一些不同。 GET和POST还有一个重大区别，简单的说：GET产生一个TCP数据包；POST产生两个TCP数据包。<br>对于GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200（返回数据）； 而对于POST，浏览器先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200 ok（返回数据）。<br>这里你只需要知道这个就好了，更详细请访问<a href="http://www.techweb.com.cn/network/system/2016-10-11/2407736.shtml" target="_blank" rel="external">get与post的区别</a>。    </p>
+</blockquote>
+<h1 id="总结一下-http-状态码"><a href="#总结一下-http-状态码" class="headerlink" title="总结一下 http 状态码"></a>总结一下 http 状态码</h1><p><img src="http://oxpnrlb4j.bkt.clouddn.com/http%E7%8A%B6%E6%80%81%E7%A0%81%E6%B1%87%E6%80%BB.png" alt="通用的http状态码"><br>    看着这些是不是有些头大，下面我为大家总结一些通用的状态码。<br>    100-199 用于指定客户端应相应的某些动作。<br>    200-299 用于表示请求成功。<br>    300-399 用于已经移动的文件并且常被包含在定位头信息中指定新的地址信息。<br>    400-499 用于指出客户端的错误。<br>    500-599 用于支持服务器错误。</p>
+<h2 id="1"><a href="#1" class="headerlink" title="1**"></a>1**</h2><h3 id="100-Continue-继续"><a href="#100-Continue-继续" class="headerlink" title="100 (Continue/继续)"></a>100 (Continue/继续)</h3><pre><code>如果服务器收到头信息中带有100-continue的请求，这是指客户端询问是否可以在后续的请求中发送附件。
+在这种情况下，服务器用100(SC_CONTINUE)允许客户端继续或用417 (Expectation Failed)告诉客户端
+不同意接受附件。这个状态码是 HTTP 1.1中新加入的。 
+</code></pre><h3 id="101-Switching-Protocols-转换协议"><a href="#101-Switching-Protocols-转换协议" class="headerlink" title="101 (Switching Protocols/转换协议)"></a>101 (Switching Protocols/转换协议)</h3><pre><code>指服务器将按照其上的头信息变为一个不同的协议。这是 HTTP 1.1中新加入的。 
+</code></pre><h2 id="2"><a href="#2" class="headerlink" title="2**"></a>2**</h2><h3 id="200-OK-正常"><a href="#200-OK-正常" class="headerlink" title="200 (OK/正常)"></a>200 (OK/正常)</h3><pre><code>200 (SC_OK)的意思是一切正常。一般用于相应GET和POST请求。这个状态码对servlet是缺省的；
+如果没有调用setStatus方法的话，就会得到200。 
+</code></pre><h3 id="201-Created-已创建"><a href="#201-Created-已创建" class="headerlink" title="201 (Created/已创建)"></a>201 (Created/已创建)</h3><pre><code>201 (SC_CREATED)表示服务器在请求的响应中建立了新文档；应在定位头信息中给出它的URL。
+</code></pre><h3 id="202-Accepted-接受"><a href="#202-Accepted-接受" class="headerlink" title="202 (Accepted/接受)"></a>202 (Accepted/接受)</h3><pre><code>202 (SC_ACCEPTED)告诉客户端请求正在被执行，但还没有处理完。 
+</code></pre><h3 id="203-Non-Authoritative-Information-非官方信息"><a href="#203-Non-Authoritative-Information-非官方信息" class="headerlink" title="203 (Non-Authoritative Information/非官方信息)"></a>203 (Non-Authoritative Information/非官方信息)</h3><pre><code>状态码203 (SC_NON_AUTHORITATIVE_INFORMATION)是表示文档被正常的返回，但是由于正在使用的
+是文档副本所以某些响应头信息可能不正确。这是 HTTP 1.1中新加入的。 
+</code></pre><h3 id="204-No-Content-无内容"><a href="#204-No-Content-无内容" class="headerlink" title="204 (No Content/无内容)"></a>204 (No Content/无内容)</h3><pre><code>在并没有新文档的情况下，204 (SC_NO_CONTENT)确保浏览器继续显示先前的文档。这各状态码对于
+用户周期性的重载某一页非常有用，并且你可以确定先前的页面是否已经更新。例如，某个servlet
+可能作如下操作： 
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">int pageVersion =Integer.parseInt(request.getParameter(&quot;pageVersion&quot;));</div><div class="line">if (pageVersion &gt;;= currentVersion) &#123;</div><div class="line">   response.setStatus(response.SC_NO_CONTENT);</div><div class="line">&#125; else &#123;</div><div class="line">	   // Create regular page</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="205-Reset-Content-重置内容"><a href="#205-Reset-Content-重置内容" class="headerlink" title="205 (Reset Content/重置内容)"></a>205 (Reset Content/重置内容)</h3><pre><code>重置内容205 (SC_RESET_CONTENT)的意思是虽然没有新文档但浏览器要重置文档显示。这个状态码用
+于强迫浏览器清除表单域。这是 HTTP 1.1中新加入的。 
+</code></pre><h3 id="206-Partial-Content-局部内容"><a href="#206-Partial-Content-局部内容" class="headerlink" title="206 (Partial Content/局部内容)"></a>206 (Partial Content/局部内容)</h3><pre><code>206 (SC_PARTIAL_CONTENT)是在服务器完成了一个包含Range头信息的局部请求时被发送的。
+这是 HTTP 1.1中新加入的。 
+</code></pre><h2 id="3"><a href="#3" class="headerlink" title="3**"></a>3**</h2><h3 id="300-Multiple-Choices-多重选择"><a href="#300-Multiple-Choices-多重选择" class="headerlink" title="300 (Multiple Choices/多重选择)"></a>300 (Multiple Choices/多重选择)</h3><pre><code>300 (SC_MULTIPLE_CHOICES)表示被请求的文档可以在多个地方找到，并将在返回的文档中列出来。
+如果服务器有首选设置，首选项将会被列于定位响应头信息中。 
+</code></pre><h3 id="301-Moved-Permanently"><a href="#301-Moved-Permanently" class="headerlink" title="301 (Moved Permanently)"></a>301 (Moved Permanently)</h3><pre><code>永久性重定向。 
+</code></pre><h3 id="302-Move-temporarily"><a href="#302-Move-temporarily" class="headerlink" title="302 (Move temporarily)"></a>302 (Move temporarily)</h3><pre><code>临时性重定向。
+</code></pre><h3 id="303-See-Other-参见其他信息"><a href="#303-See-Other-参见其他信息" class="headerlink" title="303 (See Other/参见其他信息)"></a>303 (See Other/参见其他信息)</h3><pre><code>与301类似，使用GET和POST请求查看
+</code></pre><h3 id="304-Not-Modified-未更改"><a href="#304-Not-Modified-未更改" class="headerlink" title="304 (Not Modified/未更改)"></a>304 (Not Modified/未更改)</h3><pre><code>当客户端有一个缓存的文档，通过提供一个 If-Modified-Since 头信息可指出客户端只希望文档在指定日期之后
+有所修改时才会重载此文档，用这种方式可以进行有条件的请求。304 (SC_NOT_MODIFIED)是指缓冲的版本已经被
+更新并且客户端应刷新文档。另外，服务器将返回请求的文档及状态码 200。servlet一般情况下不会直接设置这
+个状态码。它们会实现getLastModified方法并根据修正日期让默认服务方法处理有条件的请求。这个方法的例程
+已在2.8部分(An Example Using Servlet Initialization and Page Modification Dates/一个使用servlet初始化
+和页面修正日期的例子)给出。 
+</code></pre><h3 id="305-Use-Proxy-使用代理"><a href="#305-Use-Proxy-使用代理" class="headerlink" title="305 (Use Proxy/使用代理)"></a>305 (Use Proxy/使用代理)</h3><pre><code>305 (SC_USE_PROXY)表示所请求的文档要通过定位头信息中的代理服务器获得。这个状态码是新加入 HTTP 1.1中的。 
+</code></pre><h3 id="307-Temporary-Redirect-临时重定向"><a href="#307-Temporary-Redirect-临时重定向" class="headerlink" title="307 (Temporary Redirect/临时重定向)"></a>307 (Temporary Redirect/临时重定向)</h3><pre><code>与302类似，使用GET请求重定向。 
+</code></pre><h2 id="4"><a href="#4" class="headerlink" title="4**"></a>4**</h2><h3 id="400-Bad-Request-错误请求"><a href="#400-Bad-Request-错误请求" class="headerlink" title="400 (Bad Request/错误请求)"></a>400 (Bad Request/错误请求)</h3><pre><code>400 (SC_BAD_REQUEST)指出客户端请求中的语法错误。 
+</code></pre><h3 id="401-Unauthorized-未授权"><a href="#401-Unauthorized-未授权" class="headerlink" title="401 (Unauthorized/未授权)"></a>401 (Unauthorized/未授权)</h3><pre><code>401 (SC_UNAUTHORIZED)表示客户端在授权头信息中没有有效的身份信息时访问受到密码保护的页面。
+这个响应必须包含一个WWW-Authenticate的授权信息头。例如，在本书4.5部分中的“Restricting Access to Web Pages./限制访问Web页。” 
+</code></pre><h3 id="403-Forbidden-禁止"><a href="#403-Forbidden-禁止" class="headerlink" title="403 (Forbidden/禁止)"></a>403 (Forbidden/禁止)</h3><pre><code>403 (SC_FORBIDDEN)的意思是除非拥有授权否则服务器拒绝提供所请求的资源。这个状态经常会由于
+服务器上的损坏文件或目录许可而引起。 
+</code></pre><h3 id="404-Not-Found-未找到"><a href="#404-Not-Found-未找到" class="headerlink" title="404 (Not Found/未找到)"></a>404 (Not Found/未找到)</h3><pre><code>404 (SC_NOT_FOUND)状态每个网络程序员可能都遇到过，他告诉客户端所给的地址无法找到任何资源。
+它是表示“没有所访问页面”的标准方式。这个状态码是常用的响应并且在HttpServletResponse类中有
+专门的方法实现它：sendError(&quot;message&quot;)。相对于setStatus使用sendError得好处是：服务器会自动
+生成一个错误页来显示错误信息。
+</code></pre><h3 id="405-Method-Not-Allowed-方法未允许"><a href="#405-Method-Not-Allowed-方法未允许" class="headerlink" title="405 (Method Not Allowed/方法未允许)"></a>405 (Method Not Allowed/方法未允许)</h3><pre><code>405 (SC_METHOD_NOT_ALLOWED)指出请求方法(GET, POST, HEAD, PUT, DELETE, 等)对某些特定的资源
+不允许使用。该状态码是新加入 HTTP 1.1中的。 
+</code></pre><h3 id="406-Not-Acceptable-无法访问"><a href="#406-Not-Acceptable-无法访问" class="headerlink" title="406 (Not Acceptable/无法访问)"></a>406 (Not Acceptable/无法访问)</h3><pre><code>406 (SC_NOT_ACCEPTABLE)表示请求资源的MIME类型与客户端中Accept头信息中指定的类型不一致。
+406是新加入 HTTP 1.1中的。 
+</code></pre><h3 id="407-Proxy-Authentication-Required-代理服务器认证要求"><a href="#407-Proxy-Authentication-Required-代理服务器认证要求" class="headerlink" title="407 (Proxy Authentication Required/代理服务器认证要求)"></a>407 (Proxy Authentication Required/代理服务器认证要求)</h3><pre><code>407 (SC_PROXY_AUTHENTICATION_REQUIRED)与401状态有些相似，只是这个状态用于代理服务器。
+该状态指出客户端必须通过代理服务器的认证。代理服务器返回一个Proxy-Authenticate响应头
+信息给客户端，这会引起客户端使用带有Proxy-Authorization请求的头信息重新连接。
+该状态码是新加入 HTTP 1.1中的。 
+</code></pre><h3 id="408-Request-Timeout-请求超时"><a href="#408-Request-Timeout-请求超时" class="headerlink" title="408 (Request Timeout/请求超时)"></a>408 (Request Timeout/请求超时)</h3><pre><code>408 (SC_REQUEST_TIMEOUT)是指服务端等待客户端发送请求的时间过长。该状态码是新加入 HTTP 1.1中的。 
+</code></pre><h3 id="409-Conflict-冲突"><a href="#409-Conflict-冲突" class="headerlink" title="409 (Conflict/冲突)"></a>409 (Conflict/冲突)</h3><pre><code>该状态通常与PUT请求一同使用，409 (SC_CONFLICT)状态常被用于试图上传版本不正确的文件时。
+该状态码是新加入 HTTP 1.1中的。 
+</code></pre><h3 id="410-Gone-已经不存在"><a href="#410-Gone-已经不存在" class="headerlink" title="410 (Gone/已经不存在)"></a>410 (Gone/已经不存在)</h3><pre><code>410 (SC_GONE)告诉客户端所请求的文档已经不存在并且没有更新的地址。
+410状态不同于404，410是在指导文档已被移走的情况下使用，而404则用于未知原因的无法访问。
+该状态码是新加入 HTTP 1.1中的。 
+</code></pre><h3 id="411-Length-Required-需要数据长度"><a href="#411-Length-Required-需要数据长度" class="headerlink" title="411 (Length Required/需要数据长度)"></a>411 (Length Required/需要数据长度)</h3><pre><code>411 (SC_LENGTH_REQUIRED)表示服务器不能处理请求（假设为带有附件的POST请求），除非客户端
+发送Content-Length头信息指出发送给服务器的数据的大小。该状态是新加入 HTTP 1.1的。 
+</code></pre><h3 id="412-Precondition-Failed-先决条件错误"><a href="#412-Precondition-Failed-先决条件错误" class="headerlink" title="412 (Precondition Failed/先决条件错误)"></a>412 (Precondition Failed/先决条件错误)</h3><pre><code>412 (SC_PRECONDITION_FAILED)状态指出请求头信息中的某些先决条件是错误的。该状态是新加入 HTTP 1.1的。 
+</code></pre><h3 id="413-Request-Entity-Too-Large-请求实体过大"><a href="#413-Request-Entity-Too-Large-请求实体过大" class="headerlink" title="413 (Request Entity Too Large/请求实体过大)"></a>413 (Request Entity Too Large/请求实体过大)</h3><pre><code>413 (SC_REQUEST_ENTITY_TOO_LARGE)告诉客户端现在所请求的文档比服务器现在想要处理的要大。
+如果服务器认为能够过一段时间处理，则会包含一个Retry-After的响应头信息。该状态是新加入 HTTP 1.1的。 
+</code></pre><h3 id="414-Request-URI-Too-Long-请求URI过长"><a href="#414-Request-URI-Too-Long-请求URI过长" class="headerlink" title="414 (Request URI Too Long/请求URI过长)"></a>414 (Request URI Too Long/请求URI过长)</h3><pre><code>414 (SC_REQUEST_URI_TOO_LONG)状态用于在URI过长的情况时。这里所指的“URI”是指URL中主机、
+域名及端口号之后的内容。例如：在URL--http://www.y2k-disaster.com:8080/we/look/silly/now/中URI是指/we/look/silly/now/。
+该状态是新加入 HTTP 1.1的。 
+</code></pre><h3 id="415-Unsupported-Media-Type-不支持的媒体格式"><a href="#415-Unsupported-Media-Type-不支持的媒体格式" class="headerlink" title="415 (Unsupported Media Type/不支持的媒体格式)"></a>415 (Unsupported Media Type/不支持的媒体格式)</h3><pre><code>415 (SC_UNSUPPORTED_MEDIA_TYPE)意味着请求所带的附件的格式类型服务器不知道如何处理。该状态是新加入 HTTP 1.1的。 
+</code></pre><h3 id="416-Requested-Range-Not-Satisfiable-请求范围无法满足"><a href="#416-Requested-Range-Not-Satisfiable-请求范围无法满足" class="headerlink" title="416 (Requested Range Not Satisfiable/请求范围无法满足)"></a>416 (Requested Range Not Satisfiable/请求范围无法满足)</h3><pre><code>416表示客户端包含了一个服务器无法满足的Range头信息的请求。该状态是新加入 HTTP 1.1的。
+奇怪的是，在servlet 2.1版本API的HttpServletResponse中并没有相应的常量代表该状态。 
+</code></pre><h3 id="417-Expectation-Failed-期望失败"><a href="#417-Expectation-Failed-期望失败" class="headerlink" title="417 (Expectation Failed/期望失败)"></a>417 (Expectation Failed/期望失败)</h3><pre><code>如果服务器得到一个带有100-continue值的Expect请求头信息，这是指客户端正在询问是否可以在后面的
+请求中发送附件。在这种情况下，服务器也会用该状态(417)告诉浏览器服务器不接收该附件或用100 (SC_CONTINUE)状态
+告诉客户端可以继续发送附件。该状态是新加入 HTTP 1.1的。 
+</code></pre><h2 id="5"><a href="#5" class="headerlink" title="5**"></a>5**</h2><h3 id="500-Internal-Server-Error-内部服务器错误"><a href="#500-Internal-Server-Error-内部服务器错误" class="headerlink" title="500 (Internal Server Error/内部服务器错误)"></a>500 (Internal Server Error/内部服务器错误)</h3><pre><code>500 (SC_INTERNAL_SERVER_ERROR) 是常用的“服务器错误”状态。该状态经常由CGI程序引起也可能
+（但愿不会如此！）由无法正常运行的或返回头信息格式不正确的servlet引起。 
+</code></pre><h3 id="501-Not-Implemented-未实现"><a href="#501-Not-Implemented-未实现" class="headerlink" title="501 (Not Implemented/未实现)"></a>501 (Not Implemented/未实现)</h3><pre><code>501 (SC_NOT_IMPLEMENTED)状态告诉客户端服务器不支持请求中要求的功能。例如，客户端执行了如PUT
+这样的服务器并不支持的命令。 
+</code></pre><h3 id="502-Bad-Gateway-错误的网关"><a href="#502-Bad-Gateway-错误的网关" class="headerlink" title="502 (Bad Gateway/错误的网关)"></a>502 (Bad Gateway/错误的网关)</h3><pre><code>502 (SC_BAD_GATEWAY)被用于充当代理或网关的服务器；该状态指出接收服务器接收到远端服务器的错误响应。 
+</code></pre><h3 id="503-Service-Unavailable-服务无法获得"><a href="#503-Service-Unavailable-服务无法获得" class="headerlink" title="503 (Service Unavailable/服务无法获得)"></a>503 (Service Unavailable/服务无法获得)</h3><pre><code>状态码503 (SC_SERVICE_UNAVAILABLE)表示服务器由于在维护或已经超载而无法响应。例如，如果某些线程
+或数据库连接池已经没有空闲则servlet会返回这个头信息。服务器可提供一个Retry-After头信息告诉客户
+端什么时候可以在试一次。 
+</code></pre><h3 id="504-Gateway-Timeout-网关超时"><a href="#504-Gateway-Timeout-网关超时" class="headerlink" title="504 (Gateway Timeout/网关超时)"></a>504 (Gateway Timeout/网关超时)</h3><pre><code>该状态也用于充当代理或网关的服务器；它指出接收服务器没有从远端服务器得到及时的响应。
+该状态是新加入 HTTP 1.1的。 
+</code></pre><h3 id="505-HTTP-Version-Not-Supported-不支持的-HTTP-版本"><a href="#505-HTTP-Version-Not-Supported-不支持的-HTTP-版本" class="headerlink" title="505 (HTTP Version Not Supported/不支持的 HTTP 版本)"></a>505 (HTTP Version Not Supported/不支持的 HTTP 版本)</h3><pre><code>505 (SC_HTTP_VERSION_NOT_SUPPORTED)状态码是说服务器并不支持在请求中所标明 HTTP 版本。
+该状态是新加入 HTTP 1.1的。
+</code></pre><h1 id="http-缓存相关"><a href="#http-缓存相关" class="headerlink" title="http 缓存相关"></a>http 缓存相关</h1><p>这里关于前端仔 http缓存相关的知识，我就不再总结了，有兴趣的同学可以访问我<a href="https://fanerge.github.io/2017/09/01/http%E7%BC%93%E5%AD%98%E7%9F%A5%E8%AF%86%E6%80%BB%E7%BB%93/">http缓存相关的知识</a>。</p>
+<blockquote>
+<p>   参考文档：<br>    <a href="http://www.cnblogs.com/testcoffee/p/6295970.html" target="_blank" rel="external">get、put、post、delete含义与区别</a><br>    <a href="https://sunshinevvv.coding.me/blog/2017/02/09/HttpGETv.s.POST/" target="_blank" rel="external">HTTP协议中GET和POST方法的区别</a><br>    <a href="http://www.techweb.com.cn/network/system/2016-10-11/2407736.shtml" target="_blank" rel="external">99%的人都理解错了HTTP中GET与POST的区别</a><br>    <a href="https://baike.baidu.com/item/HTTP%E7%8A%B6%E6%80%81%E7%A0%81/5053660?fr=aladdin" target="_blank" rel="external">有同学不好翻墙，就看百度的http状态码吧</a><br>    <a href="http://www.cnblogs.com/lxinxuan/archive/2009/10/22/1588053.html" target="_blank" rel="external">HTTP状态码大全</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+	<div>
+		
+			<div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读，如果本文对你有帮助就记得<a href="https://github.com/fanerge/fanerge.github.io" title="谢谢亲的star">给个star</a>-------------</div>
+		
+	</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Donate comment here</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author: </strong>余真帆-fanerge</li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://fanerge.github.io/2017/前端同学需要了解通信知识.html" title="前端同学需要了解的通信知识">https://fanerge.github.io/2017/前端同学需要了解通信知识.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/http/" rel="tag"><i class="far fa-bell"></i> http</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/js设计模式-组合模式.html" rel="next" title="js设计模式-组合模式">
+                <i class="fa fa-chevron-left"></i> js设计模式-组合模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/js设计模式-备忘录模式.html" rel="prev" title="js设计模式-备忘录模式">
+                js设计模式-备忘录模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=2156704" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTk4Mi8xMjUxOA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+              <p class="site-description motion-element" itemprop="description">前端、web</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">155</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">24</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">46</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/fanerge" target="_blank" title="GitHub" rel="external nofollow"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:fanege@qq.com" target="_blank" title="E-Mail" rel="external nofollow"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金" rel="external nofollow"><i class="fa fa-fw fa-globe"></i>掘金</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#head、options、get、put、post、delete含义与区别"><span class="nav-number">1.</span> <span class="nav-text">head、options、get、put、post、delete含义与区别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HEAD请求（判断资源是否存在）"><span class="nav-number">1.1.</span> <span class="nav-text">HEAD请求（判断资源是否存在）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OPTIONS请求（获取当前URL支持的方法）"><span class="nav-number">1.2.</span> <span class="nav-text">OPTIONS请求（获取当前URL支持的方法）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#POST请求（相当于数据库操作–增）"><span class="nav-number">1.3.</span> <span class="nav-text">POST请求（相当于数据库操作–增）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DELETE请求（相当于数据库操作–删）"><span class="nav-number">1.4.</span> <span class="nav-text">DELETE请求（相当于数据库操作–删）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PUT请求（相当于数据库操作–改）"><span class="nav-number">1.5.</span> <span class="nav-text">PUT请求（相当于数据库操作–改）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GET请求（相当于数据库操作–查）"><span class="nav-number">1.6.</span> <span class="nav-text">GET请求（相当于数据库操作–查）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常见的-GET-和-POST-的区别（浅比较）"><span class="nav-number">2.</span> <span class="nav-text">常见的 GET 和 POST 的区别（浅比较）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#也许这才是面试官想要的"><span class="nav-number">3.</span> <span class="nav-text">也许这才是面试官想要的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结一下-http-状态码"><span class="nav-number">4.</span> <span class="nav-text">总结一下 http 状态码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1"><span class="nav-number">4.1.</span> <span class="nav-text">1**</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#100-Continue-继续"><span class="nav-number">4.1.1.</span> <span class="nav-text">100 (Continue/继续)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#101-Switching-Protocols-转换协议"><span class="nav-number">4.1.2.</span> <span class="nav-text">101 (Switching Protocols/转换协议)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2"><span class="nav-number">4.2.</span> <span class="nav-text">2**</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#200-OK-正常"><span class="nav-number">4.2.1.</span> <span class="nav-text">200 (OK/正常)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#201-Created-已创建"><span class="nav-number">4.2.2.</span> <span class="nav-text">201 (Created/已创建)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#202-Accepted-接受"><span class="nav-number">4.2.3.</span> <span class="nav-text">202 (Accepted/接受)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#203-Non-Authoritative-Information-非官方信息"><span class="nav-number">4.2.4.</span> <span class="nav-text">203 (Non-Authoritative Information/非官方信息)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#204-No-Content-无内容"><span class="nav-number">4.2.5.</span> <span class="nav-text">204 (No Content/无内容)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#205-Reset-Content-重置内容"><span class="nav-number">4.2.6.</span> <span class="nav-text">205 (Reset Content/重置内容)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#206-Partial-Content-局部内容"><span class="nav-number">4.2.7.</span> <span class="nav-text">206 (Partial Content/局部内容)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3"><span class="nav-number">4.3.</span> <span class="nav-text">3**</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#300-Multiple-Choices-多重选择"><span class="nav-number">4.3.1.</span> <span class="nav-text">300 (Multiple Choices/多重选择)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#301-Moved-Permanently"><span class="nav-number">4.3.2.</span> <span class="nav-text">301 (Moved Permanently)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#302-Move-temporarily"><span class="nav-number">4.3.3.</span> <span class="nav-text">302 (Move temporarily)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#303-See-Other-参见其他信息"><span class="nav-number">4.3.4.</span> <span class="nav-text">303 (See Other/参见其他信息)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#304-Not-Modified-未更改"><span class="nav-number">4.3.5.</span> <span class="nav-text">304 (Not Modified/未更改)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#305-Use-Proxy-使用代理"><span class="nav-number">4.3.6.</span> <span class="nav-text">305 (Use Proxy/使用代理)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#307-Temporary-Redirect-临时重定向"><span class="nav-number">4.3.7.</span> <span class="nav-text">307 (Temporary Redirect/临时重定向)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4"><span class="nav-number">4.4.</span> <span class="nav-text">4**</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#400-Bad-Request-错误请求"><span class="nav-number">4.4.1.</span> <span class="nav-text">400 (Bad Request/错误请求)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#401-Unauthorized-未授权"><span class="nav-number">4.4.2.</span> <span class="nav-text">401 (Unauthorized/未授权)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#403-Forbidden-禁止"><span class="nav-number">4.4.3.</span> <span class="nav-text">403 (Forbidden/禁止)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#404-Not-Found-未找到"><span class="nav-number">4.4.4.</span> <span class="nav-text">404 (Not Found/未找到)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#405-Method-Not-Allowed-方法未允许"><span class="nav-number">4.4.5.</span> <span class="nav-text">405 (Method Not Allowed/方法未允许)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#406-Not-Acceptable-无法访问"><span class="nav-number">4.4.6.</span> <span class="nav-text">406 (Not Acceptable/无法访问)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#407-Proxy-Authentication-Required-代理服务器认证要求"><span class="nav-number">4.4.7.</span> <span class="nav-text">407 (Proxy Authentication Required/代理服务器认证要求)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#408-Request-Timeout-请求超时"><span class="nav-number">4.4.8.</span> <span class="nav-text">408 (Request Timeout/请求超时)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#409-Conflict-冲突"><span class="nav-number">4.4.9.</span> <span class="nav-text">409 (Conflict/冲突)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#410-Gone-已经不存在"><span class="nav-number">4.4.10.</span> <span class="nav-text">410 (Gone/已经不存在)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#411-Length-Required-需要数据长度"><span class="nav-number">4.4.11.</span> <span class="nav-text">411 (Length Required/需要数据长度)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#412-Precondition-Failed-先决条件错误"><span class="nav-number">4.4.12.</span> <span class="nav-text">412 (Precondition Failed/先决条件错误)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#413-Request-Entity-Too-Large-请求实体过大"><span class="nav-number">4.4.13.</span> <span class="nav-text">413 (Request Entity Too Large/请求实体过大)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#414-Request-URI-Too-Long-请求URI过长"><span class="nav-number">4.4.14.</span> <span class="nav-text">414 (Request URI Too Long/请求URI过长)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#415-Unsupported-Media-Type-不支持的媒体格式"><span class="nav-number">4.4.15.</span> <span class="nav-text">415 (Unsupported Media Type/不支持的媒体格式)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#416-Requested-Range-Not-Satisfiable-请求范围无法满足"><span class="nav-number">4.4.16.</span> <span class="nav-text">416 (Requested Range Not Satisfiable/请求范围无法满足)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#417-Expectation-Failed-期望失败"><span class="nav-number">4.4.17.</span> <span class="nav-text">417 (Expectation Failed/期望失败)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5"><span class="nav-number">4.5.</span> <span class="nav-text">5**</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#500-Internal-Server-Error-内部服务器错误"><span class="nav-number">4.5.1.</span> <span class="nav-text">500 (Internal Server Error/内部服务器错误)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#501-Not-Implemented-未实现"><span class="nav-number">4.5.2.</span> <span class="nav-text">501 (Not Implemented/未实现)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#502-Bad-Gateway-错误的网关"><span class="nav-number">4.5.3.</span> <span class="nav-text">502 (Bad Gateway/错误的网关)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#503-Service-Unavailable-服务无法获得"><span class="nav-number">4.5.4.</span> <span class="nav-text">503 (Service Unavailable/服务无法获得)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#504-Gateway-Timeout-网关超时"><span class="nav-number">4.5.5.</span> <span class="nav-text">504 (Gateway Timeout/网关超时)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#505-HTTP-Version-Not-Supported-不支持的-HTTP-版本"><span class="nav-number">4.5.6.</span> <span class="nav-text">505 (HTTP Version Not Supported/不支持的 HTTP 版本)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#http-缓存相关"><span class="nav-number">5.</span> <span class="nav-text">http 缓存相关</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" rel="external nofollow" href="https://github.com/theme-next/hexo-theme-next">NexT.Mist</a> v6.0.6</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.6"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.6"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.6"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.6"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>

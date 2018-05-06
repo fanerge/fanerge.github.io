@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.6" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=6.0.6" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.0.6',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+  
+
+
+
+
+  <meta name="description" content="在掘金上看见了面试官: 你了解过Babel吗？写过Babel插件吗? 答: 没有。卒，正巧自己对Babel工作原理和Babel插件开发也不够了解，赶紧来补一波吧。 基础概念首先我们这里需要了解一些基本的概念，这篇文章介绍的很详细，我这边只提一下。 BabelBabel 是 JavaScript 编译器，更确切地说是源码到源码的编译器，通常也叫做“转换编译器（transpiler）”。意思是说你为">
+<meta name="keywords" content="Babel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Babel工作原理及Babel插件开发探索">
+<meta property="og:url" content="https://fanerge.github.io/2018/Babel工作原理及Babel插件开发探索.html">
+<meta property="og:site_name" content="余真帆的博客">
+<meta property="og:description" content="在掘金上看见了面试官: 你了解过Babel吗？写过Babel插件吗? 答: 没有。卒，正巧自己对Babel工作原理和Babel插件开发也不够了解，赶紧来补一波吧。 基础概念首先我们这里需要了解一些基本的概念，这篇文章介绍的很详细，我这边只提一下。 BabelBabel 是 JavaScript 编译器，更确切地说是源码到源码的编译器，通常也叫做“转换编译器（transpiler）”。意思是说你为">
+<meta property="og:image" content="http://p52glq5m1.bkt.clouddn.com/ASTdemo1.png">
+<meta property="og:image" content="http://p52glq5m1.bkt.clouddn.com/Babel%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.webp">
+<meta property="og:image" content="http://p52glq5m1.bkt.clouddn.com/result.png">
+<meta property="og:updated_time" content="2018-03-04T13:25:41.481Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Babel工作原理及Babel插件开发探索">
+<meta name="twitter:description" content="在掘金上看见了面试官: 你了解过Babel吗？写过Babel插件吗? 答: 没有。卒，正巧自己对Babel工作原理和Babel插件开发也不够了解，赶紧来补一波吧。 基础概念首先我们这里需要了解一些基本的概念，这篇文章介绍的很详细，我这边只提一下。 BabelBabel 是 JavaScript 编译器，更确切地说是源码到源码的编译器，通常也叫做“转换编译器（transpiler）”。意思是说你为">
+<meta name="twitter:image" content="http://p52glq5m1.bkt.clouddn.com/ASTdemo1.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="余真帆的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="https://fanerge.github.io/2018/Babel工作原理及Babel插件开发探索.html"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Babel工作原理及Babel插件开发探索 | 余真帆的博客</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+	<a href="https://github.com/fanerge" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#70B7FD; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+	</div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">余真帆的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-categories">
+    <a href="/categories" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Categories</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-archives">
+    <a href="/archives" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Archives</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-tags">
+    <a href="/tags" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Tags</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-about">
+    <a href="/about" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />About</a>
+</li>
+
+      
+
+      
+    </ul>
+  
+
+  
+    
+
+    
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+    
+
+  
+
+
+  
+
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2018/Babel工作原理及Babel插件开发探索.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Babel工作原理及Babel插件开发探索</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-04T20:46:18+08:00">2018-03-04</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/js/" itemprop="url" rel="index"><span itemprop="name">js</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views: 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+		
+	  
+      
+
+      
+        <p>在掘金上看见了<a href="https://juejin.im/post/5a9315e46fb9a0633a711f25" target="_blank" rel="external">面试官: 你了解过Babel吗？写过Babel插件吗? 答: 没有。卒</a>，正巧自己对Babel工作原理和Babel插件开发也不够了解，赶紧来补一波吧。</p>
+<h1 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h1><p>首先我们这里需要了解一些基本的概念，<a href="https://www.hazyzh.com/b/180211145458" target="_blank" rel="external">这篇文章介绍的很详细</a>，我这边只提一下。</p>
+<h2 id="Babel"><a href="#Babel" class="headerlink" title="Babel"></a>Babel</h2><p>Babel 是 JavaScript 编译器，更确切地说是源码到源码的编译器，通常也叫做“转换编译器（transpiler）”。<br>意思是说你为 Babel 提供一些 JavaScript 代码，Babel 更改这些代码，然后返回给你新生成的代码。</p>
+<h2 id="AST"><a href="#AST" class="headerlink" title="AST"></a>AST</h2><p>抽象语法树（abstract syntax tree或者缩写为AST），或者语法树（syntax tree），是源代码的抽象语法结构的树状表现形式，这里特指编程语言的源代码。<br>和抽象语法树相对的是具体语法树（concrete syntaxtree），通常称作分析树（parse tree）。<br>一般的，在源代码的翻译和编译过程中，语法分析器创建出分析树。一旦AST被创建出来，在后续的处理过程中，比如语义分析阶段，会添加一些信息。</p>
+<h2 id="静态分析"><a href="#静态分析" class="headerlink" title="静态分析"></a>静态分析</h2><blockquote>
+<p>   静态分析是在不需要执行代码的前提下对代码进行分析的处理过程 （执行代码的同时进行代码分析即是动态分析）。<br>静态分析的目的是多种多样的， 它可用于语法检查，编译，代码高亮，代码转换，优化，压缩等等场景。</p>
+</blockquote>
+<h1 id="Babel-的三个主要处理步骤分别是：-解析（parse），转换（transform），生成（generate）"><a href="#Babel-的三个主要处理步骤分别是：-解析（parse），转换（transform），生成（generate）" class="headerlink" title="Babel 的三个主要处理步骤分别是： 解析（parse），转换（transform），生成（generate）"></a>Babel 的三个主要处理步骤分别是： 解析（parse），转换（transform），生成（generate）</h1><h2 id="解析"><a href="#解析" class="headerlink" title="解析"></a>解析</h2><p>接收代码并输出AST。这个步骤又分为两个阶段：词法分析（Lexical Analysis）和 语法分析（Syntactic Analysis）。</p>
+<h3 id="词法分析"><a href="#词法分析" class="headerlink" title="词法分析"></a>词法分析</h3><p>词法分析阶段把字符串形式的代码转换成令牌（tokens）流。<br>你可以把令牌看作是一个扁平化的语法片段数组。<br>如：n*n代码经过词法分析转换成令牌<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// n*n</div><div class="line">[</div><div class="line">  &#123; type: &#123; ... &#125;, value: &quot;n&quot;, start: 0, end: 1, loc: &#123; ... &#125; &#125;,</div><div class="line">  &#123; type: &#123; ... &#125;, value: &quot;*&quot;, start: 2, end: 3, loc: &#123; ... &#125; &#125;,</div><div class="line">  &#123; type: &#123; ... &#125;, value: &quot;n&quot;, start: 4, end: 5, loc: &#123; ... &#125; &#125;,</div><div class="line">  ...</div><div class="line">]</div></pre></td></tr></table></figure></p>
+<p>每一个type有一组属性来描述该令牌：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  type: &#123;</div><div class="line">    label: &apos;name&apos;,</div><div class="line">    keyword: undefined,</div><div class="line">    beforeExpr: false,</div><div class="line">    startsExpr: true,</div><div class="line">    rightAssociative: false,</div><div class="line">    isLoop: false,</div><div class="line">    isAssign: false,</div><div class="line">    prefix: false,</div><div class="line">    postfix: false,</div><div class="line">    binop: null,</div><div class="line">    updateContext: null</div><div class="line">  &#125;,</div><div class="line">  ...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="语法分析"><a href="#语法分析" class="headerlink" title="语法分析"></a>语法分析</h3><p>语法分析阶段会把一个令牌(tokens)流转换成 AST 的形式。 这个阶段会使用令牌中的信息把它们转换成一个 AST 的表述结构，这样更易于后续的操作。<br>这个过程我们可以通过<a href="http://astexplorer.net/#/gist/5579c7f7b371a6f7781f974c9aa1bb6a/238c6f5a96217c0e3b403e33e9de2483da50b0fe" target="_blank" rel="external">astexplorer</a>来查看我们代码生成的AST。<br>这个时候我们的AST就产生了，如下图。<br><img src="http://p52glq5m1.bkt.clouddn.com/ASTdemo1.png" alt="源代码到AST"><br>PS：上图左边为我们的源代码，右边为对应生成的抽象语法树AST。</p>
+<h2 id="转换"><a href="#转换" class="headerlink" title="转换"></a>转换</h2><p>转换步骤接收 AST 并对其进行遍历，在此过程中对节点进行添加、更新及移除等操作。 这是 Babel 或是其他编译器中最复杂的过程 同时也是插件将要介入工作的部分。</p>
+<h2 id="生成"><a href="#生成" class="headerlink" title="生成"></a>生成</h2><p>代码生成步骤把最终（经过一系列转换之后）的 AST 转换成字符串形式的代码，同时还会创建源码映射（source maps）。<br>代码生成其实很简单：深度优先遍历整个 AST，然后构建可以表示转换后代码的字符串。<br>Babel工作原理见下图表示。<br><img src="http://p52glq5m1.bkt.clouddn.com/Babel%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.webp" alt="Babel工作原理"><br><a href="https://www.hazyzh.com/b/180211145458" target="_blank" rel="external">图片来源，探索 babel 和 babel 插件是怎么工作的</a></p>
+<h1 id="开发一个Babel插件"><a href="#开发一个Babel插件" class="headerlink" title="开发一个Babel插件"></a>开发一个Babel插件</h1><h2 id="Visitors（访问者）"><a href="#Visitors（访问者）" class="headerlink" title="Visitors（访问者）"></a>Visitors（访问者）</h2><p>当我们谈及“进入”一个节点，实际上是说我们在访问它们， 之所以使用这样的术语是因为有一个访问者模式（visitor）的概念。<br>访问者是一个用于 AST 遍历的跨语言的模式。 简单的说它们就是一个对象，定义了用于在一个树状结构中获取具体节点的方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">const MyVisitor = &#123;</div><div class="line">  Identifier: &#123;</div><div class="line">	// 当进入Identifier节点的时候执行</div><div class="line">	enter() &#123; </div><div class="line">	  console.log(&quot;Entered&quot;);</div><div class="line">	&#125;,</div><div class="line">	// 当退出Identifier节点的时候执行</div><div class="line">	exit() &#123;</div><div class="line">      console.log(&quot;Exited!&quot;);</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">  &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>PS： 许多时候我们只需要关心进入节点，就可以使用简写 Identifier() { … } 或者 Identifier: { enter() { … } } 。<br>这是一个简单的访问者，把它用于遍历中时，每当在树中遇见一个 Identifier 的时候会调用 Identifier里面的enter方法和exit方法。</p>
+<h2 id="Paths（路径）"><a href="#Paths（路径）" class="headerlink" title="Paths（路径）"></a>Paths（路径）</h2><blockquote>
+<p>   我们通过 visitor可以在遍历到对应节点执行对应的函数，当需要修改对应节点的信息，我们还需要拿到对应节点的信息以及节点和所在的位置 （即和其他节点间的关系）, visitor在遍历到对应节点执行对应函数时候会给我们传入 path参数，辅助我们完成上面这些操作。注意 Path 是表示两个节点之间连接的对象,而不是当前节点，我们上面访问到了 Identifier节点，它传入的 path参数看起来是这样的：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  &quot;parent&quot;: &#123;</div><div class="line">    &quot;type&quot;: &quot;VariableDeclarator&quot;,</div><div class="line">    &quot;id&quot;: &#123;</div><div class="line">      ...</div><div class="line">    &#125;,</div><div class="line">    ....</div><div class="line">  &#125;,</div><div class="line">  &quot;node&quot;: &#123;</div><div class="line">    &quot;type&quot;: &quot;Identifier&quot;,</div><div class="line">    &quot;name&quot;: &quot;...&quot;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里就可以通过：path.node.name 获得当前节点的name；path.parent.id 获得父节点的id<br>另外path对象上还包含添加、更新、移动和删除节点有关的其他很多方法，我们可以通过文档去了解。</p>
+<h2 id="开始动手写插件了"><a href="#开始动手写插件了" class="headerlink" title="开始动手写插件了"></a>开始动手写插件了</h2><p>输入的源代码为：<br><code>yuzhenfan === wangkemei</code><br>生成的AST<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  type: &quot;BinaryExpression&quot;,</div><div class="line">  operator: &quot;===&quot;,</div><div class="line">  left: &#123;</div><div class="line">    type: &quot;Identifier&quot;,</div><div class="line">    name: &quot;yuzhenfan&quot;</div><div class="line">  &#125;,</div><div class="line">  right: &#123;</div><div class="line">    type: &quot;Identifier&quot;,</div><div class="line">    name: &quot;yuzhenfan&quot;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>省略部分属性，可以通过<a href="http://astexplorer.net/#/gist/5579c7f7b371a6f7781f974c9aa1bb6a/238c6f5a96217c0e3b403e33e9de2483da50b0fe" target="_blank" rel="external">http://astexplorer.net</a>查看全部属性。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">const babel = require(&apos;babel-core&apos;)</div><div class="line"></div><div class="line">// 我们的babel插件</div><div class="line">let MyVisitor = function(&#123; types: t &#125;) &#123;</div><div class="line">  return &#123;</div><div class="line">    visitor: &#123;</div><div class="line">		</div><div class="line">      BinaryExpression(path) &#123;</div><div class="line">		  </div><div class="line">        if (path.node.operator !== &quot;===&quot;) &#123;</div><div class="line">			return;</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		// 改变当前节点的left、right（插件的核心代码）</div><div class="line">		path.node.left = t.identifier(&quot;fanerge1&quot;);</div><div class="line">		path.node.right = t.identifier(&quot;fanerge2&quot;);</div><div class="line">      &#125;</div><div class="line">	  </div><div class="line">    &#125;</div><div class="line">  &#125;;</div><div class="line">&#125;</div><div class="line"></div><div class="line">const code = `yuzhenfan === wangkemei;`;</div><div class="line"></div><div class="line">let demo = babel.transform(code, &#123;</div><div class="line">  // 使用我们的插件</div><div class="line">  plugins: [MyVisitor]</div><div class="line">&#125;)</div><div class="line"></div><div class="line">console.log(demo); // fanerge1===fanerge2</div></pre></td></tr></table></figure></p>
+<p>输出的代码为（经过我们的插件处理）：<br><code>fanerge1===fanerge2</code><br>下图为node打印出Balbel输出的代码：<br><img src="http://p52glq5m1.bkt.clouddn.com/result.png" alt="babel转换的代码"><br><a href="https://github.com/fanerge/babel_plugin" target="_blank" rel="external">项目地址，非常简单的Babel插件，后续再继续学习</a></p>
+<blockquote>
+<p>   参考文档<br><a href="https://github.com/jamiebuilds/babel-handbook/blob/master/translations/zh-Hans/plugin-handbook.md#toc-introduction" target="_blank" rel="external">Babel 插件手册</a><br><a href="https://github.com/estree/estree" target="_blank" rel="external">ESTree</a><br><a href="http://astexplorer.net/" target="_blank" rel="external">AST Explorer</a><br><a href="https://www.hazyzh.com/b/180211145458" target="_blank" rel="external">探索 babel 和 babel 插件是怎么工作的</a><br><a href="https://juejin.im/post/5a9315e46fb9a0633a711f25" target="_blank" rel="external">掘金-babel插件</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+	<div>
+		
+			<div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读，如果本文对你有帮助就记得<a href="https://github.com/fanerge/fanerge.github.io" title="谢谢亲的star">给个star</a>-------------</div>
+		
+	</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Donate comment here</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author: </strong>余真帆-fanerge</li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://fanerge.github.io/2018/Babel工作原理及Babel插件开发探索.html" title="Babel工作原理及Babel插件开发探索">https://fanerge.github.io/2018/Babel工作原理及Babel插件开发探索.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Babel/" rel="tag"><i class="far fa-bell"></i> Babel</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/浏览器工作原理-webkit内核研究.html" rel="next" title="浏览器工作原理-webkit内核研究">
+                <i class="fa fa-chevron-left"></i> 浏览器工作原理-webkit内核研究
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/前端常识-gj2.html" rel="prev" title="前端常识-gj2">
+                前端常识-gj2 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=2156704" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTk4Mi8xMjUxOA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+              <p class="site-description motion-element" itemprop="description">前端、web</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">155</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">24</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">46</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/fanerge" target="_blank" title="GitHub" rel="external nofollow"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:fanege@qq.com" target="_blank" title="E-Mail" rel="external nofollow"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金" rel="external nofollow"><i class="fa fa-fw fa-globe"></i>掘金</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基础概念"><span class="nav-number">1.</span> <span class="nav-text">基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Babel"><span class="nav-number">1.1.</span> <span class="nav-text">Babel</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AST"><span class="nav-number">1.2.</span> <span class="nav-text">AST</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#静态分析"><span class="nav-number">1.3.</span> <span class="nav-text">静态分析</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Babel-的三个主要处理步骤分别是：-解析（parse），转换（transform），生成（generate）"><span class="nav-number">2.</span> <span class="nav-text">Babel 的三个主要处理步骤分别是： 解析（parse），转换（transform），生成（generate）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#解析"><span class="nav-number">2.1.</span> <span class="nav-text">解析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#词法分析"><span class="nav-number">2.1.1.</span> <span class="nav-text">词法分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#语法分析"><span class="nav-number">2.1.2.</span> <span class="nav-text">语法分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#转换"><span class="nav-number">2.2.</span> <span class="nav-text">转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成"><span class="nav-number">2.3.</span> <span class="nav-text">生成</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#开发一个Babel插件"><span class="nav-number">3.</span> <span class="nav-text">开发一个Babel插件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Visitors（访问者）"><span class="nav-number">3.1.</span> <span class="nav-text">Visitors（访问者）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Paths（路径）"><span class="nav-number">3.2.</span> <span class="nav-text">Paths（路径）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开始动手写插件了"><span class="nav-number">3.3.</span> <span class="nav-text">开始动手写插件了</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" rel="external nofollow" href="https://github.com/theme-next/hexo-theme-next">NexT.Mist</a> v6.0.6</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.6"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.6"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.6"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.6"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>

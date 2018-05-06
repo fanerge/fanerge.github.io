@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.6" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=6.0.6" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.0.6',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+  
+
+
+
+
+  <meta name="description" content="构建Web应用基础功能常见的需求：  请求方法的判断（保存在报文）常见的方法有：GET(查看)\POST(更新)\DELETE(删除)\PUT(新建)\CONNECT\HEAD通过req.method 来判断 URL的路径解析（保存在报文）http://localhost:8080/a.html通过req.url 来查找 URL中查询字符串解析（保存在报文）?foo=bar&amp;amp;baz=val">
+<meta name="keywords" content="js,服务端,读书笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入浅出Node.js-读书笔记">
+<meta property="og:url" content="https://fanerge.github.io/2017/深入浅出Node-js-读书笔记（下）.html">
+<meta property="og:site_name" content="余真帆的博客">
+<meta property="og:description" content="构建Web应用基础功能常见的需求：  请求方法的判断（保存在报文）常见的方法有：GET(查看)\POST(更新)\DELETE(删除)\PUT(新建)\CONNECT\HEAD通过req.method 来判断 URL的路径解析（保存在报文）http://localhost:8080/a.html通过req.url 来查找 URL中查询字符串解析（保存在报文）?foo=bar&amp;amp;baz=val">
+<meta property="og:image" content="https://fanerge.github.io/images/middleware.png">
+<meta property="og:updated_time" content="2017-10-15T02:06:14.487Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入浅出Node.js-读书笔记">
+<meta name="twitter:description" content="构建Web应用基础功能常见的需求：  请求方法的判断（保存在报文）常见的方法有：GET(查看)\POST(更新)\DELETE(删除)\PUT(新建)\CONNECT\HEAD通过req.method 来判断 URL的路径解析（保存在报文）http://localhost:8080/a.html通过req.url 来查找 URL中查询字符串解析（保存在报文）?foo=bar&amp;amp;baz=val">
+<meta name="twitter:image" content="https://fanerge.github.io/images/middleware.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="余真帆的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="https://fanerge.github.io/2017/深入浅出Node-js-读书笔记（下）.html"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>深入浅出Node.js-读书笔记 | 余真帆的博客</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+	<a href="https://github.com/fanerge" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#70B7FD; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+	</div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">余真帆的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-categories">
+    <a href="/categories" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Categories</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-archives">
+    <a href="/archives" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Archives</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-tags">
+    <a href="/tags" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Tags</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-about">
+    <a href="/about" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />About</a>
+</li>
+
+      
+
+      
+    </ul>
+  
+
+  
+    
+
+    
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+    
+
+  
+
+
+  
+
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/深入浅出Node-js-读书笔记（下）.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">深入浅出Node.js-读书笔记</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-10-10T20:17:16+08:00">2017-10-10</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/NodeJS/" itemprop="url" rel="index"><span itemprop="name">NodeJS</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views: 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+		
+	  
+      
+
+      
+        <h2 id="构建Web应用"><a href="#构建Web应用" class="headerlink" title="构建Web应用"></a>构建Web应用</h2><h3 id="基础功能"><a href="#基础功能" class="headerlink" title="基础功能"></a>基础功能</h3><pre><code>常见的需求：
+</code></pre><ol>
+<li>请求方法的判断（保存在报文）<br>常见的方法有：GET(查看)\POST(更新)\DELETE(删除)\PUT(新建)\CONNECT\HEAD<br>通过req.method 来判断</li>
+<li>URL的路径解析（保存在报文）<br><a href="http://localhost:8080/a.html" target="_blank" rel="external">http://localhost:8080/a.html</a><br>通过req.url 来查找</li>
+<li>URL中查询字符串解析（保存在报文）<br>?foo=bar&amp;baz=val<br>使用Node提供的querystring 模块处理</li>
+<li>Cookie的解析（保存在报文）<br>网站为了辨别用户身份而储存在用户本地终端（Client Side）上的数据（通常经过加密）。<br>http 为无状态协议。<br>数据保存在客户端。</li>
+<li>Session（会话）的需求（保存在报文）<br>数据保存在服务器端。<br>1.基于Cookie 来实现用户和数据的映射。<br>  原理：在客户端只保存口令，发送请求是通过该口令再去查找对应的数据<br>2.通过查询字符串来实现浏览器端和服务器端数据的对应。<br>  不推荐使用，风险大。<br>两种存储方式：<br>1.内存<br>2.数据工具<br>  Redis是一个支持网络、基于内存、可选持久性的键值对存储数据库。</li>
+<li>Basic认证（保存在报文）<br>当客户端与服务端进行请求时，允许通过用户名和密码实现的一种身份认证方式。</li>
+<li>数据上传<br>思路：先判断数据的格式，再通过对应的解析方法解析。<br>1.表单数据的解析<br>先判断req.headers[‘content-type’] === ‘application/x-www-formurlencoded’<br>  querystring.parse(req.rawBody);<br>2.其他格式<br>  json – application/json<br>  xml – application/xml</li>
+<li><p>任意格式文件的上传处理<br>此时需要<form action="/upload" method="post" enctype="multipart/form-data"></form></p>
+</li>
+<li><p>缓存<br>YSlow中提出的缓存规则：<br>1.添加Expires 和 Cache-Control 到报文头中。<br>2.配置ETags。<br>3.让Ajax 可缓存。<br>数据上传与安全<br>1.内存限制（提交数据占用了所有内存）<br>  限制上传内容的大小，一旦超过限制，停止接收数据，并响应400状态码。<br>  通过流式解析，将数据导向到磁盘中，Node只保留文件路径等小数据。<br>2.CSRF<br>  Cross-Site Request Forgery（跨站点请求伪造）</p>
+</li>
+</ol>
+<h3 id="路由解析"><a href="#路由解析" class="headerlink" title="路由解析"></a>路由解析</h3><pre><code>文件路径型
+    静态文件：URL 的路径与网站目录的路径一致，无须转换。
+    动态文件：在 MVC 模式流行起来之前，根据文件路径执行动态脚本也是基本的路由方式，
+        它的处理原理是Web服务器根据URL路径找到对应的文件，如/index.asp或/index.php。
+MVC
+    MVC 模型的主要思想是将业务逻辑按职责分离。
+        控制器（Controller），一组行为的集合。
+        模型（Model），数据相关的操作和封装。
+        视图（View），视图的渲染。
+        1.路由解析，根据URL寻找到对应的控制器和行为。
+        2.行为调用相关的模型，进行数据操作。
+        3.数据操作结束后，调用视图和相关数据进行页面渲染，输出到客户端。
+    路由映射
+    1.手工映射
+        正则匹配
+        参数解析
+    2.自然映射
+RESTful        
+    REST Representational State Transfer （表现层状态转化）        
+    POST /user/fanerge 修改用户信息
+    DELETE /user/fanerge 删除用户
+    PUT /user/fanerge 新建用户        
+    GET /user/fanerge 查询用户信息    
+    请求方法    
+</code></pre><h3 id="中间件"><a href="#中间件" class="headerlink" title="中间件"></a>中间件</h3><pre><code>作用：middleware 来简化和隔离这些基础设施与业务逻辑之间的细节，使开发者更加关注在业务的开发。    
+</code></pre><p><img src="/images/middleware.png" alt="中间件工作原理"><br>    中间件设计格式（connect的设计）<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">var querystring = function (req, res, next) &#123;</div><div class="line">	// TODO</div><div class="line">	next();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<pre><code>使用中间件（串联多个中间件）
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">app.use(&apos;/user/:username&apos;, querystring, cookie, session, function (req, res) &#123;</div><div class="line">	// 这里处理具体的业务逻辑</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+
+
+异常处理
+    同步异常 -- try {} catch (err) {throw err} 
+    异步异常
+        需要把异常传递出来
+        domain 模块    
+</code></pre><h3 id="页面渲染"><a href="#页面渲染" class="headerlink" title="页面渲染"></a>页面渲染</h3><pre><code>内容响应
+    Content-Encoding: gzip
+    Content-Length: 21170
+    Content-Type: text/javascript; charset=utf-8
+    MIME : Multipurpose Internet Mail Extensions    
+    附件下载：有些MIME类的资源不需要在客户端中打开它，只需要弹出并下载它即可。
+        Content-Disposition: inline(查看)/attachment(附件下载);
+        例如：Content-Disposition: attachment; filename=&apos;filename.ext&apos;; // 下载附件并为其命名
+    响应JSON
+    响应跳转    
+视图渲染
+模板
+    如EJS、Pug等
+    模板引擎
+        语法分解。
+        处理表达式。
+        生成待执行的语句。
+        与数据一起执行，生成最终字符串。
+    with的应用    
+        模板安全 XSS 解决方案 转义用户的输入
+    模板逻辑
+    集成文件系统    
+    子模板    
+    布局视图    
+    模板性能
+Bigpipe
+    BigPipe是一个重新设计的基础动态网页服务体系。
+    前端加载技术，它的提出主要是为了解决重数据页面的加载问题。
+    Bigpipe 的解决思路则是将页面分割成多个部分（pagelet），
+    先向用户输出没有数据（框架），将每个部分逐步输出到前端，
+    再最终渲染填充框架，完成整个网页的渲染。
+    这个过程中需要前端js的参与，它负责将后续输出的数据渲染到页面上。
+    1.页面布局框架（无数据的）。
+    2.后端持续性的数据输出。
+    3.前端渲染。
+        bigpipe.ready() -- 以一个key注册一个事件。
+        bigpipe.set() -- 触发一个事件，进行页面渲染。
+</code></pre><h2 id="玩转进程"><a href="#玩转进程" class="headerlink" title="玩转进程"></a>玩转进程</h2><h3 id="多进程架构"><a href="#多进程架构" class="headerlink" title="多进程架构"></a>多进程架构</h3><pre><code>child_process 模块
+创建子进程
+    1.spawn(): 启动一个子进程来执行命令。
+    2.exec(): 启动一个子进程来执行命令，与spawn()不同的是其接口不同，
+    它有一个回调函数获知子进程的状况。
+    3.execFile(): 启动一个子进程来执行可执行文件。
+    4.fork(): 与spawn()类似，不同点在于它创建Node的子进程只需指定要执行的Javascript文件模块即可。
+    spawn()与exec()、execFile()不同的是，后两者创建时可以指定timeout属性设置超时时间，
+    一旦创建的进程运行超过设定的时间将会被杀死。
+    exec()与execFile()不同的是，exec()适合执行已有的命令，execFile()适合执行文件。
+进程间通信
+    message事件 绑定发送事件
+    send()方法 触发发送消息
+句柄传递
+    child_process.send(message, [sendHandle]);
+    句柄是一种可以用来标识资源的引用，它的内部包含了指向对象的文件描述符。
+    比如句柄可以用来标识一个服务器端socket对象、客户端socket对象、UDP套接字、一个管道等。
+</code></pre><h3 id="集群稳定之路"><a href="#集群稳定之路" class="headerlink" title="集群稳定之路"></a>集群稳定之路</h3><pre><code>进程事件
+    message
+    error
+    exit
+    close
+    disconnect
+自动重启
+    自杀信号
+    负载均衡（轮叫调度）    
+        由主进程接受链接，将其依次分发给工作进程。
+        cluster 模块
+    状态共享
+        第三方数据存储 通过轮询
+        主动通知 当数据更新时，主动通知子进程。
+</code></pre><h3 id="Cluster-模块"><a href="#Cluster-模块" class="headerlink" title="Cluster 模块"></a>Cluster 模块</h3><pre><code>解决多核CPU的利用率问题。
+Cluster 工作原理
+    该模块是 child_process 和 net 模块的组合应用。
+Cluster 事件
+    fork
+    online
+    listening
+    disconnect
+    exit
+    setup
+</code></pre><h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><pre><code>测试驱动开发
+</code></pre><h3 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h3><pre><code>测试代码编写的原则
+1.单一职责
+2.接口抽象
+3.层次分离
+单元测试介绍
+1.断言
+    assert 模块
+    单元测试中用来保证最小单元是否正常的检测方法。
+    用于检查程序在运行时是否满足期望。
+    ok(): 判断结果是否为真。
+    equal(): 判断实际值余期望值是否相等。
+    notEqual(): 判断实际值与期望值是否不相等。
+    deepEqual(): 判断实际值余期望值是否深度相等（对象和数组的元素是否相等）。
+    notDeepEqual(): 判断实际值与期望值是否不深度相等。
+    strictEqual(): 判断实际值与期望值是否严格相等（===）。
+    notStrictEqual(): 判断实际值与期望值是否不严格相等（!==）。
+    throws(): 判断代码块是否抛出异常。
+    doesNotThrow(): 判断代码块是否没有抛出异常。
+    ifError(): 判断实际值是否为一个假值（null、undefined、0、&apos;&apos;、false），若实际值为真值，将抛出异常。
+2.测试框架
+    用于管理测试用例和生成测试报告。
+    mocha 模块
+    测试风格
+        TDD 测试驱动开发
+        BDD 行为驱动开发
+    测试报告
+        mocha --reporters
+    测试代码的文件组织
+    测试用例
+    异步测试
+    测试覆盖率
+    mock 或者 muk
+    私有方法的测试
+        var lib = rewire(&apos;../lib/index.js&apos;); // 需要测试方法所在的文件
+        var litmit = lib.__get__(&apos;limit&apos;); // 需要测试的方法
+3.工程化与自动化    
+    工程化 -- Makefile
+    持续集成 -- travis-ci
+</code></pre><h2 id="性能测试"><a href="#性能测试" class="headerlink" title="性能测试"></a>性能测试</h2><pre><code>负载测试、压力测试和基准测试。
+基准测试：（对基本的方法如Array.protoryp.map 和 for循环的比较）
+    benchmark 模块
+压力测试：（网络接口进行压力测试）
+    常用的工具：ab、siege、http_load
+基准测试驱动开发
+    1.写基准测试
+    2.写/改代码
+    3.收集数据
+    4.找出问题
+    5.回到第（2）步
+测试数据余业务数据的转换
+    PV访问量（Page View），即页面访问量，每打开一次页面PV计数+1，刷新页面也是。
+    UV访问数（Unique Visitor）指独立访客访问数，一台电脑终端为一个访客。
+    TPS 是每秒内的事务数，比如执行了dml操作，那么相应的tps会增加；
+    QPS 是指每秒内查询次数，比如执行了select操作，相应的qps会增加。
+    QPS = PV/H (H为访问量集中的时间单位小时)。
+</code></pre><h2 id="产品化"><a href="#产品化" class="headerlink" title="产品化"></a>产品化</h2><pre><code>包括：工程化、架构、容灾备份、部署和运维。
+</code></pre><h3 id="项目工程化"><a href="#项目工程化" class="headerlink" title="项目工程化"></a>项目工程化</h3><pre><code>1.目录结构
+    Web框架：Express、Koa、Egg
+2.构建工具
+    合并静态文件、压缩文件大小、打包应用、编译模块。
+    Makefile 
+        一个工程中的源文件不计其数，其按类型、功能、模块分别放在若干个目录中，
+        makefile定义了一系列的规则来指定，哪些文件需要先编译，哪些文件需要后编译，
+        哪些文件需要重新编译，甚至于进行更复杂的功能操作，
+        因为 makefile就像一个Shell脚本一样，其中也可以执行操作系统的命令。
+    Grunt
+3.编码规范
+    JSLint JSHint ESLint
+4.代码审查
+</code></pre><h3 id="部署流程"><a href="#部署流程" class="headerlink" title="部署流程"></a>部署流程</h3><pre><code>部署环境
+部署操作    
+</code></pre><h3 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h3><pre><code>动静分离
+    静态请求用 Nginx 和 CDN 来保存
+启用缓存
+    Redis 和 Memcached
+多进程架构    
+    读写分离
+</code></pre><h3 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h3><pre><code>访问日志
+异常日志
+日志与数据库
+分割日志
+</code></pre><h3 id="监控报警"><a href="#监控报警" class="headerlink" title="监控报警"></a>监控报警</h3><pre><code>业务逻辑型监控 和 硬件型监控
+监控    
+    日志监控
+    响应时间
+    进程监控
+    磁盘监控
+    内存监控
+    CPU占用监控
+    CPU load监控
+    I/O负载
+    网络监控
+    应用状态监控
+    DNS 监控 -- 免费DNS监控服务 DNSPod
+    报警的实现
+        邮件报警 -- nodemailer 模块
+        短信或电话报警 
+
+监控系统的稳定性
+</code></pre><h3 id="稳定性"><a href="#稳定性" class="headerlink" title="稳定性"></a>稳定性</h3><pre><code>多机器
+多机房
+容灾备份
+</code></pre><h3 id="异构共存"><a href="#异构共存" class="headerlink" title="异构共存"></a>异构共存</h3><h2 id="调试Node"><a href="#调试Node" class="headerlink" title="调试Node"></a>调试Node</h2><pre><code>Debugger
+    1.在代码中插入 debugger
+    2.运行 node debug demo.js
+Node Inspector
+    1.安装 npm install -g node-inspector
+    2.错误堆栈
+</code></pre><h2 id="Node-编码规范"><a href="#Node-编码规范" class="headerlink" title="Node 编码规范"></a>Node 编码规范</h2><h3 id="编码规范"><a href="#编码规范" class="headerlink" title="编码规范"></a>编码规范</h3><pre><code>1.空格与格式 -- 采用2个空格缩进，而不是tab缩进。
+2.变量声明 -- 每个变量声明都应该带var。
+3.空格 -- 操作符前后加空格，如+、-、*、%、/、=等
+4.单双引号的问题 -- 只在html标签的属性中使用双引号，其余使用单引号。
+    但在JSON中，严格的规范是要求使用字符串使用双引号，内容中出现双引号时需要转义。
+5.大括号的位置 -- 不需要另起一行
+6.逗号 -- 若逗号不在行结尾，前面需要一个空格。
+7.分号 -- 给表达式结尾添加分号。    
+</code></pre><h3 id="命名规范"><a href="#命名规范" class="headerlink" title="命名规范"></a>命名规范</h3><pre><code>1.变量命名 -- 小驼峰式命名。
+2.方法命名 -- 小驼峰式命名，尽量采用动词或判断词汇。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var getUser = () =&gt; &#123;&#125;;</div><div class="line">var isAdmin = () =&gt; &#123;&#125;;</div></pre></td></tr></table></figure>
+
+3.类命名（构造函数和Class） -- 大驼峰式命名。
+4.常量命名 -- 全大写字母和下划线。    
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">var PINK_COLOR = &apos;pink&apos;;</div></pre></td></tr></table></figure>
+
+
+5.文件命名 -- 全小写字母和下划线。
+    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">child_process.js // 普通文件</div><div class="line">_linklist.js // 私有文件</div></pre></td></tr></table></figure>
+
+6.包名 -- 不要包含 js 或 node 的字样，它们是重复的。
+</code></pre><h3 id="比较操作"><a href="#比较操作" class="headerlink" title="比较操作"></a>比较操作</h3><pre><code>1.使用 === 替代 ==
+2.当遇到 0、undefined、null、false、&apos;&apos;假值时，不需要使用 === 或 ==。    
+</code></pre><h3 id="字面量"><a href="#字面量" class="headerlink" title="字面量"></a>字面量</h3><pre><code>尽量使用 {}、[]，不要使用 new Object() 和 new Array()    
+</code></pre><h3 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h3><pre><code>1.慎用with
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">with (obj) &#123;</div><div class="line">	foo = bar;</div><div class="line">&#125;</div><div class="line">// 出现4中结果：obj.foo = obj.bar; obj.foo = bar; foo = obj.bar; foo = bar;</div></pre></td></tr></table></figure>
+
+2.慎用eval()
+</code></pre><h3 id="数组与对象"><a href="#数组与对象" class="headerlink" title="数组与对象"></a>数组与对象</h3><pre><code>1.字面量格式 -- 结尾用逗号分隔，若分行，一行只能一个元素。
+2.for in 循环 -- 只能对对象使用，不能对数组使用。
+    for in语句以任意顺序遍历一个对象的可枚举属性（包括原型上的属性）。
+3.不要把数组当对象使用    
+</code></pre><h3 id="异步"><a href="#异步" class="headerlink" title="异步"></a>异步</h3><pre><code>1.异步回调函数的第一个参数应该是错误指示    
+2.执行传入的回调函数    
+</code></pre><h3 id="类与模块"><a href="#类与模块" class="headerlink" title="类与模块"></a>类与模块</h3><pre><code>1.类继承（Node推荐的类继承方式）
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">function Socket (options) &#123;</div><div class="line">	stream.Stream.call(this);</div><div class="line">&#125;</div><div class="line">util.inherits(Socket, stream.Stream);</div></pre></td></tr></table></figure>
+
+2.导出 -- 所有供外部调用的方法或变量均需要挂载在exports变量上。
+    当需要将文件当做一个类导出时，需要通过如下方式挂载。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">module.exports = Class;</div></pre></td></tr></table></figure>
+</code></pre><h3 id="注解规范"><a href="#注解规范" class="headerlink" title="注解规范"></a>注解规范</h3><pre><code>采用 JSDoc
+</code></pre><h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><pre><code>1.冲突的解决原则 -- 入乡随俗
+2.给编辑器设置检测工具    
+3.版本控制中的hook    
+4.持续集成
+</code></pre><h2 id="搭建局域NPM仓库"><a href="#搭建局域NPM仓库" class="headerlink" title="搭建局域NPM仓库"></a>搭建局域NPM仓库</h2><blockquote>
+<p>参考文档<br>    <a href="https://www.baidu.com/s?ie=utf8&amp;oe=utf8&amp;wd=%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAnode&amp;tn=98010089_dg&amp;ch=1" target="_blank" rel="external">朴灵-深入浅出Node</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+	<div>
+		
+			<div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读，如果本文对你有帮助就记得<a href="https://github.com/fanerge/fanerge.github.io" title="谢谢亲的star">给个star</a>-------------</div>
+		
+	</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Donate comment here</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author: </strong>余真帆-fanerge</li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://fanerge.github.io/2017/深入浅出Node-js-读书笔记（下）.html" title="深入浅出Node.js-读书笔记">https://fanerge.github.io/2017/深入浅出Node-js-读书笔记（下）.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/js/" rel="tag"><i class="far fa-bell"></i> js</a>
+          
+            <a href="/tags/服务端/" rel="tag"><i class="far fa-bell"></i> 服务端</a>
+          
+            <a href="/tags/读书笔记/" rel="tag"><i class="far fa-bell"></i> 读书笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/Object的扩展、密密封、冻结.html" rel="next" title="Object的扩展、密密封、冻结">
+                <i class="fa fa-chevron-left"></i> Object的扩展、密密封、冻结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/js代码规范.html" rel="prev" title="js代码规范">
+                js代码规范 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=2156704" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTk4Mi8xMjUxOA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+              <p class="site-description motion-element" itemprop="description">前端、web</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">155</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">24</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">46</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/fanerge" target="_blank" title="GitHub" rel="external nofollow"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:fanege@qq.com" target="_blank" title="E-Mail" rel="external nofollow"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金" rel="external nofollow"><i class="fa fa-fw fa-globe"></i>掘金</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#构建Web应用"><span class="nav-number">1.</span> <span class="nav-text">构建Web应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基础功能"><span class="nav-number">1.1.</span> <span class="nav-text">基础功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#路由解析"><span class="nav-number">1.2.</span> <span class="nav-text">路由解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中间件"><span class="nav-number">1.3.</span> <span class="nav-text">中间件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#页面渲染"><span class="nav-number">1.4.</span> <span class="nav-text">页面渲染</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#玩转进程"><span class="nav-number">2.</span> <span class="nav-text">玩转进程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#多进程架构"><span class="nav-number">2.1.</span> <span class="nav-text">多进程架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集群稳定之路"><span class="nav-number">2.2.</span> <span class="nav-text">集群稳定之路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cluster-模块"><span class="nav-number">2.3.</span> <span class="nav-text">Cluster 模块</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试"><span class="nav-number">3.</span> <span class="nav-text">测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单元测试"><span class="nav-number">3.1.</span> <span class="nav-text">单元测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能测试"><span class="nav-number">4.</span> <span class="nav-text">性能测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#产品化"><span class="nav-number">5.</span> <span class="nav-text">产品化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#项目工程化"><span class="nav-number">5.1.</span> <span class="nav-text">项目工程化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署流程"><span class="nav-number">5.2.</span> <span class="nav-text">部署流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#性能"><span class="nav-number">5.3.</span> <span class="nav-text">性能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#日志"><span class="nav-number">5.4.</span> <span class="nav-text">日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#监控报警"><span class="nav-number">5.5.</span> <span class="nav-text">监控报警</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#稳定性"><span class="nav-number">5.6.</span> <span class="nav-text">稳定性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异构共存"><span class="nav-number">5.7.</span> <span class="nav-text">异构共存</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调试Node"><span class="nav-number">6.</span> <span class="nav-text">调试Node</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Node-编码规范"><span class="nav-number">7.</span> <span class="nav-text">Node 编码规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#编码规范"><span class="nav-number">7.1.</span> <span class="nav-text">编码规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命名规范"><span class="nav-number">7.2.</span> <span class="nav-text">命名规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#比较操作"><span class="nav-number">7.3.</span> <span class="nav-text">比较操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字面量"><span class="nav-number">7.4.</span> <span class="nav-text">字面量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#作用域"><span class="nav-number">7.5.</span> <span class="nav-text">作用域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数组与对象"><span class="nav-number">7.6.</span> <span class="nav-text">数组与对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异步"><span class="nav-number">7.7.</span> <span class="nav-text">异步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类与模块"><span class="nav-number">7.8.</span> <span class="nav-text">类与模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注解规范"><span class="nav-number">7.9.</span> <span class="nav-text">注解规范</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最佳实践"><span class="nav-number">8.</span> <span class="nav-text">最佳实践</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搭建局域NPM仓库"><span class="nav-number">9.</span> <span class="nav-text">搭建局域NPM仓库</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" rel="external nofollow" href="https://github.com/theme-next/hexo-theme-next">NexT.Mist</a> v6.0.6</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.6"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.6"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.6"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.6"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>

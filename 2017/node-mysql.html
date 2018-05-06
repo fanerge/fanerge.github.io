@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.6" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=6.0.6" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.0.6',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+  
+
+
+
+
+  <meta name="description" content="可视化工具：navicat for MySQL node和mysql的配合mysql和node.js的连接1234567891011121314151617181920212223var mysql      = require(&amp;apos;mysql&amp;apos;);var connection = mysql.createConnection(&amp;#123;  host     : &amp;apos;l">
+<meta name="keywords" content="mysql,数据库,node">
+<meta property="og:type" content="article">
+<meta property="og:title" content="node.js 和 mysql 结合使用">
+<meta property="og:url" content="https://fanerge.github.io/2017/node-mysql.html">
+<meta property="og:site_name" content="余真帆的博客">
+<meta property="og:description" content="可视化工具：navicat for MySQL node和mysql的配合mysql和node.js的连接1234567891011121314151617181920212223var mysql      = require(&amp;apos;mysql&amp;apos;);var connection = mysql.createConnection(&amp;#123;  host     : &amp;apos;l">
+<meta property="og:updated_time" content="2017-09-12T15:05:21.437Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="node.js 和 mysql 结合使用">
+<meta name="twitter:description" content="可视化工具：navicat for MySQL node和mysql的配合mysql和node.js的连接1234567891011121314151617181920212223var mysql      = require(&amp;apos;mysql&amp;apos;);var connection = mysql.createConnection(&amp;#123;  host     : &amp;apos;l">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="余真帆的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="https://fanerge.github.io/2017/node-mysql.html"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>node.js 和 mysql 结合使用 | 余真帆的博客</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+	<a href="https://github.com/fanerge" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#70B7FD; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+	</div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">余真帆的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-categories">
+    <a href="/categories" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Categories</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-archives">
+    <a href="/archives" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Archives</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-tags">
+    <a href="/tags" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Tags</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-about">
+    <a href="/about" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />About</a>
+</li>
+
+      
+
+      
+    </ul>
+  
+
+  
+    
+
+    
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+    
+
+  
+
+
+  
+
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/node-mysql.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">node.js 和 mysql 结合使用</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-12T19:06:38+08:00">2017-09-12</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/NodeJS/" itemprop="url" rel="index"><span itemprop="name">NodeJS</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views: 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+		
+	  
+      
+
+      
+        <p>可视化工具：navicat for MySQL</p>
+<h3 id="node和mysql的配合"><a href="#node和mysql的配合" class="headerlink" title="node和mysql的配合"></a>node和mysql的配合</h3><h4 id="mysql和node-js的连接"><a href="#mysql和node-js的连接" class="headerlink" title="mysql和node.js的连接"></a>mysql和node.js的连接</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">var mysql      = require(&apos;mysql&apos;);</div><div class="line">var connection = mysql.createConnection(&#123;</div><div class="line">  host     : &apos;localhost&apos;, // 数据库的ip</div><div class="line">  port	   : 3306, // 数据库起服务的端口</div><div class="line">  user     : &apos;root&apos;, </div><div class="line">  password : &apos;123456&apos;,</div><div class="line">  database : &apos;test&apos; // 数据库名称</div><div class="line">&#125;);</div><div class="line">// 链接数据库 </div><div class="line">connection.connect();</div><div class="line">// 推荐使用下面的链接方式</div><div class="line">connection.connect(function(err) &#123;    </div><div class="line">	if (err) &#123;      </div><div class="line">		console.error(&apos;error connecting: &apos; + err.stack);      </div><div class="line">		return;    </div><div class="line">	&#125;    </div><div class="line">	console.log(&apos;connected as id &apos; + connection.threadId);  // 线程id</div><div class="line">&#125;);</div><div class="line">// 测试数据库是否连接成功 </div><div class="line">connection.query(&apos;SELECT 1 + 1 AS solution&apos;, function (error, results, fields) &#123;</div><div class="line">  if (error) throw error;</div><div class="line">  console.log(&apos;The solution is: &apos;, results[0].solution);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h3 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">connection.query(&quot;CREATE TABLE person(id int,user varchar(255),password varchar(255))&quot;, function(err,result)&#123;</div><div class="line">	if(err)&#123;throw err&#125;</div><div class="line">	console.log(&quot;创建表成功&quot;)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+</code></pre><h3 id="连接池"><a href="#连接池" class="headerlink" title="连接池"></a>连接池</h3><h4 id="连接池连接"><a href="#连接池连接" class="headerlink" title="连接池连接"></a>连接池连接</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">var pool  = mysql.createPool(&#123;    </div><div class="line">	connectionLimit : 10,    </div><div class="line">	host            : &apos;example.org&apos;,    </div><div class="line">	user            : &apos;bob&apos;,    </div><div class="line">	password        : &apos;secret&apos;,    </div><div class="line">	database        : &apos;my_db&apos;  </div><div class="line">&#125;);	</div><div class="line">// 测试数据库是否连接成功 </div><div class="line">pool.query(&apos;SELECT 1 + 1 AS solution&apos;, function (error, results, fields) &#123;</div><div class="line">  if (error) throw error;</div><div class="line">  console.log(&apos;The solution is: &apos;, results[0].solution);</div><div class="line">&#125;);</div><div class="line">// 使用连接池连接可以更容易地共享某个连接，也可以管理多个连接。</div><div class="line">pool.getConnection(function(err, connection) &#123; // 使用连接        </div><div class="line">	connection.query( &apos;SELECT something FROM sometable&apos;, function(err, rows) &#123; </div><div class="line">		// 使用连接执行查询       </div><div class="line">		connection.release(); //连接不再使用，返回到连接池</div><div class="line">		connection.destroy(); // 如果你想关闭连接并从连接池中删除它，在下次需要时连接池会再创建一个新的连接。			</div><div class="line">	&#125;);  </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h4 id="连接池的事件"><a href="#连接池的事件" class="headerlink" title="连接池的事件"></a>连接池的事件</h4><h5 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">pool.on(&apos;connection&apos;, function (connection) &#123;    </div><div class="line">	connection.query(&apos;SET SESSION auto_increment_increment=1&apos;)  </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h5 id="入列"><a href="#入列" class="headerlink" title="入列"></a>入列</h5><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">pool.on(&apos;enqueue&apos;, function () &#123;    </div><div class="line">	console.log(&apos;Waiting for available connection slot&apos;);  </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h5 id="在连接池中关闭所有连接"><a href="#在连接池中关闭所有连接" class="headerlink" title="在连接池中关闭所有连接"></a>在连接池中关闭所有连接</h5><pre><code>如不再需要连接池时，你必须关闭所有连接。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">pool.end(function (err) &#123;    </div><div class="line">	// all connections in the pool have ended  </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h5 id="集群连接池"><a href="#集群连接池" class="headerlink" title="集群连接池"></a>集群连接池</h5><pre><code>集群连接池提供多主机连接.(分组&amp;重试&amp;选择器)
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">// create  </div><div class="line">var poolCluster = mysql.createPoolCluster();  </div><div class="line">// add configurations (the config is a pool config object)  </div><div class="line">poolCluster.add(config); </div><div class="line">// add configuration with automatic name  </div><div class="line">poolCluster.add(&apos;MASTER&apos;, masterConfig); </div><div class="line">// add a named configuration  </div><div class="line">poolCluster.add(&apos;SLAVE1&apos;, slave1Config);  </div><div class="line">poolCluster.add(&apos;SLAVE2&apos;, slave2Config);  </div><div class="line">// remove configurations  </div><div class="line">poolCluster.remove(&apos;SLAVE2&apos;); </div><div class="line">// By nodeId  poolCluster.remove(&apos;SLAVE*&apos;); </div><div class="line">// By target group : SLAVE1-2  </div><div class="line">// Target Group : ALL(anonymous, MASTER, SLAVE1-2), Selector : round-robin(default)  </div><div class="line">poolCluster.getConnection(function (err, connection) &#123;&#125;);  </div><div class="line">// Target Group : MASTER, Selector : round-robin  </div><div class="line">poolCluster.getConnection(&apos;MASTER&apos;, function (err, connection) &#123;&#125;);  </div><div class="line">// Target Group : SLAVE1-2, Selector : order  </div><div class="line">// If can&apos;t connect to SLAVE1, return SLAVE2. (remove SLAVE1 in the cluster)  </div><div class="line">poolCluster.on(&apos;remove&apos;, function (nodeId) &#123;    console.log(&apos;REMOVED NODE : &apos; + nodeId); </div><div class="line">// nodeId = SLAVE1   &#125;);  </div><div class="line">poolCluster.getConnection(&apos;SLAVE*&apos;, &apos;ORDER&apos;, function (err, connection) &#123;&#125;);  </div><div class="line">// of namespace : of(pattern, selector)  </div><div class="line">poolCluster.of(&apos;*&apos;).getConnection(function (err, connection) &#123;&#125;);  </div><div class="line">var pool = poolCluster.of(&apos;SLAVE*&apos;, &apos;RANDOM&apos;);  </div><div class="line">pool.getConnection(function (err, connection) &#123;&#125;);  </div><div class="line">pool.getConnection(function (err, connection) &#123;&#125;);  </div><div class="line">// close all connections  </div><div class="line">poolCluster.end(function (err) &#123;    // all connections in the pool cluster have ended  &#125;);</div></pre></td></tr></table></figure>
+</code></pre><h5 id="更换用户并且改变连接状态"><a href="#更换用户并且改变连接状态" class="headerlink" title="更换用户并且改变连接状态"></a>更换用户并且改变连接状态</h5><pre><code>该命令允许你在不关闭下列socket的情况下，改变当前用户和连接的其余部分.
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">connection.changeUser(&#123;user : &apos;john&apos;&#125;, function(err) &#123;    </div><div class="line">	if (err) throw err;  </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h3 id="数据库操作（CURD）"><a href="#数据库操作（CURD）" class="headerlink" title="数据库操作（CURD）"></a>数据库操作（CURD）</h3><pre><code>代表创建（Create）、更新（Update）、读取（Retrieve）和删除（Delete）操作。
+</code></pre><h4 id="查询数据（Retrieve）"><a href="#查询数据（Retrieve）" class="headerlink" title="查询数据（Retrieve）"></a>查询数据（Retrieve）</h4><h5 id="query-sqlString-callback"><a href="#query-sqlString-callback" class="headerlink" title="query(sqlString, callback)"></a>query(sqlString, callback)</h5><pre><code>第一个参数是一条SQL字符串，第二个参数是回调
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">connection.query(&apos;SELECT * FROM `books` WHERE `author` = &quot;David&quot;&apos;, function (error, results, fields) &#123;    </div><div class="line">	if (error) &#123;</div><div class="line">		console.log(error.message);</div><div class="line">	&#125;</div><div class="line">	// 查询之后的操作</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h5 id="query-sqlString-values-callback"><a href="#query-sqlString-values-callback" class="headerlink" title="query(sqlString, values, callback)"></a>query(sqlString, values, callback)</h5><pre><code>带有值的占位符 (查看转义查询值)
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">connection.query(&apos;SELECT * FROM `books` WHERE `author` = ?&apos;, [&apos;David&apos;], function (error, results, fields) &#123;    </div><div class="line">	if (error) &#123;</div><div class="line">		console.log(error.message);</div><div class="line">	&#125;</div><div class="line">	// 查询之后的操作</div><div class="line">&#125;);</div><div class="line">connection.end(); // 断开数据库连接</div></pre></td></tr></table></figure>
+</code></pre><h5 id="query-options-callback"><a href="#query-options-callback" class="headerlink" title="query(options, callback)"></a>query(options, callback)</h5><pre><code>在查询时带有大量的高级可选项
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">connection.query(&#123;</div><div class="line">	sql: &apos;SELECT * FROM `books` WHERE `author` = ?&apos;,    </div><div class="line">	timeout: 40000,   </div><div class="line">	values: [&apos;David&apos;]  </div><div class="line">&#125;, function (error, results, fields) &#123;    </div><div class="line">	if (error) &#123;</div><div class="line">		console.log(error.message);</div><div class="line">	&#125;</div><div class="line">	// 查询之后的操作</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h5 id="查询值转义"><a href="#查询值转义" class="headerlink" title="查询值转义"></a>查询值转义</h5><pre><code>为了防止SQL注入，每当需要在SQL查询中使用用户数据时，你都应当提前对这些值进行转义。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">// 第一种，转义可以通过 mysql.escape(), connection.escape() 或 pool.escape() 方法实现。</div><div class="line">var userId = &apos;some user provided value&apos;;  </div><div class="line">var sql    = &apos;SELECT * FROM users WHERE id = &apos; + connection.escape(userId);  </div><div class="line">connection.query(sql, function(err, results) &#123;    </div><div class="line">	// ...  </div><div class="line">&#125;);</div><div class="line">// 第二种，使用 ? 作为查询字符串中的占位符，替代你想要转义的值。</div><div class="line">connection.query(&apos;SELECT * FROM users WHERE id = ?&apos;, [userId], function(err, results) &#123;    </div><div class="line">	// ...  </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h5 id="查询标识符转义"><a href="#查询标识符转义" class="headerlink" title="查询标识符转义"></a>查询标识符转义</h5><pre><code>如果用户提供了不可信的查询标识符（数据库名、表名、列名），
+你应该用 mysql.escapeId(identifier), connection.escapeId(identifier) 或 pool.escapeId(identifier) 方法对它进行转义。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">var sorter = &apos;date&apos;;  </div><div class="line">var sql    = &apos;SELECT * FROM posts ORDER BY &apos; + connection.escapeId(sorter);  </div><div class="line">connection.query(sql, function(err, results) &#123;    </div><div class="line">	// ...  </div><div class="line">&#125;);</div><div class="line">var userId = 1;  </div><div class="line">var columns = [&apos;username&apos;, &apos;email&apos;];  </div><div class="line">var query = connection.query(&apos;SELECT ?? FROM ?? WHERE id = ?&apos;, [columns, &apos;users&apos;, userId], function(err, results) &#123;    </div><div class="line">	// SELECT `username`, `email` FROM `users` WHERE id = 1</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h5 id="预查询"><a href="#预查询" class="headerlink" title="预查询"></a>预查询</h5><pre><code>你可以使用 mysql.format 来创建一个多插入点的查询语句，对id和值可以使用适当的转义处理 。
+这样你就获得了一个有效并且安全的查询语句，然后可以把它发送给 数据库。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var sql = &quot;SELECT * FROM ?? WHERE ?? = ?&quot;;  </div><div class="line">var inserts = [&apos;users&apos;, &apos;id&apos;, userId];  </div><div class="line">sql = mysql.format(sql, inserts);</div></pre></td></tr></table></figure>
+</code></pre><h4 id="插入数据（Insert）"><a href="#插入数据（Insert）" class="headerlink" title="插入数据（Insert）"></a>插入数据（Insert）</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">var addSql = &apos;INSERT INTO websites(Id, name, url, alexa, country) VALUES(0, ?, ?, ?, ?)&apos;;</div><div class="line">var addSqlParams = [&apos;余真帆的博客&apos;, &apos;fanerge.githut.io&apos;, &apos;333325&apos;, &apos;CN&apos;];</div><div class="line">connection.query(addSql, addSqlParams, function (err, result) &#123;</div><div class="line">	if (err) &#123;</div><div class="line">		console.log(&apos;[SELECT ERROR] - &apos;, err.message);</div><div class="line">	&#125;</div><div class="line">	console.log(&apos;-------INSERT--------&apos;);</div><div class="line">	console.log(&apos;INSERT ID:&apos;, result);</div><div class="line">	console.log(&apos;-------END--------&apos;);</div><div class="line">&#125;);</div><div class="line">connection.end();</div></pre></td></tr></table></figure>
+</code></pre><h4 id="更新数据（Update）"><a href="#更新数据（Update）" class="headerlink" title="更新数据（Update）"></a>更新数据（Update）</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">var modSql = &apos;UPDATE websites SET name = ?, url = ?, alexa = ? WHERE Id = ?&apos;;</div><div class="line">var modSqlParams = [&apos;余真帆的网站&apos;, &apos;https://fanerge.github.io&apos;, 23, 6]</div><div class="line">connection.query(modSql, modSqlParams, function (err, result) &#123;</div><div class="line">	if (err) &#123;</div><div class="line">		console.log(&apos;[UPDATE ERROR] - &apos;, err.message);</div><div class="line">	&#125;</div><div class="line">	console.log(&apos;-------UPDATE--------&apos;);</div><div class="line">	console.log(&apos;UPDATE affectedRows:&apos;, result.affectedRows);</div><div class="line">	console.log(&apos;-------END--------&apos;);</div><div class="line">&#125;);</div><div class="line">connection.end();</div></pre></td></tr></table></figure>
+</code></pre><h4 id="删除数据（Delete）"><a href="#删除数据（Delete）" class="headerlink" title="删除数据（Delete）"></a>删除数据（Delete）</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">var delSql = &apos;DELETE FROM websites WHERE name = &quot;余真帆的博客&quot;&apos;;</div><div class="line">connection.query(delSql, function (err, result) &#123;</div><div class="line">	if (err) &#123;</div><div class="line">		console.log(&apos;[DELETE ERROR] - &apos;, err.message);</div><div class="line">	&#125;</div><div class="line">	console.log(&apos;-------DELETE--------&apos;);</div><div class="line">	console.log(&apos;DELETE affectedRows:&apos;, result.affectedRows);</div><div class="line">	console.log(&apos;-------END--------&apos;);</div><div class="line">&#125;);</div><div class="line">connection.end();</div></pre></td></tr></table></figure>
+</code></pre><h3 id="常用技巧"><a href="#常用技巧" class="headerlink" title="常用技巧"></a>常用技巧</h3><h4 id="获取插入行的id"><a href="#获取插入行的id" class="headerlink" title="获取插入行的id"></a>获取插入行的id</h4><pre><code>如果你把一行插入到一个有自增主键的表中，可以这样获得插入的ID
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">connection.query(&apos;INSERT INTO posts SET ?&apos;, &#123;title: &apos;test&apos;&#125;, function(err, result) &#123;    </div><div class="line">	if (err) throw err;    console.log(result.insertId);  </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h4 id="取得受影响的行数"><a href="#取得受影响的行数" class="headerlink" title="取得受影响的行数"></a>取得受影响的行数</h4><pre><code>你可以从 insert，update 或者 delete 子句中取得受影响的行数。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">connection.query(&apos;DELETE FROM posts WHERE title = &quot;wrong&quot;&apos;, function (err, result) &#123;    </div><div class="line">	if (err) throw err;    </div><div class="line">	console.log(&apos;deleted &apos; + result.affectedRows + &apos; rows&apos;);  </div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+</code></pre><h4 id="取得被改变的行数"><a href="#取得被改变的行数" class="headerlink" title="取得被改变的行数"></a>取得被改变的行数</h4><pre><code>你可以从 update 子句取得被改变的行数。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">connection.query(&apos;UPDATE posts SET ...&apos;, function (err, result) &#123;    </div><div class="line">	if (err) throw err;    </div><div class="line">	console.log(&apos;changed &apos; + result.changedRows + &apos; rows&apos;);  </div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+</code></pre><h4 id="获取连接ID"><a href="#获取连接ID" class="headerlink" title="获取连接ID"></a>获取连接ID</h4><pre><code>你可以取得MySQL的连接ID（“线程ID”），这是一个给定的连接，使用的是线程ID属性。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">connection.connect(function(err) &#123;    </div><div class="line">	if (err) throw err;    </div><div class="line">	console.log(&apos;connected as id &apos; + connection.threadId);  </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h4 id="并行执行查询"><a href="#并行执行查询" class="headerlink" title="并行执行查询"></a>并行执行查询</h4><pre><code>MySQL协议是顺序的，这意味着你需要多次连接执行并行查询。
+你可以使用池来管理连接，一个简单的办法是每传入一个http请求，就创建一个连接。
+</code></pre><h4 id="流式查询行"><a href="#流式查询行" class="headerlink" title="流式查询行"></a>流式查询行</h4><pre><code>有的时候可能需要查询大量的数据行，然后在接收到这些数据行的时候一行行的处理它们。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">var query = connection.query(&apos;SELECT * FROM posts&apos;);  </div><div class="line">query.on(&apos;error&apos;, function(err) &#123;      </div><div class="line">	// 处理错误，这之后会触发 &apos;end&apos; 事件    </div><div class="line">&#125;)    </div><div class="line">.on(&apos;fields&apos;, function(fields) &#123;      </div><div class="line">	// 字段信息    </div><div class="line">&#125;)</div><div class="line">.on(&apos;result&apos;, function(row) &#123;      </div><div class="line">	// 暂停连接。如果你的处理过程涉及到 I/O 操作，这会很有用。      </div><div class="line">	connection.pause();     </div><div class="line">	processRow(row, function() &#123;        </div><div class="line">		connection.resume();      </div><div class="line">	&#125;);    </div><div class="line">&#125;)</div><div class="line">.on(&apos;end&apos;, function() &#123;      </div><div class="line">	// 所有数据行都已经接收完毕    </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h4 id="通过-Streams2-管道输出"><a href="#通过-Streams2-管道输出" class="headerlink" title="通过 Streams2 管道输出"></a>通过 Streams2 管道输出</h4><pre><code>通过管道将查询结果输出到另一个流（最大缓冲 5 个对象）
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">connection.query(&apos;SELECT * FROM posts&apos;)    </div><div class="line">.stream(&#123;highWaterMark: 5&#125;)    </div><div class="line">.pipe(...);</div></pre></td></tr></table></figure>
+</code></pre><h4 id="多语句查询"><a href="#多语句查询" class="headerlink" title="多语句查询"></a>多语句查询</h4><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">// 开启多语句查询</div><div class="line">var connection = mysql.createConnection(&#123;multipleStatements: true&#125;);</div><div class="line">connection.query(&apos;SELECT 1; SELECT 2&apos;, function(err, results) &#123;    </div><div class="line">	if (err) throw err;    </div><div class="line">	// `results` is an array with one element for every statement in the query:     </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><ol>
+<li>先使用var connection = mysql.createConnection方法一个数据库连接的配置项</li>
+<li>使用connection.connect方法连接数据库</li>
+<li>使用sql语句对数据库进行CURD操作</li>
+<li>操作完成后需使用connection.end方法断开数据库连接<br>connection.end(function (err) { … }); // 支持回调<br>connection.destroy(); // 该方法会立即终止底层套接字（underlying socket）。另外，destroy()不会触发更多的事件和回调函数。<blockquote>
+<p>参考文档：<br><a href="http://www.runoob.com/nodejs/nodejs-mysql.html" target="_blank" rel="external">Node.js 连接 MySQL</a><br><a href="http://www.techug.com/post/node-mysql-node-js.html" target="_blank" rel="external">如何在node.js里连接和使用mysql</a><br><a href="https://github.com/mysqljs/mysql" target="_blank" rel="external">mysqljs</a><br><a href="http://www.runoob.com/mysql/mysql-tutorial.html" target="_blank" rel="external">mysql</a></p>
+</blockquote>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+	<div>
+		
+			<div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读，如果本文对你有帮助就记得<a href="https://github.com/fanerge/fanerge.github.io" title="谢谢亲的star">给个star</a>-------------</div>
+		
+	</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Donate comment here</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author: </strong>余真帆-fanerge</li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://fanerge.github.io/2017/node-mysql.html" title="node.js 和 mysql 结合使用">https://fanerge.github.io/2017/node-mysql.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/mysql/" rel="tag"><i class="far fa-bell"></i> mysql</a>
+          
+            <a href="/tags/数据库/" rel="tag"><i class="far fa-bell"></i> 数据库</a>
+          
+            <a href="/tags/node/" rel="tag"><i class="far fa-bell"></i> node</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/grid布局.html" rel="next" title="grid布局">
+                <i class="fa fa-chevron-left"></i> grid布局
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/musql学习.html" rel="prev" title="mysql学习（上部分）">
+                mysql学习（上部分） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=2156704" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTk4Mi8xMjUxOA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+              <p class="site-description motion-element" itemprop="description">前端、web</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">155</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">24</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">46</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/fanerge" target="_blank" title="GitHub" rel="external nofollow"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:fanege@qq.com" target="_blank" title="E-Mail" rel="external nofollow"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金" rel="external nofollow"><i class="fa fa-fw fa-globe"></i>掘金</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#node和mysql的配合"><span class="nav-number">1.</span> <span class="nav-text">node和mysql的配合</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#mysql和node-js的连接"><span class="nav-number">1.1.</span> <span class="nav-text">mysql和node.js的连接</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建表"><span class="nav-number">2.</span> <span class="nav-text">创建表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连接池"><span class="nav-number">3.</span> <span class="nav-text">连接池</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#连接池连接"><span class="nav-number">3.1.</span> <span class="nav-text">连接池连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#连接池的事件"><span class="nav-number">3.2.</span> <span class="nav-text">连接池的事件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#连接"><span class="nav-number">3.2.1.</span> <span class="nav-text">连接</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#入列"><span class="nav-number">3.2.2.</span> <span class="nav-text">入列</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在连接池中关闭所有连接"><span class="nav-number">3.2.3.</span> <span class="nav-text">在连接池中关闭所有连接</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#集群连接池"><span class="nav-number">3.2.4.</span> <span class="nav-text">集群连接池</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#更换用户并且改变连接状态"><span class="nav-number">3.2.5.</span> <span class="nav-text">更换用户并且改变连接状态</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库操作（CURD）"><span class="nav-number">4.</span> <span class="nav-text">数据库操作（CURD）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#查询数据（Retrieve）"><span class="nav-number">4.1.</span> <span class="nav-text">查询数据（Retrieve）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#query-sqlString-callback"><span class="nav-number">4.1.1.</span> <span class="nav-text">query(sqlString, callback)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#query-sqlString-values-callback"><span class="nav-number">4.1.2.</span> <span class="nav-text">query(sqlString, values, callback)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#query-options-callback"><span class="nav-number">4.1.3.</span> <span class="nav-text">query(options, callback)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查询值转义"><span class="nav-number">4.1.4.</span> <span class="nav-text">查询值转义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查询标识符转义"><span class="nav-number">4.1.5.</span> <span class="nav-text">查询标识符转义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#预查询"><span class="nav-number">4.1.6.</span> <span class="nav-text">预查询</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#插入数据（Insert）"><span class="nav-number">4.2.</span> <span class="nav-text">插入数据（Insert）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更新数据（Update）"><span class="nav-number">4.3.</span> <span class="nav-text">更新数据（Update）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除数据（Delete）"><span class="nav-number">4.4.</span> <span class="nav-text">删除数据（Delete）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用技巧"><span class="nav-number">5.</span> <span class="nav-text">常用技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#获取插入行的id"><span class="nav-number">5.1.</span> <span class="nav-text">获取插入行的id</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#取得受影响的行数"><span class="nav-number">5.2.</span> <span class="nav-text">取得受影响的行数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#取得被改变的行数"><span class="nav-number">5.3.</span> <span class="nav-text">取得被改变的行数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取连接ID"><span class="nav-number">5.4.</span> <span class="nav-text">获取连接ID</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#并行执行查询"><span class="nav-number">5.5.</span> <span class="nav-text">并行执行查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#流式查询行"><span class="nav-number">5.6.</span> <span class="nav-text">流式查询行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过-Streams2-管道输出"><span class="nav-number">5.7.</span> <span class="nav-text">通过 Streams2 管道输出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多语句查询"><span class="nav-number">5.8.</span> <span class="nav-text">多语句查询</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结："><span class="nav-number">6.</span> <span class="nav-text">总结：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" rel="external nofollow" href="https://github.com/theme-next/hexo-theme-next">NexT.Mist</a> v6.0.6</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.6"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.6"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.6"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.6"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>

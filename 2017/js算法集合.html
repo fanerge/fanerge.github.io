@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.6" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=6.0.6" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.0.6',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+  
+
+
+
+
+  <meta name="description" content="判断文本是否为回文定义：如果将一个文本翻转过来，能和原文本完全相等，那么就可以称之为“回文”。 方法一（字符串、数组内置方法）123456789101112131415/** 判断文字是否为回文* @param &amp;#123;string|number&amp;#125; val 需要判断的文字* @return &amp;#123;boolean&amp;#125; bool 是否为回文 */function isPal">
+<meta name="keywords" content="数据结构和算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js算法集合">
+<meta property="og:url" content="https://fanerge.github.io/2017/js算法集合.html">
+<meta property="og:site_name" content="余真帆的博客">
+<meta property="og:description" content="判断文本是否为回文定义：如果将一个文本翻转过来，能和原文本完全相等，那么就可以称之为“回文”。 方法一（字符串、数组内置方法）123456789101112131415/** 判断文字是否为回文* @param &amp;#123;string|number&amp;#125; val 需要判断的文字* @return &amp;#123;boolean&amp;#125; bool 是否为回文 */function isPal">
+<meta property="og:updated_time" content="2018-04-25T14:04:52.641Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="js算法集合">
+<meta name="twitter:description" content="判断文本是否为回文定义：如果将一个文本翻转过来，能和原文本完全相等，那么就可以称之为“回文”。 方法一（字符串、数组内置方法）123456789101112131415/** 判断文字是否为回文* @param &amp;#123;string|number&amp;#125; val 需要判断的文字* @return &amp;#123;boolean&amp;#125; bool 是否为回文 */function isPal">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="余真帆的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="https://fanerge.github.io/2017/js算法集合.html"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>js算法集合 | 余真帆的博客</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+	<a href="https://github.com/fanerge" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#70B7FD; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+	</div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">余真帆的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-categories">
+    <a href="/categories" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Categories</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-archives">
+    <a href="/archives" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Archives</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-tags">
+    <a href="/tags" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Tags</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-about">
+    <a href="/about" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />About</a>
+</li>
+
+      
+
+      
+    </ul>
+  
+
+  
+    
+
+    
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+    
+
+  
+
+
+  
+
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/js算法集合.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">js算法集合</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-08T22:20:17+08:00">2018-04-08</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据结构和算法/" itemprop="url" rel="index"><span itemprop="name">数据结构和算法</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views: 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+		
+	  
+      
+
+      
+        <h1 id="判断文本是否为回文"><a href="#判断文本是否为回文" class="headerlink" title="判断文本是否为回文"></a>判断文本是否为回文</h1><p>定义：如果将一个文本翻转过来，能和原文本完全相等，那么就可以称之为“回文”。</p>
+<h2 id="方法一（字符串、数组内置方法）"><a href="#方法一（字符串、数组内置方法）" class="headerlink" title="方法一（字符串、数组内置方法）"></a>方法一（字符串、数组内置方法）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">/*</div><div class="line">* 判断文字是否为回文</div><div class="line">* @param &#123;string|number&#125; val 需要判断的文字</div><div class="line">* @return &#123;boolean&#125; bool 是否为回文 </div><div class="line">*/</div><div class="line">function isPalindrome1(val)&#123;</div><div class="line">	// 允许输入字符串和数字和布尔值</div><div class="line">	if (typeof val !== &apos;string&apos;) val = val.toString();</div><div class="line">	let newVal = val.split(&apos;&apos;).reverse().join(&apos;&apos;);</div><div class="line">	</div><div class="line">	return val === newVal;</div><div class="line">&#125;</div><div class="line"></div><div class="line">isPalindrome1(121) // true</div><div class="line">isPalindrome1(&apos;yuzuy&apos;) // true</div></pre></td></tr></table></figure>
+<p>// PS：方法简单，但效率不高，会产生一个新的变量</p>
+<h2 id="方法二（循环）"><a href="#方法二（循环）" class="headerlink" title="方法二（循环）"></a>方法二（循环）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">/*</div><div class="line">* 判断文字是否为回文</div><div class="line">* @param &#123;string|number&#125; val 需要判断的文字</div><div class="line">* @return &#123;boolean&#125; bool 是否为回文 </div><div class="line">*/</div><div class="line">function isPalindrome2(val)&#123;</div><div class="line">	val = val + &apos;&apos;; // 非字符串转化为字符串</div><div class="line">	</div><div class="line">	// 这里为什么 i &lt;= j 呢？如果中间只有一个字符，是不需要比较的，它肯定等于它本身！！！</div><div class="line">	for(let i = 0, j = val.length - 1; i &lt; j; i++, j--)&#123;</div><div class="line">		if(val.charAt(i) !== val.charAt(j))&#123;</div><div class="line">			return false;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	return true;</div><div class="line">&#125;</div><div class="line"></div><div class="line">isPalindrome2(121) // true</div><div class="line">isPalindrome2(&apos;yuzuy&apos;) // true</div></pre></td></tr></table></figure>
+<p>PS：网上还有其他解法，大多为以上两种的变形。</p>
+<h1 id="反转字符串"><a href="#反转字符串" class="headerlink" title="反转字符串"></a>反转字符串</h1><h2 id="方法一（字符串、数组内置方法））"><a href="#方法一（字符串、数组内置方法））" class="headerlink" title="方法一（字符串、数组内置方法））"></a>方法一（字符串、数组内置方法））</h2><p>借用反转字符串的方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">/*</div><div class="line">* 反转字符串</div><div class="line">* @param &#123;string&#125; val 需要反转的字符串</div><div class="line">* @return &#123;string&#125; str 反转后的字符串</div><div class="line">*/</div><div class="line">function reverseVal1(val)&#123;</div><div class="line">	if (typeof val !== &apos;string&apos;) return;</div><div class="line">	</div><div class="line">	return val.split(&apos;&apos;).reverse().join(&apos;&apos;);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="方法二（循环）-1"><a href="#方法二（循环）-1" class="headerlink" title="方法二（循环）"></a>方法二（循环）</h2><p>循环系列<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">/*</div><div class="line">* 反转字符串</div><div class="line">* @param &#123;string&#125; val 需要反转的字符串</div><div class="line">* @return &#123;string&#125; str 反转后的字符串</div><div class="line">*/</div><div class="line">function reverseVal2(val)&#123;</div><div class="line">	if (typeof val !== &apos;string&apos;) return;</div><div class="line">	</div><div class="line">	let str = &apos;&apos;,</div><div class="line">		i = 0,</div><div class="line">		len = val.length;</div><div class="line">	while(i &lt; len)&#123;</div><div class="line">		str += val.charAt(len - 1 - i);</div><div class="line">		i++; </div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	return str;</div><div class="line">&#125;</div><div class="line"></div><div class="line">/*</div><div class="line">* 反转字符串</div><div class="line">* @param &#123;string&#125; val 需要反转的字符串</div><div class="line">* @return &#123;string&#125; str 反转后的字符串</div><div class="line">*/</div><div class="line">function reverseVal3(val)&#123;</div><div class="line">	if (typeof val !== &apos;string&apos;) return;</div><div class="line">	</div><div class="line">	let str = &apos;&apos;,</div><div class="line">		len = val.length;</div><div class="line">	for(let i = len - 1; i &gt;= 0; i--)&#123;</div><div class="line">		str += val.charAt(i)</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	return str;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>测试：reverseVal(‘abc’) // ‘cba’</p>
+<h1 id="阶乘"><a href="#阶乘" class="headerlink" title="阶乘"></a>阶乘</h1><h2 id="方法一（递归）"><a href="#方法一（递归）" class="headerlink" title="方法一（递归）"></a>方法一（递归）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">/*</div><div class="line">* 阶乘</div><div class="line">* @param &#123;number&#125; n 需要求的阶乘</div><div class="line">* @return &#123;number&#125; 阶乘值</div><div class="line">*/</div><div class="line">function factorialize1(n)&#123;</div><div class="line">	if(typeof n !== &apos;number&apos;) throw new Error(&apos;参数必须为整整&apos;)</div><div class="line">	if(n === 1) return 1;</div><div class="line"></div><div class="line">	// 建议不要使用 arguments.callee，目前已经废弃了。</div><div class="line">	return n * factorialize1(n - 1);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>PS：上面代码是一个阶乘函数，计算n的阶乘，最多需要保存n个调用记录，复杂度 O(n) 。<br>递归非常耗费内存，因为需要同时保存成千上百个调用帧，很容易发生“栈溢出”错误（stack overflow）。</p>
+<h2 id="方法二（ES6尾调用优化）"><a href="#方法二（ES6尾调用优化）" class="headerlink" title="方法二（ES6尾调用优化）"></a>方法二（ES6尾调用优化）</h2><p>（递归优化版）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">/*</div><div class="line">* 阶乘</div><div class="line">* @param &#123;number&#125; n 需要求的阶乘</div><div class="line">* @return &#123;number&#125; 阶乘值</div><div class="line">*/</div><div class="line">function factorialize2(n, total = 1)&#123;</div><div class="line">	if(typeof n !== &apos;number&apos; || typeof total !== &apos;number&apos;) throw new Error(&apos;参数必须为整整&apos;)</div><div class="line">	if(n === 1) return total;</div><div class="line"></div><div class="line">	return factorialize2(n - 1, n * total)</div><div class="line">	// f(3) =&gt; f(2, 3 * 2) =&gt; f(1, 6) =&gt; 6</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>PS：<a href="http://es6.ruanyifeng.com/#docs/function#尾调用优化" target="_blank" rel="external">ES6尾调用优化</a>但对于尾递归来说，由于只存在一个调用帧，所以永远不会发生“栈溢出”错误。<br>尾调用（Tail Call）是函数式编程的一个重要概念，本身非常简单，一句话就能说清楚，就是指某个函数的最后一步是调用另一个函数。</p>
+<h2 id="方法三（循环）"><a href="#方法三（循环）" class="headerlink" title="方法三（循环）"></a>方法三（循环）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">/*</div><div class="line">* 阶乘</div><div class="line">* @param &#123;number&#125; n 需要求的阶乘</div><div class="line">* @return &#123;number&#125; 阶乘值</div><div class="line">*/</div><div class="line">function factorialize3(n)&#123;</div><div class="line">	if(typeof n !== &apos;number&apos;) throw new Error(&apos;参数必须为整整&apos;)</div><div class="line">	if(n === 1) return 1;	</div><div class="line">	let total = 1;</div><div class="line"></div><div class="line">	while(n&gt;1)&#123;</div><div class="line">		total = n * total;</div><div class="line">		n--;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	return total;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>测试：factorialize1(3) // 6</p>
+<h1 id="随机生成长度为n字符串"><a href="#随机生成长度为n字符串" class="headerlink" title="随机生成长度为n字符串"></a>随机生成长度为n字符串</h1><h2 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">/*</div><div class="line">* 生成指定长度的随机字符串</div><div class="line">* @param &#123;number&#125; n 生成字符串个数</div><div class="line">* @return &#123;string&#125; str 反转后的字符串</div><div class="line">*/</div><div class="line">function randomString1(n)&#123;</div><div class="line">	let str = &apos;abcdefghijklmnopqrstuvwxyz0123456789&apos;;</div><div class="line">	let tem = &apos;&apos;,</div><div class="line">		i = 0;</div><div class="line">	</div><div class="line">	// Math.random 函数产生值的范围[0,1)</div><div class="line">	while(i&lt;n)&#123;</div><div class="line">		tem += str.charAt(Math.floor(Math.random() * str.length))</div><div class="line">		i++;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	return tem;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>PS：Math.round(Math.random() <em> (str.length - 1))<br>Math.ceil(Math.random() </em> (str.length - 1))<br>Math.floor(Math.random() * str.length)<br>这三种方式等价，都能生成[0, str.length-1]随机数</p>
+<h2 id="方法二（进制转化）"><a href="#方法二（进制转化）" class="headerlink" title="方法二（进制转化）"></a>方法二（进制转化）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">/*</div><div class="line">* 生成指定长度的随机字符串</div><div class="line">* @param &#123;number&#125; n 生成字符串个数</div><div class="line">* @return &#123;string&#125; 反转后的字符串</div><div class="line">*/</div><div class="line">function randomString2(n)&#123;</div><div class="line">	return Math.random().toString(36).substr(2).slice(0, n)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>PS：该方法原理为随机产生的数转换为指定进制字符串<br>toString(n)，n为[2,36]，n&lt;=10时只产生0-9也就是10进制数字<br>该方法有个缺点，产生字符串的长度有一定的限制。</p>
+<h2 id="方法三（随机码点）"><a href="#方法三（随机码点）" class="headerlink" title="方法三（随机码点）"></a>方法三（随机码点）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">/*</div><div class="line">* 生成指定长度的随机字符串</div><div class="line">* @param &#123;number&#125; n 生成字符串个数</div><div class="line">* @return &#123;string&#125; str 反转后的字符串</div><div class="line">*/</div><div class="line">function randomString3(n)&#123;</div><div class="line">	let str = &apos;&apos;;</div><div class="line">	</div><div class="line">	function randomChar()&#123;</div><div class="line">		let l = Math.floor(Math.random() * 62);</div><div class="line">		if(l &lt; 10) return l; // 数字部分 0-9</div><div class="line">		if(l &lt; 36) return String.fromCharCode(l + 55); // 大写字母</div><div class="line">		</div><div class="line">		return String.fromCharCode(l + 61); // 小写字母</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	while(str.length &lt; n) str += randomChar();</div><div class="line">	</div><div class="line">	return str;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>PS：可以参考对于的<a href="https://baike.baidu.com/item/ASCII/309296?fr=aladdin" target="_blank" rel="external">ASCII码表</a>。<br>测试：randomString1(3) // ‘1sd’</p>
+<h1 id="数组去重"><a href="#数组去重" class="headerlink" title="数组去重"></a>数组去重</h1><h2 id="方法一（ES6的Set数据结构）"><a href="#方法一（ES6的Set数据结构）" class="headerlink" title="方法一（ES6的Set数据结构）"></a>方法一（ES6的Set数据结构）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">/*</div><div class="line">* 数组去重</div><div class="line">* @param &#123;array&#125; ary 需要去重的数组</div><div class="line">* @return &#123;array&#125; 去重后的数组</div><div class="line">*/</div><div class="line">function unique1(ary)&#123;</div><div class="line">	return [...new Set(ary)];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="方法二（对象的key唯一性）"><a href="#方法二（对象的key唯一性）" class="headerlink" title="方法二（对象的key唯一性）"></a>方法二（对象的key唯一性）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">/*</div><div class="line">* 数组去重</div><div class="line">* @param &#123;array&#125; ary 需要去重的数组</div><div class="line">* @return &#123;array&#125; 去重后的数组</div><div class="line">*/</div><div class="line">function unique2(ary)&#123;</div><div class="line">	let obj = &#123;&#125;,</div><div class="line">		i = 0,</div><div class="line">		len = ary.length;</div><div class="line">	</div><div class="line">	while(i &lt; len)&#123;</div><div class="line">		if(!obj[ary[i]])&#123;</div><div class="line">			obj[ary[i]] = true; // 如果不存在</div><div class="line">		&#125;</div><div class="line">		i++;</div><div class="line">	&#125;</div><div class="line">	return Object.keys(obj);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>PS：该方法存在一定问题，数组的元素全部被转化为字符串，因为ES6之前对象的key只能是字符串。<br>会把数字1和字符串’1’，会被视为同一个值。</p>
+<h2 id="方法三（临时数组判断插入）"><a href="#方法三（临时数组判断插入）" class="headerlink" title="方法三（临时数组判断插入）"></a>方法三（临时数组判断插入）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">/*</div><div class="line">* 数组去重</div><div class="line">* @param &#123;array&#125; ary 需要去重的数组</div><div class="line">* @return &#123;array&#125; 去重后的数组</div><div class="line">*/</div><div class="line">function unique3(ary)&#123;</div><div class="line">	let tem = [],</div><div class="line">		i = 0,</div><div class="line">		len = ary.length;</div><div class="line">	</div><div class="line">	while(i &lt; len)&#123;</div><div class="line">		// tem.indexOf() === -1 同理</div><div class="line">		!tem.includes(ary[i]) ? tem.push(ary[i]) : &apos;&apos;;</div><div class="line">		i++;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	return tem;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="方法四（判断首次出现的位置）"><a href="#方法四（判断首次出现的位置）" class="headerlink" title="方法四（判断首次出现的位置）"></a>方法四（判断首次出现的位置）</h2><p>如果当前数组的第i项在当前数组中第一次出现的位置不是i，那么表示第i项是重复的，忽略掉。否则存入结果数组。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">/*</div><div class="line">* 数组去重</div><div class="line">* @param &#123;array&#125; ary 需要去重的数组</div><div class="line">* @return &#123;array&#125; 去重后的数组</div><div class="line">*/</div><div class="line">function unique4(ary)&#123;</div><div class="line">	let tem = [ary[0]],</div><div class="line">		len = ary.length;</div><div class="line">	</div><div class="line">	for(let i = 1; i &lt; len; i++ )&#123;</div><div class="line">		// 核心，首次的索引出现是否为当前的索引</div><div class="line">		if(ary.indexOf(ary[i]) === i) tem.push(ary[i]);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	return tem;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="方法五（排序后逐个比较插入）"><a href="#方法五（排序后逐个比较插入）" class="headerlink" title="方法五（排序后逐个比较插入）"></a>方法五（排序后逐个比较插入）</h2><p>给传入数组排序，排序后相同值相邻，然后遍历时新数组只加入不与前一值重复的值。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">/*</div><div class="line">* 数组去重</div><div class="line">* @param &#123;array&#125; array 需要去重的数组</div><div class="line">* @return &#123;array&#125; 去重后的数组</div><div class="line">*/</div><div class="line">function unique5(array)&#123;</div><div class="line">	let ary = array.slice();</div><div class="line">	ary.sort();</div><div class="line">	let tem = [ary[0]];</div><div class="line">	for(let i = 0, len = ary.length; i &lt; len; i++)&#123;</div><div class="line">		ary[i] !== tem[tem.length - 1] ? tem.push(ary[i]) : &apos;&apos;;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	return tem;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>PS：返回的数组顺序发生了改变。</p>
+<h2 id="方法六"><a href="#方法六" class="headerlink" title="方法六"></a>方法六</h2><p>获取没有重复的最右一值放入新数组（检测到有重复值时终止当前循环同时进入顶层循环的下一轮判断）。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">/*</div><div class="line">* 数组去重</div><div class="line">* @param &#123;array&#125; ary 需要去重的数组</div><div class="line">* @return &#123;array&#125; 去重后的数组</div><div class="line">*/</div><div class="line">function unique6(ary)&#123;</div><div class="line">	let tem = [];</div><div class="line">	for(let i = 0, len = ary.length; i &lt; len; i++)&#123;</div><div class="line">		for(let j = i + 1; j &lt; len; j++)&#123;</div><div class="line">			if(ary[i] === ary[j]) j = ++i;</div><div class="line">		&#125;</div><div class="line">		tem.push(ary[i])</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	return tem;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>测试：unique1([1, 2, 3, 2]) // [1, 2, 3]</p>
+<h1 id="出现次数最多的字符"><a href="#出现次数最多的字符" class="headerlink" title="出现次数最多的字符"></a>出现次数最多的字符</h1><h2 id="方法一（对象key的唯一性进行累加）"><a href="#方法一（对象key的唯一性进行累加）" class="headerlink" title="方法一（对象key的唯一性进行累加）"></a>方法一（对象key的唯一性进行累加）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">function maxNum1(str)&#123;</div><div class="line">	if(typeof(str) !== &apos;string&apos;) str = str.toString();</div><div class="line">	let obj = &#123;&#125;,</div><div class="line">		maxChar = []; // 使用数组保存出现最多次的某些字符</div><div class="line">	str.split(&apos;&apos;).forEach( (val) =&gt; &#123;</div><div class="line">		if(!obj[val])&#123;</div><div class="line">			let demo = obj[val] = 1;</div><div class="line"></div><div class="line">		&#125;else&#123;</div><div class="line">			obj[val]++;</div><div class="line">		&#125;</div><div class="line">	&#125;)</div><div class="line"></div><div class="line">	let maxCount =  Math.max.apply(null, Object.values(obj))</div><div class="line"></div><div class="line">	// forEach方法总是返回 undefined 且 没有办法中止或者跳出 forEach 循环。</div><div class="line">	Object.entries(obj).forEach( item =&gt; &#123;</div><div class="line">		if(item[1] == maxCount)&#123;</div><div class="line">			maxChar.push(item[0])</div><div class="line">		&#125;</div><div class="line">	&#125;)</div><div class="line"></div><div class="line">	return maxChar;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>测试：maxNum1(‘11223333’) // ‘3’</p>
+<h1 id="数组扁平化"><a href="#数组扁平化" class="headerlink" title="数组扁平化"></a>数组扁平化</h1><p>实现方法：Array.prototype.flatten(depth)，参数depth表示需要扁平化的层数，返回一个新的数组。 </p>
+<h2 id="方法一（递归遍历数组拼接）"><a href="#方法一（递归遍历数组拼接）" class="headerlink" title="方法一（递归遍历数组拼接）"></a>方法一（递归遍历数组拼接）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">function flatten1(ary)&#123;</div><div class="line">	let tem = [],</div><div class="line">		i = 0,</div><div class="line">		len = ary.length;</div><div class="line"></div><div class="line">	while(i &lt; len)&#123;</div><div class="line">		if(Array.isArray(ary[i]))&#123;</div><div class="line">			// 递归进行上面步骤</div><div class="line">			// [].concat(...ary)，它的参数可以为数组或值，作用为将数组或值连接成新数组。</div><div class="line">			tem = tem.concat(flatten1(ary[i]))</div><div class="line">		&#125;else&#123;</div><div class="line">			tem.push(ary[i]);</div><div class="line">		&#125;</div><div class="line">		i++;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	return tem;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>PS：可以处理多层数组。</p>
+<h2 id="方法二（reduce结合concat）"><a href="#方法二（reduce结合concat）" class="headerlink" title="方法二（reduce结合concat）"></a>方法二（reduce结合concat）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">function flatten2(ary)&#123;</div><div class="line"></div><div class="line">	return ary.reduce((pre, cur) =&gt; &#123;</div><div class="line">		return pre.concat(Array.isArray(cur) ? flatten2(cur) : cur)</div><div class="line">	&#125;, [])</div><div class="line">	</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>PS：可以处理多层数组。</p>
+<h2 id="方法三（转化为字符串）"><a href="#方法三（转化为字符串）" class="headerlink" title="方法三（转化为字符串）"></a>方法三（转化为字符串）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">function flatten2(ary)&#123;</div><div class="line"></div><div class="line">	return ary.toString().split(&apos;,&apos;)</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>PS：返回的数组项将为字符串。</p>
+<h2 id="方法四（解构数组）"><a href="#方法四（解构数组）" class="headerlink" title="方法四（解构数组）"></a>方法四（解构数组）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">function flatten4(ary)&#123;</div><div class="line"></div><div class="line">	let tem = []</div><div class="line">	ary.forEach(item =&gt; &#123;</div><div class="line">		if(Array.isArray(item))&#123;</div><div class="line">			tem = tem.concat(...item);</div><div class="line">		&#125;else&#123;</div><div class="line">			tem = tem.concat(item);</div><div class="line">		&#125;</div><div class="line">	&#125;)</div><div class="line"></div><div class="line">	return tem;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>PS：只能处理2维数组。<br>测试：getMaxProfit1([1, 2, 3, [4, 5, 6]]) // [1, 2, 3, 4, 5, 6]</p>
+<h1 id="数组中最大差值"><a href="#数组中最大差值" class="headerlink" title="数组中最大差值"></a>数组中最大差值</h1><h2 id="方法一-1"><a href="#方法一-1" class="headerlink" title="方法一"></a>方法一</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">function getMaxProfit1(ary)&#123;</div><div class="line">	return Math.max.apply(null, ary) - Math.min.apply(null, ary);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>测试：getMaxProfit1([1, 2, 3, 4]) // 3 </p>
+<h1 id="斐波那契数列"><a href="#斐波那契数列" class="headerlink" title="斐波那契数列"></a>斐波那契数列</h1><p>这里我们只实现通项公式</p>
+<h2 id="方法一-2"><a href="#方法一-2" class="headerlink" title="方法一"></a>方法一</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">function fib1(n)&#123;</div><div class="line">	if(n === 1 || n === 2)&#123;</div><div class="line">		return 1;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	return fib1(n - 1) + fib1(n - 2);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>PS：时间复杂度为O(2^n)，空间复杂度为O(n)</p>
+<h2 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">function fib2(n)&#123;</div><div class="line">	let tem = [1, 1];</div><div class="line">	if(n === 1 || n === 2)&#123;</div><div class="line">		return 1;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	// 数组索引从0开始，数列索引从1开始</div><div class="line">	for(let i = 2; i &lt; n; i++)&#123;</div><div class="line">		tem[i] = tem[i-1] + tem[i-2];</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	return tem[n-1];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>PS：时间复杂度为O(n)，空间复杂度为O(n)</p>
+<h2 id="方法三"><a href="#方法三" class="headerlink" title="方法三"></a>方法三</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">function fib2(n)&#123;</div><div class="line">	let prev = 1, </div><div class="line">		next = 1,</div><div class="line">		res;</div><div class="line">	for(let i = 2; i &lt; n; i++)&#123;</div><div class="line">		res = prev + next;  </div><div class="line">		prev = next; </div><div class="line">		next = res;</div><div class="line">	&#125;	</div><div class="line"></div><div class="line">	return res;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>PS：时间复杂度为O(n)，空间复杂度为O(1)<br>测试：fib2(3) // 2 </p>
+<h1 id="判断是否为质数（prime-number）素数"><a href="#判断是否为质数（prime-number）素数" class="headerlink" title="判断是否为质数（prime number）素数"></a>判断是否为质数（prime number）素数</h1><p>质数：只能被1和自己整除且大于1的数。<br>合数：数大于1且因数多余2个（大于1的数质数的补集）。</p>
+<h2 id="方法一（循环）"><a href="#方法一（循环）" class="headerlink" title="方法一（循环）"></a>方法一（循环）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">function isPrimeNumber1(n)&#123;</div><div class="line">	if(n &lt; 2) return false;</div><div class="line">	if(n === 2) return true; // 最小的质数</div><div class="line"></div><div class="line">	for(let i = 2; i &lt; n; i++)&#123;</div><div class="line">		if(n % i === 0)&#123;</div><div class="line">			return false;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	return true;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>测试：isPrimeNumber1(2) // true</p>
+<h2 id="方法二（正则）"><a href="#方法二（正则）" class="headerlink" title="方法二（正则）"></a>方法二（正则）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">function isPrimeNumber1(n)&#123;</div><div class="line">  return n&lt;2?false:!/^(11+?)\1+$/.test(Array(n+1).join(&apos;1&apos;))</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>PS：该方法很巧妙，于2018-04-25在掘金上发现。<br><a href="https://juejin.im/post/5adeb462f265da0b9c104358" target="_blank" rel="external">方法详解</a></p>
+<h1 id="最小公约数"><a href="#最小公约数" class="headerlink" title="最小公约数"></a>最小公约数</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">function greatestCommonDivisor1(a, b)&#123;</div><div class="line">	if(a &lt; 0 || b &lt; 0) throw new Error(&apos;参数只能为正整数&apos;);</div><div class="line">	if(a &lt; 2 || b &lt; 2) return 1;</div><div class="line">	let min = a,</div><div class="line">		max = b,</div><div class="line">		arymin = [];</div><div class="line"></div><div class="line">	if(a &gt; b) &#123;</div><div class="line">		min = b;</div><div class="line">		max = a;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	for(let i = 1; i &lt;= min; i++)&#123;</div><div class="line">		if(min % i === 0)&#123;</div><div class="line">			arymin.push(i);</div><div class="line">			console.log(1)</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	arymin.reverse();</div><div class="line"></div><div class="line">	for(let j = 0, len = arymin.length; j &lt; len; j++)&#123;</div><div class="line">		if(max % arymin[j] === 0)&#123;</div><div class="line">			return arymin[j];</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>测试：greatestCommonDivisor1(5, 10) // 5</p>
+<h1 id="金额转大写"><a href="#金额转大写" class="headerlink" title="金额转大写"></a>金额转大写</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">function money2Chinese(num) &#123;</div><div class="line">  if(typeof num) throw new Error(&apos;参数为数字&apos;)</div><div class="line">  let strOutput = &quot;&quot;</div><div class="line">  let strUnit = &apos;仟佰拾亿仟佰拾万仟佰拾元角分&apos;</div><div class="line">  num += &quot;00&quot;</div><div class="line">  const intPos = num.indexOf(&apos;.&apos;)</div><div class="line">  if (intPos &gt;= 0) &#123;</div><div class="line">    num = num.substring(0, intPos) + num.substr(intPos + 1, 2)</div><div class="line">  &#125;</div><div class="line">  strUnit = strUnit.substr(strUnit.length - num.length)</div><div class="line">  for (let i = 0; i &lt; num.length; i++) &#123;</div><div class="line">    strOutput += &apos;零壹贰叁肆伍陆柒捌玖&apos;.substr(num.substr(i, 1), 1) + strUnit.substr(i, 1)</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  return strOutput.replace(/零角零分$/, &apos;整&apos;).replace(/零[仟佰拾]/g, &apos;零&apos;).replace(/零&#123;2,&#125;/g, &apos;零&apos;).replace(/零([亿|万])/g, &apos;$1&apos;).replace(/零+元/, &apos;元&apos;).replace(/亿零&#123;0,3&#125;万/, &apos;亿&apos;).replace(/^元/, &quot;零元&quot;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>测试：money2Chinese(1234) // 壹仟贰佰叁拾肆元整</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+	<div>
+		
+			<div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读，如果本文对你有帮助就记得<a href="https://github.com/fanerge/fanerge.github.io" title="谢谢亲的star">给个star</a>-------------</div>
+		
+	</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Donate comment here</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author: </strong>余真帆-fanerge</li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://fanerge.github.io/2017/js算法集合.html" title="js算法集合">https://fanerge.github.io/2017/js算法集合.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据结构和算法/" rel="tag"><i class="far fa-bell"></i> 数据结构和算法</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/一次详细的包含块学习.html" rel="next" title="我所了解的CSS包含块">
+                <i class="fa fa-chevron-left"></i> 我所了解的CSS包含块
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/git工具书.html" rel="prev" title="git工具书">
+                git工具书 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=2156704" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTk4Mi8xMjUxOA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+              <p class="site-description motion-element" itemprop="description">前端、web</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">155</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">24</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">46</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/fanerge" target="_blank" title="GitHub" rel="external nofollow"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:fanege@qq.com" target="_blank" title="E-Mail" rel="external nofollow"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金" rel="external nofollow"><i class="fa fa-fw fa-globe"></i>掘金</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#判断文本是否为回文"><span class="nav-number">1.</span> <span class="nav-text">判断文本是否为回文</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法一（字符串、数组内置方法）"><span class="nav-number">1.1.</span> <span class="nav-text">方法一（字符串、数组内置方法）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法二（循环）"><span class="nav-number">1.2.</span> <span class="nav-text">方法二（循环）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#反转字符串"><span class="nav-number">2.</span> <span class="nav-text">反转字符串</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法一（字符串、数组内置方法））"><span class="nav-number">2.1.</span> <span class="nav-text">方法一（字符串、数组内置方法））</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法二（循环）-1"><span class="nav-number">2.2.</span> <span class="nav-text">方法二（循环）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#阶乘"><span class="nav-number">3.</span> <span class="nav-text">阶乘</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法一（递归）"><span class="nav-number">3.1.</span> <span class="nav-text">方法一（递归）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法二（ES6尾调用优化）"><span class="nav-number">3.2.</span> <span class="nav-text">方法二（ES6尾调用优化）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法三（循环）"><span class="nav-number">3.3.</span> <span class="nav-text">方法三（循环）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#随机生成长度为n字符串"><span class="nav-number">4.</span> <span class="nav-text">随机生成长度为n字符串</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法一"><span class="nav-number">4.1.</span> <span class="nav-text">方法一</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法二（进制转化）"><span class="nav-number">4.2.</span> <span class="nav-text">方法二（进制转化）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法三（随机码点）"><span class="nav-number">4.3.</span> <span class="nav-text">方法三（随机码点）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数组去重"><span class="nav-number">5.</span> <span class="nav-text">数组去重</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法一（ES6的Set数据结构）"><span class="nav-number">5.1.</span> <span class="nav-text">方法一（ES6的Set数据结构）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法二（对象的key唯一性）"><span class="nav-number">5.2.</span> <span class="nav-text">方法二（对象的key唯一性）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法三（临时数组判断插入）"><span class="nav-number">5.3.</span> <span class="nav-text">方法三（临时数组判断插入）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法四（判断首次出现的位置）"><span class="nav-number">5.4.</span> <span class="nav-text">方法四（判断首次出现的位置）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法五（排序后逐个比较插入）"><span class="nav-number">5.5.</span> <span class="nav-text">方法五（排序后逐个比较插入）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法六"><span class="nav-number">5.6.</span> <span class="nav-text">方法六</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#出现次数最多的字符"><span class="nav-number">6.</span> <span class="nav-text">出现次数最多的字符</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法一（对象key的唯一性进行累加）"><span class="nav-number">6.1.</span> <span class="nav-text">方法一（对象key的唯一性进行累加）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数组扁平化"><span class="nav-number">7.</span> <span class="nav-text">数组扁平化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法一（递归遍历数组拼接）"><span class="nav-number">7.1.</span> <span class="nav-text">方法一（递归遍历数组拼接）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法二（reduce结合concat）"><span class="nav-number">7.2.</span> <span class="nav-text">方法二（reduce结合concat）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法三（转化为字符串）"><span class="nav-number">7.3.</span> <span class="nav-text">方法三（转化为字符串）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法四（解构数组）"><span class="nav-number">7.4.</span> <span class="nav-text">方法四（解构数组）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数组中最大差值"><span class="nav-number">8.</span> <span class="nav-text">数组中最大差值</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法一-1"><span class="nav-number">8.1.</span> <span class="nav-text">方法一</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#斐波那契数列"><span class="nav-number">9.</span> <span class="nav-text">斐波那契数列</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法一-2"><span class="nav-number">9.1.</span> <span class="nav-text">方法一</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法二"><span class="nav-number">9.2.</span> <span class="nav-text">方法二</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法三"><span class="nav-number">9.3.</span> <span class="nav-text">方法三</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#判断是否为质数（prime-number）素数"><span class="nav-number">10.</span> <span class="nav-text">判断是否为质数（prime number）素数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法一（循环）"><span class="nav-number">10.1.</span> <span class="nav-text">方法一（循环）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法二（正则）"><span class="nav-number">10.2.</span> <span class="nav-text">方法二（正则）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#最小公约数"><span class="nav-number">11.</span> <span class="nav-text">最小公约数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#金额转大写"><span class="nav-number">12.</span> <span class="nav-text">金额转大写</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" rel="external nofollow" href="https://github.com/theme-next/hexo-theme-next">NexT.Mist</a> v6.0.6</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.6"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.6"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.6"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.6"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>

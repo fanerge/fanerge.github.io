@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.6" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=6.0.6" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.0.6',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+  
+
+
+
+
+  <meta name="description" content="为什么一切皆为对象‘一切皆为对象’，这可是javascript中‘圣经’，可是为什么这样说呢，我们来一探究竟吧？为了解决这个问题，我们的从javascript的原型链说起。 原型链在js几乎任何对象有一个 [[prototype]] 属性，在标准中，这是一个隐藏属性。虽然说 [[prototype]] 是一个隐藏属性，但很多浏览器都给每一个对象提供 __proto__ 这一属性，这个属性就是该对象">
+<meta name="keywords" content="js">
+<meta property="og:type" content="article">
+<meta property="og:title" content="全面了解Object对象">
+<meta property="og:url" content="https://fanerge.github.io/2018/全面了解Object对象.html">
+<meta property="og:site_name" content="余真帆的博客">
+<meta property="og:description" content="为什么一切皆为对象‘一切皆为对象’，这可是javascript中‘圣经’，可是为什么这样说呢，我们来一探究竟吧？为了解决这个问题，我们的从javascript的原型链说起。 原型链在js几乎任何对象有一个 [[prototype]] 属性，在标准中，这是一个隐藏属性。虽然说 [[prototype]] 是一个隐藏属性，但很多浏览器都给每一个对象提供 __proto__ 这一属性，这个属性就是该对象">
+<meta property="og:updated_time" content="2018-03-21T12:13:35.809Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="全面了解Object对象">
+<meta name="twitter:description" content="为什么一切皆为对象‘一切皆为对象’，这可是javascript中‘圣经’，可是为什么这样说呢，我们来一探究竟吧？为了解决这个问题，我们的从javascript的原型链说起。 原型链在js几乎任何对象有一个 [[prototype]] 属性，在标准中，这是一个隐藏属性。虽然说 [[prototype]] 是一个隐藏属性，但很多浏览器都给每一个对象提供 __proto__ 这一属性，这个属性就是该对象">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="余真帆的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="https://fanerge.github.io/2018/全面了解Object对象.html"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>全面了解Object对象 | 余真帆的博客</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+	<a href="https://github.com/fanerge" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#70B7FD; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+	</div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">余真帆的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-categories">
+    <a href="/categories" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Categories</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-archives">
+    <a href="/archives" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Archives</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-tags">
+    <a href="/tags" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Tags</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-about">
+    <a href="/about" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />About</a>
+</li>
+
+      
+
+      
+    </ul>
+  
+
+  
+    
+
+    
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+    
+
+  
+
+
+  
+
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2018/全面了解Object对象.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">全面了解Object对象</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-20T20:36:46+08:00">2018-03-20</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/js/" itemprop="url" rel="index"><span itemprop="name">js</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views: 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+		
+	  
+      
+
+      
+        <h1 id="为什么一切皆为对象"><a href="#为什么一切皆为对象" class="headerlink" title="为什么一切皆为对象"></a>为什么一切皆为对象</h1><p>‘一切皆为对象’，这可是javascript中‘圣经’，可是为什么这样说呢，我们来一探究竟吧？<br>为了解决这个问题，我们的从javascript的原型链说起。</p>
+<h2 id="原型链"><a href="#原型链" class="headerlink" title="原型链"></a>原型链</h2><p>在js几乎任何对象有一个 [[prototype]] 属性，在标准中，这是一个隐藏属性。<br>虽然说 [[prototype]] 是一个隐藏属性，但很多浏览器都给每一个对象提供 __proto__ 这一属性，这个属性就是该对象的[[prototype]]。</p>
+<blockquote>
+<p>   Object.prototype 的 __proto__  属性是一个访问器属性（一个getter函数和一个setter函数）, 暴露了通过它访问的对象的内部 [[Prototype]] (一个对象或 null)。<br>使用 __proto__ 是有争议的，也不鼓励使用它。因为它从来没有被包括在EcmaScript语言规范中，但是现代浏览器都实现了它。__proto__ 属性已在ECMAScript 6语言规范中标准化，用于确保Web浏览器的兼容性，因此它未来将被支持。它已被不推荐使用, 赞成Object.getPrototypeOf/Reflect.getPrototypeOf 和Object.setPrototypeOf/Reflect.setPrototypeOf 来获取或设置对象的原型链。</p>
+</blockquote>
+<p>下面我们用标准的方法来获取对象的原型<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">// 基本数据类型（Number,String,Boolean,Symbol）</div><div class="line">let str = &apos;strstr&apos;;</div><div class="line">// 1</div><div class="line">Object.getPrototypeOf(str) // String对象（这里包括字符串原型链上的所有方法如slice、indexOf等）</div><div class="line">// 2</div><div class="line">Object.getPrototypeOf(Object.getPrototypeOf(str)) // Object对象</div><div class="line">// 3</div><div class="line">Object.getPrototypeOf(Object.getPrototypeOf(Object.getPrototypeOf(str))) // null</div><div class="line">console.dir(Object.getPrototypeOf(str))</div><div class="line"></div><div class="line">// 其他类型（Object,Function,Array,Error,Math,Date,Map,Set,WeakMap,WeakSet,JSON）</div><div class="line">function demo() &#123;&#125;</div><div class="line">// 4</div><div class="line">Object.getPrototypeOf(demo) // anonymous函数</div><div class="line">// 5</div><div class="line">Object.getPrototypeOf(Object.getPrototypeOf(demo)) // Object对象</div><div class="line">// 6</div><div class="line">Object.getPrototypeOf(Object.getPrototypeOf(Object.getPrototypeOf(demo))) // null</div></pre></td></tr></table></figure></p>
+<p>PS：博主分别以基本数据类型Number,String,Boolean,Symbol（这里不考虑undefined和null，因为它们是特殊的两个值，木有原型）做了测试，上面代码注释1,2,3最终到达原型链的顶端null。<br>对于其他类型也是同样的，通过4,5,6到达原型链顶端Object.prototype === null。<br>从上面可以整个javascript语法系统都是基于这个原型链来实现方法和属性的继承的，并且可以看到原型链是有终点的值为 null。</p>
+<p>搞清楚了原型链，在回到‘一切皆为对象’。<br>明白了javascript的原型链，明白了所有的继承终点都到了Object上，就不难理解‘一切皆为对象’了吧。</p>
+<h1 id="对象创建的方式"><a href="#对象创建的方式" class="headerlink" title="对象创建的方式"></a>对象创建的方式</h1><h2 id="字面量"><a href="#字面量" class="headerlink" title="字面量"></a>字面量</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">let obj = &#123;</div><div class="line">	name: &apos;yzf&apos;,</div><div class="line">	age: 27,</div><div class="line">	city: &apos;chengdu&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这是大家最熟悉的创建方式。</p>
+<h2 id="Object实例化"><a href="#Object实例化" class="headerlink" title="Object实例化"></a>Object实例化</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">let obj = new Object(&#123;</div><div class="line">	// name: &apos;yzf&apos;,</div><div class="line">	// age: 27,</div><div class="line">	// city: &apos;chengdu&apos;</div><div class="line">&#125;);</div><div class="line">obj.name = &apos;yzf&apos;;</div><div class="line">obj.age = 27;</div><div class="line">obj.city = &apos;chengdu&apos;;</div></pre></td></tr></table></figure>
+<p>这里两种方式，为obj赋值，一种在实例化是进行，一种在实例化之后添加。</p>
+<h2 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">function Person(name, age, city)&#123;</div><div class="line">	this.name = name;</div><div class="line">	this.age = age;</div><div class="line">	this.city = city;</div><div class="line">&#125;</div><div class="line"></div><div class="line">let fanerge = new Person(&apos;yzf&apos;, 27, &apos;chengdu&apos;)</div></pre></td></tr></table></figure>
+<h1 id="Object对象的方法"><a href="#Object对象的方法" class="headerlink" title="Object对象的方法"></a>Object对象的方法</h1><p>Object对象的方法分为Object静态方法和Object的实例方法，静态方法定义在Object自身上，而实例方法定义在Object.prototype上；<br>在使用方式上也有区别，静态方法使用’如Object.keys(obj)’而实例方法使用’如obj.hasOwnProperty(prop)’。<br>我认为我们学习API是需要重点了解一个API的使用方式、定义、参数说明、返回值，下面我给出Object标准库中的方法，其中有部分是ES6+的方法，存在一定的兼容性问题。</p>
+<h2 id="Object的静态方法"><a href="#Object的静态方法" class="headerlink" title="Object的静态方法"></a>Object的静态方法</h2><h3 id="Object-assign-target-…sources"><a href="#Object-assign-target-…sources" class="headerlink" title="Object.assign(target, …sources)"></a>Object.assign(target, …sources)</h3><p>定义：用于将所有可枚举属性的值从一个或多个源对象复制到目标对象。<br>参数：target为目标对象，sources为源对象。<br>返回：目标对象。</p>
+<h3 id="Object-create-proto-propertiesObject"><a href="#Object-create-proto-propertiesObject" class="headerlink" title="Object.create(proto, [propertiesObject])"></a>Object.create(proto, [propertiesObject])</h3><p>定义：创建一个新对象，使用现有的对象来提供新创建的对象的<strong>proto</strong>。<br>参数：proto为新创建对象的原型对象，propertiesObject为相关属性的描述符。<br>返回：新对象。</p>
+<h3 id="Object-defineProperty-obj-prop-descriptor"><a href="#Object-defineProperty-obj-prop-descriptor" class="headerlink" title="Object.defineProperty(obj, prop, descriptor)"></a>Object.defineProperty(obj, prop, descriptor)</h3><p>定义：会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性， 并返回这个对象。<br>参数：obj为要在其上定义属性的对象，prop为要定义或修改的属性的名称，descriptor为将被定义或修改的属性描述符。<br>返回：obj。</p>
+<h3 id="Object-defineProperties-obj-props"><a href="#Object-defineProperties-obj-props" class="headerlink" title="Object.defineProperties(obj, props)"></a>Object.defineProperties(obj, props)</h3><p>定义：直接在一个对象上定义新的属性或修改现有属性，并返回该对象。<br>参数：obj为要在其上定义属性的对象，props为要定义或修改的一个或多个属性的描述符。<br>返回：obj。</p>
+<h3 id="Object-keys-obj"><a href="#Object-keys-obj" class="headerlink" title="Object.keys(obj)"></a>Object.keys(obj)</h3><p>定义：返回一个由一个给定对象的自身可枚举属性组成的数组。<br>参数：obj为要返回其枚举自身属性的对象。<br>返回：一个表示给定对象的所有可枚举属性的字符串数组。</p>
+<h3 id="Object-values-obj"><a href="#Object-values-obj" class="headerlink" title="Object.values(obj)"></a>Object.values(obj)</h3><p>定义：返回一个给定对象自己的所有可枚举属性值的数组。<br>参数：obj为要返回其枚举自身属性的对象。<br>返回：一个包含对象自身的所有可枚举属性值的数组。</p>
+<h3 id="Object-values-obj-1"><a href="#Object-values-obj-1" class="headerlink" title="Object.values(obj)"></a>Object.values(obj)</h3><p>定义：返回一个给定对象自己的所有可枚举属性值的数组。<br>参数：obj为要返回其枚举自身属性的对象。<br>返回：给定对象自身可枚举属性的键值（键值对也为数组）对数组。</p>
+<h3 id="Object-preventExtensions-obj"><a href="#Object-preventExtensions-obj" class="headerlink" title="Object.preventExtensions(obj)"></a>Object.preventExtensions(obj)</h3><p>定义：让一个对象变的不可扩展，也就是永远不能再添加新的属性。<br>参数：obj为将要变得不可扩展的对象。<br>返回：已经不可扩展的对象。<br>PS：该对象的属性可能仍然可删除，且对象的原型仍然可以添加属性。</p>
+<h3 id="Object-isExtensible-obj"><a href="#Object-isExtensible-obj" class="headerlink" title="Object.isExtensible(obj)"></a>Object.isExtensible(obj)</h3><p>定义：判断一个对象是否是可扩展的（是否可以在它上面添加新的属性）。<br>参数：obj为需要检测的对象。<br>返回：表示给定对象是否可扩展的一个Boolean 。</p>
+<h3 id="Object-seal-obj"><a href="#Object-seal-obj" class="headerlink" title="Object.seal(obj)"></a>Object.seal(obj)</h3><p>定义：封闭一个对象，阻止添加新属性并将所有现有属性标记为不可配置。<br>参数：obj为将要被密封的对象。<br>返回：被密封的对象。<br>PS：属性不可配置的效果就是属性变的不可删除，以及一个数据属性不能被重新定义成为访问器属性（get）。</p>
+<h3 id="Object-isSealed-obj"><a href="#Object-isSealed-obj" class="headerlink" title="Object.isSealed(obj)"></a>Object.isSealed(obj)</h3><p>定义：判断一个对象是否被密封。<br>参数：obj为需要检测的对象。<br>返回：表示给定对象是否被密封的一个Boolean。</p>
+<h3 id="Object-freeze-obj"><a href="#Object-freeze-obj" class="headerlink" title="Object.freeze(obj)"></a>Object.freeze(obj)</h3><p>定义：可以冻结一个对象，冻结指的是不能向这个对象添加新的属性，不能修改其已有属性的值，不能删除已有属性，以及不能修改该对象已有属性的可枚举性、可配置性、可写性。<br>参数：obj为要被冻结的对象。<br>返回：要被冻结的对象。</p>
+<h3 id="Object-isFrozen-obj"><a href="#Object-isFrozen-obj" class="headerlink" title="Object.isFrozen(obj)"></a>Object.isFrozen(obj)</h3><p>定义：判断一个对象是否被冻结。<br>参数：obj为需要检测的对象。<br>返回：表示给定对象是否被冻结的Boolean。</p>
+<h3 id="Object-getOwnPropertyDescriptor-obj-prop"><a href="#Object-getOwnPropertyDescriptor-obj-prop" class="headerlink" title="Object.getOwnPropertyDescriptor(obj, prop)"></a>Object.getOwnPropertyDescriptor(obj, prop)</h3><p>定义：返回指定对象上一个自有属性对应的属性描述符。<br>参数：obj为需要查找的目标对象，prop为目标对象内属性名称（String类型）。<br>返回：如果指定的属性存在于对象上，则返回其属性描述符对象（property descriptor），否则返回 undefined。</p>
+<h3 id="Object-getOwnPropertyDescriptors-obj"><a href="#Object-getOwnPropertyDescriptors-obj" class="headerlink" title="Object.getOwnPropertyDescriptors(obj)"></a>Object.getOwnPropertyDescriptors(obj)</h3><p>定义：用来获取一个对象的所有自身属性的描述符。<br>参数：obj为需要查找的目标对象。<br>返回：所指定对象的所有自身属性的描述符，如果没有任何自身属性，则返回空对象。</p>
+<h3 id="Object-getOwnPropertyNames-obj"><a href="#Object-getOwnPropertyNames-obj" class="headerlink" title="Object.getOwnPropertyNames(obj)"></a>Object.getOwnPropertyNames(obj)</h3><p>定义：返回一个由指定对象的所有自身属性的属性名（包括不可枚举属性但不包括Symbol值作为名称的属性）组成的数组。<br>参数：obj为返回一个由指定对象的所有自身属性的属性名（包括不可枚举属性但不包括Symbol值作为名称的属性）组成的数组。<br>返回：在给定对象上找到的属性对应的字符串数组。</p>
+<h3 id="Object-getOwnPropertySymbols-obj"><a href="#Object-getOwnPropertySymbols-obj" class="headerlink" title="Object.getOwnPropertySymbols(obj)"></a>Object.getOwnPropertySymbols(obj)</h3><p>定义：返回一个由指定对象的所有自身属性的属性名（包括不可枚举属性但不包括Symbol值作为名称的属性）组成的数组。<br>参数：obj为要返回 Symbol 属性的对象。<br>返回：在给定对象自身上找到的所有 Symbol 属性的数组。</p>
+<h3 id="Object-setPrototypeOf-obj-prototype"><a href="#Object-setPrototypeOf-obj-prototype" class="headerlink" title="Object.setPrototypeOf(obj, prototype)"></a>Object.setPrototypeOf(obj, prototype)</h3><p>定义：设置一个指定的对象的原型 ( 即, 内部[[Prototype]]属性）到另一个对象或null。<br>参数：obj为要设置其原型的对象，prototype为该对象的新原型(一个对象 或 null)。<br>返回：返回obj对象。</p>
+<h3 id="Object-getPrototypeOf-object"><a href="#Object-getPrototypeOf-object" class="headerlink" title="Object.getPrototypeOf(object)"></a>Object.getPrototypeOf(object)</h3><p>定义：返回指定对象的原型（内部[[Prototype]]属性的值）。<br>参数：要返回其原型的对象。<br>返回：给定对象的原型。如果没有继承属性，则返回null。</p>
+<h3 id="Object-is-value1-value2"><a href="#Object-is-value1-value2" class="headerlink" title="Object.is(value1, value2);"></a>Object.is(value1, value2);</h3><p>定义：判断两个值是否是相同的值。<br>参数：value1为需要比较的第一个值，value2为需要比较的第二个值。<br>返回：表示两个参数是否相同的Boolean 。</p>
+<h2 id="Object的实例方法"><a href="#Object的实例方法" class="headerlink" title="Object的实例方法"></a>Object的实例方法</h2><p>下面obj为Object的实例。</p>
+<h3 id="obj-hasOwnProperty-prop"><a href="#obj-hasOwnProperty-prop" class="headerlink" title="obj.hasOwnProperty(prop)"></a>obj.hasOwnProperty(prop)</h3><p>定义：返回一个布尔值，指示对象自身属性中是否具有指定的属性。<br>参数：prop为要检测的属性String或者Symbol。<br>返回：用来判断某个对象是否含有指定的属性的Boolean。</p>
+<h3 id="prototypeObj-isPrototypeOf-obj"><a href="#prototypeObj-isPrototypeOf-obj" class="headerlink" title="prototypeObj.isPrototypeOf(obj)"></a>prototypeObj.isPrototypeOf(obj)</h3><p>定义：返回一个布尔值，指示对象自身属性中是否具有指定的属性。<br>参数：obj为在该对象的原型链上搜寻。<br>返回：表示调用对象是否在另一个对象的原型链上的Boolean。</p>
+<h3 id="obj-propertyIsEnumerable-prop"><a href="#obj-propertyIsEnumerable-prop" class="headerlink" title="obj.propertyIsEnumerable(prop)"></a>obj.propertyIsEnumerable(prop)</h3><p>定义：返回一个布尔值，表示指定的属性是否可枚举。<br>参数：prop为需要测试的属性名。<br>返回：用来表示指定的属性名是否可枚举的Boolean。</p>
+<h3 id="obj-toLocaleString"><a href="#obj-toLocaleString" class="headerlink" title="obj.toLocaleString()"></a>obj.toLocaleString()</h3><p>定义：方法返回一个该对象的字符串表示。<br>返回：表示对象的字符串。</p>
+<h3 id="obj-propertyIsEnumerable-prop-1"><a href="#obj-propertyIsEnumerable-prop-1" class="headerlink" title="obj.propertyIsEnumerable(prop)"></a>obj.propertyIsEnumerable(prop)</h3><p>定义：返回一个表示该对象的字符串。<br>返回：表示该对象的字符串。<br>PS：ES6之前经常这样用Object.prototype.toString.call(obj) === ‘[object Object]’ 来区别Object和Array。</p>
+<h3 id="ob-valueOf"><a href="#ob-valueOf" class="headerlink" title="ob.valueOf()"></a>ob.valueOf()</h3><p>定义：返回指定对象的原始值。<br>返回：返回值为该对象的原始值。</p>
+<h3 id="object-instanceof-constructor"><a href="#object-instanceof-constructor" class="headerlink" title="object instanceof constructor"></a>object instanceof constructor</h3><p>定义：instanceof 运算符用来测试一个对象在其原型链中是否存在一个构造函数的 prototype 属性。<br>参数：object为要检测的对象，constructor为某个构造函数。<br>返回：boolean值。[2018-03-21]</p>
+<blockquote>
+<p>   参考文档：<br><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/proto" target="_blank" rel="external">MDN__proto__</a><br><a href="https://www.zhihu.com/question/34183746/answer/58068402" target="_blank" rel="external">__proto__和prototype的区别</a><br><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object" target="_blank" rel="external">Object</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+	<div>
+		
+			<div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读，如果本文对你有帮助就记得<a href="https://github.com/fanerge/fanerge.github.io" title="谢谢亲的star">给个star</a>-------------</div>
+		
+	</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Donate comment here</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author: </strong>余真帆-fanerge</li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://fanerge.github.io/2018/全面了解Object对象.html" title="全面了解Object对象">https://fanerge.github.io/2018/全面了解Object对象.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/js/" rel="tag"><i class="far fa-bell"></i> js</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/javascript标准库总结.html" rel="next" title="javascript标准库总结">
+                <i class="fa fa-chevron-left"></i> javascript标准库总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/一次详细的包含块学习.html" rel="prev" title="我所了解的CSS包含块">
+                我所了解的CSS包含块 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=2156704" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTk4Mi8xMjUxOA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+              <p class="site-description motion-element" itemprop="description">前端、web</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">155</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">24</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">46</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/fanerge" target="_blank" title="GitHub" rel="external nofollow"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:fanege@qq.com" target="_blank" title="E-Mail" rel="external nofollow"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金" rel="external nofollow"><i class="fa fa-fw fa-globe"></i>掘金</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么一切皆为对象"><span class="nav-number">1.</span> <span class="nav-text">为什么一切皆为对象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#原型链"><span class="nav-number">1.1.</span> <span class="nav-text">原型链</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#对象创建的方式"><span class="nav-number">2.</span> <span class="nav-text">对象创建的方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#字面量"><span class="nav-number">2.1.</span> <span class="nav-text">字面量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Object实例化"><span class="nav-number">2.2.</span> <span class="nav-text">Object实例化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造函数"><span class="nav-number">2.3.</span> <span class="nav-text">构造函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Object对象的方法"><span class="nav-number">3.</span> <span class="nav-text">Object对象的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Object的静态方法"><span class="nav-number">3.1.</span> <span class="nav-text">Object的静态方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-assign-target-…sources"><span class="nav-number">3.1.1.</span> <span class="nav-text">Object.assign(target, …sources)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-create-proto-propertiesObject"><span class="nav-number">3.1.2.</span> <span class="nav-text">Object.create(proto, [propertiesObject])</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-defineProperty-obj-prop-descriptor"><span class="nav-number">3.1.3.</span> <span class="nav-text">Object.defineProperty(obj, prop, descriptor)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-defineProperties-obj-props"><span class="nav-number">3.1.4.</span> <span class="nav-text">Object.defineProperties(obj, props)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-keys-obj"><span class="nav-number">3.1.5.</span> <span class="nav-text">Object.keys(obj)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-values-obj"><span class="nav-number">3.1.6.</span> <span class="nav-text">Object.values(obj)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-values-obj-1"><span class="nav-number">3.1.7.</span> <span class="nav-text">Object.values(obj)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-preventExtensions-obj"><span class="nav-number">3.1.8.</span> <span class="nav-text">Object.preventExtensions(obj)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-isExtensible-obj"><span class="nav-number">3.1.9.</span> <span class="nav-text">Object.isExtensible(obj)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-seal-obj"><span class="nav-number">3.1.10.</span> <span class="nav-text">Object.seal(obj)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-isSealed-obj"><span class="nav-number">3.1.11.</span> <span class="nav-text">Object.isSealed(obj)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-freeze-obj"><span class="nav-number">3.1.12.</span> <span class="nav-text">Object.freeze(obj)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-isFrozen-obj"><span class="nav-number">3.1.13.</span> <span class="nav-text">Object.isFrozen(obj)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-getOwnPropertyDescriptor-obj-prop"><span class="nav-number">3.1.14.</span> <span class="nav-text">Object.getOwnPropertyDescriptor(obj, prop)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-getOwnPropertyDescriptors-obj"><span class="nav-number">3.1.15.</span> <span class="nav-text">Object.getOwnPropertyDescriptors(obj)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-getOwnPropertyNames-obj"><span class="nav-number">3.1.16.</span> <span class="nav-text">Object.getOwnPropertyNames(obj)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-getOwnPropertySymbols-obj"><span class="nav-number">3.1.17.</span> <span class="nav-text">Object.getOwnPropertySymbols(obj)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-setPrototypeOf-obj-prototype"><span class="nav-number">3.1.18.</span> <span class="nav-text">Object.setPrototypeOf(obj, prototype)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-getPrototypeOf-object"><span class="nav-number">3.1.19.</span> <span class="nav-text">Object.getPrototypeOf(object)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object-is-value1-value2"><span class="nav-number">3.1.20.</span> <span class="nav-text">Object.is(value1, value2);</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Object的实例方法"><span class="nav-number">3.2.</span> <span class="nav-text">Object的实例方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#obj-hasOwnProperty-prop"><span class="nav-number">3.2.1.</span> <span class="nav-text">obj.hasOwnProperty(prop)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#prototypeObj-isPrototypeOf-obj"><span class="nav-number">3.2.2.</span> <span class="nav-text">prototypeObj.isPrototypeOf(obj)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#obj-propertyIsEnumerable-prop"><span class="nav-number">3.2.3.</span> <span class="nav-text">obj.propertyIsEnumerable(prop)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#obj-toLocaleString"><span class="nav-number">3.2.4.</span> <span class="nav-text">obj.toLocaleString()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#obj-propertyIsEnumerable-prop-1"><span class="nav-number">3.2.5.</span> <span class="nav-text">obj.propertyIsEnumerable(prop)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ob-valueOf"><span class="nav-number">3.2.6.</span> <span class="nav-text">ob.valueOf()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#object-instanceof-constructor"><span class="nav-number">3.2.7.</span> <span class="nav-text">object instanceof constructor</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" rel="external nofollow" href="https://github.com/theme-next/hexo-theme-next">NexT.Mist</a> v6.0.6</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.6"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.6"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.6"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.6"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>

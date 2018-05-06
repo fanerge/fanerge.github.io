@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.6" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=6.0.6" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.0.6',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+  
+
+
+
+
+  <meta name="description" content="global - 全局变量global - 全局变量，相当于浏览器环境下的window对象。 __dirname作用：当前模块的文件夹名称。等同于 __filename 的 path.dirname() 的值。 __filename作用：当前模块的文件名称---解析后的绝对路径。 module作用：导出一个对象。 module.exports 用于指定一个模块所导出的内容，即可以通过 requir">
+<meta name="keywords" content="js,服务端,web开发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="全局变量-global">
+<meta property="og:url" content="https://fanerge.github.io/2017/nodejs自带模块-全局变量.html">
+<meta property="og:site_name" content="余真帆的博客">
+<meta property="og:description" content="global - 全局变量global - 全局变量，相当于浏览器环境下的window对象。 __dirname作用：当前模块的文件夹名称。等同于 __filename 的 path.dirname() 的值。 __filename作用：当前模块的文件名称---解析后的绝对路径。 module作用：导出一个对象。 module.exports 用于指定一个模块所导出的内容，即可以通过 requir">
+<meta property="og:updated_time" content="2018-04-18T13:30:21.670Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="全局变量-global">
+<meta name="twitter:description" content="global - 全局变量global - 全局变量，相当于浏览器环境下的window对象。 __dirname作用：当前模块的文件夹名称。等同于 __filename 的 path.dirname() 的值。 __filename作用：当前模块的文件名称---解析后的绝对路径。 module作用：导出一个对象。 module.exports 用于指定一个模块所导出的内容，即可以通过 requir">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="余真帆的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="https://fanerge.github.io/2017/nodejs自带模块-全局变量.html"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>全局变量-global | 余真帆的博客</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+	<a href="https://github.com/fanerge" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#70B7FD; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+	</div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">余真帆的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-categories">
+    <a href="/categories" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Categories</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-archives">
+    <a href="/archives" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Archives</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-tags">
+    <a href="/tags" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Tags</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-about">
+    <a href="/about" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />About</a>
+</li>
+
+      
+
+      
+    </ul>
+  
+
+  
+    
+
+    
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+    
+
+  
+
+
+  
+
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/nodejs自带模块-全局变量.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">全局变量-global</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-16T11:49:36+08:00">2017-09-16</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/NodeJS/" itemprop="url" rel="index"><span itemprop="name">NodeJS</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views: 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+		
+	  
+      
+
+      
+        <h1 id="global-全局变量"><a href="#global-全局变量" class="headerlink" title="global - 全局变量"></a>global - 全局变量</h1><pre><code>global - 全局变量，相当于浏览器环境下的window对象。
+</code></pre><h2 id="dirname"><a href="#dirname" class="headerlink" title="__dirname"></a>__dirname</h2><pre><code>作用：当前模块的文件夹名称。等同于 __filename 的 path.dirname() 的值。
+</code></pre><h2 id="filename"><a href="#filename" class="headerlink" title="__filename"></a>__filename</h2><pre><code>作用：当前模块的文件名称---解析后的绝对路径。
+</code></pre><h2 id="module"><a href="#module" class="headerlink" title="module"></a>module</h2><pre><code>作用：导出一个对象。
+module.exports 用于指定一个模块所导出的内容，即可以通过 require() 访问的内容。
+</code></pre><h2 id="exports"><a href="#exports" class="headerlink" title="exports"></a>exports</h2><pre><code>作用：导出一个方法，为module.exports的简写形式。
+</code></pre><p>PS:    module.exports和exports的区别<br>    每一个node.js执行文件，都自动创建一个module对象，同时，module对象会创建一个叫exports的属性，初始化的值是 {}<br>    module.exports本身不具备任何属性和方法。如果，Module.exports已经具备一些属性和方法，那么exports收集来的信息将被忽略。</p>
+<h2 id="require-path"><a href="#require-path" class="headerlink" title="require(path)"></a>require(path)</h2><pre><code>作用：引入模块。
+</code></pre><p>PS：module导入查找顺序。核心模块 -》 否则将执行下列查找<br>如果按确切的文件名没有找到模块，则 Node.js 会尝试带上 .js、.json 或 .node 拓展名再加载。<br>.js 文件会被解析为 JavaScript 文本文件，.json 文件会被解析为 JSON 文本文件。 .node 文件会被解析为通过 dlopen 加载的编译后的插件模块。<br>以 ‘/‘ 为前缀的模块是文件的绝对路径。 例如，require(‘/home/marco/foo.js’) 会加载 /home/marco/foo.js 文件。<br>以 ‘./‘ 为前缀的模块是相对于调用 require() 的文件的。 也就是说，circle.js 必须和 foo.js 在同一目录下以便于 require(‘./circle’) 找到它。<br>当没有以 ‘/‘、’./‘ 或 ‘../‘ 开头来表示文件时，这个模块必须是一个核心模块或加载自 node_modules 目录。<br>如果给定的路径不存在，则 require() 会抛出一个 code 属性为 ‘MODULE_NOT_FOUND’ 的 Error。    </p>
+<h1 id="timer（定时器）"><a href="#timer（定时器）" class="headerlink" title="timer（定时器）"></a>timer（定时器）</h1><h2 id="setImmediate-callback-…args"><a href="#setImmediate-callback-…args" class="headerlink" title="setImmediate(callback[, …args])"></a>setImmediate(callback[, …args])</h2><pre><code>作用：创建 Immediate 对象。
+</code></pre><h2 id="clearImmediate-immediateObject"><a href="#clearImmediate-immediateObject" class="headerlink" title="clearImmediate(immediateObject)"></a>clearImmediate(immediateObject)</h2><pre><code>作用：取消一个由 setImmediate() 创建的 Immediate 对象。
+</code></pre><h2 id="setInterval-callback-delay-…args"><a href="#setInterval-callback-delay-…args" class="headerlink" title="setInterval(callback, delay[, …args])"></a>setInterval(callback, delay[, …args])</h2><pre><code>作用：创建 Timeout 对象。
+</code></pre><h2 id="clearInterval-timeoutObject"><a href="#clearInterval-timeoutObject" class="headerlink" title="clearInterval(timeoutObject)"></a>clearInterval(timeoutObject)</h2><pre><code>作用：取消一个由 setInterval() 创建的 Timeout 对象。
+</code></pre><h2 id="setTimeout-callback-delay-…args"><a href="#setTimeout-callback-delay-…args" class="headerlink" title="setTimeout(callback, delay[, …args])"></a>setTimeout(callback, delay[, …args])</h2><pre><code>作用：创建 Timeout 对象。
+</code></pre><h2 id="clearTimeout-timeoutObject"><a href="#clearTimeout-timeoutObject" class="headerlink" title="clearTimeout(timeoutObject)"></a>clearTimeout(timeoutObject)</h2><pre><code>作用：取消一个由 setTimeout() 创建的 Timeout 对象。
+</code></pre><h1 id="events（事件）"><a href="#events（事件）" class="headerlink" title="events（事件）"></a>events（事件）</h1><p>包括 fs、net、 http 在内的，只要是支持事件响应的核心模块都是 EventEmitter 的子类。</p>
+<h2 id="绑定监听事件"><a href="#绑定监听事件" class="headerlink" title="绑定监听事件"></a>绑定监听事件</h2><h3 id="emitter-addListener-eventName-listener"><a href="#emitter-addListener-eventName-listener" class="headerlink" title="emitter.addListener(eventName, listener)"></a>emitter.addListener(eventName, listener)</h3><h3 id="emitter-on-eventName-listener"><a href="#emitter-on-eventName-listener" class="headerlink" title="emitter.on(eventName, listener)"></a>emitter.on(eventName, listener)</h3><h3 id="emitter-once-eventName-listener"><a href="#emitter-once-eventName-listener" class="headerlink" title="emitter.once(eventName, listener)"></a>emitter.once(eventName, listener)</h3><h3 id="emitter-prependListener-eventName-listener"><a href="#emitter-prependListener-eventName-listener" class="headerlink" title="emitter.prependListener(eventName, listener)"></a>emitter.prependListener(eventName, listener)</h3><h3 id="emitter-prependOnceListener-eventName-listener"><a href="#emitter-prependOnceListener-eventName-listener" class="headerlink" title="emitter.prependOnceListener(eventName, listener)"></a>emitter.prependOnceListener(eventName, listener)</h3><p>PS：添加一个单次 listener 函数到名为 eventName 的事件的监听器数组的开头。 下次触发 eventName 事件时，监听器会被移除，然后调用。</p>
+<h2 id="触发事件"><a href="#触发事件" class="headerlink" title="触发事件"></a>触发事件</h2><h3 id="emitter-emit-eventName-…args"><a href="#emitter-emit-eventName-…args" class="headerlink" title="emitter.emit(eventName[, …args])"></a>emitter.emit(eventName[, …args])</h3><p>PS：如果事件有注册监听返回 true，否则返回 false。</p>
+<h2 id="移除监听事件"><a href="#移除监听事件" class="headerlink" title="移除监听事件"></a>移除监听事件</h2><h3 id="emitter-removeListener-eventName-listener"><a href="#emitter-removeListener-eventName-listener" class="headerlink" title="emitter.removeListener(eventName, listener)"></a>emitter.removeListener(eventName, listener)</h3><h3 id="emitter-removeAllListeners-eventName"><a href="#emitter-removeAllListeners-eventName" class="headerlink" title="emitter.removeAllListeners([eventName])"></a>emitter.removeAllListeners([eventName])</h3><h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="‘newListener’-事件"><a href="#‘newListener’-事件" class="headerlink" title="‘newListener’ 事件"></a>‘newListener’ 事件</h3><h3 id="‘removeListener’-事件"><a href="#‘removeListener’-事件" class="headerlink" title="‘removeListener’ 事件"></a>‘removeListener’ 事件</h3><p>PS：当新的监听器被添加时，所有的 EventEmitter 会触发 ‘newListener’ 事件；当移除已存在的监听器时，则触发 ‘removeListener’。</p>
+<h3 id="‘error’-事件"><a href="#‘error’-事件" class="headerlink" title="‘error’ 事件"></a>‘error’ 事件</h3><p>PS：当 error 被触发时，EventEmitter 规定如果没有响 应的监听器，Node.js 会把它当作异常，退出程序并输出错误信息。<br>我们一般要为会触发 error 事件的对象设置监听器，避免遇到错误后整个程序崩溃。</p>
+<h3 id="EventEmitter-defaultMaxListeners"><a href="#EventEmitter-defaultMaxListeners" class="headerlink" title="EventEmitter.defaultMaxListeners"></a>EventEmitter.defaultMaxListeners</h3><h3 id="emitter-setMaxListeners-n"><a href="#emitter-setMaxListeners-n" class="headerlink" title="emitter.setMaxListeners(n)"></a>emitter.setMaxListeners(n)</h3><h3 id="emitter-getMaxListeners"><a href="#emitter-getMaxListeners" class="headerlink" title="emitter.getMaxListeners()"></a>emitter.getMaxListeners()</h3><h3 id="emitter-listenerCount-eventName"><a href="#emitter-listenerCount-eventName" class="headerlink" title="emitter.listenerCount(eventName)"></a>emitter.listenerCount(eventName)</h3><p>PS：返回正在监听名为 eventName 的事件的监听器的数量。</p>
+<h3 id="emitter-listeners-eventName"><a href="#emitter-listeners-eventName" class="headerlink" title="emitter.listeners(eventName)"></a>emitter.listeners(eventName)</h3><p>PS：返回名为 eventName 的事件的监听器数组的副本。</p>
+<h3 id="emitter-eventNames"><a href="#emitter-eventNames" class="headerlink" title="emitter.eventNames()"></a>emitter.eventNames()</h3><p>PS：返回一个列出触发器已注册监听器的事件的数组。 数组中的值为string或symbol。</p>
+<h1 id="assert（断言）"><a href="#assert（断言）" class="headerlink" title="assert（断言）"></a>assert（断言）</h1><p>assert模块是Node的内置模块，主要用于断言。如果表达式不符合预期，就抛出一个错误,可用于测试模块功能，有少数几个是常用的。</p>
+<h1 id="console控制台"><a href="#console控制台" class="headerlink" title="console控制台"></a>console控制台</h1><h2 id="console-assert-value-message-…args"><a href="#console-assert-value-message-…args" class="headerlink" title="console.assert(value[, message][, …args])"></a>console.assert(value[, message][, …args])</h2><p>PS：一个简单的断言测试，验证 value 是否为真。 如果不为真，则抛出 AssertionError。 如果提供了 message，则使用 util.format() 格式化并作为错误信息使用。</p>
+<h2 id="console-clear"><a href="#console-clear" class="headerlink" title="console.clear()"></a>console.clear()</h2><p>PS：当 stdout 是一个 TTY 时，调用 console.clear() 将尝试清除 TTY。 当 stdout 不是一个TTY时，该方法什么都不做。</p>
+<h2 id="console-count-label"><a href="#console-count-label" class="headerlink" title="console.count([label])"></a>console.count([label])</h2><p>PS：维护一个指定 label 的内部计数器并且输出到 stdout 指定 label 调用 console.count() 的次数。</p>
+<h2 id="console-countReset-label-’default’"><a href="#console-countReset-label-’default’" class="headerlink" title="console.countReset([label=’default’])"></a>console.countReset([label=’default’])</h2><p>PS：重置指定 label 的内部计数器。</p>
+<h2 id="console-log-data-…args"><a href="#console-log-data-…args" class="headerlink" title="console.log([data][, …args])"></a>console.log([data][, …args])</h2><p>console.info([data][, …args])<br>console.debug(data[, …args])</p>
+<h2 id="console-error-data-…args"><a href="#console-error-data-…args" class="headerlink" title="console.error([data][, …args])"></a>console.error([data][, …args])</h2><p>console.warn([data][, …args])<br>PS：打印到 stderr，并带上换行符。</p>
+<h2 id="console-group-…label"><a href="#console-group-…label" class="headerlink" title="console.group([…label])"></a>console.group([…label])</h2><p>console.groupCollapsed()<br>PS：将后续行的缩进增加两个空格。<br>console.groupEnd()<br>PS：将后续行的缩进减少两个空格。<br>PS：打印到 stdout，并带上换行符。</p>
+<h2 id="console-time-label"><a href="#console-time-label" class="headerlink" title="console.time(label)"></a>console.time(label)</h2><p>console.timeEnd(label)<br>PS：启动一个定时器，用以计算一个操作的持续时间。</p>
+<h2 id="console-trace-message-…args"><a href="#console-trace-message-…args" class="headerlink" title="console.trace([message][, …args])"></a>console.trace([message][, …args])</h2><p>PS：打印字符串 ‘Trace :’ 到 stderr ，并通过 util.format() 格式化消息与堆栈跟踪在代码中的当前位置。</p>
+<h2 id="console-dir-obj-options"><a href="#console-dir-obj-options" class="headerlink" title="console.dir(obj[, options])"></a>console.dir(obj[, options])</h2><p>PS：在 obj 上使用 util.inspect() 并打印结果字符串到 stdout。</p>
+<h1 id="process-进程"><a href="#process-进程" class="headerlink" title="process - 进程"></a>process - 进程</h1><p>process 对象是一个全局变量，它提供当前 Node.js 进程的有关信息，以及控制当前 Node.js 进程。</p>
+<h2 id="process-事件"><a href="#process-事件" class="headerlink" title="process 事件"></a>process 事件</h2><h3 id="beforeExit-事件"><a href="#beforeExit-事件" class="headerlink" title="beforeExit 事件"></a>beforeExit 事件</h3><p>当 Node.js 的事件循环数组已经为空，并且没有额外的工作被添加进来，事件 ‘beforeExit’ 会被触发。</p>
+<h3 id="disconnect-事件"><a href="#disconnect-事件" class="headerlink" title="disconnect 事件"></a>disconnect 事件</h3><p>如果 Node.js 进程是由 IPC 通道的方式创建的，当 IPC 通道关闭时，会触发’disconnect’事件。</p>
+<h3 id="exit-事件"><a href="#exit-事件" class="headerlink" title="exit 事件"></a>exit 事件</h3><p>两种情况触发：<br>显式调用 process.exit() 方法，使得 Node.js 进程即将结束；<br>Node.js 事件循环数组中不再有额外的工作，使得 Node.js 进程即将结束。</p>
+<h3 id="message-事件"><a href="#message-事件" class="headerlink" title="message 事件"></a>message 事件</h3><p>如果 Node.js 进程是由 IPC 通道的方式创建的，当子进程收到父进程发送的消息时(消息通过 childprocess.send() 发送），会触发 ‘message’ 事件。</p>
+<h3 id="rejectionHandled-事件"><a href="#rejectionHandled-事件" class="headerlink" title="rejectionHandled 事件"></a>rejectionHandled 事件</h3><p>如果有 Promise 被 rejected，并且此 Promise在 Nodje.js 事件循环的下次轮询及之后期间，被绑定了一个错误处理器（例如使用 promise.catch()），会触发 ‘rejectionHandled’ 事件。</p>
+<h3 id="uncaughtException-事件"><a href="#uncaughtException-事件" class="headerlink" title="uncaughtException 事件"></a>uncaughtException 事件</h3><p>如果 Javascript 未捕获的异常，沿着代码调用路径反向传递回事件循环，会触发 ‘uncaughtException’ 事件。 Node.js 默认情况下会将这些异常堆栈打印到 stderr 然后进程退出。 为 ‘uncaughtException’ 事件增加监听器会覆盖上述默认行为。</p>
+<h3 id="unhandledRejection-事件"><a href="#unhandledRejection-事件" class="headerlink" title="unhandledRejection 事件"></a>unhandledRejection 事件</h3><p>如果在事件循环的一次轮询中，一个 Promise 被 rejected，并且此 Promise 没有绑定错误处理器，’unhandledRejection 事件会被触发。</p>
+<h3 id="warning-事件"><a href="#warning-事件" class="headerlink" title="warning 事件"></a>warning 事件</h3><p>任何时候Node.js发出进程告警，都会触发’warning’事件。</p>
+<h2 id="信号事件"><a href="#信号事件" class="headerlink" title="信号事件"></a>信号事件</h2><p>SIGUSR1、SIGTERM 、SIGINT、SIGPIPE等等</p>
+<h2 id="IPC（Inter-Process-Communication，进程间通信）方法"><a href="#IPC（Inter-Process-Communication，进程间通信）方法" class="headerlink" title="IPC（Inter-Process Communication，进程间通信）方法"></a>IPC（Inter-Process Communication，进程间通信）方法</h2><h3 id="process-channel"><a href="#process-channel" class="headerlink" title="process.channel"></a>process.channel</h3><p>如果Node.js进程是由IPC channel方式创建的，process.channel属性保存IPC channel的引用。 如果IPC channel不存在，此属性值为undefined。</p>
+<h3 id="process-connected"><a href="#process-connected" class="headerlink" title="process.connected"></a>process.connected</h3><p>如果Node.js进程是由IPC channel方式创建的， 只要IPC channel保持连接，process.connected属性就会返回true。 process.disconnect()被调用后，此属性会返回false。</p>
+<h3 id="process-disconnect"><a href="#process-disconnect" class="headerlink" title="process.disconnect()"></a>process.disconnect()</h3><p>如果 Node.js 进程是从IPC频道派生出来的, process.disconnect()函数会关闭到父进程的IPC频道，以允许子进程一旦没有其他链接来保持活跃就优雅地关闭。</p>
+<h3 id="process-pid"><a href="#process-pid" class="headerlink" title="process.pid"></a>process.pid</h3><p>返回进程的PID。</p>
+<h3 id="process-ppid"><a href="#process-ppid" class="headerlink" title="process.ppid"></a>process.ppid</h3><p>返回父进程的id。</p>
+<h3 id="process-send-message-sendHandle-options-callback"><a href="#process-send-message-sendHandle-options-callback" class="headerlink" title="process.send(message[, sendHandle[, options]][, callback])"></a>process.send(message[, sendHandle[, options]][, callback])</h3><p>如果Node.js进程是通过进程间通信产生的，那么，process.send()方法可以用来给父进程发送消息。 接收到的消息被视为父进程的ChildProcess对象上的一个’message’事件。</p>
+<h2 id="process-abort"><a href="#process-abort" class="headerlink" title="process.abort()"></a>process.abort()</h2><p>使Node.js进程立即结束，并生成一个core文件。</p>
+<h2 id="process-arch"><a href="#process-arch" class="headerlink" title="process.arch"></a>process.arch</h2><p>返回CPU体系机构字符串（arm、arm64）。</p>
+<h2 id="process-execPath"><a href="#process-execPath" class="headerlink" title="process.execPath"></a>process.execPath</h2><p>Node.js执行的路径。</p>
+<h2 id="process-argv"><a href="#process-argv" class="headerlink" title="process.argv"></a>process.argv</h2><p>返回一个数组。[process.execPath, 当前执行js文件路径, 剩余的元素为其他命令行参数。]</p>
+<h2 id="process-argv0"><a href="#process-argv0" class="headerlink" title="process.argv0"></a>process.argv0</h2><p>保存Node.js启动时传入的argv[0]参数值的一份只读副本。</p>
+<h2 id="process-chdir-directory"><a href="#process-chdir-directory" class="headerlink" title="process.chdir(directory)"></a>process.chdir(directory)</h2><p>变更Node.js进程的当前工作目录，如果变更目录失败会抛出异常(例如，如果指定的目录不存在)。</p>
+<h2 id="process-config（可读可写）"><a href="#process-config（可读可写）" class="headerlink" title="process.config（可读可写）"></a>process.config（可读可写）</h2><p>返回一个Javascript对象。此对象描述了用于编译当前Node.js执行程序时涉及的配置项信息。</p>
+<h2 id="process-cpuUsage-previousValue"><a href="#process-cpuUsage-previousValue" class="headerlink" title="process.cpuUsage([previousValue])"></a>process.cpuUsage([previousValue])</h2><p>返回包含当前进程的用户CPU时间和系统CPU时间的对象。</p>
+<h2 id="process-cwd"><a href="#process-cwd" class="headerlink" title="process.cwd()"></a>process.cwd()</h2><p>返回 Node.js 进程当前工作的目录。</p>
+<h2 id="process-emitWarning-warning-options"><a href="#process-emitWarning-warning-options" class="headerlink" title="process.emitWarning(warning[, options])"></a>process.emitWarning(warning[, options])</h2><p>process.emitWarning()方法可用于发出定制的或应用特定的进程警告。<br>process.emitWarning(warning[, type[, code]][, ctor])</p>
+<h2 id="process-env"><a href="#process-env" class="headerlink" title="process.env"></a>process.env</h2><p>返回一个包含用户环境信息的对象。</p>
+<h2 id="process-execArgv"><a href="#process-execArgv" class="headerlink" title="process.execArgv"></a>process.execArgv</h2><p>返回当Node.js进程被启动时，Node.js特定的命令行选项。如：–harmony</p>
+<h2 id="process-execPath-1"><a href="#process-execPath-1" class="headerlink" title="process.execPath"></a>process.execPath</h2><p>process.execPath 属性，返回启动Node.js进程的可执行文件所在的绝对路径。</p>
+<h2 id="process-exit-code"><a href="#process-exit-code" class="headerlink" title="process.exit([code])"></a>process.exit([code])</h2><p>process.exit()方法以结束状态码code指示Node.js同步终止进程。</p>
+<h2 id="process-exitCode"><a href="#process-exitCode" class="headerlink" title="process.exitCode"></a>process.exitCode</h2><p>当进程正常结束，或通过process.exit()结束但未传递参数时，此数值标识进程结束的状态码。</p>
+<h2 id="process-getegid"><a href="#process-getegid" class="headerlink" title="process.getegid()"></a>process.getegid()</h2><p>返回Node.js进程的有效数字标记的组身份(See getegid(2))。</p>
+<h2 id="process-geteuid"><a href="#process-geteuid" class="headerlink" title="process.geteuid()"></a>process.geteuid()</h2><p>返回Node.js进程的有效数字标记的用户身份(See geteuid(2))。</p>
+<h2 id="process-getgid"><a href="#process-getgid" class="headerlink" title="process.getgid()"></a>process.getgid()</h2><p>返回Node.js进程的数字标记的组身份(See getgid(2))。</p>
+<h2 id="process-getgroups"><a href="#process-getgroups" class="headerlink" title="process.getgroups()"></a>process.getgroups()</h2><p>返回数组，其中包含了补充的组ID。</p>
+<h2 id="process-getuid"><a href="#process-getuid" class="headerlink" title="process.getuid()"></a>process.getuid()</h2><p>返回Node.js进程的数字标记的用户身份(See getuid(2))。</p>
+<h2 id="process-hrtime-time"><a href="#process-hrtime-time" class="headerlink" title="process.hrtime([time])"></a>process.hrtime([time])</h2><p>返回当前时间以[seconds, nanoseconds] tuple Array表示的高精度解析值， nanoseconds是当前时间无法使用秒的精度表示的剩余部分。</p>
+<h2 id="process-initgroups-user-extra-group"><a href="#process-initgroups-user-extra-group" class="headerlink" title="process.initgroups(user, extra_group)"></a>process.initgroups(user, extra_group)</h2><p>读取/etc/group文件，并且初始化组访问列表，该列表包括了用户所在的所有组。</p>
+<h2 id="process-kill-pid-signal"><a href="#process-kill-pid-signal" class="headerlink" title="process.kill(pid[, signal])"></a>process.kill(pid[, signal])</h2><p>将signal发送给pid标识的进程。</p>
+<h2 id="process-mainModule"><a href="#process-mainModule" class="headerlink" title="process.mainModule"></a>process.mainModule</h2><p>提供了一种获取require.main的替代方式。</p>
+<h2 id="process-memoryUsage"><a href="#process-memoryUsage" class="headerlink" title="process.memoryUsage()"></a>process.memoryUsage()</h2><p>返回Node.js进程的内存使用情况的对象，该对象每个属性值的单位为字节。</p>
+<h2 id="process-nextTick-callback-…args"><a href="#process-nextTick-callback-…args" class="headerlink" title="process.nextTick(callback[, …args])"></a>process.nextTick(callback[, …args])</h2><p>将 callback 添加到”next tick 队列”。<br> 每次事件轮询后，在额外的I/O执行前，next tick队列都会优先执行。</p>
+<h2 id="process-noDeprecation"><a href="#process-noDeprecation" class="headerlink" title="process.noDeprecation"></a>process.noDeprecation</h2><h2 id="process-platform"><a href="#process-platform" class="headerlink" title="process.platform"></a>process.platform</h2><p>返回字符串，标识Node.js进程运行其上的操作系统平台。</p>
+<h2 id="process-release"><a href="#process-release" class="headerlink" title="process.release"></a>process.release</h2><p>返回与当前发布相关的元数据对象，包括源代码和源代码头文件 tarball的URLs。</p>
+<h2 id="process-setegid-id"><a href="#process-setegid-id" class="headerlink" title="process.setegid(id)"></a>process.setegid(id)</h2><p>为进程设置有效的用户组ID。</p>
+<h2 id="process-seteuid-id"><a href="#process-seteuid-id" class="headerlink" title="process.seteuid(id)"></a>process.seteuid(id)</h2><p>process.seteuid()方法为进程设置有效的用户ID。</p>
+<h2 id="process-setgid-id"><a href="#process-setgid-id" class="headerlink" title="process.setgid(id)"></a>process.setgid(id)</h2><p>process.setgid() 为进程方法设置组ID。</p>
+<h2 id="process-setgroups-groups"><a href="#process-setgroups-groups" class="headerlink" title="process.setgroups(groups)"></a>process.setgroups(groups)</h2><h2 id="process-setuid-id"><a href="#process-setuid-id" class="headerlink" title="process.setuid(id)"></a>process.setuid(id)</h2><p>设置进程的用户ID。</p>
+<h2 id="process-stderr"><a href="#process-stderr" class="headerlink" title="process.stderr"></a>process.stderr</h2><p>返回连接到stderr(fd 2)的流。</p>
+<h2 id="process-stdin"><a href="#process-stdin" class="headerlink" title="process.stdin"></a>process.stdin</h2><p>返回连接到 stdin (fd 0)的流。</p>
+<h2 id="process-stdout"><a href="#process-stdout" class="headerlink" title="process.stdout"></a>process.stdout</h2><p>返回连接到 stdout (fd 1)的流。</p>
+<h2 id="process-throwDeprecation"><a href="#process-throwDeprecation" class="headerlink" title="process.throwDeprecation"></a>process.throwDeprecation</h2><h2 id="process-title"><a href="#process-title" class="headerlink" title="process.title"></a>process.title</h2><p>用于获取或设置当前进程在 ps 命令中显示的进程名字。</p>
+<h2 id="process-traceDeprecation"><a href="#process-traceDeprecation" class="headerlink" title="process.traceDeprecation"></a>process.traceDeprecation</h2><h2 id="process-umask-mask"><a href="#process-umask-mask" class="headerlink" title="process.umask([mask])"></a>process.umask([mask])</h2><p>用于返回或设置Node.js进程的默认创建文件的权限掩码。</p>
+<h2 id="process-uptime"><a href="#process-uptime" class="headerlink" title="process.uptime()"></a>process.uptime()</h2><p>返回当前 Node.js 进程运行时间秒长。</p>
+<h2 id="process-version"><a href="#process-version" class="headerlink" title="process.version"></a>process.version</h2><p>返回Node.js的版本信息。</p>
+<h2 id="process-versions"><a href="#process-versions" class="headerlink" title="process.versions"></a>process.versions</h2><p>返回一个对象，此对象列出了Node.js和其依赖的版本信息。</p>
+<h1 id="path（路径）"><a href="#path（路径）" class="headerlink" title="path（路径）"></a>path（路径）</h1><p>path 模块提供了一些工具函数，用于处理文件与目录的路径。<br>path 模块的默认操作会根据 Node.js 应用程序运行的操作系统的不同而变化（Windows与POSIX）。<br>要想在任何操作系统上处理 Windows 文件路径时获得一致的结果，可以使用 path.win32，如path.win32.basename(‘C:\temp\myfile.html’);<br>要想在任何操作系统上处理 POSIX 文件路径时获得一致的结果，可以使用 path.posix，如path.posix.basename(‘/tmp/myfile.html’);</p>
+<h2 id="path-basename-path-ext"><a href="#path-basename-path-ext" class="headerlink" title="path.basename(path[, ext])"></a>path.basename(path[, ext])</h2><p>返回一个 path 的最后一部分，类似于 Unix 中的 basename 命令。</p>
+<h2 id="path-delimiter"><a href="#path-delimiter" class="headerlink" title="path.delimiter"></a>path.delimiter</h2><p>提供平台特定的路径分隔符：Windows 上是 ;POSIX 上是 :</p>
+<h2 id="path-dirname-path"><a href="#path-dirname-path" class="headerlink" title="path.dirname(path)"></a>path.dirname(path)</h2><p>返回一个 path 的目录名，类似于 Unix 中的 dirname 命令。</p>
+<h2 id="path-extname-path"><a href="#path-extname-path" class="headerlink" title="path.extname(path)"></a>path.extname(path)</h2><p>返回 path 的扩展名，即从 path 的最后一部分中的最后一个 .（句号）字符到字符串结束。</p>
+<h2 id="path-format-pathObject"><a href="#path-format-pathObject" class="headerlink" title="path.format(pathObject)"></a>path.format(pathObject)</h2><p>会从一个对象返回一个路径字符串。 与 path.parse() 相反。<br>PS：<br>如果提供了 pathObject.dir，则 pathObject.root 会被忽略<br>如果提供了 pathObject.base 存在，则 pathObject.ext 和 pathObject.name 会被忽略</p>
+<h2 id="path-parse-path"><a href="#path-parse-path" class="headerlink" title="path.parse(path)"></a>path.parse(path)</h2><p>返回一个对象，对象的属性表示 path 的元素。</p>
+<h2 id="path-isAbsolute-path"><a href="#path-isAbsolute-path" class="headerlink" title="path.isAbsolute(path)"></a>path.isAbsolute(path)</h2><p>会判定 path 是否为一个绝对路径。</p>
+<h2 id="path-join-…paths"><a href="#path-join-…paths" class="headerlink" title="path.join([…paths])"></a>path.join([…paths])</h2><p>使用平台特定的分隔符把全部给定的 path 片段连接到一起，并规范化生成的路径。</p>
+<h2 id="path-normalize-path"><a href="#path-normalize-path" class="headerlink" title="path.normalize(path)"></a>path.normalize(path)</h2><p>会规范化给定的 path，并解析 ‘..’ 和 ‘.’ 片段。</p>
+<h2 id="path-relative-from-to"><a href="#path-relative-from-to" class="headerlink" title="path.relative(from, to)"></a>path.relative(from, to)</h2><p>返回从 from 到 to 的相对路径（基于当前工作目录）。</p>
+<h2 id="path-resolve-…paths"><a href="#path-resolve-…paths" class="headerlink" title="path.resolve([…paths])"></a>path.resolve([…paths])</h2><p>会把一个路径或路径片段的序列解析为一个绝对路径。</p>
+<h2 id="path-sep"><a href="#path-sep" class="headerlink" title="path.sep"></a>path.sep</h2><p>提供了平台特定的路径片段分隔符：Windows 上是 \POSIX 上是 /</p>
+<h1 id="url"><a href="#url" class="headerlink" title="url"></a>url</h1><p>url 模块提供了一些实用函数，用于 URL 处理与解析。</p>
+<h1 id="querystring（查询字符串）"><a href="#querystring（查询字符串）" class="headerlink" title="querystring（查询字符串）"></a>querystring（查询字符串）</h1><p>querystring 模块提供了一些实用函数，用于解析与格式化 URL 查询字符串。</p>
+<h2 id="querystring-parse-str-sep-eq-options"><a href="#querystring-parse-str-sep-eq-options" class="headerlink" title="querystring.parse(str[, sep[, eq[, options]]])"></a>querystring.parse(str[, sep[, eq[, options]]])</h2><p>该方法会把一个 URL 查询字符串 str 解析成一个键值对的集合。</p>
+<h2 id="querystring-unescape-str"><a href="#querystring-unescape-str" class="headerlink" title="querystring.unescape(str)"></a>querystring.unescape(str)</h2><p>该方法是提供给 querystring.parse() 使用的，通常不直接使用。</p>
+<h2 id="querystring-stringify-obj-sep-eq-options"><a href="#querystring-stringify-obj-sep-eq-options" class="headerlink" title="querystring.stringify(obj[, sep[, eq[, options]]])"></a>querystring.stringify(obj[, sep[, eq[, options]]])</h2><p>该方法通过遍历给定的 obj 对象的自身属性，生成 URL 查询字符串。</p>
+<h2 id="querystring-escape-str"><a href="#querystring-escape-str" class="headerlink" title="querystring.escape(str)"></a>querystring.escape(str)</h2><p>该方法是提供给 querystring.stringify() 使用的，通常不直接使用。</p>
+<h1 id="Buffer（缓冲器）"><a href="#Buffer（缓冲器）" class="headerlink" title="Buffer（缓冲器）"></a>Buffer（缓冲器）</h1><p>在 ECMAScript 2015 (ES6) 引入 TypedArray 之前，JavaScript 语言没有读取或操作二进制数据流的机制。 Buffer 类被引入作为 Node.js API 的一部分，使其可以在 TCP 流或文件系统操作等场景中处理二进制数据流。</p>
+<h1 id="string-decoder（字符串解码器）"><a href="#string-decoder（字符串解码器）" class="headerlink" title="string_decoder（字符串解码器）"></a>string_decoder（字符串解码器）</h1><p>string_decoder 模块提供了一个 API，用于把 Buffer 对象解码成字符串，但会保留编码过的多字节 UTF-8 与 UTF-16 字符。</p>
+<h1 id="child-process（子进程）"><a href="#child-process（子进程）" class="headerlink" title="child_process（子进程）"></a>child_process（子进程）</h1><p>child_process 模块提供了衍生子进程的功能，它与 popen(3) 类似，但不完全相同。 这个功能主要由 child_process.spawn() 函数提供。</p>
+<h1 id="cluster-集群"><a href="#cluster-集群" class="headerlink" title="cluster (集群)"></a>cluster (集群)</h1><p>Node.js在单个线程中运行单个实例。 用户(开发者)为了使用现在的多核系统，有时候,用户(开发者)会用一串Node.js进程去处理负载任务。</p>
+<h1 id="crypto-加密"><a href="#crypto-加密" class="headerlink" title="crypto (加密)"></a>crypto (加密)</h1><p>crypto 模块提供了加密功能，包含对 OpenSSL 的哈希、HMAC、加密、解密、签名、以及验证功能的一整套封装。</p>
+<h1 id="dgram-数据报"><a href="#dgram-数据报" class="headerlink" title="dgram (数据报)"></a>dgram (数据报)</h1><p>dgram模块提供了 UDP 数据包 socket 的实现。</p>
+<h1 id="net-网络"><a href="#net-网络" class="headerlink" title="net (网络)"></a>net (网络)</h1><p>net 模块提供了创建基于流的 TCP 或 IPC 服务器(net.createServer())和客户端(net.createConnection()) 的异步网络 API。</p>
+<h1 id="dns-域名服务器"><a href="#dns-域名服务器" class="headerlink" title="dns (域名服务器)"></a>dns (域名服务器)</h1><p>1.使用底层操作系统工具进行域名解析，且无需进行网络通信。<br>2.连接到一个真实的 DNS 服务器进行域名解析，且始终使用网络进行 DNS 查询。</p>
+<h1 id="http"><a href="#http" class="headerlink" title="http"></a>http</h1><p>客户端与服务端通信。<br>Node.js 中的 HTTP 接口被设计成支持协议的许多特性。 比如，大块编码的消息。 这些接口不缓冲完整的请求或响应，用户能够以流的形式处理数据。</p>
+<h1 id="tls-安全传输层"><a href="#tls-安全传输层" class="headerlink" title="tls (安全传输层)"></a>tls (安全传输层)</h1><p>tls 模块是对安全传输层（TLS）及安全套接层（SSL）协议的实现，建立在OpenSSL的基础上。</p>
+<h1 id="https"><a href="#https" class="headerlink" title="https"></a>https</h1><p>HTTPS 是 HTTP 基于 TLS/SSL 的版本。在 Node.js 中，它被实现为一个独立的模块。</p>
+<h1 id="Error-错误"><a href="#Error-错误" class="headerlink" title="Error (错误)"></a>Error (错误)</h1><p>所有由 Node.js 引起的 JavaScript 错误与系统错误都继承自或实例化自标准的 JavaScript <error> 类，且保证至少提供类中的属性。</error></p>
+<h1 id="fs-文件系统"><a href="#fs-文件系统" class="headerlink" title="fs (文件系统)"></a>fs (文件系统)</h1><p>文件 I/O 是对标准 POSIX 函数的简单封装。 通过 require(‘fs’) 使用该模块。 所有的方法都有异步和同步的形式。</p>
+<h1 id="os-操作系统"><a href="#os-操作系统" class="headerlink" title="os (操作系统)"></a>os (操作系统)</h1><p>os 模块提供了一些操作系统相关的实用方法。</p>
+<h1 id="readline-逐行读取"><a href="#readline-逐行读取" class="headerlink" title="readline (逐行读取)"></a>readline (逐行读取)</h1><p>用于从可读流（如 process.stdin）读取数据，每次读取一行。</p>
+<h1 id="repl-交互式解释器"><a href="#repl-交互式解释器" class="headerlink" title="repl (交互式解释器)"></a>repl (交互式解释器)</h1><p>repl 模块提供了一种“读取-求值-输出”循环（REPL）的实现，它可作为一个独立的程序或嵌入到其他应用中。</p>
+<h1 id="stream-流"><a href="#stream-流" class="headerlink" title="stream (流)"></a>stream (流)</h1><p>流（stream）在 Node.js 中是处理流数据的抽象接口（abstract interface）。 stream 模块提供了基础的 API 。使用这些 API 可以很容易地来构建实现流接口的对象。</p>
+<h1 id="tty（终端）"><a href="#tty（终端）" class="headerlink" title="tty（终端）"></a>tty（终端）</h1><h1 id="util-实用工具"><a href="#util-实用工具" class="headerlink" title="util (实用工具)"></a>util (实用工具)</h1><p>util 模块主要用于支持 Node.js 内部 API 的需求。 大部分实用工具也可用于应用程序与模块开发者。</p>
+<h1 id="V8（引擎）"><a href="#V8（引擎）" class="headerlink" title="V8（引擎）"></a>V8（引擎）</h1><p>v8 模块暴露了特定于V8版本内置到 Node.js 二进制文件中的API。</p>
+<h1 id="vm-虚拟机"><a href="#vm-虚拟机" class="headerlink" title="vm (虚拟机)"></a>vm (虚拟机)</h1><p>vm 模块提供了一系列 API 用于在 V8 虚拟机环境中编译和运行代码。</p>
+<h1 id="Zlib（压缩）"><a href="#Zlib（压缩）" class="headerlink" title="Zlib（压缩）"></a>Zlib（压缩）</h1><p>zlib模块提供通过 Gzip 和 Deflate/Inflate 实现的压缩功能。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+	<div>
+		
+			<div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读，如果本文对你有帮助就记得<a href="https://github.com/fanerge/fanerge.github.io" title="谢谢亲的star">给个star</a>-------------</div>
+		
+	</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Donate comment here</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author: </strong>余真帆-fanerge</li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://fanerge.github.io/2017/nodejs自带模块-全局变量.html" title="全局变量-global">https://fanerge.github.io/2017/nodejs自带模块-全局变量.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/js/" rel="tag"><i class="far fa-bell"></i> js</a>
+          
+            <a href="/tags/服务端/" rel="tag"><i class="far fa-bell"></i> 服务端</a>
+          
+            <a href="/tags/web开发/" rel="tag"><i class="far fa-bell"></i> web开发</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/nodejs自带模块学习-fs.html" rel="next" title="fs模块-文件">
+                <i class="fa fa-chevron-left"></i> fs模块-文件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/nodejs自带模块-url.html" rel="prev" title="url模块-网址">
+                url模块-网址 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=2156704" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTk4Mi8xMjUxOA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+              <p class="site-description motion-element" itemprop="description">前端、web</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">155</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">24</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">46</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/fanerge" target="_blank" title="GitHub" rel="external nofollow"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:fanege@qq.com" target="_blank" title="E-Mail" rel="external nofollow"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金" rel="external nofollow"><i class="fa fa-fw fa-globe"></i>掘金</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#global-全局变量"><span class="nav-number">1.</span> <span class="nav-text">global - 全局变量</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#dirname"><span class="nav-number">1.1.</span> <span class="nav-text">__dirname</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#filename"><span class="nav-number">1.2.</span> <span class="nav-text">__filename</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#module"><span class="nav-number">1.3.</span> <span class="nav-text">module</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#exports"><span class="nav-number">1.4.</span> <span class="nav-text">exports</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#require-path"><span class="nav-number">1.5.</span> <span class="nav-text">require(path)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#timer（定时器）"><span class="nav-number">2.</span> <span class="nav-text">timer（定时器）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#setImmediate-callback-…args"><span class="nav-number">2.1.</span> <span class="nav-text">setImmediate(callback[, …args])</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#clearImmediate-immediateObject"><span class="nav-number">2.2.</span> <span class="nav-text">clearImmediate(immediateObject)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#setInterval-callback-delay-…args"><span class="nav-number">2.3.</span> <span class="nav-text">setInterval(callback, delay[, …args])</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#clearInterval-timeoutObject"><span class="nav-number">2.4.</span> <span class="nav-text">clearInterval(timeoutObject)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#setTimeout-callback-delay-…args"><span class="nav-number">2.5.</span> <span class="nav-text">setTimeout(callback, delay[, …args])</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#clearTimeout-timeoutObject"><span class="nav-number">2.6.</span> <span class="nav-text">clearTimeout(timeoutObject)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#events（事件）"><span class="nav-number">3.</span> <span class="nav-text">events（事件）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#绑定监听事件"><span class="nav-number">3.1.</span> <span class="nav-text">绑定监听事件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#emitter-addListener-eventName-listener"><span class="nav-number">3.1.1.</span> <span class="nav-text">emitter.addListener(eventName, listener)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#emitter-on-eventName-listener"><span class="nav-number">3.1.2.</span> <span class="nav-text">emitter.on(eventName, listener)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#emitter-once-eventName-listener"><span class="nav-number">3.1.3.</span> <span class="nav-text">emitter.once(eventName, listener)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#emitter-prependListener-eventName-listener"><span class="nav-number">3.1.4.</span> <span class="nav-text">emitter.prependListener(eventName, listener)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#emitter-prependOnceListener-eventName-listener"><span class="nav-number">3.1.5.</span> <span class="nav-text">emitter.prependOnceListener(eventName, listener)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#触发事件"><span class="nav-number">3.2.</span> <span class="nav-text">触发事件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#emitter-emit-eventName-…args"><span class="nav-number">3.2.1.</span> <span class="nav-text">emitter.emit(eventName[, …args])</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#移除监听事件"><span class="nav-number">3.3.</span> <span class="nav-text">移除监听事件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#emitter-removeListener-eventName-listener"><span class="nav-number">3.3.1.</span> <span class="nav-text">emitter.removeListener(eventName, listener)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#emitter-removeAllListeners-eventName"><span class="nav-number">3.3.2.</span> <span class="nav-text">emitter.removeAllListeners([eventName])</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">3.4.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#‘newListener’-事件"><span class="nav-number">3.4.1.</span> <span class="nav-text">‘newListener’ 事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#‘removeListener’-事件"><span class="nav-number">3.4.2.</span> <span class="nav-text">‘removeListener’ 事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#‘error’-事件"><span class="nav-number">3.4.3.</span> <span class="nav-text">‘error’ 事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EventEmitter-defaultMaxListeners"><span class="nav-number">3.4.4.</span> <span class="nav-text">EventEmitter.defaultMaxListeners</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#emitter-setMaxListeners-n"><span class="nav-number">3.4.5.</span> <span class="nav-text">emitter.setMaxListeners(n)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#emitter-getMaxListeners"><span class="nav-number">3.4.6.</span> <span class="nav-text">emitter.getMaxListeners()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#emitter-listenerCount-eventName"><span class="nav-number">3.4.7.</span> <span class="nav-text">emitter.listenerCount(eventName)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#emitter-listeners-eventName"><span class="nav-number">3.4.8.</span> <span class="nav-text">emitter.listeners(eventName)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#emitter-eventNames"><span class="nav-number">3.4.9.</span> <span class="nav-text">emitter.eventNames()</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#assert（断言）"><span class="nav-number">4.</span> <span class="nav-text">assert（断言）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#console控制台"><span class="nav-number">5.</span> <span class="nav-text">console控制台</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#console-assert-value-message-…args"><span class="nav-number">5.1.</span> <span class="nav-text">console.assert(value[, message][, …args])</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#console-clear"><span class="nav-number">5.2.</span> <span class="nav-text">console.clear()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#console-count-label"><span class="nav-number">5.3.</span> <span class="nav-text">console.count([label])</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#console-countReset-label-’default’"><span class="nav-number">5.4.</span> <span class="nav-text">console.countReset([label=’default’])</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#console-log-data-…args"><span class="nav-number">5.5.</span> <span class="nav-text">console.log([data][, …args])</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#console-error-data-…args"><span class="nav-number">5.6.</span> <span class="nav-text">console.error([data][, …args])</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#console-group-…label"><span class="nav-number">5.7.</span> <span class="nav-text">console.group([…label])</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#console-time-label"><span class="nav-number">5.8.</span> <span class="nav-text">console.time(label)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#console-trace-message-…args"><span class="nav-number">5.9.</span> <span class="nav-text">console.trace([message][, …args])</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#console-dir-obj-options"><span class="nav-number">5.10.</span> <span class="nav-text">console.dir(obj[, options])</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#process-进程"><span class="nav-number">6.</span> <span class="nav-text">process - 进程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#process-事件"><span class="nav-number">6.1.</span> <span class="nav-text">process 事件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#beforeExit-事件"><span class="nav-number">6.1.1.</span> <span class="nav-text">beforeExit 事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#disconnect-事件"><span class="nav-number">6.1.2.</span> <span class="nav-text">disconnect 事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exit-事件"><span class="nav-number">6.1.3.</span> <span class="nav-text">exit 事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#message-事件"><span class="nav-number">6.1.4.</span> <span class="nav-text">message 事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rejectionHandled-事件"><span class="nav-number">6.1.5.</span> <span class="nav-text">rejectionHandled 事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#uncaughtException-事件"><span class="nav-number">6.1.6.</span> <span class="nav-text">uncaughtException 事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#unhandledRejection-事件"><span class="nav-number">6.1.7.</span> <span class="nav-text">unhandledRejection 事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#warning-事件"><span class="nav-number">6.1.8.</span> <span class="nav-text">warning 事件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信号事件"><span class="nav-number">6.2.</span> <span class="nav-text">信号事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IPC（Inter-Process-Communication，进程间通信）方法"><span class="nav-number">6.3.</span> <span class="nav-text">IPC（Inter-Process Communication，进程间通信）方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#process-channel"><span class="nav-number">6.3.1.</span> <span class="nav-text">process.channel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#process-connected"><span class="nav-number">6.3.2.</span> <span class="nav-text">process.connected</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#process-disconnect"><span class="nav-number">6.3.3.</span> <span class="nav-text">process.disconnect()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#process-pid"><span class="nav-number">6.3.4.</span> <span class="nav-text">process.pid</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#process-ppid"><span class="nav-number">6.3.5.</span> <span class="nav-text">process.ppid</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#process-send-message-sendHandle-options-callback"><span class="nav-number">6.3.6.</span> <span class="nav-text">process.send(message[, sendHandle[, options]][, callback])</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-abort"><span class="nav-number">6.4.</span> <span class="nav-text">process.abort()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-arch"><span class="nav-number">6.5.</span> <span class="nav-text">process.arch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-execPath"><span class="nav-number">6.6.</span> <span class="nav-text">process.execPath</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-argv"><span class="nav-number">6.7.</span> <span class="nav-text">process.argv</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-argv0"><span class="nav-number">6.8.</span> <span class="nav-text">process.argv0</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-chdir-directory"><span class="nav-number">6.9.</span> <span class="nav-text">process.chdir(directory)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-config（可读可写）"><span class="nav-number">6.10.</span> <span class="nav-text">process.config（可读可写）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-cpuUsage-previousValue"><span class="nav-number">6.11.</span> <span class="nav-text">process.cpuUsage([previousValue])</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-cwd"><span class="nav-number">6.12.</span> <span class="nav-text">process.cwd()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-emitWarning-warning-options"><span class="nav-number">6.13.</span> <span class="nav-text">process.emitWarning(warning[, options])</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-env"><span class="nav-number">6.14.</span> <span class="nav-text">process.env</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-execArgv"><span class="nav-number">6.15.</span> <span class="nav-text">process.execArgv</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-execPath-1"><span class="nav-number">6.16.</span> <span class="nav-text">process.execPath</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-exit-code"><span class="nav-number">6.17.</span> <span class="nav-text">process.exit([code])</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-exitCode"><span class="nav-number">6.18.</span> <span class="nav-text">process.exitCode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-getegid"><span class="nav-number">6.19.</span> <span class="nav-text">process.getegid()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-geteuid"><span class="nav-number">6.20.</span> <span class="nav-text">process.geteuid()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-getgid"><span class="nav-number">6.21.</span> <span class="nav-text">process.getgid()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-getgroups"><span class="nav-number">6.22.</span> <span class="nav-text">process.getgroups()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-getuid"><span class="nav-number">6.23.</span> <span class="nav-text">process.getuid()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-hrtime-time"><span class="nav-number">6.24.</span> <span class="nav-text">process.hrtime([time])</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-initgroups-user-extra-group"><span class="nav-number">6.25.</span> <span class="nav-text">process.initgroups(user, extra_group)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-kill-pid-signal"><span class="nav-number">6.26.</span> <span class="nav-text">process.kill(pid[, signal])</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-mainModule"><span class="nav-number">6.27.</span> <span class="nav-text">process.mainModule</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-memoryUsage"><span class="nav-number">6.28.</span> <span class="nav-text">process.memoryUsage()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-nextTick-callback-…args"><span class="nav-number">6.29.</span> <span class="nav-text">process.nextTick(callback[, …args])</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-noDeprecation"><span class="nav-number">6.30.</span> <span class="nav-text">process.noDeprecation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-platform"><span class="nav-number">6.31.</span> <span class="nav-text">process.platform</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-release"><span class="nav-number">6.32.</span> <span class="nav-text">process.release</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-setegid-id"><span class="nav-number">6.33.</span> <span class="nav-text">process.setegid(id)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-seteuid-id"><span class="nav-number">6.34.</span> <span class="nav-text">process.seteuid(id)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-setgid-id"><span class="nav-number">6.35.</span> <span class="nav-text">process.setgid(id)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-setgroups-groups"><span class="nav-number">6.36.</span> <span class="nav-text">process.setgroups(groups)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-setuid-id"><span class="nav-number">6.37.</span> <span class="nav-text">process.setuid(id)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-stderr"><span class="nav-number">6.38.</span> <span class="nav-text">process.stderr</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-stdin"><span class="nav-number">6.39.</span> <span class="nav-text">process.stdin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-stdout"><span class="nav-number">6.40.</span> <span class="nav-text">process.stdout</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-throwDeprecation"><span class="nav-number">6.41.</span> <span class="nav-text">process.throwDeprecation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-title"><span class="nav-number">6.42.</span> <span class="nav-text">process.title</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-traceDeprecation"><span class="nav-number">6.43.</span> <span class="nav-text">process.traceDeprecation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-umask-mask"><span class="nav-number">6.44.</span> <span class="nav-text">process.umask([mask])</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-uptime"><span class="nav-number">6.45.</span> <span class="nav-text">process.uptime()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-version"><span class="nav-number">6.46.</span> <span class="nav-text">process.version</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#process-versions"><span class="nav-number">6.47.</span> <span class="nav-text">process.versions</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#path（路径）"><span class="nav-number">7.</span> <span class="nav-text">path（路径）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#path-basename-path-ext"><span class="nav-number">7.1.</span> <span class="nav-text">path.basename(path[, ext])</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#path-delimiter"><span class="nav-number">7.2.</span> <span class="nav-text">path.delimiter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#path-dirname-path"><span class="nav-number">7.3.</span> <span class="nav-text">path.dirname(path)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#path-extname-path"><span class="nav-number">7.4.</span> <span class="nav-text">path.extname(path)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#path-format-pathObject"><span class="nav-number">7.5.</span> <span class="nav-text">path.format(pathObject)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#path-parse-path"><span class="nav-number">7.6.</span> <span class="nav-text">path.parse(path)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#path-isAbsolute-path"><span class="nav-number">7.7.</span> <span class="nav-text">path.isAbsolute(path)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#path-join-…paths"><span class="nav-number">7.8.</span> <span class="nav-text">path.join([…paths])</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#path-normalize-path"><span class="nav-number">7.9.</span> <span class="nav-text">path.normalize(path)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#path-relative-from-to"><span class="nav-number">7.10.</span> <span class="nav-text">path.relative(from, to)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#path-resolve-…paths"><span class="nav-number">7.11.</span> <span class="nav-text">path.resolve([…paths])</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#path-sep"><span class="nav-number">7.12.</span> <span class="nav-text">path.sep</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#url"><span class="nav-number">8.</span> <span class="nav-text">url</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#querystring（查询字符串）"><span class="nav-number">9.</span> <span class="nav-text">querystring（查询字符串）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#querystring-parse-str-sep-eq-options"><span class="nav-number">9.1.</span> <span class="nav-text">querystring.parse(str[, sep[, eq[, options]]])</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#querystring-unescape-str"><span class="nav-number">9.2.</span> <span class="nav-text">querystring.unescape(str)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#querystring-stringify-obj-sep-eq-options"><span class="nav-number">9.3.</span> <span class="nav-text">querystring.stringify(obj[, sep[, eq[, options]]])</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#querystring-escape-str"><span class="nav-number">9.4.</span> <span class="nav-text">querystring.escape(str)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Buffer（缓冲器）"><span class="nav-number">10.</span> <span class="nav-text">Buffer（缓冲器）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#string-decoder（字符串解码器）"><span class="nav-number">11.</span> <span class="nav-text">string_decoder（字符串解码器）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#child-process（子进程）"><span class="nav-number">12.</span> <span class="nav-text">child_process（子进程）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#cluster-集群"><span class="nav-number">13.</span> <span class="nav-text">cluster (集群)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#crypto-加密"><span class="nav-number">14.</span> <span class="nav-text">crypto (加密)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#dgram-数据报"><span class="nav-number">15.</span> <span class="nav-text">dgram (数据报)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#net-网络"><span class="nav-number">16.</span> <span class="nav-text">net (网络)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#dns-域名服务器"><span class="nav-number">17.</span> <span class="nav-text">dns (域名服务器)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#http"><span class="nav-number">18.</span> <span class="nav-text">http</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tls-安全传输层"><span class="nav-number">19.</span> <span class="nav-text">tls (安全传输层)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#https"><span class="nav-number">20.</span> <span class="nav-text">https</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Error-错误"><span class="nav-number">21.</span> <span class="nav-text">Error (错误)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#fs-文件系统"><span class="nav-number">22.</span> <span class="nav-text">fs (文件系统)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#os-操作系统"><span class="nav-number">23.</span> <span class="nav-text">os (操作系统)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#readline-逐行读取"><span class="nav-number">24.</span> <span class="nav-text">readline (逐行读取)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#repl-交互式解释器"><span class="nav-number">25.</span> <span class="nav-text">repl (交互式解释器)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#stream-流"><span class="nav-number">26.</span> <span class="nav-text">stream (流)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tty（终端）"><span class="nav-number">27.</span> <span class="nav-text">tty（终端）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#util-实用工具"><span class="nav-number">28.</span> <span class="nav-text">util (实用工具)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#V8（引擎）"><span class="nav-number">29.</span> <span class="nav-text">V8（引擎）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vm-虚拟机"><span class="nav-number">30.</span> <span class="nav-text">vm (虚拟机)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Zlib（压缩）"><span class="nav-number">31.</span> <span class="nav-text">Zlib（压缩）</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" rel="external nofollow" href="https://github.com/theme-next/hexo-theme-next">NexT.Mist</a> v6.0.6</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.6"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.6"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.6"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.6"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>

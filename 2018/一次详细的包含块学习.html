@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.6" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=6.0.6" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.0.6',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+  
+
+
+
+
+  <meta name="description" content="指出错误观念许多开发者认为一个元素的包含块就是他的父元素的内容区，其实这是错误的（至少不完全正确）！一个元素的尺寸和位置经常受其包含块的影响。大多数情况下，包含块就是这个元素最近的祖先块元素的内容区，但也不是总是这样。下面我们看看盒模型：当浏览器展示一个文档的时候，对于每一个元素，它都产生了一个盒子。每一个盒子都被划分为四个区域：  内容区 内边距区 边框区 外边距区  什么是包含块？包含块有分为">
+<meta name="keywords" content="css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我所了解的CSS包含块">
+<meta property="og:url" content="https://fanerge.github.io/2018/一次详细的包含块学习.html">
+<meta property="og:site_name" content="余真帆的博客">
+<meta property="og:description" content="指出错误观念许多开发者认为一个元素的包含块就是他的父元素的内容区，其实这是错误的（至少不完全正确）！一个元素的尺寸和位置经常受其包含块的影响。大多数情况下，包含块就是这个元素最近的祖先块元素的内容区，但也不是总是这样。下面我们看看盒模型：当浏览器展示一个文档的时候，对于每一个元素，它都产生了一个盒子。每一个盒子都被划分为四个区域：  内容区 内边距区 边框区 外边距区  什么是包含块？包含块有分为">
+<meta property="og:image" content="https://d2mxuefqeaa7sj.cloudfront.net/s_B3933F1CAEB89DA4EDCA442D5BACE6682180AB23F892E68B39E5A56D2034679C_1496411178061_boxdim.png">
+<meta property="og:image" content="http://p52glq5m1.bkt.clouddn.com/css_bhk1.png">
+<meta property="og:image" content="http://p52glq5m1.bkt.clouddn.com/css_bhk2.png">
+<meta property="og:image" content="http://p52glq5m1.bkt.clouddn.com/css_bhk3.png">
+<meta property="og:image" content="http://p52glq5m1.bkt.clouddn.com/css_bhk4.png">
+<meta property="og:image" content="http://p52glq5m1.bkt.clouddn.com/css_bhk5.png">
+<meta property="og:updated_time" content="2018-03-29T14:50:24.721Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="我所了解的CSS包含块">
+<meta name="twitter:description" content="指出错误观念许多开发者认为一个元素的包含块就是他的父元素的内容区，其实这是错误的（至少不完全正确）！一个元素的尺寸和位置经常受其包含块的影响。大多数情况下，包含块就是这个元素最近的祖先块元素的内容区，但也不是总是这样。下面我们看看盒模型：当浏览器展示一个文档的时候，对于每一个元素，它都产生了一个盒子。每一个盒子都被划分为四个区域：  内容区 内边距区 边框区 外边距区  什么是包含块？包含块有分为">
+<meta name="twitter:image" content="https://d2mxuefqeaa7sj.cloudfront.net/s_B3933F1CAEB89DA4EDCA442D5BACE6682180AB23F892E68B39E5A56D2034679C_1496411178061_boxdim.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="余真帆的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="https://fanerge.github.io/2018/一次详细的包含块学习.html"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>我所了解的CSS包含块 | 余真帆的博客</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+	<a href="https://github.com/fanerge" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#70B7FD; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+	</div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">余真帆的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-categories">
+    <a href="/categories" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Categories</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-archives">
+    <a href="/archives" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Archives</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-tags">
+    <a href="/tags" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Tags</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-about">
+    <a href="/about" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />About</a>
+</li>
+
+      
+
+      
+    </ul>
+  
+
+  
+    
+
+    
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+    
+
+  
+
+
+  
+
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2018/一次详细的包含块学习.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">我所了解的CSS包含块</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-29T19:53:04+08:00">2018-03-29</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/css/" itemprop="url" rel="index"><span itemprop="name">css</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views: 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+		
+	  
+      
+
+      
+        <h1 id="指出错误观念"><a href="#指出错误观念" class="headerlink" title="指出错误观念"></a>指出错误观念</h1><p>许多开发者认为一个元素的包含块就是他的父元素的内容区，其实这是错误的（至少不完全正确）！<br>一个元素的尺寸和位置经常受其包含块的影响。大多数情况下，包含块就是这个元素最近的祖先块元素的内容区，但也不是总是这样。<br>下面我们看看盒模型：<br>当浏览器展示一个文档的时候，对于每一个元素，它都产生了一个盒子。每一个盒子都被划分为四个区域：</p>
+<ol>
+<li>内容区</li>
+<li>内边距区</li>
+<li>边框区</li>
+<li>外边距区<br><img src="https://d2mxuefqeaa7sj.cloudfront.net/s_B3933F1CAEB89DA4EDCA442D5BACE6682180AB23F892E68B39E5A56D2034679C_1496411178061_boxdim.png" alt="盒模型"></li>
+</ol>
+<h1 id="什么是包含块？"><a href="#什么是包含块？" class="headerlink" title="什么是包含块？"></a>什么是包含块？</h1><p>包含块有分为根元素包含块和其他元素的包含块。</p>
+<h2 id="根元素包含块"><a href="#根元素包含块" class="headerlink" title="根元素包含块"></a>根元素包含块</h2><p>根元素html的包含块是一个矩形,叫做初始化包含块(initial containing block)。<br>可以看到html外面还有空间，这个包含html的块就被称为初始包含块(initial containing block)，它是作为元素绝对定位和固定定位的参照物。<br>对于连续媒体设备（continuous media），初始包含块的大小等于视口viewpor的大小，基点在画布的原点（视口左上角）；对于分页媒体（paged media），初始包含块是页面区域（page area）。初始包含块的direction属性与根元素的相同。</p>
+<h2 id="其他元素的包含块"><a href="#其他元素的包含块" class="headerlink" title="其他元素的包含块"></a>其他元素的包含块</h2><p>大多数情况下，包含块就是这个元素最近的祖先块元素的内容区，但也不是总是这样，下面就来学习如何确定这些元素的包含块。</p>
+<h1 id="如何确定元素的包含块？"><a href="#如何确定元素的包含块？" class="headerlink" title="如何确定元素的包含块？"></a>如何确定元素的包含块？</h1><p>确定包含块的过程完全依赖于这个包含块的 position 属性，大致分为下列场景：</p>
+<ol>
+<li>如果 position 属性是 static 或 relative 的话，包含块就是由它的最近的祖先块元素（比如说inline-block, block 或 list-item元素）或格式化上下文<a href="https://fanerge.github.io/%E9%9D%A2%E8%AF%95%E6%9D%82%E9%A1%B9.html#BFC">BFC</a>(比如说 a table container, flex container, grid container, or the block container itself)的<span style="color: red">内容区的边缘</span>组成的。</li>
+<li>如果 position 属性是 absolute 的话，包含块就是由它的最近的 position 的值不是 static （fixed, absolute, relative, or sticky）的祖先元素的<span style="color: red">内边距区的边缘</span>组成的。</li>
+<li>如果 position 属性是 fixed 的话，包含块就是由 viewport (in the case of continuous media) or the page area (in  the case of paged media) 组成的。</li>
+<li>如果 position 属性是 absolute 或 fixed，包含块也可能是由满足以下条件的最近父级元素的<span style="color: red">内边距区的边缘</span>组成的：<br>A transform or perspective value other than none<br>A will-change value of transform or perspective<br>A filter value other than none or a will-change value of filter (only works on Firefox).</li>
+</ol>
+<h1 id="元素包含块的作用？"><a href="#元素包含块的作用？" class="headerlink" title="元素包含块的作用？"></a>元素包含块的作用？</h1><p>元素的尺寸和位置经常受其包含块的影响。对于一个绝对定位的元素来说（他的 position 属性被设定为 absolute 或 fixed），如果它的 width, height, padding, margin, 和 offset 这些属性的值是一个比例值（如百分比等）的话，那这些值的计算值就是由它的包含块计算而来的。<br>简单来说，如果某些属性被赋予一个百分值的话，它的计算值是由这个元素的包含块计算而来的。这些属性包括盒模型属性和偏移属性：</p>
+<ol>
+<li>height, top, bottom 这些属性由包含块的 height 属性的值来计算它的百分值。如果包含块的 height 值依赖于它的内容，且包含块的 position 属性的值被赋予 relative 或 static的话，这些值的计算值为0。</li>
+<li>width, left, right, padding, margin这些属性由包含块的 width 属性的值来计算它的百分值。</li>
+</ol>
+<h1 id="下面看些例子"><a href="#下面看些例子" class="headerlink" title="下面看些例子"></a>下面看些例子</h1><p>下面示例公用HTML代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;body&gt;</div><div class="line">  &lt;section&gt;</div><div class="line">    &lt;p&gt;This is a paragraph!&lt;/p&gt;</div><div class="line">  &lt;/section&gt;</div><div class="line">&lt;/body&gt;</div></pre></td></tr></table></figure></p>
+<h2 id="示例一"><a href="#示例一" class="headerlink" title="示例一"></a>示例一</h2><p>CSS代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">body &#123;</div><div class="line">  background: beige;</div><div class="line">&#125;</div><div class="line"></div><div class="line">section &#123;</div><div class="line">  display: block;</div><div class="line">  width: 400px;</div><div class="line">  height: 160px;</div><div class="line">  background: lightgray;</div><div class="line">&#125;</div><div class="line"></div><div class="line">p &#123;</div><div class="line">  width: 50%;   /* == 400px * .5 = 200px */</div><div class="line">  height: 25%;  /* == 160px * .25 = 40px */</div><div class="line">  margin: 5%;   /* == 400px * .05 = 20px */</div><div class="line">  padding: 5%;  /* == 400px * .05 = 20px */</div><div class="line">  background: cyan;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在这里，这个P标签position为默认的static，所以它的包含块为Section标签，通过我们的判断规则一来确定。<br><img src="http://p52glq5m1.bkt.clouddn.com/css_bhk1.png" alt=""></p>
+<h2 id="示例二"><a href="#示例二" class="headerlink" title="示例二"></a>示例二</h2><p>CSS代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">body &#123;</div><div class="line">  background: beige;</div><div class="line">&#125;</div><div class="line"></div><div class="line">section &#123;</div><div class="line">  display: inline;</div><div class="line">  background: lightgray;</div><div class="line">&#125;</div><div class="line"></div><div class="line">p &#123;</div><div class="line">  width: 50%;     /* == half the body&apos;s width */</div><div class="line">  height: 200px;  /* Note: a percentage would be 0 */</div><div class="line">  background: cyan;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在这里，这个P标签position为默认的static且它的父标签Section的display为inline，所以P标签的包含块为body标签，通过我们的判断规则一来确定。<br><img src="http://p52glq5m1.bkt.clouddn.com/css_bhk2.png" alt=""></p>
+<h2 id="示例三"><a href="#示例三" class="headerlink" title="示例三"></a>示例三</h2><p>CSS代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">body &#123;</div><div class="line">  background: beige;</div><div class="line">&#125;</div><div class="line"></div><div class="line">section &#123;</div><div class="line">  transform: rotate(0deg);</div><div class="line">  width: 400px;</div><div class="line">  height: 160px;</div><div class="line">  background: lightgray;</div><div class="line">&#125;</div><div class="line"></div><div class="line">p &#123;</div><div class="line">  position: absolute;</div><div class="line">  left: 80px;</div><div class="line">  top: 30px;</div><div class="line">  width: 50%;   /* == 200px */</div><div class="line">  height: 25%;  /* == 40px */</div><div class="line">  margin: 5%;   /* == 20px */</div><div class="line">  padding: 5%;  /* == 20px */</div><div class="line">  background: cyan;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在这里，这个P标签position为absolute且它的父标签Section的transform不为none，所以P标签的包含块为Section标签，通过我们的判断规则四来确定。<br><img src="http://p52glq5m1.bkt.clouddn.com/css_bhk3.png" alt=""></p>
+<h2 id="示例四"><a href="#示例四" class="headerlink" title="示例四"></a>示例四</h2><p>CSS代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">body &#123;</div><div class="line">  background: beige;</div><div class="line">&#125;</div><div class="line"></div><div class="line">section &#123;</div><div class="line">  position: absolute;</div><div class="line">  left: 30px;</div><div class="line">  top: 30px;</div><div class="line">  width: 400px;</div><div class="line">  height: 160px;</div><div class="line">  padding: 30px 20px;</div><div class="line">  background: lightgray;</div><div class="line">&#125;</div><div class="line"></div><div class="line">p &#123;</div><div class="line">  position: absolute;</div><div class="line">  width: 50%;   /* == (400px + 20px + 20px) * .5 = 220px */</div><div class="line">  height: 25%;  /* == (160px + 30px + 30px) * .25 = 55px */</div><div class="line">  margin: 5%;   /* == (400px + 20px + 20px) * .05 = 22px */</div><div class="line">  padding: 5%;  /* == (400px + 20px + 20px) * .05 = 22px */</div><div class="line">  background: cyan;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在这里，这个P标签position为absolute且它的父标签Section的position不为static，所以P标签的包含块为Section标签的padding边缘算起（前提是不能 box-sizing设置为border-box），通过我们的判断规则二来确定。<br><img src="http://p52glq5m1.bkt.clouddn.com/css_bhk4.png" alt=""></p>
+<h2 id="示例五"><a href="#示例五" class="headerlink" title="示例五"></a>示例五</h2><p>CSS代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">body &#123;</div><div class="line">  background: beige;</div><div class="line">&#125;</div><div class="line"></div><div class="line">section &#123;</div><div class="line">  width: 300px;</div><div class="line">  height: 300px;</div><div class="line">  margin: 30px;</div><div class="line">  padding: 15px;</div><div class="line">  background: lightgray;</div><div class="line">&#125;</div><div class="line"></div><div class="line">p &#123;</div><div class="line">  position: fixed;</div><div class="line">  width: 50%;   /* == (50vw - (width of vertical scrollbar)) */</div><div class="line">  height: 50%;  /* == (50vh - (height of horizontal scrollbar)) */</div><div class="line">  margin: 5%;   /* == (5vw - (width of vertical scrollbar)) */</div><div class="line">  padding: 5%;  /* == (5vw - (width of vertical scrollbar)) */</div><div class="line">  background: cyan;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在这里，这个P标签position为fixed,所以P标签的包含块为初始包含块（viewport），通过我们的判断规则三来确定。<br><img src="http://p52glq5m1.bkt.clouddn.com/css_bhk5.png" alt=""></p>
+<p>如果本文对你有帮助，记得给我的博客项目<a href="https://github.com/fanerge/fanerge.github.io" target="_blank" rel="external">star</a>(⊙﹏⊙)，<a href="https://fanerge.github.io">顺便找找成都氛围好的前端团队，也许我就是你们要找的の</a>。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+	<div>
+		
+			<div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读，如果本文对你有帮助就记得<a href="https://github.com/fanerge/fanerge.github.io" title="谢谢亲的star">给个star</a>-------------</div>
+		
+	</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Donate comment here</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author: </strong>余真帆-fanerge</li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://fanerge.github.io/2018/一次详细的包含块学习.html" title="我所了解的CSS包含块">https://fanerge.github.io/2018/一次详细的包含块学习.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/css/" rel="tag"><i class="far fa-bell"></i> css</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/全面了解Object对象.html" rel="next" title="全面了解Object对象">
+                <i class="fa fa-chevron-left"></i> 全面了解Object对象
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/js算法集合.html" rel="prev" title="js算法集合">
+                js算法集合 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=2156704" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTk4Mi8xMjUxOA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+              <p class="site-description motion-element" itemprop="description">前端、web</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">155</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">24</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">46</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/fanerge" target="_blank" title="GitHub" rel="external nofollow"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:fanege@qq.com" target="_blank" title="E-Mail" rel="external nofollow"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金" rel="external nofollow"><i class="fa fa-fw fa-globe"></i>掘金</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#指出错误观念"><span class="nav-number">1.</span> <span class="nav-text">指出错误观念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是包含块？"><span class="nav-number">2.</span> <span class="nav-text">什么是包含块？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#根元素包含块"><span class="nav-number">2.1.</span> <span class="nav-text">根元素包含块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他元素的包含块"><span class="nav-number">2.2.</span> <span class="nav-text">其他元素的包含块</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如何确定元素的包含块？"><span class="nav-number">3.</span> <span class="nav-text">如何确定元素的包含块？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#元素包含块的作用？"><span class="nav-number">4.</span> <span class="nav-text">元素包含块的作用？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#下面看些例子"><span class="nav-number">5.</span> <span class="nav-text">下面看些例子</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#示例一"><span class="nav-number">5.1.</span> <span class="nav-text">示例一</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例二"><span class="nav-number">5.2.</span> <span class="nav-text">示例二</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例三"><span class="nav-number">5.3.</span> <span class="nav-text">示例三</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例四"><span class="nav-number">5.4.</span> <span class="nav-text">示例四</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例五"><span class="nav-number">5.5.</span> <span class="nav-text">示例五</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" rel="external nofollow" href="https://github.com/theme-next/hexo-theme-next">NexT.Mist</a> v6.0.6</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.6"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.6"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.6"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.6"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
