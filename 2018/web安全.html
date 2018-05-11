@@ -115,7 +115,7 @@
 <meta property="og:url" content="https://fanerge.github.io/2018/web安全.html">
 <meta property="og:site_name" content="余真帆的博客">
 <meta property="og:description" content="同源策略（Same-origin policy）同源策略限制了一个源（origin）中加载的文档或脚本与其他源（origin）中的资源交互的方式。这是一种用来隔离潜在恶意文档的关键安全机制。 一个源的定义如果两个页面的协议、域名、端口（如果有指定）和都相同，则两个页面具有相同的源。 源的继承data：URLs获得一个新的，空的安全上下文。在页面中用 about:blank 或 javascript">
-<meta property="og:updated_time" content="2018-05-10T15:52:34.557Z">
+<meta property="og:updated_time" content="2018-05-11T14:46:37.790Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="web安全">
 <meta name="twitter:description" content="同源策略（Same-origin policy）同源策略限制了一个源（origin）中加载的文档或脚本与其他源（origin）中的资源交互的方式。这是一种用来隔离潜在恶意文档的关键安全机制。 一个源的定义如果两个页面的协议、域名、端口（如果有指定）和都相同，则两个页面具有相同的源。 源的继承data：URLs获得一个新的，空的安全上下文。在页面中用 about:blank 或 javascript">
@@ -462,6 +462,47 @@
 <h3 id="style-src"><a href="#style-src" class="headerlink" title="style-src"></a>style-src</h3><p>style的源。</p>
 <h2 id="内容源"><a href="#内容源" class="headerlink" title="内容源"></a>内容源</h2><h3 id="源列表"><a href="#源列表" class="headerlink" title="源列表"></a>源列表</h3><p>源列表是一个字符串，指定了一个或多个互联网主机（通过主机名或 IP 地址），和可选的 URL 协议和/或端口号。<br><a href="http://*.foo.com">http://*.foo.com</a><br>匹配所有使用 http: 协议加载 foo.com 任何子域名的尝试。<br>mail.foo.com:443<br>匹配所有访问 mail.foo.com 的 443 端口 的尝试。<br><a href="https://store.foo.com">https://store.foo.com</a><br>匹配所有使用 https: 协议访问 store.foo.com 的尝试。<br>如果端口号没有被指定，浏览器会使用指定协议的默认端口号。如果协议没有被指定，浏览器会使用访问该文档时的协议。</p>
 <h3 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h3><p>‘none’<br>代表空集；即不匹配任何 URL。<br>‘self’<br>代表和文档同源，包括相同的 URL 协议和端口号。<br>‘unsafe-inline’<br>允许使用内联资源，如内联的 \<script\> 元素、javascript: URL、内联的事件处理函数和内联的 \<style\> 元素。<br>‘unsafe-eval’<br>允许使用 eval() 等通过字符串创建代码的方法。</p>
+<h1 id="安全环境"><a href="#安全环境" class="headerlink" title="安全环境"></a>安全环境</h1><p>当浏览器满足安全的最低要求时将进入一种安全环境。安全环境允许浏览器暴露那些只有在被安全地传输给用户时才被允许的 APIs。<br>作用：安全上下文的主要目标是防止攻击者访问功能强大的api,可进一步妥协的攻击的受害者。</p>
+<h2 id="检测环境是否安全"><a href="#检测环境是否安全" class="headerlink" title="检测环境是否安全"></a>检测环境是否安全</h2><p>你可以使用特征检测来判断上下文是否处于安全的上下文之中通过使用在全局作用域下公共的isSecureContext返回的布尔值。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// 在安全环境下使用serviceWorker执行offline-worker.js</div><div class="line">if (window.isSecureContext) &#123;</div><div class="line">  // 页面是是个安全的上下文，服务可以正常使用。</div><div class="line">  navigator.serviceWorker.register(&quot;/offline-worker.js&quot;).then(function () &#123;</div><div class="line">    ...</div><div class="line">  &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h1 id="如何保护我们站点"><a href="#如何保护我们站点" class="headerlink" title="如何保护我们站点"></a>如何保护我们站点</h1><h2 id="用户信息安全"><a href="#用户信息安全" class="headerlink" title="用户信息安全"></a>用户信息安全</h2><h3 id="如何关闭表单的自动补全功能"><a href="#如何关闭表单的自动补全功能" class="headerlink" title="如何关闭表单的自动补全功能"></a>如何关闭表单的自动补全功能</h3><p>许多浏览器表单字段支持自动补全功能; 因此他们的值可以被推荐和下一次用户访问你的网站时自动恢复。某一类型的数据, 你可能希望禁止这个功能。<br>默认情况下，浏览器会记录用户网页上提交的输入框的信息。这样浏览器便能够做到自动完成（在用户开始输入的时候给用户提供可能的内容）和自动填充（在加载的时候预先填充某些字段）功能。</p>
+<h4 id="如何禁用自动填充？"><a href="#如何禁用自动填充？" class="headerlink" title="如何禁用自动填充？"></a>如何禁用自动填充？</h4><p>为整个表单设置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;form method=&quot;post&quot; action=&quot;/form&quot; autocomplete=&quot;off&quot;&gt;</div><div class="line">[…]</div><div class="line">&lt;/form&gt;</div></pre></td></tr></table></figure></p>
+<p>为单个字段设置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;form method=&quot;post&quot; action=&quot;/form&quot;&gt;</div><div class="line">  […]</div><div class="line">	&lt;label&gt;name：</div><div class="line">		&lt;input type=&quot;text&quot; id=&quot;cc&quot; name=&quot;cc&quot; autocomplete=&quot;off&quot;&gt;</div><div class="line">	&lt;/label&gt;</div><div class="line">&lt;/form&gt;</div></pre></td></tr></table></figure></p>
+<p>在这里设置 autocomplete=”off” 会有两种效果：</p>
+<ol>
+<li>它会阻止浏览器为了以后自动完成类似的表单来自动保存表单数据，但是浏览器是不一样的。</li>
+<li>它会阻止浏览器历史记录缓存中的表单数据。当表单数据来自缓存的时候，当用户点击返回按钮来返回的时候，用户填写的信息是可见的。</li>
+</ol>
+<p>PS：在某些情况下，即使浏览器的自动填充设置为off，浏览器依然会继续提示自动完成的值。这可能会让开发者百思不得其解。强制浏览器不自动填充的方法是为autocomplete设置一个随机的字符串，这个随机字符串不能为 <a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/input#attr-autocomplete">autocomplete</a> 属性的可选值。</p>
+<h4 id="自动填充属性和登录"><a href="#自动填充属性和登录" class="headerlink" title="自动填充属性和登录"></a>自动填充属性和登录</h4><p>现代浏览器继承了密码管理：当用户使用用户名和密码在一个网站上登录了，浏览器会替用户记住它（用户名和密码）。当用户再次访问站点你的时候，浏览器会自动使用存储的数据自动填充登录模块。<br>由于这个原因，许多现代浏览器都不支持在登录模块中设置 autocomplete=”off” ：</p>
+<ol>
+<li>如果一个网站为表单设置了autocomplete=”off”，如果表单包含了用户名和密码，浏览器依然会记住登录信息，并且如果用户同意，浏览器会在下一次用户访问网站的时候自动填充信息。</li>
+<li>如果网站给用户名和密码的输入框设置了autocomplete=”off”，浏览器依然会记住这次登录，如果用户同意，浏览器将会在用户下次访问的时候自动填充登录信息。</li>
+</ol>
+<p>如果想要阻止在用户管理页面中填写密码字段，用户可以为自己以外的人指定新的密码，虽然所有的浏览器都还不支持，但是autocomplete = “new-password”应该被指定。</p>
+<h3 id="隐私与-visited选择器"><a href="#隐私与-visited选择器" class="headerlink" title="隐私与:visited选择器"></a>隐私与:visited选择器</h3><h4 id="为什么说-visited选择器暴露了用户隐私？"><a href="#为什么说-visited选择器暴露了用户隐私？" class="headerlink" title="为什么说:visited选择器暴露了用户隐私？"></a>为什么说:visited选择器暴露了用户隐私？</h4><p>曾经，CSS选择器 :visited 被网站用来查看用户的浏览记录。通过使用 getComputedStyle() 或其他方法扫描用户的浏览记录来获取用户访问了哪些网站。这很容易实现，不仅能够判断用户是否曾经访问过这个页面，还能猜测出大量的用户身份信息。</p>
+<h4 id="浏览器的处理"><a href="#浏览器的处理" class="headerlink" title="浏览器的处理"></a>浏览器的处理</h4><p>浏览器会在某些情况下对网页程序撒谎，尤其是 getComputedStyle() 和类似的功能，比如 element.querySelector() 总是返回值表示用户从未访问过网页上的任何一个链接。<br>另外，如果用到了兄弟选择器，如 :visited + span，\<span\> 显示为未访问的样式。<br>而且，在极少的情况下，如果用到了嵌套链接元素并且这个匹配的元素与历史记录中的不同，这个链接也以未访问的样式绘制。</p>
+<h4 id="对已访问链接样式的限制"><a href="#对已访问链接样式的限制" class="headerlink" title="对已访问链接样式的限制"></a>对已访问链接样式的限制</h4><p>你仍然可以给已访问链接设置视觉样式，但是对可用样式作出了限制。只有下列的属性才能被应用到已访问链接：</p>
+<ol>
+<li>color</li>
+<li>background-color</li>
+<li>border-color (and its sub-properties)</li>
+<li>outline-color</li>
+<li>fill 和 stroke 属性的颜色部分（SVG中使用）</li>
+</ol>
+<h2 id="内容安全"><a href="#内容安全" class="headerlink" title="内容安全"></a>内容安全</h2><h3 id="正确配置服务器的MIME-Types"><a href="#正确配置服务器的MIME-Types" class="headerlink" title="正确配置服务器的MIME Types"></a>正确配置服务器的MIME Types</h3><h4 id="什么是MIME-Types？"><a href="#什么是MIME-Types？" class="headerlink" title="什么是MIME Types？"></a>什么是MIME Types？</h4><p>MIME类型描述内容的媒体类型在电子邮件或由web服务器或web应用程序,旨在帮助指导web浏览器如何处理并显示内容。<br>常用的MIME Types？</p>
+<ol>
+<li>text/html for normal web pages</li>
+<li>text/plain for plain text</li>
+<li>text/css for Cascading Style Sheets</li>
+<li>text/javascript for scripts</li>
+<li>application/octet-stream meaning “download this file”</li>
+<li>application/x-java-applet for Java applets</li>
+<li>application/pdf for PDF documents<h4 id="为什么是正确的MIME类型"><a href="#为什么是正确的MIME类型" class="headerlink" title="为什么是正确的MIME类型?"></a>为什么是正确的MIME类型?</h4>如果web服务器或应用程序设置了的不正确的MIME类型，一个web浏览器没有方法通过HTTP规范从而知道作者想要怎样处理它。<br>大多数浏览器允许错误配置MIME Types的web服务器和应用程序可以通过猜测其MIME Types。<br>服务内容使用正确的MIME类型也可以是重要的出于安全原因;恶意内容可能影响用户的计算机，冒充一个安全的类型的文档。<h4 id="如何设置您的服务器发送正确的MIME类型？"><a href="#如何设置您的服务器发送正确的MIME类型？" class="headerlink" title="如何设置您的服务器发送正确的MIME类型？"></a>如何设置您的服务器发送正确的MIME类型？</h4>如果你使用Apache web服务器,只需将这个示例. htaccess文件复制到目录,其中包含您想要发送的文件正确的MIME类型。如果你有一个完整的子目录的文件,就把文件在父目录;你不需要把它在每个子目录。<br>如果你使用Microsoft IIS,<a href="https://blog.csdn.net/xcymorningsun/article/details/53195521">看到这篇文章</a>。<br>如果您正在使用一个服务器端脚本（Perl, PHP, ASP, or Java）生成内容,通常可以添加一行脚本的顶部。只需要设置正确的 Content-Type。</li>
+</ol>
+<h3 id="HTTP-Strict-Transport-Security"><a href="#HTTP-Strict-Transport-Security" class="headerlink" title="HTTP Strict Transport Security"></a>HTTP Strict Transport Security</h3><p>HTTP Strict Transport Security（通常简称为HSTS）是一个安全功能，它告诉浏览器只能通过HTTPS访问当前资源，而不是HTTP。</p>
+<h4 id="示例场景"><a href="#示例场景" class="headerlink" title="示例场景"></a>示例场景</h4><p>你连接到一个免费WiFi接入点，然后开始浏览网站，访问你的网上银行，查看你的支出，并且支付一些订单。很不幸，你接入的WiFi实际上是黑客的笔记本热点，他们拦截了你最初的HTTP请求，然后跳转到一个你银行网站一模一样的钓鱼网站。 现在，你的隐私数据暴露给黑客了。<br>Strict Transport Security解决了这个问题；只要你通过HTTPS请求访问银行网站，并且银行网站配置好Strict Transport Security，你的浏览器知道自动使用HTTPS请求，这可以阻止黑客的中间人攻击的把戏。</p>
+<h4 id="浏览器如何处理？"><a href="#浏览器如何处理？" class="headerlink" title="浏览器如何处理？"></a>浏览器如何处理？</h4><p>你的网站第一次通过HTTPS请求，服务器响应Strict-Transport-Security 头，浏览器记录下这些信息，然后后面尝试访问这个网站的请求都会自动把HTTP替换为HTTPS。<br>当HSTS头设置的过期时间到了，后面通过HTTP的访问恢复到正常模式，不会再自动跳转到HTTPS。<br>每次浏览器接收到Strict-Transport-Security头，它都会更新这个网站的过期时间，所以网站可以刷新这些信息，防止过期发生。<br>Chrome、Firefox等浏览器里，当您尝试访问该域名下的内容时，会产生一个307 Internal Redirect（内部跳转），自动跳转到HTTPS请求。</p>
+<h4 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Strict-Transport-Security: max-age=&lt;expire-time&gt;</div><div class="line">Strict-Transport-Security: max-age=&lt;expire-time&gt;; includeSubDomains</div><div class="line">Strict-Transport-Security: max-age=&lt;expire-time&gt;; preload</div></pre></td></tr></table></figure>
 <blockquote>
 <p>   参考文档：<br><a href="https://developer.mozilla.org/zh-CN/docs/Web/Security/Same-origin_policy">浏览器的同源策略</a><br><a href="https://developer.mozilla.org/zh-CN/docs/Web/Security/CSP/CSP_policy_directives">CSP 策略指令</a><br><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options">X-Frame-Options</a><br><a href="https://publicsuffix.org/">PUBLIC SUFFIX LIST</a></p>
 </blockquote>
