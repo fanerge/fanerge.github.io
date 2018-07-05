@@ -115,7 +115,7 @@
 <meta property="og:url" content="https://fanerge.github.io/2018/web安全.html">
 <meta property="og:site_name" content="余真帆的博客">
 <meta property="og:description" content="浏览器安全同源策略（Same Origin Policy）同源策略限制了一个源（origin）中加载的文档或脚本与其他源（origin）中的资源交互的方式。这是一种用来隔离潜在恶意文档的关键安全机制。源的定义：如果两个页面的协议、域名、端口（如果有指定）和都相同，则两个页面具有相同的源。 浏览器沙箱Sandbox 和 多线程架构浏览器为我们提供了一个独立的沙箱环境，尽量来保障浏览器的安全，也有部分">
-<meta property="og:updated_time" content="2018-07-05T14:08:10.585Z">
+<meta property="og:updated_time" content="2018-07-05T14:27:49.908Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="懂这些，你将能构建更安全的Web应用">
 <meta name="twitter:description" content="浏览器安全同源策略（Same Origin Policy）同源策略限制了一个源（origin）中加载的文档或脚本与其他源（origin）中的资源交互的方式。这是一种用来隔离潜在恶意文档的关键安全机制。源的定义：如果两个页面的协议、域名、端口（如果有指定）和都相同，则两个页面具有相同的源。 浏览器沙箱Sandbox 和 多线程架构浏览器为我们提供了一个独立的沙箱环境，尽量来保障浏览器的安全，也有部分">
@@ -504,8 +504,7 @@
 <h1 id="MIMT-中间人攻击Man-in-the-middle-attacks"><a href="#MIMT-中间人攻击Man-in-the-middle-attacks" class="headerlink" title="MIMT(中间人攻击Man-in-the-middle-attacks)"></a>MIMT(中间人攻击Man-in-the-middle-attacks)</h1><p>定义：Client &lt;–&gt; Proxy Server(Middle Man) &lt;–&gt; Web Server真实的服务器<br>Client 发出的请求 和 Web Server返回的数据都经过Proxy Server 转发，这个Proxy Server 就起到了一个Middle Man的作用，如果这个“中间人” 够黑，那么整个代理过程的数据都可以由这个“中间人”控制，“中间人”可以进行截取敏感数据、代码注射、Proxp worm操作。<br>方案：启用虚拟专用网(VPN)、https(传输报文加密)<br><a href="https://www.zhuyingda.com/blog/article.html?id=7" target="_blank" rel="external">web中间人攻击的威胁</a></p>
 <h1 id="DDOS（分布式拒绝服务Distributed-Denial-of-Service）"><a href="#DDOS（分布式拒绝服务Distributed-Denial-of-Service）" class="headerlink" title="DDOS（分布式拒绝服务Distributed Denial of Service）"></a>DDOS（分布式拒绝服务Distributed Denial of Service）</h1><p>定义：最基本的DDOS攻击就是利用合理的服务请求来占用过多的服务资源，从而使合法用户无法得到服务的响应。<br>方案：限制请求频率、高防服务器、黑名单、DDoS 清洗、CDN（隐藏真实IP及分流）</p>
 <h2 id="类别"><a href="#类别" class="headerlink" title="类别"></a>类别</h2><h3 id="SYN-flood（网络层DDOS）"><a href="#SYN-flood（网络层DDOS）" class="headerlink" title="SYN flood（网络层DDOS）"></a>SYN flood（网络层DDOS）</h3><p><a href="https://www.cnblogs.com/popduke/p/5823801.html" target="_blank" rel="external">什么是SYN Flood攻击?</a><br>对抗措施：SYN Cookie 为每一个IP地址分配一个Cookie，并统计每个IP地址的访问频率。如果短时间内收到大量的来自同一个IP地址的数据包，则认为是受到攻击，之后来自这个IP地址的包将被丢失。</p>
-<h3 id="Challenge-Collapasar（应用层DDOS）"><a href="#Challenge-Collapasar（应用层DDOS）" class="headerlink" title="Challenge Collapasar（应用层DDOS）"></a>Challenge Collapasar（应用层DDOS）</h3><p>原理：对一些消耗资源较大的应用页面不断发起正常的请求（查询数据库、读写硬盘文件等），以达到消耗服务端资源的目的。<br>对抗措施：在应用中针对每个”客户端”做一个请求频率的限制，可以通过IP地址与Cookie定位一个客户端。</p>
-<p><a href="https://www.zhihu.com/question/22259175" target="_blank" rel="external">知乎-什么是 DDoS 攻击？</a></p>
+<h3 id="Challenge-Collapasar（应用层DDOS）"><a href="#Challenge-Collapasar（应用层DDOS）" class="headerlink" title="Challenge Collapasar（应用层DDOS）"></a>Challenge Collapasar（应用层DDOS）</h3><p>原理：对一些消耗资源较大的应用页面不断发起正常的请求（查询数据库、读写硬盘文件等），以达到消耗服务端资源的目的。<br>对抗措施：在应用中针对每个”客户端”做一个请求频率的限制，可以通过IP地址与Cookie定位一个客户端。<br>若IP地址改变（代理服务器）或Cookie清空，应该使用应用代码要做好性能优化（常用数据转移到内存中），在网络架构上做好优化（利用负载均衡、CDN、镜像站点等分流，减轻主站的压力）。<br><a href="https://www.zhihu.com/question/22259175" target="_blank" rel="external">知乎-什么是 DDoS 攻击？</a></p>
 <h1 id="文件上传漏洞"><a href="#文件上传漏洞" class="headerlink" title="文件上传漏洞"></a>文件上传漏洞</h1><h2 id="产生的问题"><a href="#产生的问题" class="headerlink" title="产生的问题"></a>产生的问题</h2><ol>
 <li>上传文件是Web脚本语言</li>
 <li>上传文件是木马、病毒文件，诱骗用户或者管理员下载执行</li>
