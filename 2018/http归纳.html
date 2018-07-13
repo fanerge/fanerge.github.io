@@ -111,13 +111,13 @@
   <meta name="description" content="安全（Safe）说一个HTTP方法是安全的，是说这是个不会修改服务器的数据的方法。也就是说，这是一个对服务器只读操作的方法。这些方法是安全的：GET，HEAD和OPTIONS。所有安全的方法都是idempotent（幂等），有些不安全的方法如PUT和DELETE则不是。PS：网络爬虫也是依赖于安全的HTTP方法，安全方法: GET, HEAD, OPTIONS；非安全方法: PUT, DELETE">
 <meta name="keywords" content="http">
 <meta property="og:type" content="article">
-<meta property="og:title" content="http归纳">
+<meta property="og:title" content="HTTP知识（前端相关）">
 <meta property="og:url" content="https://fanerge.github.io/2018/http归纳.html">
 <meta property="og:site_name" content="余真帆的博客">
 <meta property="og:description" content="安全（Safe）说一个HTTP方法是安全的，是说这是个不会修改服务器的数据的方法。也就是说，这是一个对服务器只读操作的方法。这些方法是安全的：GET，HEAD和OPTIONS。所有安全的方法都是idempotent（幂等），有些不安全的方法如PUT和DELETE则不是。PS：网络爬虫也是依赖于安全的HTTP方法，安全方法: GET, HEAD, OPTIONS；非安全方法: PUT, DELETE">
-<meta property="og:updated_time" content="2018-07-05T12:22:11.500Z">
+<meta property="og:updated_time" content="2018-07-12T23:57:14.686Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="http归纳">
+<meta name="twitter:title" content="HTTP知识（前端相关）">
 <meta name="twitter:description" content="安全（Safe）说一个HTTP方法是安全的，是说这是个不会修改服务器的数据的方法。也就是说，这是一个对服务器只读操作的方法。这些方法是安全的：GET，HEAD和OPTIONS。所有安全的方法都是idempotent（幂等），有些不安全的方法如PUT和DELETE则不是。PS：网络爬虫也是依赖于安全的HTTP方法，安全方法: GET, HEAD, OPTIONS；非安全方法: PUT, DELETE">
 
 
@@ -137,7 +137,7 @@
   };
 </script>
 
-  <title>http归纳 | 余真帆的博客</title>
+  <title>HTTP知识（前端相关） | 余真帆的博客</title>
   
 
 
@@ -354,7 +354,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">http归纳</h2>
+          <h2 class="post-title" itemprop="name headline">HTTP知识（前端相关）</h2>
         
 
         <div class="post-meta">
@@ -440,6 +440,10 @@
 <h2 id="OPTIONS"><a href="#OPTIONS" class="headerlink" title="OPTIONS"></a>OPTIONS</h2><p>OPTIONS 方法 用于获取目的资源所支持的通信选项。在 CORS 作为预检请求。</p>
 <h2 id="TRACE"><a href="#TRACE" class="headerlink" title="TRACE"></a>TRACE</h2><p>TRACE 方法 实行了向目标资源的沿路径的消息环回(loop-back)测试 ，提供了一种实用的debug机制。</p>
 <h2 id="PATCH"><a href="#PATCH" class="headerlink" title="PATCH"></a>PATCH</h2><p>请求方法 PATCH  用于对资源进行部分修改。<br>PS：在HTTP协议中， PUT 方法已经被用来表示对资源进行整体覆盖， 而 POST 方法则没有对标准的补丁格式的提供支持。不同于  PUT 方法，而与 POST 方法类似，PATCH  方法是非幂等的，这就意味着连续多个的相同请求会产生不同的效果。</p>
+<h1 id="浏览器缓存"><a href="#浏览器缓存" class="headerlink" title="浏览器缓存"></a>浏览器缓存</h1><h2 id="强缓存"><a href="#强缓存" class="headerlink" title="强缓存"></a>强缓存</h2><h3 id="Cache-Control（请求头和响应头）"><a href="#Cache-Control（请求头和响应头）" class="headerlink" title="Cache-Control（请求头和响应头）"></a>Cache-Control（请求头和响应头）</h3><p>通用消息头被用于在http 请求和响应中通过指定指令来实现缓存机制。<br>max-age：指定设置缓存最大的有效时间（单位为s）。<br>s-maxage：覆盖max-age 或者 Expires 头，但是仅适用于共享缓存(比如各个代理CDN)，并且私有缓存中它被忽略。<br>public：表明响应可以被接收的客户端、代理服务器等缓存。<br>private：表明响应只能被客户端缓存，不能作为共享缓存（即代理服务器不能缓存它）。<br>no-cache：在释放缓存副本之前，强制高速缓存将请求提交给原始服务器进行验证。<br>no-store：缓存不应存储有关客户端请求或服务器响应的任何内容。</p>
+<h3 id="Expires（响应头）"><a href="#Expires（响应头）" class="headerlink" title="Expires（响应头）"></a>Expires（响应头）</h3><p>响应头包含日期/时间， 即在此时候之后，响应过期。<br>PS：如果在Cache-Control响应头设置了 “max-age” 或者 “s-max-age” 指令，那么 Expires 头会被忽略。</p>
+<h2 id="协商缓存"><a href="#协商缓存" class="headerlink" title="协商缓存"></a>协商缓存</h2><h3 id="Last-modified（响应头）"><a href="#Last-modified（响应头）" class="headerlink" title="Last-modified（响应头）"></a>Last-modified（响应头）</h3><p>它包含源头服务器认定的资源做出修改的日期及时间。<br>工作原理：浏览器首次请求资源是响应头中包含 Last-modified 字段，当再次请求时将上次 Last-modified 的值赋值给 If-Modified-Since 请求头，服务器根据对应资源的修改时间于 If-Modified-Since 的值进行比较，从而断定该资源是否被修改再响应304或200。</p>
+<h3 id="ETag（响应头）"><a href="#ETag（响应头）" class="headerlink" title="ETag（响应头）"></a>ETag（响应头）</h3><p>工作原理：和 Last-modified（If-Modified-Since）工作原理基本一致，只不过服务器判断资源是否被更改的条件不是文件修改时间而是为资源生产的hash值是否发生变化。<br>PS：可以弥补 max-age 和 Last-modified 只能精确到秒的缺陷。<br><a href="http://www.alloyteam.com/2016/03/discussion-on-web-caching/" target="_blank" rel="external">alloyteam-浅谈Web缓存</a></p>
 
       
     </div>
@@ -494,7 +498,7 @@
     <strong>Post author: </strong>余真帆-fanerge</li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="https://fanerge.github.io/2018/http归纳.html" title="http归纳">https://fanerge.github.io/2018/http归纳.html</a>
+    <a href="https://fanerge.github.io/2018/http归纳.html" title="HTTP知识（前端相关）">https://fanerge.github.io/2018/http归纳.html</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> unless stating additionally.</li>
@@ -873,7 +877,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安全（Safe）"><span class="nav-number">1.</span> <span class="nav-text">安全（Safe）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#幂等（Idempotent）"><span class="nav-number">2.</span> <span class="nav-text">幂等（Idempotent）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HTTP方法比较"><span class="nav-number">3.</span> <span class="nav-text">HTTP方法比较</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GET"><span class="nav-number">3.1.</span> <span class="nav-text">GET</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HEAD"><span class="nav-number">3.2.</span> <span class="nav-text">HEAD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#POST"><span class="nav-number">3.3.</span> <span class="nav-text">POST</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PUT"><span class="nav-number">3.4.</span> <span class="nav-text">PUT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DELETE"><span class="nav-number">3.5.</span> <span class="nav-text">DELETE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CONNECT"><span class="nav-number">3.6.</span> <span class="nav-text">CONNECT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OPTIONS"><span class="nav-number">3.7.</span> <span class="nav-text">OPTIONS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TRACE"><span class="nav-number">3.8.</span> <span class="nav-text">TRACE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PATCH"><span class="nav-number">3.9.</span> <span class="nav-text">PATCH</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安全（Safe）"><span class="nav-number">1.</span> <span class="nav-text">安全（Safe）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#幂等（Idempotent）"><span class="nav-number">2.</span> <span class="nav-text">幂等（Idempotent）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HTTP方法比较"><span class="nav-number">3.</span> <span class="nav-text">HTTP方法比较</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#GET"><span class="nav-number">3.1.</span> <span class="nav-text">GET</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HEAD"><span class="nav-number">3.2.</span> <span class="nav-text">HEAD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#POST"><span class="nav-number">3.3.</span> <span class="nav-text">POST</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PUT"><span class="nav-number">3.4.</span> <span class="nav-text">PUT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DELETE"><span class="nav-number">3.5.</span> <span class="nav-text">DELETE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CONNECT"><span class="nav-number">3.6.</span> <span class="nav-text">CONNECT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OPTIONS"><span class="nav-number">3.7.</span> <span class="nav-text">OPTIONS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TRACE"><span class="nav-number">3.8.</span> <span class="nav-text">TRACE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PATCH"><span class="nav-number">3.9.</span> <span class="nav-text">PATCH</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#浏览器缓存"><span class="nav-number">4.</span> <span class="nav-text">浏览器缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#强缓存"><span class="nav-number">4.1.</span> <span class="nav-text">强缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Cache-Control（请求头和响应头）"><span class="nav-number">4.1.1.</span> <span class="nav-text">Cache-Control（请求头和响应头）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Expires（响应头）"><span class="nav-number">4.1.2.</span> <span class="nav-text">Expires（响应头）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#协商缓存"><span class="nav-number">4.2.</span> <span class="nav-text">协商缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Last-modified（响应头）"><span class="nav-number">4.2.1.</span> <span class="nav-text">Last-modified（响应头）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ETag（响应头）"><span class="nav-number">4.2.2.</span> <span class="nav-text">ETag（响应头）</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
