@@ -115,7 +115,7 @@
 <meta property="og:url" content="https://fanerge.github.io/2018/Web性能优化.html">
 <meta property="og:site_name" content="余真帆的博客">
 <meta property="og:description" content="预加载技术DNS prefetchDNS prefetching通过指定具体的URL来告知客户端未来会用到相关的资源，这样浏览器可以尽早的解析DNS。&amp;lt;link rel=&amp;quot;dns-prefetch&amp;quot; href=&amp;quot;//example.com&amp;quot;&amp;gt; Preconnect和DNS prefetch类似，preconnect不光会解析DNS，还会建立TCP">
-<meta property="og:updated_time" content="2018-07-13T14:34:59.734Z">
+<meta property="og:updated_time" content="2018-07-16T12:28:28.230Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Web性能优化">
 <meta name="twitter:description" content="预加载技术DNS prefetchDNS prefetching通过指定具体的URL来告知客户端未来会用到相关的资源，这样浏览器可以尽早的解析DNS。&amp;lt;link rel=&amp;quot;dns-prefetch&amp;quot; href=&amp;quot;//example.com&amp;quot;&amp;gt; Preconnect和DNS prefetch类似，preconnect不光会解析DNS，还会建立TCP">
@@ -435,6 +435,8 @@
 <h2 id="Subresource"><a href="#Subresource" class="headerlink" title="Subresource"></a>Subresource</h2><p>可以用来指定资源是最高优先级的。<br><code>&lt;link rel=&quot;subresource&quot; href=&quot;styles.css&quot;&gt;</code><br>PS：rel=prefetch指定了下载后续页面用到资源的低优先级，而rel=subresource则是指定当前页面资源的提前加载。</p>
 <h2 id="Prerender"><a href="#Prerender" class="headerlink" title="Prerender"></a>Prerender</h2><p>prerender是一个重量级的选项，它可以让浏览器提前加载指定页面的所有资源。<br>一些适用场景用户搜索后的结果页面、登录成功后的页面、多页文章（预先加载下一页的资源）<br><code>&lt;link rel=&quot;prerender&quot;  href=&quot;/thenextpage.html&quot; /&gt;</code><br>PS：该属性会下载所有的资源、创建DOM、渲染页面、执行JS<a href="https://www.w3.org/TR/page-visibility/" target="_blank" rel="external">这篇文章可以防止页面还没有展示给用户就出发JS的执行</a>等等。</p>
 <h2 id="Preload"><a href="#Preload" class="headerlink" title="Preload"></a>Preload</h2><p>允许始终预加载某些资源，不像prefetch有可能被浏览器忽略，浏览器必须请求preload标记的资源。<br><code>&lt;link rel=&quot;preload&quot; href=&quot;image.png&quot;&gt;</code><br><a href="http://www.alloyteam.com/2015/10/prefetching-preloading-prebrowsing/" target="_blank" rel="external">AlloyTeam-一箩筐的预加载技术</a></p>
+<h1 id="微任务（jobs）和宏任务（task）"><a href="#微任务（jobs）和宏任务（task）" class="headerlink" title="微任务（jobs）和宏任务（task）"></a>微任务（jobs）和宏任务（task）</h1><p>微任务包括：process.nextTick，原生Promise(有些实现的promise将then方法放到了宏任务中)，Object.observe(已废弃)，MutationObserver<br>宏任务包括：script，setTimeout，setInterval，setImmediate，I/O ，UI rendering，MessageChannel </p>
+<h1 id="如何生成新图层（避免重排影响其他图层）"><a href="#如何生成新图层（避免重排影响其他图层）" class="headerlink" title="如何生成新图层（避免重排影响其他图层）"></a>如何生成新图层（避免重排影响其他图层）</h1><p>通过以下几个常用属性可以生成新图层<br>3D 变换：translate3d、translateZ<br>will-change<br>video、iframe 标签<br>通过动画实现的 opacity 动画转换<br>position: fixed</p>
 
       
     </div>
@@ -693,8 +695,6 @@ var jiathis_config={
                     
                       
                     
-                      
-                    
                     <span class="site-state-item-count">26</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
@@ -878,7 +878,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#预加载技术"><span class="nav-number">1.</span> <span class="nav-text">预加载技术</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DNS-prefetch"><span class="nav-number">1.1.</span> <span class="nav-text">DNS prefetch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Preconnect"><span class="nav-number">1.2.</span> <span class="nav-text">Preconnect</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Prefetch"><span class="nav-number">1.3.</span> <span class="nav-text">Prefetch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Subresource"><span class="nav-number">1.4.</span> <span class="nav-text">Subresource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Prerender"><span class="nav-number">1.5.</span> <span class="nav-text">Prerender</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Preload"><span class="nav-number">1.6.</span> <span class="nav-text">Preload</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#预加载技术"><span class="nav-number">1.</span> <span class="nav-text">预加载技术</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DNS-prefetch"><span class="nav-number">1.1.</span> <span class="nav-text">DNS prefetch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Preconnect"><span class="nav-number">1.2.</span> <span class="nav-text">Preconnect</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Prefetch"><span class="nav-number">1.3.</span> <span class="nav-text">Prefetch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Subresource"><span class="nav-number">1.4.</span> <span class="nav-text">Subresource</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Prerender"><span class="nav-number">1.5.</span> <span class="nav-text">Prerender</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Preload"><span class="nav-number">1.6.</span> <span class="nav-text">Preload</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#微任务（jobs）和宏任务（task）"><span class="nav-number">2.</span> <span class="nav-text">微任务（jobs）和宏任务（task）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#如何生成新图层（避免重排影响其他图层）"><span class="nav-number">3.</span> <span class="nav-text">如何生成新图层（避免重排影响其他图层）</span></a></li></ol></div>
             
 
           </div>
