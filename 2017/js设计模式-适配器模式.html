@@ -108,17 +108,17 @@
 
 
 
-  <meta name="description" content="适配器模式介绍定义：适配器模式（Adapter）是将一个类（对象）的接口（方法或属性）转化成客户希望的另外一个接口（方法或属性），     适配器模式使得原本由于接口不兼容而不能一起工作的那些类（对象）可以一些工作。速成包装器（wrapper）。 使用场景：比如，当系统中某个接口的结构已经无法满足我们现在的业务需求，但又不能改动这个接口，     因为可能原来的系统很多功能都依赖于这个接口，改动接">
+  <meta name="description" content="适配器模式介绍定义：适配器模式（Adapter）是将一个类（对象）的接口（方法或属性）转化成客户希望的另外一个接口（方法或属性），    适配器模式使得原本由于接口不兼容而不能一起工作的那些类（对象）可以一些工作。速成包装器（wrapper）。使用场景：比如，当系统中某个接口的结构已经无法满足我们现在的业务需求，但又不能改动这个接口，    因为可能原来的系统很多功能都依赖于这个接口，改动接口会牵">
 <meta name="keywords" content="设计模式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="js设计模式-适配器模式">
 <meta property="og:url" content="https://fanerge.github.io/2017/js设计模式-适配器模式.html">
 <meta property="og:site_name" content="余真帆的博客">
-<meta property="og:description" content="适配器模式介绍定义：适配器模式（Adapter）是将一个类（对象）的接口（方法或属性）转化成客户希望的另外一个接口（方法或属性），     适配器模式使得原本由于接口不兼容而不能一起工作的那些类（对象）可以一些工作。速成包装器（wrapper）。 使用场景：比如，当系统中某个接口的结构已经无法满足我们现在的业务需求，但又不能改动这个接口，     因为可能原来的系统很多功能都依赖于这个接口，改动接">
-<meta property="og:updated_time" content="2017-10-21T04:16:42.139Z">
+<meta property="og:description" content="适配器模式介绍定义：适配器模式（Adapter）是将一个类（对象）的接口（方法或属性）转化成客户希望的另外一个接口（方法或属性），    适配器模式使得原本由于接口不兼容而不能一起工作的那些类（对象）可以一些工作。速成包装器（wrapper）。使用场景：比如，当系统中某个接口的结构已经无法满足我们现在的业务需求，但又不能改动这个接口，    因为可能原来的系统很多功能都依赖于这个接口，改动接口会牵">
+<meta property="og:updated_time" content="2018-08-02T13:24:21.884Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="js设计模式-适配器模式">
-<meta name="twitter:description" content="适配器模式介绍定义：适配器模式（Adapter）是将一个类（对象）的接口（方法或属性）转化成客户希望的另外一个接口（方法或属性），     适配器模式使得原本由于接口不兼容而不能一起工作的那些类（对象）可以一些工作。速成包装器（wrapper）。 使用场景：比如，当系统中某个接口的结构已经无法满足我们现在的业务需求，但又不能改动这个接口，     因为可能原来的系统很多功能都依赖于这个接口，改动接">
+<meta name="twitter:description" content="适配器模式介绍定义：适配器模式（Adapter）是将一个类（对象）的接口（方法或属性）转化成客户希望的另外一个接口（方法或属性），    适配器模式使得原本由于接口不兼容而不能一起工作的那些类（对象）可以一些工作。速成包装器（wrapper）。使用场景：比如，当系统中某个接口的结构已经无法满足我们现在的业务需求，但又不能改动这个接口，    因为可能原来的系统很多功能都依赖于这个接口，改动接口会牵">
 
 
 
@@ -429,34 +429,27 @@
       
 
       
-        <h1 id="适配器模式介绍"><a href="#适配器模式介绍" class="headerlink" title="适配器模式介绍"></a>适配器模式介绍</h1><pre><code>定义：适配器模式（Adapter）是将一个类（对象）的接口（方法或属性）转化成客户希望的另外一个接口（方法或属性），
-    适配器模式使得原本由于接口不兼容而不能一起工作的那些类（对象）可以一些工作。速成包装器（wrapper）。
-使用场景：比如，当系统中某个接口的结构已经无法满足我们现在的业务需求，但又不能改动这个接口，
-    因为可能原来的系统很多功能都依赖于这个接口，改动接口会牵扯到太多文件。
-    因此应对这种场景，我们可以很快地想到可以用适配器模式来解决这个问题。    
-</code></pre><h1 id="适配两个库"><a href="#适配两个库" class="headerlink" title="适配两个库"></a>适配两个库</h1><ol>
-<li><p>下面我们来实现从Prototype库的$函数到YUI的get方法的转换。<br>这两个函数的功能比较相似，不过先看看她们在接口方面的差别：<br>Prototype库的$函数    </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">function $()&#123;</div><div class="line">	var elments = new Array();</div><div class="line">	for(var i=0; i&lt;arguments.length; i++)&#123;</div><div class="line">		var element = arguments[i];</div><div class="line">		if(typeof element == &apos;string&apos;)&#123;</div><div class="line">			element = document.getElementById(element);</div><div class="line">		&#125;</div><div class="line">		if(arguments.length == 1)&#123;</div><div class="line">			return element;</div><div class="line">		&#125;</div><div class="line">		elments.push(element);</div><div class="line">	&#125;</div><div class="line">	return elements;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>YUI的get方法    </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">YAHOO.util.Dom.get = function(el)&#123;</div><div class="line">	if(YAHOO.lang.isString(el))&#123;</div><div class="line">		return document.getElementById(el);</div><div class="line">	&#125;</div><div class="line">	if(YAHOO.lang.isArray(el))&#123;</div><div class="line">		var c = [];</div><div class="line">		for(var i= 0, len=el.length; i&lt;len; i++)&#123;</div><div class="line">			c[c.length] = YAHOO.util.Dom.get(el[i]);</div><div class="line">		&#125;</div><div class="line">		return c;</div><div class="line">	&#125;</div><div class="line">	if(el)&#123;</div><div class="line">		return el;</div><div class="line">	&#125;</div><div class="line">	return null;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-<li><p>分析二者的区别：get具有一个参数，这个参数可以是一个HTML元素、字符串或者由字符串或HTML元素组成的数组，<br>与此不同，$函数没有正式列出参数，而是允许客户传入任意数目的参数，不管是字符串还是HTML元素都行。</p>
-</li>
-<li><p>这里两种转换的适配器就应该这样写<br>$ –&gt; get</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">function $2getAdapter()&#123;</div><div class="line">	return YAHOO.util.Dom.get(arguments);</div><div class="line">&#125;</div><div class="line">对于从Prototype改投YUI的人应该如下使用</div><div class="line">$ = $2getAdapter;</div><div class="line">这样就可以继续使用 $ 方法了。</div></pre></td></tr></table></figure>
-<p>get –&gt; $</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">function get2$Adapter(el)&#123;</div><div class="line">	return $.apply(window, el instanceof Array ?el: [el]);</div><div class="line">&#125;</div><div class="line">对于从YUI改投Prototype的人应该如下使用</div><div class="line">YAHOO.util.Dom.get = get2$Adapter;</div><div class="line">这样就可以继续使用 YAHOO.util.Dom.get 方法了。</div></pre></td></tr></table></figure>
+        <h1 id="适配器模式介绍"><a href="#适配器模式介绍" class="headerlink" title="适配器模式介绍"></a>适配器模式介绍</h1><p>定义：适配器模式（Adapter）是将一个类（对象）的接口（方法或属性）转化成客户希望的另外一个接口（方法或属性），<br>    适配器模式使得原本由于接口不兼容而不能一起工作的那些类（对象）可以一些工作。速成包装器（wrapper）。<br>使用场景：比如，当系统中某个接口的结构已经无法满足我们现在的业务需求，但又不能改动这个接口，<br>    因为可能原来的系统很多功能都依赖于这个接口，改动接口会牵扯到太多文件。<br>    因此应对这种场景，我们可以很快地想到可以用适配器模式来解决这个问题。    </p>
+<h1 id="适配两个库"><a href="#适配两个库" class="headerlink" title="适配两个库"></a>适配两个库</h1><ol>
+<li>下面我们来实现从Prototype库的$函数到YUI的get方法的转换。<br>这两个函数的功能比较相似，不过先看看她们在接口方面的差别：<br>Prototype库的$函数    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">function $()&#123;</div><div class="line">	var elments = new Array();</div><div class="line">	for(var i=0; i&lt;arguments.length; i++)&#123;</div><div class="line">		var element = arguments[i];</div><div class="line">		if(typeof element == &apos;string&apos;)&#123;</div><div class="line">			element = document.getElementById(element);</div><div class="line">		&#125;</div><div class="line">		if(arguments.length == 1)&#123;</div><div class="line">			return element;</div><div class="line">		&#125;</div><div class="line">		elments.push(element);</div><div class="line">	&#125;</div><div class="line">	return elements;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 </li>
 </ol>
+<p>YUI的get方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">YAHOO.util.Dom.get = function(el)&#123;</div><div class="line">	if(YAHOO.lang.isString(el))&#123;</div><div class="line">		return document.getElementById(el);</div><div class="line">	&#125;</div><div class="line">	if(YAHOO.lang.isArray(el))&#123;</div><div class="line">		var c = [];</div><div class="line">		for(var i= 0, len=el.length; i&lt;len; i++)&#123;</div><div class="line">			c[c.length] = YAHOO.util.Dom.get(el[i]);</div><div class="line">		&#125;</div><div class="line">		return c;</div><div class="line">	&#125;</div><div class="line">	if(el)&#123;</div><div class="line">		return el;</div><div class="line">	&#125;</div><div class="line">	return null;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<ol>
+<li>分析二者的区别：get具有一个参数，这个参数可以是一个HTML元素、字符串或者由字符串或HTML元素组成的数组，<br>与此不同，$函数没有正式列出参数，而是允许客户传入任意数目的参数，不管是字符串还是HTML元素都行。</li>
+<li>这里两种转换的适配器就应该这样写<br>$ –&gt; get<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">function $2getAdapter()&#123;</div><div class="line">	return YAHOO.util.Dom.get(arguments);</div><div class="line">&#125;</div><div class="line">对于从Prototype改投YUI的人应该如下使用</div><div class="line">$ = $2getAdapter;</div><div class="line">这样就可以继续使用 $ 方法了。</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>get –&gt; $<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">function get2$Adapter(el)&#123;</div><div class="line">	return $.apply(window, el instanceof Array ?el: [el]);</div><div class="line">&#125;</div><div class="line">对于从YUI改投Prototype的人应该如下使用</div><div class="line">YAHOO.util.Dom.get = get2$Adapter;</div><div class="line">这样就可以继续使用 YAHOO.util.Dom.get 方法了。</div></pre></td></tr></table></figure></p>
 <h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p><strong>    注意：适配器模式尽量少使用，就类似于在衣服上打补丁。特别是在接口还没有确定的时候使用，因为这样后期不利于维护，相反，这个时候我们应该重新思考我们的接口设计是否合理。 
-</strong><br>    那合适使用适配器模式好呢？如果有以下情况出现时，建议使用：</p>
+</strong><br>那合适使用适配器模式好呢？如果有以下情况出现时，建议使用：</p>
 <ol>
 <li>使用一个已经存在的对象，但其方法或属性接口不符合你的要求；</li>
 <li>你想创建一个可复用的对象，该对象可以与其它不相关的对象或不可见对象（即接口方法或属性不兼容的对象）协同工作；</li>
 <li>想使用已经存在的对象，但是不能对每一个都进行原型继承以匹配它的接口。对象适配器可以适配它的父对象接口方法或属性。</li>
 </ol>
-<pre><code>另外，适配器模式和其它几个模式可能容易让人迷惑，这里说一下大概的区别：
-</code></pre><ol>
+<p>另外，适配器模式和其它几个模式可能容易让人迷惑，这里说一下大概的区别：</p>
+<ol>
 <li>适配器和桥接模式虽然类似，但桥接的出发点不同，桥接的目的是将接口部分和实现部分分离，从而对他们可以更为容易也相对独立的加以改变。而适配器则意味着改变一个已有对象的接口。</li>
 <li>装饰者模式增强了其它对象的功能而同时又不改变它的接口，因此它对应程序的透明性比适配器要好，其结果是装饰者支持递归组合，而纯粹使用适配器则是不可能的。</li>
 <li>代理模式在不改变它的接口的条件下，为另外一个对象定义了一个代理。        </li>
