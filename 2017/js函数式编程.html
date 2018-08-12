@@ -108,16 +108,17 @@
 
 
 
-  <meta name="description" content="前端、web">
+  <meta name="description" content="高阶函数满足下列条件之一则为高阶函数：  接受一个或多个函数作为输入。 输出一个函数。  函数的合成（Compose）如果一个值要经过多个函数，才能变成另外一个值，就可以把所有中间步骤合并成一个函数，这叫做”函数的合成”（compose）。通用 compose 函数123456789101112131415let compose = function(...args) &amp;#123;	let len">
+<meta name="keywords" content="函数式编程">
 <meta property="og:type" content="article">
-<meta property="og:title" content="js函数式编程">
+<meta property="og:title" content="js函数式编程基本概念">
 <meta property="og:url" content="https://fanerge.github.io/2017/js函数式编程.html">
 <meta property="og:site_name" content="余真帆的博客">
-<meta property="og:description" content="前端、web">
-<meta property="og:updated_time" content="2017-08-03T12:00:21.958Z">
+<meta property="og:description" content="高阶函数满足下列条件之一则为高阶函数：  接受一个或多个函数作为输入。 输出一个函数。  函数的合成（Compose）如果一个值要经过多个函数，才能变成另外一个值，就可以把所有中间步骤合并成一个函数，这叫做”函数的合成”（compose）。通用 compose 函数123456789101112131415let compose = function(...args) &amp;#123;	let len">
+<meta property="og:updated_time" content="2018-08-12T09:04:15.672Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="js函数式编程">
-<meta name="twitter:description" content="前端、web">
+<meta name="twitter:title" content="js函数式编程基本概念">
+<meta name="twitter:description" content="高阶函数满足下列条件之一则为高阶函数：  接受一个或多个函数作为输入。 输出一个函数。  函数的合成（Compose）如果一个值要经过多个函数，才能变成另外一个值，就可以把所有中间步骤合并成一个函数，这叫做”函数的合成”（compose）。通用 compose 函数123456789101112131415let compose = function(...args) &amp;#123;	let len">
 
 
 
@@ -136,7 +137,7 @@
   };
 </script>
 
-  <title>js函数式编程 | 余真帆的博客</title>
+  <title>js函数式编程基本概念 | 余真帆的博客</title>
   
 
 
@@ -353,7 +354,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">js函数式编程</h2>
+          <h2 class="post-title" itemprop="name headline">js函数式编程基本概念</h2>
         
 
         <div class="post-meta">
@@ -374,6 +375,24 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/函数式编程/" itemprop="url" rel="index"><span itemprop="name">函数式编程</span></a></span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -410,7 +429,25 @@
       
 
       
-        
+        <h1 id="高阶函数"><a href="#高阶函数" class="headerlink" title="高阶函数"></a>高阶函数</h1><p>满足下列条件之一则为高阶函数：</p>
+<ol>
+<li>接受一个或多个函数作为输入。</li>
+<li>输出一个函数。</li>
+</ol>
+<h1 id="函数的合成（Compose）"><a href="#函数的合成（Compose）" class="headerlink" title="函数的合成（Compose）"></a>函数的合成（Compose）</h1><p>如果一个值要经过多个函数，才能变成另外一个值，就可以把所有中间步骤合并成一个函数，这叫做”函数的合成”（compose）。<br>通用 compose 函数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">let compose = function(...args) &#123;</div><div class="line">	let len = args.length,</div><div class="line">		count = len - 1,</div><div class="line">		result;</div><div class="line">	return function f1(...args1) &#123;</div><div class="line">		result = args[count].apply(this, args1);</div><div class="line">		if (count &lt;= 0) &#123;</div><div class="line">			count = len - 1;</div><div class="line">			return result;</div><div class="line">		&#125; else &#123;</div><div class="line">			count--;</div><div class="line">			return f1.call(null, result);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>PS：具有以下特点</p>
+<ol>
+<li>第一函数接受参数, 其他函数接受的上一个函数的返回值</li>
+<li>第一个函数的参数是多元的, 其他函数的一元的</li>
+<li>自右向左执行</li>
+</ol>
+<h1 id="函数柯里化（curry）"><a href="#函数柯里化（curry）" class="headerlink" title="函数柯里化（curry）"></a>函数柯里化（curry）</h1><p>把接受多个参数的函数变换成接受一个单一参数（最初函数的第一个参数）的函数，并且返回接受余下的参数的函数或者计算结果（参数足够的情况）。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">let curry = function(fn) &#123;</div><div class="line">	let limit = fn.length;</div><div class="line">	return function judgeCurry (...args) &#123;</div><div class="line">		if (args.length &gt;= limit) &#123;</div><div class="line">			return fn.apply(null, args);</div><div class="line">		&#125; else &#123;</div><div class="line">			return function(...args2) &#123;</div><div class="line">				return judgeCurry.apply(null, args.concat(args2));                                     </div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>PS：具有以下特点</p>
+<ol>
+<li>当传入参数少于原本需要的参数个数就返回一个函数</li>
+<li>当传入参数等于原本需要的参数个数就返回计算结果</li>
+</ol>
+
       
     </div>
 
@@ -464,7 +501,7 @@
     <strong>Post author: </strong>余真帆-fanerge</li>
   <li class="post-copyright-link">
     <strong>Post link:</strong>
-    <a href="https://fanerge.github.io/2017/js函数式编程.html" title="js函数式编程">https://fanerge.github.io/2017/js函数式编程.html</a>
+    <a href="https://fanerge.github.io/2017/js函数式编程.html" title="js函数式编程基本概念">https://fanerge.github.io/2017/js函数式编程.html</a>
   </li>
   <li class="post-copyright-license">
     <strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> unless stating additionally.</li>
@@ -474,6 +511,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/函数式编程/" rel="tag"><i class="far fa-bell"></i> 函数式编程</a>
+          
+        </div>
       
 
       
@@ -576,8 +619,17 @@ var jiathis_config={
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -836,6 +888,22 @@ var jiathis_config={
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#高阶函数"><span class="nav-number">1.</span> <span class="nav-text">高阶函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数的合成（Compose）"><span class="nav-number">2.</span> <span class="nav-text">函数的合成（Compose）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#函数柯里化（curry）"><span class="nav-number">3.</span> <span class="nav-text">函数柯里化（curry）</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
