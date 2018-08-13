@@ -115,7 +115,7 @@
 <meta property="og:url" content="https://fanerge.github.io/2018/React-基础知识整理.html">
 <meta property="og:site_name" content="余真帆的博客">
 <meta property="og:description" content="setState 一定是异步的吗？setState 只在合成事件和钩子函数中是“异步”的，在原生事件和 setTimeout 中都是“同步”的。你真的理解setState吗？ FiberFiber 本质上是一个虚拟的堆栈帧，新的调度器会按照优先级自由调度这些帧，从而将之前的同步渲染改成了异步渲染，在不影响体验的情况下去分段计算更新。对于如何区别优先级，React 有自己的一套逻辑。对于动画这种实时">
-<meta property="og:updated_time" content="2018-07-24T13:33:50.116Z">
+<meta property="og:updated_time" content="2018-08-13T13:33:44.895Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="React-基础知识整理">
 <meta name="twitter:description" content="setState 一定是异步的吗？setState 只在合成事件和钩子函数中是“异步”的，在原生事件和 setTimeout 中都是“同步”的。你真的理解setState吗？ FiberFiber 本质上是一个虚拟的堆栈帧，新的调度器会按照优先级自由调度这些帧，从而将之前的同步渲染改成了异步渲染，在不影响体验的情况下去分段计算更新。对于如何区别优先级，React 有自己的一套逻辑。对于动画这种实时">
@@ -433,35 +433,9 @@
 <h1 id="Fiber"><a href="#Fiber" class="headerlink" title="Fiber"></a>Fiber</h1><p>Fiber 本质上是一个虚拟的堆栈帧，新的调度器会按照优先级自由调度这些帧，从而将之前的同步渲染改成了异步渲染，在不影响体验的情况下去分段计算更新。<br>对于如何区别优先级，React 有自己的一套逻辑。对于动画这种实时性很高的东西，也就是 16 ms 必须渲染一次保证不卡顿的情况下，React 会每 16 ms（以内） 暂停一下更新，返回来继续渲染动画。<br>对于异步渲染，现在渲染有两个阶段：reconciliation 和 commit 。前者过程是可以打断的，后者不能暂停，会一直更新界面直到完成。</p>
 <h2 id="Reconciliation-阶段"><a href="#Reconciliation-阶段" class="headerlink" title="Reconciliation 阶段"></a>Reconciliation 阶段</h2><p>componentWillMount<br>componentWillReceiveProps（使用 getDerivedStateFromProps 代替）<br>shouldComponentUpdate<br>componentWillUpdate</p>
 <h2 id="Commit-阶段"><a href="#Commit-阶段" class="headerlink" title="Commit 阶段"></a>Commit 阶段</h2><p>componentDidMount<br>componentDidUpdate<br>componentWillUnmount<br><a href="https://yuchengkai.cn/docs/zh/frontend/react.html" target="_blank" rel="external">react</a></p>
-<h1 id="生命周期函数"><a href="#生命周期函数" class="headerlink" title="生命周期函数"></a>生命周期函数</h1><pre><code>class ExampleComponent extends React.Component {
-  // 用于初始化 state
-  constructor() {}
-  // 用于替换 `componentWillReceiveProps` ，该函数会在初始化和 `update` 时被调用
-  // 因为该函数是静态函数，所以取不到 `this`
-  // 如果需要对比 `prevProps` 需要单独在 `state` 中维护
-  static getDerivedStateFromProps(nextProps, prevState) {}
-  // 判断是否需要更新组件，多用于组件性能优化
-  shouldComponentUpdate(nextProps, nextState) {}
-  // 组件挂载后调用
-  // 可以在该函数中进行请求或者订阅
-  componentDidMount() {}
-  // 用于获得最新的 DOM 数据
-  getSnapshotBeforeUpdate() {}
-  // 组件即将销毁
-  // 可以在此处移除订阅，定时器等等
-  componentWillUnmount() {}
-  // 组件销毁后调用
-  componentDidUnMount() {}
-  // 组件更新后调用
-  componentDidUpdate() {}
-  // 渲染组件函数
-  render() {}
-  // 以下函数不建议使用
-  UNSAFE_componentWillMount() {}
-  UNSAFE_componentWillUpdate(nextProps, nextState) {}
-  UNSAFE_componentWillReceiveProps(nextProps) {}
-}
-</code></pre>
+<h1 id="生命周期函数"><a href="#生命周期函数" class="headerlink" title="生命周期函数"></a>生命周期函数</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">class ExampleComponent extends React.Component &#123;</div><div class="line">  // 用于初始化 state</div><div class="line">  constructor() &#123;&#125;</div><div class="line">  // 用于替换 `componentWillReceiveProps` ，该函数会在初始化和 `update` 时被调用</div><div class="line">  // 因为该函数是静态函数，所以取不到 `this`</div><div class="line">  // 如果需要对比 `prevProps` 需要单独在 `state` 中维护</div><div class="line">  static getDerivedStateFromProps(nextProps, prevState) &#123;&#125;</div><div class="line">  // 判断是否需要更新组件，多用于组件性能优化</div><div class="line">  shouldComponentUpdate(nextProps, nextState) &#123;&#125;</div><div class="line">  // 组件挂载后调用</div><div class="line">  // 可以在该函数中进行请求或者订阅</div><div class="line">  componentDidMount() &#123;&#125;</div><div class="line">  // 用于获得最新的 DOM 数据</div><div class="line">  getSnapshotBeforeUpdate() &#123;&#125;</div><div class="line">  // 组件即将销毁</div><div class="line">  // 可以在此处移除订阅，定时器等等</div><div class="line">  componentWillUnmount() &#123;&#125;</div><div class="line">  // 组件销毁后调用</div><div class="line">  componentDidUnMount() &#123;&#125;</div><div class="line">  // 组件更新后调用</div><div class="line">  componentDidUpdate() &#123;&#125;</div><div class="line">  // 渲染组件函数</div><div class="line">  render() &#123;&#125;</div><div class="line">  // 以下函数不建议使用</div><div class="line">  UNSAFE_componentWillMount() &#123;&#125;</div><div class="line">  UNSAFE_componentWillUpdate(nextProps, nextState) &#123;&#125;</div><div class="line">  UNSAFE_componentWillReceiveProps(nextProps) &#123;&#125;</div><div class="line">&#125;</div><div class="line">```	</div><div class="line">#	React16.0中的portal</div><div class="line">作用：将子节点插入到父节点之外的dom（render到一个组件里面去，实际改变的是网页上另一处的DOM结构。）。</div><div class="line">使用场景：Modal、Dialog、Message等全局提示组件</div></pre></td></tr></table></figure>
+<p>import {createPortal} from ‘react-dom’;<br>```<br><a href="https://zhuanlan.zhihu.com/p/29880992?utm_source=wechat_session&amp;utm_medium=social&amp;from=singlemessage" target="_blank" rel="external"></a></p>
+
       
     </div>
 
