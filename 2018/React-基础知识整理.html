@@ -115,7 +115,7 @@
 <meta property="og:url" content="https://fanerge.github.io/2018/React-基础知识整理.html">
 <meta property="og:site_name" content="余真帆的博客">
 <meta property="og:description" content="setState 一定是异步的吗？setState 只在合成事件和钩子函数中是“异步”的，在原生事件和 setTimeout 中都是“同步”的。你真的理解setState吗？ FiberFiber 本质上是一个虚拟的堆栈帧，新的调度器会按照优先级自由调度这些帧，从而将之前的同步渲染改成了异步渲染，在不影响体验的情况下去分段计算更新。对于如何区别优先级，React 有自己的一套逻辑。对于动画这种实时">
-<meta property="og:updated_time" content="2018-08-13T13:46:53.579Z">
+<meta property="og:updated_time" content="2018-08-13T23:39:06.169Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="React-基础知识整理">
 <meta name="twitter:description" content="setState 一定是异步的吗？setState 只在合成事件和钩子函数中是“异步”的，在原生事件和 setTimeout 中都是“同步”的。你真的理解setState吗？ FiberFiber 本质上是一个虚拟的堆栈帧，新的调度器会按照优先级自由调度这些帧，从而将之前的同步渲染改成了异步渲染，在不影响体验的情况下去分段计算更新。对于如何区别优先级，React 有自己的一套逻辑。对于动画这种实时">
@@ -442,6 +442,10 @@ doc.body.appendChild(this.node);
 </code></pre><p>  }</p>
 <p>  render() {<br>    return createPortal(<br>      <div class="dialog"><br>        {this.props.children}<br>      </div>, //塞进传送门的JSX<br>      this.node //传送门的另一端DOM node<br>    );<br>  }</p>
 <p>  componentWillUnmount() {<br>    window.document.body.removeChild(this.node);<br>  }<br>}<br>```<br><a href="https://zhuanlan.zhihu.com/p/29880992?utm_source=wechat_session&amp;utm_medium=social&amp;from=singlemessage" target="_blank" rel="external">React-DOM Portal</a></p>
+<h1 id="React16新特性"><a href="#React16新特性" class="headerlink" title="React16新特性"></a>React16新特性</h1><h2 id="Error-Boundary（错误边界）"><a href="#Error-Boundary（错误边界）" class="headerlink" title="Error Boundary（错误边界）"></a>Error Boundary（错误边界）</h2><p>之前，一旦某个组件发生错误，整个组件树将会从根节点被unmount下来。<br>Error Boundary可以看作是一种特殊的React组件，新增了componentDidCatch这个生命周期函数，它可以捕获自身及子树上的错误并对错误做优雅处理，包括上报错误日志、展示出错提示，而不是卸载整个组件树。（注：它并不能捕获runtime所有的错误，比如组件回调事件里的错误，可以把它想象成传统的try-catch语句）<br>PS：最佳实践封装通用错误组件，用起包裹可能出错的组件，来捕获子组件可能发生的错误。</p>
+<h2 id="render方法新增返回类型"><a href="#render方法新增返回类型" class="headerlink" title="render方法新增返回类型"></a>render方法新增返回类型</h2><p>render方法支持直接返回string，number，boolean，null，portal，以及fragments(带有key属性的数组)，这可以在一定程度上减少页面的DOM层级。</p>
+<h2 id="支持自定义DOM属性"><a href="#支持自定义DOM属性" class="headerlink" title="支持自定义DOM属性"></a>支持自定义DOM属性</h2><p>现在React可以将属性直接传递给DOM，不过有些写法任然无效。</p>
+<h2 id="setState传入null时不会再触发更新"><a href="#setState传入null时不会再触发更新" class="headerlink" title="setState传入null时不会再触发更新"></a>setState传入null时不会再触发更新</h2><p>比如在一个选择城市的函数中，当点击某个城市时，newValue的值可能发生改变，也可能是点击了原来的城市，值没有变化，返回null则可以直接避免触发更新，不会引起重复渲染，不需要在shouldComponentUpdate函数里面去判断。<br><a href="https://www.jianshu.com/p/af0ae26eac18" target="_blank" rel="external">十分钟快速了解React16新特性</a></p>
 
       
     </div>
@@ -893,7 +897,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#setState-一定是异步的吗？"><span class="nav-number">1.</span> <span class="nav-text">setState 一定是异步的吗？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Fiber"><span class="nav-number">2.</span> <span class="nav-text">Fiber</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconciliation-阶段"><span class="nav-number">2.1.</span> <span class="nav-text">Reconciliation 阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Commit-阶段"><span class="nav-number">2.2.</span> <span class="nav-text">Commit 阶段</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#生命周期函数"><span class="nav-number">3.</span> <span class="nav-text">生命周期函数</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#setState-一定是异步的吗？"><span class="nav-number">1.</span> <span class="nav-text">setState 一定是异步的吗？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Fiber"><span class="nav-number">2.</span> <span class="nav-text">Fiber</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Reconciliation-阶段"><span class="nav-number">2.1.</span> <span class="nav-text">Reconciliation 阶段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Commit-阶段"><span class="nav-number">2.2.</span> <span class="nav-text">Commit 阶段</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#生命周期函数"><span class="nav-number">3.</span> <span class="nav-text">生命周期函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#React16新特性"><span class="nav-number">4.</span> <span class="nav-text">React16新特性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Error-Boundary（错误边界）"><span class="nav-number">4.1.</span> <span class="nav-text">Error Boundary（错误边界）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#render方法新增返回类型"><span class="nav-number">4.2.</span> <span class="nav-text">render方法新增返回类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#支持自定义DOM属性"><span class="nav-number">4.3.</span> <span class="nav-text">支持自定义DOM属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#setState传入null时不会再触发更新"><span class="nav-number">4.4.</span> <span class="nav-text">setState传入null时不会再触发更新</span></a></li></ol></li></ol></div>
             
 
           </div>
