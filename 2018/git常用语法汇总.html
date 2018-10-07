@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.6" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=6.0.6" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.0.6',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+  
+
+
+
+
+  <meta name="description" content="本文不会介绍git的工作原理，需要你对git有一定的了解。本文几乎罗列出了所有常用的git命令，可作为日常开发的查询手册。 git clonegit clone [remoteUrl] // clone远程库到当前目录（项目名为远程项目名，会自动设置origin为remoteUrl的引用）git clone [remoteUrl] [本地项目名] // clone项目并会重命名为[本地项目名]PS">
+<meta name="keywords" content="git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git常用语法汇总">
+<meta property="og:url" content="https://fanerge.github.io/2018/git常用语法汇总.html">
+<meta property="og:site_name" content="余真帆的博客">
+<meta property="og:description" content="本文不会介绍git的工作原理，需要你对git有一定的了解。本文几乎罗列出了所有常用的git命令，可作为日常开发的查询手册。 git clonegit clone [remoteUrl] // clone远程库到当前目录（项目名为远程项目名，会自动设置origin为remoteUrl的引用）git clone [remoteUrl] [本地项目名] // clone项目并会重命名为[本地项目名]PS">
+<meta property="og:updated_time" content="2018-10-07T08:11:26.518Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="git常用语法汇总">
+<meta name="twitter:description" content="本文不会介绍git的工作原理，需要你对git有一定的了解。本文几乎罗列出了所有常用的git命令，可作为日常开发的查询手册。 git clonegit clone [remoteUrl] // clone远程库到当前目录（项目名为远程项目名，会自动设置origin为remoteUrl的引用）git clone [remoteUrl] [本地项目名] // clone项目并会重命名为[本地项目名]PS">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="余真帆的博客" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="https://fanerge.github.io/2018/git常用语法汇总.html"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>git常用语法汇总 | 余真帆的博客</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+	<a href="https://github.com/fanerge"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 9999;" src="http://pau044s3z.bkt.clouddn.com/forkgithub.png" alt="Fork me on GitHub"></a>
+	</div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">余真帆的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-categories">
+    <a href="/categories" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Categories</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-archives">
+    <a href="/archives" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Archives</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-tags">
+    <a href="/tags" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Tags</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-about">
+    <a href="/about" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />About</a>
+</li>
+
+      
+
+      
+    </ul>
+  
+
+  
+    
+
+    
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+    
+
+  
+
+
+  
+
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2018/git常用语法汇总.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="余真帆的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">git常用语法汇总</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-10-07T14:42:02+08:00">2018-10-07</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/代码管理/" itemprop="url" rel="index"><span itemprop="name">代码管理</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views: 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+		
+	  
+      
+
+      
+        <p>本文不会介绍git的<a href="https://fanerge.github.io/2018/git%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C.html">工作原理</a>，需要你对git有一定的了解。本文几乎罗列出了所有常用的git命令，可作为日常开发的查询手册。</p>
+<h1 id="git-clone"><a href="#git-clone" class="headerlink" title="git clone"></a>git clone</h1><p>git clone [remoteUrl] // clone远程库到当前目录（项目名为远程项目名，会自动设置origin为remoteUrl的引用）<br>git clone [remoteUrl] [本地项目名] // clone项目并会重命名为[本地项目名]<br>PS：自动设置本地 master 分支跟踪clone的远程仓库的 master 分支</p>
+<h1 id="git-fetch"><a href="#git-fetch" class="headerlink" title="git fetch"></a>git fetch</h1><p>用于从另一个存储库下载对象和引用<br>git fetch // 取回远程主机所有分支的更新<br>git fetch [remoteUrl] // 取回远程主机[remoteUrl]的更新到本地仓库（不自动合并到工作区）<br>git fetch [upstream] // 取回远程主机的引用[upstream]的更新到本地仓库<br>git fetch [remoteUrl] [branchName] // 取回远程主机[remoteUrl]的分支[branchName]的更新</p>
+<h1 id="git-checkout"><a href="#git-checkout" class="headerlink" title="git checkout"></a>git checkout</h1><p>用于切换分支或恢复工作区文件<br>git checkout [branchName] // 切换到[branchName]分支<br>git checkout -b [branchName] // 创建并切换到[branchName]分支<br>git checkout -b [localBranch] [remoteUrl]/[remoteBranch] // 从远程[remoteUrl]/[remoteBranch]得到[localBranch]<br>git checkout -m [branchName] // 如果你在错误分支中开发，但又不允许直接切换分支（因为本地有修改），git会帮我们将错误分支到代码合并到branchNane<br>git checkout -- [fileName] // 撤销工作区的操作（没有通过git add添加到暂存区）<br>git checkout head -- [fileName] // 撤销文件到上次commit的时候（head指向上次commit）</p>
+<h1 id="git-pull"><a href="#git-pull" class="headerlink" title="git pull"></a>git pull</h1><p>用于从另一个存储库或本地分支获取并集成（git fetch + git merge FETCH_HEAD）<br>git pull [远程主机名] [远程分支名]:[本地分支名]<br>git pull origin next:master // 取回origin主机的next分支，与本地的master分支合并<br>git pull origin next // 若想取回origin主机的next分支并与当前分支合并，可省略当前分支名<br>一旦当前分支与远程分支存在追踪关系，git pull就可以省略远程分支名<br>git pull origin<br>如果当前分支只有一个追踪分支，连远程主机名都可以省略<br>git pull</p>
+<h1 id="git-add"><a href="#git-add" class="headerlink" title="git add"></a>git add</h1><p>将文件内容添加到索引/暂存区<br>git add [path] // [path]可以是文件也可以是目录<br>git add . // 将所有修改添加到暂存区<br>git add -u [path] // 把[path]中所有跟踪文件中被修改过或已删除文件的信息添加到暂存区（省略<path></path>表示 . ,即当前目录）<br>git add -A [path] // 所有跟踪文件中被修改过或已删除文件和所有未跟踪的文件信息添加到暂存区（省略<path></path>表示 . ,即当前目录）<br>git add -i [path] // 查看已跟踪的文件是否有更改、是否有添加到暂存区</p>
+<h1 id="git-status"><a href="#git-status" class="headerlink" title="git status"></a>git status</h1><p>用于显示工作目录和暂存区的状态<br>git status -uno // 只列出所有已经被git管理的且被修改但没提交的文件<br>git status -s // --short 格式化输出git status </p>
+<h1 id="git-commit"><a href="#git-commit" class="headerlink" title="git commit"></a>git commit</h1><p>将暂存区当前内容与描述更改的用户和日志消息一起存储在新的提交中<br>git commit -a // 会对以已追踪的文件自动执行git add并commit（只会对已追踪的文件有效果）<br>git commit -m ‘注释’ // 带注释的提交<br>git commit --amend -m ‘注释’// 尝试重写提交（修改上次commit，如果提交内容没有更改，将使用本次提交注释覆盖上次提交注释）</p>
+<h1 id="git-push"><a href="#git-push" class="headerlink" title="git push"></a>git push</h1><p>用于将本地分支的更新<br>git push [远程主机名] [本地分支名]:[远程分支名] // 将[本地分支名]推送到[远程主机名]的[远程分支名]（远程分支名不存在时则新建）<br>git push [远程主机名] :[远程分支名] // 省略本地分支，表示删除[远程主机名]的[远程分支名]<br>git push [远程主机名] -d [远程分支名] // 与上等价（--delete）<br>git push [upstream] [branchName] // 推送[branchName]分支到远端<br>git push -a [远程主机名] // 将本地的所有分支都推送到远程主机（--all）<br>git push [远程主机名] HEAD // 将当前分支推送到远程的同名分支<br>git push [远程主机名] --tags // 推送所有标签<br>git push [远程主机名] [tagName] // 推送单个标签<br>git push [远程主机名] :[tagName] // 删除远程标签<br>git push [远程主机名] tag [tagName] // 将本地标签[tagName]推送到远端[remoteUrl]</p>
+<h1 id="git-branch"><a href="#git-branch" class="headerlink" title="git branch"></a>git branch</h1><p>查看（当前分支前会有星号）、创建、删除分支<br>git branch // 查看本地分支<br>git branch -r // 查看远端分支<br>git branch -a // 本地+远程分支列表（--all）<br>git branch [branchName] // 新建[branchName]分支<br>git branch -v // 查看分支的最近commit及注释<br>git branch -vv // 查看本地<br>git branch -D [branchName] // 删除[branchName]分支（需要切换到要删除分支以外的分支）<br>git branch -m [oldBranchName] [newBranchName] // 重命名分支<br>git branch --set-upstream-to [remoteUrl]/[branchName] // 为当前分支建立追踪关系，追踪为[remoteUrl]/[branchName]<br>git branch --unset-upstream // 撤销本地分支与远程分支的映射关系</p>
+<h1 id="git-merge"><a href="#git-merge" class="headerlink" title="git merge"></a>git merge</h1><p>用于将两个或两个以上的开发历史加入一起<br>git merge [branchName] // 合并branchName分支到当前分支的顶部<br>git merge -s ours [branchName] // 合并branchName分支到当前分支,并使用ours合并策略（该参数将强迫冲突发生时，自动使用当前分支的版本）<br>git merge -s theies [branchName] // 同上，但该参数将强迫冲突发生时，自动使用被合并分支的版本</p>
+<h1 id="git-rebase"><a href="#git-rebase" class="headerlink" title="git rebase"></a>git rebase</h1><p>用于把一个分支的修改合并到当前分支，下面是rebase一般操作的步骤<br>git describe // 显示离当前提交最近的标签<br>git rebase [branchName]<br>可能会产生冲突，需要解决<br>git add<br>git rebase --continue<br>git rebase --abort // 在过程中可以终止rebase，恢复到rebase开始前的状态。</p>
+<h1 id="git-log"><a href="#git-log" class="headerlink" title="git log"></a>git log</h1><p>用于显示提交日志信息<br>git log -1 // 查看最近一条commit记录<br>git log -n // 最近n次提交<br>git log --oneline // 单行显示日志<br>git log --pretty=oneline // 查看以前提交记录<br>git log --no-merges // 显示整个提交历史记录，但跳过合并<br>git log [dirName]/[fileName] // 查看当前分支dirName目录下fileName文件的提交日志<br>git log --since=”2 weeks ago” -- [fileName] // 显示最近两周fileName文件的提交日志<br>git log --name-status [branchName1]..[branchName2] // 显示branchName2分支尚未在branchName1分支中的提交<br>git log --follow [fileName] // 显示fileName文件的更改信息，包括更名之前的提交<br>git log --branches // 显示所有分支的提交<br>git log --branches --not --remotes=origin // 显示所有分支的提交（但不包括本地追踪远程分支origin）<br>git log [remoteUrl]/[branchName] // 查看远端某分支的日志<br>git log [commitId] // 查看对应commitId的提交<br>git log --author=[userName] // 查看属于userName提交的记录<br>git log -p // 查看提交历史并显示每次提交的内容差异<br>git log -p -2 // 最近两条<br>git log --stat // 每次提交的简略的统计<br>git log --pretty=[args] // 参数为 oneline：一行显示，还有short，full ，fuller</p>
+<h1 id="git-shortlog"><a href="#git-shortlog" class="headerlink" title="git shortlog"></a>git shortlog</h1><p>用于汇总git日志输出（commit次数+提交注释）<br>git shortlog -s // 汇总每位开发者commit次数<br>git shortlog -n // commit次数排名</p>
+<h1 id="git-diff"><a href="#git-diff" class="headerlink" title="git diff"></a>git diff</h1><p>工作目录(Working tree)和暂存区域快照(index)之间的差异<br>git diff [fileName] // 比较当前文件和暂存区文件差异<br>git diff [commitId1] [commitId2] // 比较两次提交之间的差异<br>git diff [branch1] [branch2] // 比较两个分支之间的差异<br>git diff --staged // 比较暂存区和版本库差异<br>git diff --cached // 比较暂存区和版本库差异（git add后尚未git commit）<br>git diff --stat // 仅仅比较统计信息<br>git diff HEAD // 自上次提交以来工作树中的更改<br>git diff [branchName] // 查看工作目录和某分支的差异<br>git diff HEAD^ HEAD // 比较上次提交和上上次提交<br>git diff // 查看未暂存的修改<br>git diff --cached // --staged 查看已暂存的修改</p>
+<h1 id="git-rm-amp-amp-git-mv"><a href="#git-rm-amp-amp-git-mv" class="headerlink" title="git rm &amp;&amp; git mv"></a>git rm &amp;&amp; git mv</h1><p>用于从工作区和索引中删除文件（git rm 删除文件可以被git记录下来，rm只是物理删除）<br>git rm --cached [fileName] // 只是从暂存区中删除文件索引<br>git rm -f [fileName] // 工作区和暂存区同时删除文件<br>用于移动或重命名文件<br>git mv [fileName] [dirName] // 将文件[fileName]移动到目录[dirName]中去<br>git mv [oldFileName] [newFileName] // 重命名</p>
+<h1 id="git-reset"><a href="#git-reset" class="headerlink" title="git reset"></a>git reset</h1><p>对受git管理的文件重置处理<br>git reset HEAD [fileName] // 撤销已经git add到暂存区的操作（原理是重新取最后一次commit的内容）<br>git reset HEAD~1 // 重置到上次commit<br>git reset [commitId] // 重置到commitId<br>git reset --soft [commitId] // HEAD回退到commitId，暂存区和工作区不变<br>git reset --mixed [commitId] // HEAD回退到commitId，暂存区改变，工作区不变（默认方式）<br>git reset --hard [commitId] // HEAD回退到commitId，暂存区和工作区都将改变（非常危险）<br><a href="https://www.cnblogs.com/kidsitcn/p/4513297.html" target="_blank" rel="external">git reset soft,hard,mixed之区别深解</a></p>
+<h1 id="git-remote"><a href="#git-remote" class="headerlink" title="git remote"></a>git remote</h1><p>git remote rename [shortOldName] [shortNewName]// 修改一个远程仓库的简写名（引用）<br>git remote rm [shortname] // 移除一个远程仓库<br>git remote show [remoteName] // 查看某一个远程仓库的更多信息<br>git remote // 查看远程仓库（origin代表你本地clone的远程地址）<br>git remote -v // 查看远程仓库（带fetch、push地址）<br>git remote add [shortName] [url] // 添加远程仓库（shortname为以后的引用名）<br>git remote // 管理一组跟踪的存储库<br>git remote // 查询当前库的远程库<br>git remote -v // （--verbose）查看库的远程fetch和push地址（前提是有对应权限）<br>git remote add [shortName] [remoteUrl] // 添加远程仓库[shortName]为其简短引用</p>
+<h1 id="git-stash"><a href="#git-stash" class="headerlink" title="git stash"></a>git stash</h1><p>适用于在处理需要较长时间的任务task1时又有紧急任务task2需要处理，可以通过git stash来保存本次的修改并将工作目录恢复到HEAD提交，等完成紧急任务task2后又继续之前的任务task1<br>git stash // 将当前任务存储起来（保存本地修改，并恢复工作目录以匹配HEAD提交）<br>git stash list // 查看已存储的任务列表<br>git stash apply stash@{2} // 应用已存储的任务列表的第2+1条<br>git stash drop stash@{2} // 从已存储的任务列表移除第2+1条<br>git stash pop // 取出已保存的最近任务（git stash apply + git stash drop）<br>PS：适用于在处理需要较长时间的任务时，有紧急任务需要处理在其他分支处理</p>
+<h1 id="git-tag"><a href="#git-tag" class="headerlink" title="git tag"></a>git tag</h1><p>用于创建，列出，删除或验证使用GPG签名的标签对象<br>git tag // 列出所有标签<br>git tag -a [tagName] -m [options] HEAD // 为当前HEAD创建标签<br>git tag -a [tagName] -m [options] [commitID] // 为某个commitID创建标签<br>git tag -l // 查看所有标签<br>git tag -d [tagName] // 删除某个标签<br>git tag -l ‘关键字’ // 列出满足关键字的标签<br>git tag -v [tagName] // 查询tagName是否已经使用<br>git tag [tagName] // 创建轻量级标签（轻量级标签实际上就是一个保存着对应提交对象的校验和信息的文件，其实就是不带-a，-s 或 -m）<br>git tag -a [tagName] -m [说明] // 创建一个带说明的标签名为tagName的标签<br>git tag -a [tagName] [commitId] // 为某个commitId创建tagName<br>PS：实质tag保存在.git/refs/tags中</p>
+<h1 id="git-submodule"><a href="#git-submodule" class="headerlink" title="git submodule"></a>git submodule</h1><p>用于初始化或更新或检查子模块<br>场景：基于公司的项目会越来越多，常常需要提取一个公共的类库提供给多个项目使用，下面介绍下基本使用步骤<br>克隆含有子模块的项目<br>git clone [remoteUrl] // clone 主项目<br>git submodule init // 初始化本地配置文件<br>git submodule update // clone相关的子模块<br>或者<br>git clone --recursive [remoteUrl] // 先clone主项目，再递归clone子模块<br>为项目添加子项目<br>git submodule add [remoteUrl] // 添加子模块，[remoteUrl]为子模块远程地址<br>删除某个子项目<br>git rm --cached [subModuleName]<br>rm -rf [subModuleName]<br>rm .gitmodules<br>vim .git/config<br>git commit -a -m ‘remove [subModuleName] submodule’<br><a href="https://www.yiibai.com/git/git_submodule.html#article-start" target="_blank" rel="external">git submodule命令</a></p>
+<h1 id="git-show"><a href="#git-show" class="headerlink" title="git show"></a>git show</h1><p>用于显示各种类型的对象<br>git show [tagName] // 查看相应标签的版本信息<br>git show [tagName]^{tree} // 显示标签[tagName]指向的树<br>git show -s --format=%s [tagName]^{commit} // 显示标签[tagName]指向的提交主题<br>git show next~10:Documentation/README //<br>git show [commitId] // 查看某次提交的内容</p>
+<h1 id="patch"><a href="#patch" class="headerlink" title="patch"></a>patch</h1><p>git format-patch // 创建最新提交的修补程序<br>git format-patch [commitId] // 为指定[commitId]创建补丁<br>git apply [补丁标记id] // 使用补丁修改本地文件而不创建提交<br>git am [补丁标记id] // 使用补丁修改本地文件并创建提交 </p>
+<h1 id="git-config"><a href="#git-config" class="headerlink" title="git config"></a>git config</h1><p>用于获取并设置存储库或全局选项<br>git config --list // 查看所有的git配置<br>git config [key] // 查看特定项配置</p>
+<h1 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h1><p>git init // 创建一个空的Git仓库或重新初始化一个现有仓库<br>git reflog // 查看所有分支的所有操作记录（包括commit和reset的操作）<br>git help // 查看帮助列表<br>git help [key] // 查看特定[key]相关帮助<br>git mergetool // 用于运行合并冲突解决工具来解决合并冲突<br>ls // 查看当前目录资源<br>pwd // 查看当前目录地址<br>cd [directory] // 进入当前目录<br>clear // 清空终端<br>rm [fileName] // 删除文件<br>cat // 查看文件内容<br>mv [fileName] [dirName] // 移动文件<br>mkdir [dirName] // 创建目录<br>ifconfig // 查看ip地址等信息<br>ipconfig // 查看ip地址（window）<br>cat [fileName] // 查看[fileName]<br>vim [fileName] // 使用vim编辑器编辑文件</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+	<div>
+		
+			<div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读，如果本文对你有帮助就记得<a href="https://github.com/fanerge/fanerge.github.io" title="谢谢亲的star">给个star</a>-------------</div>
+		
+	</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Donate comment here</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author: </strong>余真帆-fanerge</li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://fanerge.github.io/2018/git常用语法汇总.html" title="git常用语法汇总">https://fanerge.github.io/2018/git常用语法汇总.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/git/" rel="tag"><i class="far fa-bell"></i> git</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/网页劫持.html" rel="next" title="网页劫持">
+                <i class="fa fa-chevron-left"></i> 网页劫持
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=2156704" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTk4Mi8xMjUxOA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+              <p class="site-description motion-element" itemprop="description">前端、web</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">174</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">26</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">50</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/fanerge" target="_blank" title="GitHub" rel="external nofollow"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:fanege@qq.com" target="_blank" title="E-Mail" rel="external nofollow"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金" rel="external nofollow"><i class="fa fa-fw fa-juejin"></i>掘金</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.zhihu.com/people/fanerge" target="_blank" title="知乎" rel="external nofollow"><i class="fa fa-fw fa-zhihu"></i>知乎</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://segmentfault.com/u/fanerge/articles" target="_blank" title="Segmentfault" rel="external nofollow"><i class="fa fa-fw fa-segmentfault"></i>Segmentfault</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#git-clone"><span class="nav-number">1.</span> <span class="nav-text">git clone</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-fetch"><span class="nav-number">2.</span> <span class="nav-text">git fetch</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-checkout"><span class="nav-number">3.</span> <span class="nav-text">git checkout</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-pull"><span class="nav-number">4.</span> <span class="nav-text">git pull</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-add"><span class="nav-number">5.</span> <span class="nav-text">git add</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-status"><span class="nav-number">6.</span> <span class="nav-text">git status</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-commit"><span class="nav-number">7.</span> <span class="nav-text">git commit</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-push"><span class="nav-number">8.</span> <span class="nav-text">git push</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-branch"><span class="nav-number">9.</span> <span class="nav-text">git branch</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-merge"><span class="nav-number">10.</span> <span class="nav-text">git merge</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-rebase"><span class="nav-number">11.</span> <span class="nav-text">git rebase</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-log"><span class="nav-number">12.</span> <span class="nav-text">git log</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-shortlog"><span class="nav-number">13.</span> <span class="nav-text">git shortlog</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-diff"><span class="nav-number">14.</span> <span class="nav-text">git diff</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-rm-amp-amp-git-mv"><span class="nav-number">15.</span> <span class="nav-text">git rm && git mv</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-reset"><span class="nav-number">16.</span> <span class="nav-text">git reset</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-remote"><span class="nav-number">17.</span> <span class="nav-text">git remote</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-stash"><span class="nav-number">18.</span> <span class="nav-text">git stash</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-tag"><span class="nav-number">19.</span> <span class="nav-text">git tag</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-submodule"><span class="nav-number">20.</span> <span class="nav-text">git submodule</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-show"><span class="nav-number">21.</span> <span class="nav-text">git show</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#patch"><span class="nav-number">22.</span> <span class="nav-text">patch</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-config"><span class="nav-number">23.</span> <span class="nav-text">git config</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他"><span class="nav-number">24.</span> <span class="nav-text">其他</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">true</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" rel="external nofollow" href="https://github.com/theme-next/hexo-theme-next">NexT.Mist</a> v6.0.6</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  
+
+
+
+  
+  
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_sphere.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.6"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.6"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.6"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.6"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
