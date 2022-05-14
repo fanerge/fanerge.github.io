@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.6" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=6.0.6" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.0.6',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+  
+
+
+
+
+  <meta name="description" content="jsDoc介绍定义：JSDoc是一个根据javascript文件中注释信息，生成JavaScript应用程序或库、模块的API文档 的工具。jsDoc注释：是以 /** 来作为jsDoc注释的开始，其它如 /* 和 /*** 的注释都会被jsDoc解析器忽略。    在webstorm中自动生成jsDoc注释    示例：    1234567891011121314151617181920212">
+<meta name="keywords" content="js,代码规范">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jsDoc学习-入门知识">
+<meta property="og:url" content="https://fanerge.github.io/2017/jsDoc学习.html">
+<meta property="og:site_name" content="fanerge&#39;s Blogs">
+<meta property="og:description" content="jsDoc介绍定义：JSDoc是一个根据javascript文件中注释信息，生成JavaScript应用程序或库、模块的API文档 的工具。jsDoc注释：是以 /** 来作为jsDoc注释的开始，其它如 /* 和 /*** 的注释都会被jsDoc解析器忽略。    在webstorm中自动生成jsDoc注释    示例：    1234567891011121314151617181920212">
+<meta property="og:updated_time" content="2022-05-14T02:23:46.493Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="jsDoc学习-入门知识">
+<meta name="twitter:description" content="jsDoc介绍定义：JSDoc是一个根据javascript文件中注释信息，生成JavaScript应用程序或库、模块的API文档 的工具。jsDoc注释：是以 /** 来作为jsDoc注释的开始，其它如 /* 和 /*** 的注释都会被jsDoc解析器忽略。    在webstorm中自动生成jsDoc注释    示例：    1234567891011121314151617181920212">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="fanerge's Blogs" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="https://fanerge.github.io/2017/jsDoc学习.html"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>jsDoc学习-入门知识 | fanerge's Blogs</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+	<a href="https://github.com/fanerge"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 9999;" src="http://pau044s3z.bkt.clouddn.com/forkgithub.png" alt="Fork me on GitHub"></a>
+	</div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">fanerge's Blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于WEB开发的技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-categories">
+    <a href="/categories" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">29</span>
+      </a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-archives">
+    <a href="/archives" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">187</span>
+      </a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-about">
+    <a href="/about" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+</li>
+
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+    
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+    
+
+  
+
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/jsDoc学习.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars3.githubusercontent.com/u/17136707?s=400&u=d7250b0655c87b8e8e1cdaf826754fe5e6f68e80&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="fanerge's Blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">jsDoc学习-入门知识</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-24T19:47:00+08:00">2017-09-24</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/代码规范/" itemprop="url" rel="index"><span itemprop="name">代码规范</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views: 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+		
+	  
+      
+
+      
+        <h2 id="jsDoc介绍"><a href="#jsDoc介绍" class="headerlink" title="jsDoc介绍"></a>jsDoc介绍</h2><p>定义：JSDoc是一个根据javascript文件中注释信息，生成JavaScript应用程序或库、模块的API文档 的工具。<br>jsDoc注释：是以 /** 来作为jsDoc注释的开始，其它如 /* 和 /*** 的注释都会被jsDoc解析器忽略。<br>    在webstorm中自动生成jsDoc注释<br>    示例：<br>    <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Book类，代表一本书</div><div class="line"> * @param title</div><div class="line"> * @param anthor</div><div class="line"> * @param pageNum</div><div class="line"> * @constructor</div><div class="line"> */</div><div class="line">function Book (title, anthor, pageNum ) &#123;</div><div class="line">	// 实例属性</div><div class="line">	this.title = title;</div><div class="line">	this.anthor = anthor;</div><div class="line">	this.pageNum = pageNum || 0;</div><div class="line">&#125;</div><div class="line">Book.prototype = &#123;</div><div class="line">	/**</div><div class="line">	 * 获取书本的标题</div><div class="line">	 * @returns &#123;*&#125;</div><div class="line">	 */</div><div class="line">	getTitle : function () &#123;</div><div class="line">		return this.title;</div><div class="line">	&#125;,</div><div class="line">	/**</div><div class="line">	 * 获取书本的作者</div><div class="line">	 * @returns &#123;*&#125;</div><div class="line">	 */</div><div class="line">	getAnthor: function  () &#123;</div><div class="line">		return this.anthor;</div><div class="line">	&#125;,</div><div class="line">	/**</div><div class="line">	 * 设置书本的页码</div><div class="line">	 * @param pageNum</div><div class="line">	 */</div><div class="line">	setPageNum: function (pageNum) &#123;</div><div class="line">		this.pageNum = pageNum;</div><div class="line">	&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<h2 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h2><h3 id="Namepaths-in-JSDoc-3（JSDoc-3中的名称路径）"><a href="#Namepaths-in-JSDoc-3（JSDoc-3中的名称路径）" class="headerlink" title="Namepaths in JSDoc 3（JSDoc 3中的名称路径）"></a>Namepaths in JSDoc 3（JSDoc 3中的名称路径）</h3><pre><code>如果涉及到一个JavaScript变量，这个变量在文档中的其他地方，你必须提供一个唯一标识符映射到该变量。
+名称路径提供了一种这样做的方法，并且消除实例成员，静态成员和内部变量之间的歧义。
+jsDoc中名称路径的基本语法示例：
+</code></pre><ol>
+<li>myFunction</li>
+<li>MyConstructor</li>
+<li>MyConstructor#instanceMember（实例成员）</li>
+<li>MyConstructor.staticMember（静态成员）</li>
+<li><p>MyConstructor~innerMember（内部成员）<br>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Person类，一个人</div><div class="line"> * @param name</div><div class="line"> * @constructor</div><div class="line"> */</div><div class="line">const  Person = function (name) &#123;</div><div class="line">	this.name = name;</div><div class="line">	/**</div><div class="line">	 * 这是一个实例成员</div><div class="line">	 * @returns &#123;string&#125;</div><div class="line">	 */</div><div class="line">	this.say = () =&gt; &#123;</div><div class="line">		return &apos;I\&apos;am an instance.&apos;;</div><div class="line">	&#125;;</div><div class="line">	/**</div><div class="line">	 * 这是一个内部成员</div><div class="line">	 * @returns &#123;string&#125;</div><div class="line">	 */</div><div class="line">	function say () &#123;</div><div class="line">		return &apos;I\&apos; am an inner.&apos;;</div><div class="line">	&#125;;</div><div class="line">&#125;;</div><div class="line">/**</div><div class="line"> * 这是一个静态成员</div><div class="line"> * @returns &#123;string&#125;</div><div class="line"> */</div><div class="line">Person.say = function () &#123;</div><div class="line">	return &apos;I\&apos;am an static.&apos;;</div><div class="line">&#125;;</div><div class="line">/**</div><div class="line"> * 实例化一个人</div><div class="line"> * @type &#123;Person&#125;</div><div class="line"> */</div><div class="line">const person1 = new Person(&apos;fanerge&apos;);</div><div class="line">// Person#say 使用实例方法</div><div class="line">person1.say();</div><div class="line">// Person.say 使用静态方法</div><div class="line">Person.say();</div><div class="line">// Person~say 使用内部方法，但这里不能访问到</div></pre></td></tr></table></figure>
+<p>使用名称路径也有一些特殊的情况：@module名称由”module:”前缀，<br>@external 名称由”external:”前缀，@event名称由”event:”前缀。</p>
+<h3 id="JSDoc中的命令行参数"><a href="#JSDoc中的命令行参数" class="headerlink" title="JSDoc中的命令行参数"></a>JSDoc中的命令行参数</h3><p>使用JSDoc最基本的，像这样使用：<br><code>/path/to/jsdoc yourSourceCodeFile.js anotherSourceCodeFile.js ...</code><br>其中…是生成文档文件的路径。<br>JSDoc支持大量的命令行选项，其中许多选项有长和短两种形式。<br>选项    描述<br>-a <value>, –access <value>    只显示特定access方法属性的标识符： private, protected, public, or undefined, 或者 all（表示所有的访问级别）。默认情况下， 显示除private标识符以外的所有标识符。<br>-c <value>, –configure <value>    JSDoc配置文件的路径。默认为安装JSDoc目录下的conf.json或conf.json.EXAMPLE。<br>-d <value>, –destination <value>    输出生成文档的文件夹路径。JSDoc内置的Haruki模板，使用console 将数据转储到控制台。默认为./out。<br>–debug    打印日志信息，可以帮助调试JSDoc本身的问题。<br>-e <value>, –encoding <value>    当JSDoc阅读源代码时假定使用这个编码，默认为 utf8。<br>-h, –help    显示JSDoc的命令行选项的信息，然后退出。<br>–match <value>    只有运行测试，其名称中包含value。<br>–nocolor    当运行测试时，在控制台输出信息不要使用的颜色。在Windows中，这个选项是默认启用的。<br>-p, –private    将标记有[@private 标签][tags-private.md]的标识符也生成到文档中。默认情况下，不包括私有标识符。<br>-P, –package    包含项目名称，版本，和其他细节的package.json文件。默认为在源路径中找到的第一个package.json文件。<br>–pedantic    将错误视为致命错误，将警告视为错误。默认为false。<br>-q <value>, –query <value>    一个查询字符串用来解析和存储到全局变量env.opts.query中。示例：foo=bar&amp;baz=true。<br>-r, –recurse    扫描源文件和导览时递归到子目录。<br>-R, –readme    用来包含到生成文档的README.md文件。默认为在源路径中找到的第一README.md 文件。<br>-t <value>, –template <value>    用于生成输出文档的模板的路径。默认为templates/default，JSDoc内置的默认模板。<br>-T, –test    运行JSDoc的测试套件，并把结果打印到控制台。<br>-u <value>, –tutorials <value>    导览路径，JSDoc要搜索的目录。如果省略，将不生成导览页。查看导览说明，以了解更多信息。<br>-v, –version    显示JSDoc的版本号，然后退出。<br>–verbose    日志的详细信息到控制台JSDoc运行。默认为false。<br>-X, –explain    以JSON格式转储所有的doclet到控制台，然后退出。</value></value></value></value></value></value></value></value></value></value></value></value></value></value></value></p>
+<p>示例：<br>使用配置文件/path/to/my/conf.json，为./src目录的中文件生成文档，并保存输出到./docs目录中：<br>  /path/to/jsdoc src -r -c /path/to/my/conf.json -d docs<br>运行所有JSDoc的测试，其名称包含 tag，并记录每个测试信息：<br>  /path/to/jsdoc -T –match tag –verbose</p>
+<h3 id="用conf-json配置JSDoc"><a href="#用conf-json配置JSDoc" class="headerlink" title="用conf.json配置JSDoc"></a>用conf.json配置JSDoc</h3><p>Configuration File(配置文件)<br>  要自定义JSDoc的行为，可以使用JSON格式的配置文件格式化JSDoc，使用-c选项，例如： jsdoc -c /path/to/conf.json。<br>  默认的jsDoc配置文件conf.json.EXAMPLE</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">	&quot;tags&quot;: &#123;</div><div class="line">		&quot;allowUnknownTags&quot;: true,</div><div class="line">		&quot;dictionaries&quot;: [&quot;jsdoc&quot;,&quot;closure&quot;]</div><div class="line">	&#125;,</div><div class="line">	&quot;source&quot;: &#123;</div><div class="line">		&quot;includePattern&quot;: &quot;.+\\.js(doc)?$&quot;,</div><div class="line">		&quot;excludePattern&quot;: &quot;(^|\\/|\\\\)_&quot;</div><div class="line">	&#125;,</div><div class="line">	&quot;plugins&quot;: [],</div><div class="line">	&quot;templates&quot;: &#123;</div><div class="line">		&quot;cleverLinks&quot;: false,</div><div class="line">		&quot;monospaceLinks&quot;: false</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Specifying input files(指定输入文件)<br>  source选项组，结合给JSDoc命令行的路径，确定哪些文件要用JSDoc生成文档。 </p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&quot;source&quot;: &#123;</div><div class="line">	&quot;include&quot;: [ /* array of paths to files to generate documentation for */ ],</div><div class="line">	&quot;exclude&quot;: [ /* array of paths to exclude */ ],</div><div class="line">	&quot;includePattern&quot;: &quot;.+\\.js(doc)?$&quot;,</div><div class="line">	&quot;excludePattern&quot;: &quot;(^|\\/|\\\\)_&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Incorporating command-line options into the configuration file(合并命令行选项到配置文件)<br>  它有可能把许多JSDoc的命令行选项放到配置文件，而不用在命令行中指定它们。<br>  要做到这一点，只要在conf.json的opts部分中使用的相关选项的longnames,值是该选项的值。</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&quot;opts&quot;: &#123;</div><div class="line">	&quot;template&quot;: &quot;templates/default&quot;,  // same as -t templates/default</div><div class="line">	&quot;encoding&quot;: &quot;utf8&quot;,               // same as -e utf8</div><div class="line">	&quot;destination&quot;: &quot;./out/&quot;,          // same as -d ./out/</div><div class="line">	&quot;recurse&quot;: true,                  // same as -r</div><div class="line">	&quot;tutorials&quot;: &quot;path/to/tutorials&quot;, // same as -u path/to/tutorials</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Plugins（插件）<br>  要启用插件，只要添加它们的路径（相对于JSDoc文件夹）到plugins数组中就可以了。<br>  示例：<br>  例如，以下将包括 markdown 插件，它转换 markdown格式的文本为HTML，和“summarize”插件，该自动生成的每个的doclet的摘要：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&quot;plugins&quot;: [</div><div class="line">	&quot;plugins/markdown&quot;,</div><div class="line">	&quot;plugins/summarize&quot;</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>Tags and tag dictionaries(标签和标签字典)<br>  tags选项控制哪些JSDoc标签允许被使用和解析。</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&quot;tags&quot;: &#123;</div><div class="line">	&quot;allowUnknownTags&quot;: true,</div><div class="line">	&quot;dictionaries&quot;: [&quot;jsdoc&quot;,&quot;closure&quot;]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="配置JSDoc的默认模板"><a href="#配置JSDoc的默认模板" class="headerlink" title="配置JSDoc的默认模板"></a>配置JSDoc的默认模板</h3><pre><code>JSDoc的默认模板中提供了几个选项，您可以使用自定义外观和内容来生成文档。
+要使用这些选项，您必须为JSDoc创建一个配置文件，并在配置文件中设置相应的选项。
+
+Generating pretty-printed source files（生成适合打印的文档）
+    默认情况下，JSDoc的默认模板为你的源文件生成适合打印的文档。在文档中，它还链接到那些适合的打印文件。
+    要禁用适合打印的文件，设置选项templates.default.outputSourceFiles为false。
+    使用该选项也将删除文档中链接到源文件的连接。此选项在JSDoc3.3.0及更高版本上是可用的。
+Copying static files to the output directory(复制静态文件到输出目录)
+    SDoc的默认模板会自动复制一些静态文件，如CSS样式表，到输出目录。
+    在JSDoc3.3.0或更高版本，你可以告诉默认模板复制附加静态文件到输出目录。
+    例如，您可能希望复制一个图像的目录到输出目录，所以你可以在你的文档中显示这些图像。
+Showing the current date in the page footer（在页脚显示当前日期）
+    默认情况下，JSDoc的默认模板总是在生成文档的页脚显示当前日期。
+    在JSDoc3.3.0或更高版本，可以通过设置选项templates.default.includeDate为false来忽略当前日期。
+Showing longnames in the navigation column（在导航栏中显示长文件名）
+    默认情况下，JSDoc的默认模板在导航列中显示每个标识符缩写的名字。
+    例如，标识符my.namespace.MyClass将简单地称为显示MyClass。相反,要显示完整的长名称，设置选项templates.default.useLongnameInNav为true。
+    此选项在JSDoc3.4.0及更高版本中可用。
+Overriding the default template&apos;s layout file（重写默认模板的布局文件）
+    默认的模板使用名为 layout.tmpl 的文件 指定每个生成文档的页面中的页眉和页脚。
+    特别是，每个生产的文档页面会加载该文件定义了CSS和JavaScript文件。在JSDoc3.3.0或更高版本，可以指定使用自己的layout.tmpl文件，它允许你加载自己的自定义CSS和JavaScript文件，去除或替代，标准的文件。
+    要使用此功能，设置选项templates.default.layoutFile的路径到你的自定义布局文件。
+    路径是相对于config.json文件，当前的工作目录，和JSDoc目录的相对路径，按照这个顺序。
+</code></pre><h3 id="块标签和内联标签"><a href="#块标签和内联标签" class="headerlink" title="块标签和内联标签"></a>块标签和内联标签</h3><pre><code>JSDoc支持两种不同类型的标签：
+</code></pre><ol>
+<li>块标签, 这是在一个JSDoc注释的最高级别。</li>
+<li>内联标签, 块标签文本中的标签或说明。<br>块标签通常会提供有关您的代码的详细信息，如一个函数接受的参数。<br>块标签总是以 at 符号（@）开头。除了JSDoc注释中最后一个块标记，每个块标签后面必须跟一个换行符。<br>内联标签通常链接到文件的其他部分，类似于HTML中的锚标记（<a>）。<br>内联标签也以 at 符号（@）开。然而，内联标签及其文本必须用花括号（{ and }）括起来。 { 表示行内联标签的开始，而}表示内联标签的结束。<br>如果你的标签文本中包含右花括号（}），则必须用反斜线（ \ ）进行转义。<br>在内联标签后,你并不需要使用一个换行符。<br>示例：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * Shoe类，一双鞋子</div><div class="line"> * @param color</div><div class="line"> * @param size</div><div class="line"> * @constructor</div><div class="line"> */</div><div class="line">const Shoe = function (color, size)&#123;</div><div class="line">	this.color = color;</div><div class="line">	this.size = size;</div><div class="line">&#125;;</div><div class="line">/**</div><div class="line"> * Set shoe&apos;s color. Use &#123;@link Shoe#setSize&#125; to set the shoe size</div><div class="line"> * @param color</div><div class="line"> */</div><div class="line">Shoe.prototype.setColor = function (color) &#123;</div><div class="line">	this.color = color;</div><div class="line">&#125;;</div><div class="line">/**</div><div class="line"> * 设置鞋子的尺寸</div><div class="line"> * @param size</div><div class="line"> */</div><div class="line">Shoe.prototype.setSize = function (size) &#123;</div><div class="line">	this.size = size;</div><div class="line">&#125;;</div><div class="line">/**</div><div class="line"> * 设置花边的颜色和样式</div><div class="line"> * @param color</div><div class="line"> * @param type</div><div class="line"> */</div><div class="line">Shoe.prototype.setLaceType = function (color, type) &#123;</div><div class="line">	// ...</div><div class="line">&#125;;</div><div class="line">var shoe1 = new Shoe(&apos;red&apos;, 12);</div></pre></td></tr></table></figure>
+</a></li>
+</ol>
+<h3 id="关于JSDoc插件"><a href="#关于JSDoc插件" class="headerlink" title="关于JSDoc插件"></a>关于JSDoc插件</h3><pre><code>Creating and Enabling a Plugin（创建并启用插件）
+    创建并启用新JSDoc插件,需要两个步骤：
+        创建一个包含你的插件代码的JavaScript模块.
+        将该模块添加到JSDoc配置文件的plugins数组中。你可以指定一个绝对或相对路径。
+        如果使用相对路径，JSDoc按照相对于配置文件所在的目录，当前的工作目录和JSDoc安装目录的顺序搜索插件。
+Authoring JSDoc 3 Plugins（创建JSDoc3插件）
+    JSDoc 3的插件系统广泛的控制着解析过程。一个插件可以通过执行以下任何一项操作，影响解析结果：
+</code></pre><ol>
+<li>定义事件处理程序</li>
+<li>定义标签</li>
+<li><p>定义一个抽象语法树节点的访问者<br>Event Handlers（事件处理程序）<br>事件: parseBegin – JSDoc开始加载和解析源文件之前，parseBegin事件被触发。<br>事件: fileBegin – 当解析器即将解析一个文件fileBegin事件触发。<br>事件: beforeParse – beforeParse事件在解析开始之前被触发。<br>事件: jsdocCommentFound – 每当JSDoc注释被发现,jsdocCommentFound事件就会被触发。<br>事件: symbolFound – 当解析器在代码中遇到一个可能需要被文档化的标识符时，symbolFound 事件就会被触发。<br>事件: newDoclet – newDoclet事件是最高级别的事件。新的doclet已被创建时，它就会被触发。<br>事件: fileComplete – 当解析器解析完一个文件时，fileComplete 事件就会被触发。<br>事件: parseComplete – JSDoc解析所有指定的源文件之后，parseComplete事件就会被触发。<br>事件: processingComplete – JSDoc更新反映继承和借来的标识符的解析结果后，processingComplete事件被触发。<br>Tag Definitions （标签定义）<br>添加标签到标签字典是影响文档生成的一个中级方式。<br>在一个newDoclet事件被触发前，JSDoc注释块被解析以确定可能存在的说明和任何JSDoc标签。<br>当一个标签被发现，如果它已在标签字典被定义，它就会被赋予一个修改doclet的机会。<br>The Dictionary（字典）<br>Node Visitors（节点访问者）<br>Reporting Errors(报告错误)</p>
+<h3 id="使用Markdown插件"><a href="#使用Markdown插件" class="headerlink" title="使用Markdown插件"></a>使用Markdown插件</h3><p>Enabling the Markdown plugin(启用markdown插件)<br>要启用markdown插件，只要将字符串plugins/markdown添加到JSDoc配置文件的plugins数组中即可。<br>Converting Markdown in additional JSDoc tags（在额外的JSDoc标签中转换Markdown）<br>默认情况下，markdown插件只处理特定JSDoc标签的markdown文本。<br>您可以通过添加一个 markdown.tags属性到你的JSDoc配置文件中，来处理的其他标签中的markdown文本。<br>Excluding the default tags from Markdown processing（剔除markdown默认处理的标签）<br>为了防止Markdown插件处理任何默认JSDoc标签，添加一个markdown.excludeTags属性到您的JSDoc配置文件。<br>Hard-wrapping text at line breaks （用换行符换行文本）<br>默认情况下，Markdown插件不处理换行符换行的文本。<br>Adding ID attributes to headings（添加ID属性到标题标签）<br>默认情况下，Markdown插件不会给每个HTML标题标签添加id 属性。</p>
+<h3 id="Tutorials-教程"><a href="#Tutorials-教程" class="headerlink" title="Tutorials 教程"></a>Tutorials 教程</h3><p>JSDoc允许你的API文档的页面旁边包含教程。<br>您可以使用此功能来为您的API提供详细的使用说明，如“入门”指南或实现一个功能的一步一步的过程。</p>
+<p>Adding tutorials（添加教程）<br>添加教程到您的API文档，可以通过–tutorials 或 -u 选项运行JSDoc，并提供JSDoc要搜索的教程目录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">jsdoc -u path/to/tutorials path/to/js/files</div></pre></td></tr></table></figure>
+<p>Configuring titles, order, and hierarchy （配置标题，顺序和层次结构）<br>默认情况下，JSDoc使用的文件名作为教程标题，并且所有的教程都在同一层次。<br>您可以使用JSON文件为每个教程提供标题并指示文档中的教程应如何排序和分组。<br>Linking to tutorials from API documentation（从API文档链接到教程）<br>@tutorial 块标签<br>{@tutorial} 内联标签</p>
+<h3 id="包含Package（包）文件"><a href="#包含Package（包）文件" class="headerlink" title="包含Package（包）文件"></a>包含Package（包）文件</h3><p>包文件包含的信息对你的项目文档是很有用的，比如该项目的名称和版本号。<br>当JSDoc生成的文档的时候,可以自动使用项目中package.json文件中的信息。<br>示例，默认的模板在文档中显示项目的名称和版本号。<br>在源路径中包含一个包文件:<br>  jsdoc path/to/js path/to/package/package.json<br>使用 -P/–package 选项：<br>  jsdoc –package path/to/package/package-docs.json path/to/js    </p>
+<h3 id="包含-README-文件"><a href="#包含-README-文件" class="headerlink" title="包含 README 文件"></a>包含 README 文件</h3><p>有两种方法可以将 README 文件中的信息合并到您的文档：<br>在源路径中包含一个 README 文件:<br>jsdoc path/to/js path/to/readme/README.md<br>使用 -R/–readme 选项：<br>jsdoc –readme path/to/readme/README path/to/js</p>
+<blockquote>
+<p>   参考文档：<br><a href="http://www.css88.com/doc/jsdoc/" target="_blank" rel="external">jsDoc文档</a>    </p>
+</blockquote>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+	<div>
+		
+			<div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读，如果本文对你有帮助就记得<a href="https://github.com/fanerge/fanerge.github.io" title="谢谢亲的star">给个star</a>-------------</div>
+		
+	</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Donate comment here</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author: </strong>余真帆-fanerge</li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://fanerge.github.io/2017/jsDoc学习.html" title="jsDoc学习-入门知识">https://fanerge.github.io/2017/jsDoc学习.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/js/" rel="tag"><i class="far fa-bell"></i> js</a>
+          
+            <a href="/tags/代码规范/" rel="tag"><i class="far fa-bell"></i> 代码规范</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/MVC学习.html" rel="next" title="MVC学习">
+                <i class="fa fa-chevron-left"></i> MVC学习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/jsDoc学习-1.html" rel="prev" title="jsDoc学习-常用示例">
+                jsDoc学习-常用示例 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=2156704" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTk4Mi8xMjUxOA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars3.githubusercontent.com/u/17136707?s=400&u=d7250b0655c87b8e8e1cdaf826754fe5e6f68e80&v=4"
+                alt="余真帆-fanerge" />
+            
+              <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+              <p class="site-description motion-element" itemprop="description">前端偏前工程师</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">187</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">57</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/fanerge" target="_blank" title="GitHub" rel="external nofollow"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:fanege@qq.com" target="_blank" title="E-Mail" rel="external nofollow"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金" rel="external nofollow"><i class="fa fa-fw fa-juejin"></i>掘金</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.zhihu.com/people/fanerge" target="_blank" title="知乎" rel="external nofollow"><i class="fa fa-fw fa-zhihu"></i>知乎</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://segmentfault.com/u/fanerge/articles" target="_blank" title="Segmentfault" rel="external nofollow"><i class="fa fa-fw fa-segmentfault"></i>Segmentfault</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#jsDoc介绍"><span class="nav-number">1.</span> <span class="nav-text">jsDoc介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#入门"><span class="nav-number">2.</span> <span class="nav-text">入门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Namepaths-in-JSDoc-3（JSDoc-3中的名称路径）"><span class="nav-number">2.1.</span> <span class="nav-text">Namepaths in JSDoc 3（JSDoc 3中的名称路径）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSDoc中的命令行参数"><span class="nav-number">2.2.</span> <span class="nav-text">JSDoc中的命令行参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用conf-json配置JSDoc"><span class="nav-number">2.3.</span> <span class="nav-text">用conf.json配置JSDoc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置JSDoc的默认模板"><span class="nav-number">2.4.</span> <span class="nav-text">配置JSDoc的默认模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#块标签和内联标签"><span class="nav-number">2.5.</span> <span class="nav-text">块标签和内联标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于JSDoc插件"><span class="nav-number">2.6.</span> <span class="nav-text">关于JSDoc插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Markdown插件"><span class="nav-number">2.7.</span> <span class="nav-text">使用Markdown插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tutorials-教程"><span class="nav-number">2.8.</span> <span class="nav-text">Tutorials 教程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#包含Package（包）文件"><span class="nav-number">2.9.</span> <span class="nav-text">包含Package（包）文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#包含-README-文件"><span class="nav-number">2.10.</span> <span class="nav-text">包含 README 文件</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-pied-piper-alt"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a></div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+	  <span>Unique Visitor:</span>
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+	  <span>Page View:</span>
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.6"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.6"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.6"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.6"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>

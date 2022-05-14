@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.6" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=6.0.6" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.0.6',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+  
+
+
+
+
+  <meta name="description" content="前言”搜索列表“就是有一个搜索框和一个显示搜索结果的列表的一种业务场景。在用户输入文字的时候能够在列表中展示搜索相关的信息。这个业务场景应该很多同学都做过，今天笔者就带着大家来逐步优化这种业务场景。本文建议在 PC 端上浏览，笔者已经为大家准备好了 demo，观众老爷们可以点开后续章节的的 demo 🔗进行调试。首先有几个要求：  即时响应用户输入 尽量快速显示用户搜索相关的列表 页面流程、性能">
+<meta name="keywords" content="前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何进行搜索列表优化">
+<meta property="og:url" content="https://fanerge.github.io/2022/如何进行搜索列表优化.html">
+<meta property="og:site_name" content="fanerge&#39;s Blogs">
+<meta property="og:description" content="前言”搜索列表“就是有一个搜索框和一个显示搜索结果的列表的一种业务场景。在用户输入文字的时候能够在列表中展示搜索相关的信息。这个业务场景应该很多同学都做过，今天笔者就带着大家来逐步优化这种业务场景。本文建议在 PC 端上浏览，笔者已经为大家准备好了 demo，观众老爷们可以点开后续章节的的 demo 🔗进行调试。首先有几个要求：  即时响应用户输入 尽量快速显示用户搜索相关的列表 页面流程、性能">
+<meta property="og:image" content="https://fanerge.github.io/images/2022/fetch-cancel.png">
+<meta property="og:image" content="https://fanerge.github.io/images/2022/又不是不能用.jpg">
+<meta property="og:updated_time" content="2022-05-14T03:45:11.788Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何进行搜索列表优化">
+<meta name="twitter:description" content="前言”搜索列表“就是有一个搜索框和一个显示搜索结果的列表的一种业务场景。在用户输入文字的时候能够在列表中展示搜索相关的信息。这个业务场景应该很多同学都做过，今天笔者就带着大家来逐步优化这种业务场景。本文建议在 PC 端上浏览，笔者已经为大家准备好了 demo，观众老爷们可以点开后续章节的的 demo 🔗进行调试。首先有几个要求：  即时响应用户输入 尽量快速显示用户搜索相关的列表 页面流程、性能">
+<meta name="twitter:image" content="https://fanerge.github.io/images/2022/fetch-cancel.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="fanerge's Blogs" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="https://fanerge.github.io/2022/如何进行搜索列表优化.html"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>如何进行搜索列表优化 | fanerge's Blogs</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+	<a href="https://github.com/fanerge"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 9999;" src="http://pau044s3z.bkt.clouddn.com/forkgithub.png" alt="Fork me on GitHub"></a>
+	</div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">fanerge's Blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于WEB开发的技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-categories">
+    <a href="/categories" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">29</span>
+      </a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-archives">
+    <a href="/archives" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">187</span>
+      </a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-about">
+    <a href="/about" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+</li>
+
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+    
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+    
+
+  
+
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2022/如何进行搜索列表优化.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars3.githubusercontent.com/u/17136707?s=400&u=d7250b0655c87b8e8e1cdaf826754fe5e6f68e80&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="fanerge's Blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">如何进行搜索列表优化</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2022-01-07T20:01:36+08:00">2022-01-07</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端/" itemprop="url" rel="index"><span itemprop="name">前端</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views: 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+		
+	  
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>”搜索列表“就是有一个搜索框和一个显示搜索结果的列表的一种业务场景。在用户输入文字的时候能够在列表中展示搜索相关的信息。这个业务场景应该很多同学都做过，今天笔者就带着大家来逐步优化这种业务场景。本文建议在 PC 端上浏览，笔者已经为大家准备好了 demo，观众老爷们可以点开后续章节的的 demo 🔗进行调试。<br>首先有几个要求：</p>
+<ol>
+<li>即时响应用户输入</li>
+<li>尽量快速显示用户搜索相关的列表</li>
+<li>页面流程、性能尽可能高</li>
+<li>需要减少不必要的请求</li>
+<li>需要考虑请求异步时序问题</li>
+</ol>
+<h1 id="简单完成业务"><a href="#简单完成业务" class="headerlink" title="简单完成业务"></a>简单完成业务</h1><p>首先第一版先完成业务，我以 react 为列</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> &#123;useState&#125; <span class="keyword">from</span> <span class="string">'react'</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">FirstDemo</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">// const [inputText, setInputText] = useState('');</span></div><div class="line">  <span class="keyword">const</span> [list, setList] = useState([]);</div><div class="line"></div><div class="line">  <span class="keyword">const</span> onChange = <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'onInput'</span>)</div><div class="line">    fetch(<span class="string">`<span class="subst">$&#123;api&#125;</span>&amp;q=<span class="subst">$&#123;e.target.value&#125;</span>`</span>)</div><div class="line">      .then(<span class="keyword">async</span> res =&gt; &#123;</div><div class="line">        <span class="keyword">let</span> result = <span class="keyword">await</span> res.json();</div><div class="line">        setList(<span class="built_in">Array</span>.isArray(result) ? result : []);</div><div class="line">      &#125;)</div><div class="line">      .catch(<span class="function"><span class="params">e</span> =&gt;</span> &#123;</div><div class="line">      <span class="built_in">console</span>.log(e)</div><div class="line">    &#125;)</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> &lt;div className="box"&gt;</div><div class="line">    &lt;div className="search-bar"&gt;</div><div class="line">      请输入你要搜索的仓库名：</div><div class="line">      &lt;input </div><div class="line">        onChange=&#123;onChange&#125; </div><div class="line">      /&gt;&lt;/div&gt;</div><div class="line">    &lt;ul className="list-box"&gt;</div><div class="line">      &#123;list?.map((v, i) =&gt; &#123;</div><div class="line">        return &lt;li&gt;&#123;v.name&#125;&lt;/li&gt;</div><div class="line">      &#125;)&#125;</div><div class="line">    &lt;/ul&gt;</div><div class="line">  &lt;/div&gt;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>好的，第一版<a href="https://codepen.io/fanerge/pen/gOGKQoG" target="_blank" rel="external">demo1</a>我们已经完成，我们来看看有哪些问题？</p>
+<h1 id="防抖优化版本"><a href="#防抖优化版本" class="headerlink" title="防抖优化版本"></a>防抖优化版本</h1><p>想一想这种场景，当用户快速输入时，在一个单词或一个词组没有输完其实可以不调 api 进行请求，有同学可能会想到 防抖、节流 来优化服务调用频次，当然个人认为在这里使用防抖更合适，防抖的间隔取多少合适呢？在不影响用户体验的情况下，一般 30-100 ms 我觉得都比较合理，好了，这种优化方式大家应该都用过，这里就不做代码演示了。</p>
+<h1 id="优化中、日、韩文本输入"><a href="#优化中、日、韩文本输入" class="headerlink" title="优化中、日、韩文本输入"></a>优化中、日、韩文本输入</h1><p>我们看下需求“要即时响应用户搜索”，需要为搜索框绑定哪些事件呢？原生的 onchange 、oninput 作为了备选项，他们执行的时机略有差异,大家可以在 <a href="https://developer.mozilla.org/" target="_blank" rel="external">MDN</a> 上查看区别。对于使用 React 的用户，React 已经封装了原生事件，保证 onChange 事件能够在合适的时机触发。但你试着输入 CJK(中文、日文、韩文) 文本呢？会发生什么？我们在输入一些合成文本时会使得情况变得复杂起来，你切换到中文输入法时，试着输入”zhongguo”，你会发现还没有输入”中国”时已经就调了 8 次无效的 api，为什么说是无效的呢，我认为这些中间搜索结果其实用户并不关心，反而觉得这是 bug。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> onCompositionStart = <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'onCompositionStart'</span>);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">const</span> onCompositionUpdate = <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'onCompositionUpdate'</span>);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">const</span> onCompositionEnd = <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'onCompositionEnd'</span>);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> &lt;div className="box"&gt;</div><div class="line">    &lt;div className="search-bar"&gt;</div><div class="line">      &lt;input</div><div class="line">        onChange=&#123;onChange&#125;</div><div class="line">        onCompositionStart=&#123;onCompositionStart&#125;</div><div class="line">        onCompositionUpdate=&#123;onCompositionUpdate&#125;</div><div class="line">        onCompositionEnd=&#123;onCompositionEnd&#125;</div><div class="line">      /&gt;&lt;/div&gt;</div><div class="line">    &lt;ul className="list-box"&gt;</div><div class="line">      &#123;list?.map((v, i) =&gt; &#123;</div><div class="line">        return &lt;li&gt;&#123;v.text&#125;&lt;/li&gt;</div><div class="line">      &#125;)&#125;</div><div class="line">    &lt;/ul&gt;</div><div class="line">  &lt;/div&gt;</div></pre></td></tr></table></figure>
+<p>我先在代码中添加 onCompositionStart、onCompositionUpdate、onCompositionEnd 事件，你可以在<a href="https://codepen.io/fanerge/pen/vYerQdm" target="_blank" rel="external">demo2</a>中测试输入非 CJK 和 CJK 文本时控制台打印出的日志。</p>
+<p>我们可以利用输入非 CJK 文本时只会执行 onInput 事件，输入 CJK 文本时会依次执行<br>onCompositionStart、(onCompositionUpdate、onInput 持续输入会是一个重复的过程)、最后我们选择待选文本后执行 onCompositionEnd 事件。通过上面测试，对于用户输入 CJK 文本时我们事件应该在 onCompositionEnd 中执行呢？<br>代码实现</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">SearchDemo</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">const</span> isCompositionRef = useRef(<span class="literal">false</span>);</div><div class="line">  <span class="keyword">const</span> [list, setList] = useState([]);</div><div class="line"></div><div class="line">  <span class="keyword">const</span> getData = <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</div><div class="line">    fetch(<span class="string">`<span class="subst">$&#123;api&#125;</span>&amp;q=<span class="subst">$&#123;e.target.value&#125;</span>`</span>)</div><div class="line">      .then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</div><div class="line">      <span class="built_in">console</span>.log(res);</div><div class="line">      <span class="comment">// setList(res?.data || []);</span></div><div class="line">      &#125;)</div><div class="line">      .catch(<span class="function"><span class="params">e</span> =&gt;</span> &#123;</div><div class="line">      <span class="built_in">console</span>.log(e)</div><div class="line">    &#125;)</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">const</span> onChange = <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</div><div class="line">    <span class="comment">// 输入为 CJK 不执行 getData</span></div><div class="line">    <span class="keyword">if</span>(isCompositionRef.current) <span class="keyword">return</span>;</div><div class="line">    getData(e)</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">const</span> onCompositionStart = <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</div><div class="line">    isCompositionRef.current = <span class="literal">true</span>;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">const</span> onCompositionEnd = <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</div><div class="line">    isCompositionRef.current = <span class="literal">false</span>;</div><div class="line">    getData(e)</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> &lt;div className="box"&gt;</div><div class="line">    &lt;div className="search-bar"&gt;</div><div class="line">      &lt;input</div><div class="line">        onChange=&#123;onChange&#125;</div><div class="line">        onCompositionStart=&#123;onCompositionStart&#125;</div><div class="line">        onCompositionEnd=&#123;onCompositionEnd&#125;</div><div class="line">      /&gt;&lt;/div&gt;</div><div class="line">    &lt;ul className="list-box"&gt;</div><div class="line">      &#123;list?.map((v, i) =&gt; &#123;</div><div class="line">        return &lt;li&gt;&#123;v.text&#125;&lt;/li&gt;</div><div class="line">      &#125;)&#125;</div><div class="line">    &lt;/ul&gt;</div><div class="line">  &lt;/div&gt;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>现在我们的代码已经优化了这种场景，你可以试试看。<a href="https://codepen.io/fanerge/pen/NWazEzL" target="_blank" rel="external">demo3</a></p>
+<p>这种优化方案我也在 element-ui 的 <a href="https://github.com/ElemeFE/element/blob/dev/packages/input/src/input.vue" target="_blank" rel="external">el-input</a> 源码中看到过。当然 CompositionEvent 表示用户间接输入文本（如使用输入法）时发生的事件，还支持语音输入等，大家可以自己去探索下。</p>
+<h1 id="虚拟滚动列表优化数据量大的情形"><a href="#虚拟滚动列表优化数据量大的情形" class="headerlink" title="虚拟滚动列表优化数据量大的情形"></a>虚拟滚动列表优化数据量大的情形</h1><p>现在我们需要考虑 api 返回的数据特别大，list 10000 条以上，在启用 React fiber （React Concurrent Features） 特性之前，React 可能会长时间占用 js 线程，用户输入的数据无法及时在 input 中反馈，你可以使用新版 React 和 ReactDOM 来缓解这个问题，这种使用方式也比较简单，就不做代码演示。<br>我们看下另一种方案，虚拟化列表滚动方案，本质上就是无论数据多少，我们只显示容器内或 viewport 内的条目即可，用户滚动时在动态变更容器内显示的数据。知乎-饿了么团队有篇文章介绍虚拟列表实现原理挺不错，推荐大家阅读<a href="https://zhuanlan.zhihu.com/p/34585166" target="_blank" rel="external">再谈前端虚拟列表的实现</a>。在这里我推荐一个组件 <a href="https://www.npmjs.com/package/react-tiny-virtual-list" target="_blank" rel="external">react-tiny-virtual-list</a>，gzip 后大小只有 3kb，作者考虑了很多东西，如列表中项目高度一致、高度不一致情况、自定义容器不可见区域的 buffer（解决滑太快会看见页面空白的现象），<a href="https://clauderic.github.io/react-tiny-virtual-list" target="_blank" rel="external">作者做了很多demo</a>，大家可以去试试，在这里就不做代码演示了。</p>
+<h1 id="优化异步请求时序问题"><a href="#优化异步请求时序问题" class="headerlink" title="优化异步请求时序问题"></a>优化异步请求时序问题</h1><p>由于 internet 是一个大型的网状结构，我们在频繁向后端发送请求的情况下，很有可能每次请求所选择的路径不相同（路由和寻址）以及一些其他原因，导致先发出的请求后接收到响应。如果浏览器发出了两个请求 1，2 ，浏览器却先收到请求 2 的响应并绘制到浏览器中，然后再接收到请求 1 的响应并绘制到浏览器中，这里如果 1 和 2 搜索的关键字不同就会导致 bug（搜索关键字和查询结果不一致）。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">SearchDemo</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">// fetch 返回 promise，只保存最后一个 promise</span></div><div class="line">  <span class="keyword">const</span> lastPromise = useRef();</div><div class="line">  <span class="keyword">const</span> [list, setList] = useState([]);</div><div class="line"></div><div class="line">  <span class="keyword">const</span> getData = <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">const</span> currentPromise = fetch(<span class="string">`<span class="subst">$&#123;api&#125;</span>&amp;q=<span class="subst">$&#123;e.target.value&#125;</span>`</span>)</div><div class="line">    lastPromise.current = currentPromise</div><div class="line">    <span class="comment">// 过滤掉不是最后一次发起的请求</span></div><div class="line">    currentPromise.then(</div><div class="line">      <span class="function"><span class="params">res</span> =&gt;</span> &#123;</div><div class="line">        <span class="keyword">if</span> (currentPromise === lastPromise.current) &#123;</div><div class="line">          setList(res?.data || []);</div><div class="line">        &#125;</div><div class="line">      &#125;,</div><div class="line">      e =&gt; &#123;</div><div class="line">        <span class="keyword">if</span> (currentPromise === lastPromise.current) &#123;</div><div class="line">          <span class="built_in">console</span>.warn(<span class="string">'fetch failure'</span>, e);</div><div class="line">        &#125;</div><div class="line">      &#125;,</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">const</span> onChange = <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</div><div class="line">    getData(e)</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> &lt;div className="box"&gt;</div><div class="line">    &lt;div className="search-bar"&gt;</div><div class="line">      &lt;input</div><div class="line">        onChange=&#123;onChange&#125;</div><div class="line">      /&gt;&lt;/div&gt;</div><div class="line">    &lt;ul className="list-box"&gt;</div><div class="line">      &#123;list?.map((v, i) =&gt; &#123;</div><div class="line">        return &lt;li&gt;&#123;v.text&#125;&lt;/li&gt;</div><div class="line">      &#125;)&#125;</div><div class="line">    &lt;/ul&gt;</div><div class="line">  &lt;/div&gt;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><a href="https://codepen.io/fanerge/pen/qBPKgBy" target="_blank" rel="external">demo4</a>这里技巧性比较强，利用 fetch 方法每次返回不同的 Promise 对象内存地址，并始终只记录最后一次的 Promise 对象内存地址，在接收到响应时判断并只处理最后一个请求的响应。思想最初来源于<a href="https://sebastienlorber.com/handling-api-request-race-conditions-in-react" target="_blank" rel="external">Handling API request race conditions in React</a></p>
+<h1 id="另一种方案优化异步请求时序问题"><a href="#另一种方案优化异步请求时序问题" class="headerlink" title="另一种方案优化异步请求时序问题"></a>另一种方案优化异步请求时序问题</h1><p><a href="https://sebastienlorber.com/handling-api-request-race-conditions-in-react" target="_blank" rel="external">Handling API request race conditions in React</a>文章还提供了一个思路取消之前的所有请求，这里还有个好处，如果提前取消请求，浏览器就会省略解析 Response 这一过程，前面一种方式浏览器其实是解析了 Response ，只是我们没有用到而已<a href="https://codepen.io/fanerge/pen/WNZyPXp" target="_blank" rel="external">demo5</a>。<br>代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">SearchDemo</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">const</span> isCompositionRef = useRef(<span class="literal">false</span>);</div><div class="line">  <span class="keyword">const</span> [list, setList] = useState([]);</div><div class="line">  <span class="keyword">const</span> [text, setText] = useState([]);</div><div class="line"></div><div class="line">  <span class="keyword">const</span> onChange = <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</div><div class="line">    <span class="comment">// 输入为 CJK 不执行 getData</span></div><div class="line">    <span class="keyword">if</span>(isCompositionRef.current) <span class="keyword">return</span>;</div><div class="line">    setText(e?.target?.value);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">const</span> onCompositionStart = <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</div><div class="line">    isCompositionRef.current = <span class="literal">true</span>;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">const</span> onCompositionEnd = <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</div><div class="line">    isCompositionRef.current = <span class="literal">false</span>;</div><div class="line">    setText(e?.target?.value);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  useEffect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">    setList([]);</div><div class="line">    <span class="comment">// Create the current request's abort controller</span></div><div class="line">    <span class="keyword">const</span> abortController = <span class="keyword">new</span> AbortController();</div><div class="line">    <span class="comment">// Issue the request</span></div><div class="line">    fetch(<span class="string">`<span class="subst">$&#123;api&#125;</span>&amp;q=<span class="subst">$&#123;e.target.value&#125;</span>`</span>, &#123;</div><div class="line">      <span class="attr">signal</span>: abortController.signal,</div><div class="line">    &#125;)</div><div class="line">      .then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</div><div class="line">        <span class="comment">// IMPORTANT: we still need to filter the results here,</span></div><div class="line">        <span class="comment">// in case abortion happens during the delay.</span></div><div class="line">        <span class="comment">// In real apps, abortion could happen when you are parsing the json,</span></div><div class="line">        <span class="comment">// with code like "fetch().then(res =&gt; res.json())"</span></div><div class="line">        <span class="comment">// but also any other async then() you execute after the fetch</span></div><div class="line">        <span class="keyword">if</span> (abortController.signal.aborted) &#123;</div><div class="line">          <span class="keyword">return</span>;</div><div class="line">        &#125;</div><div class="line">        setList(res?.data || []);</div><div class="line">      &#125;)</div><div class="line">      .catch(<span class="function"><span class="params">e</span> =&gt;</span> &#123;</div><div class="line">      <span class="built_in">console</span>.log(e)</div><div class="line">    &#125;)</div><div class="line">    <span class="comment">// Trigger the abortion in useEffect's cleanup function</span></div><div class="line">    <span class="keyword">return</span> <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">      abortController.abort();</div><div class="line">    &#125;;</div><div class="line">  &#125;, [text]);</div><div class="line"></div><div class="line">  <span class="keyword">return</span> &lt;div className="box"&gt;</div><div class="line">    &lt;div className="search-bar"&gt;</div><div class="line">      &lt;input</div><div class="line">        onChange=&#123;onChange&#125;</div><div class="line">        onCompositionStart=&#123;onCompositionStart&#125;</div><div class="line">        onCompositionEnd=&#123;onCompositionEnd&#125;</div><div class="line">      /&gt;&lt;/div&gt;</div><div class="line">    &lt;ul className="list-box"&gt;</div><div class="line">      &#123;list?.map((v, i) =&gt; &#123;</div><div class="line">        return &lt;li&gt;&#123;v.text&#125;&lt;/li&gt;</div><div class="line">      &#125;)&#125;</div><div class="line">    &lt;/ul&gt;</div><div class="line">  &lt;/div&gt;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>比如你快速输入”123”将在控制台看见如下效果：<br><img src="../../images/2022/fetch-cancel.png" alt="fetch-cancel"></p>
+<h1 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h1><p>“搜索列表“只是一个小小的业务场景，如果你想去优化总是有些突破口。但笔者想说的，我们开发也需要考虑开发成本和收益，对于收益和开发成本不对等的情况下大家也没必要做这么多优化（又不是不能用），也比较反对“过早优化”。<br><img src="../../images/2022/又不是不能用.jpg" alt="又不是不能用"><br>本文也是 2022 年的第一篇文章，祝大家能够在新的一年里“升职加薪、早日实现财务自由”。如果本文对你有帮助请你点击“关注”和“点赞”就是对我的支持，谢谢。<br>欢迎转载 请注明出处</p>
+<blockquote>
+<p>参考文档：<br><a href="https://zhuanlan.zhihu.com/p/34585166" target="_blank" rel="external">再谈前端虚拟列表的实现</a><br><a href="https://sebastienlorber.com/handling-api-request-race-conditions-in-react" target="_blank" rel="external">Handling API request race conditions in React</a><br><a href="https://www.npmjs.com/package/react-tiny-virtual-list" target="_blank" rel="external">react-tiny-virtual-list</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+	<div>
+		
+			<div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读，如果本文对你有帮助就记得<a href="https://github.com/fanerge/fanerge.github.io" title="谢谢亲的star">给个star</a>-------------</div>
+		
+	</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Donate comment here</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author: </strong>余真帆-fanerge</li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://fanerge.github.io/2022/如何进行搜索列表优化.html" title="如何进行搜索列表优化">https://fanerge.github.io/2022/如何进行搜索列表优化.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/前端/" rel="tag"><i class="far fa-bell"></i> 前端</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/提升职场竞争力.html" rel="next" title="提升职场竞争力">
+                <i class="fa fa-chevron-left"></i> 提升职场竞争力
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=2156704" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTk4Mi8xMjUxOA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars3.githubusercontent.com/u/17136707?s=400&u=d7250b0655c87b8e8e1cdaf826754fe5e6f68e80&v=4"
+                alt="余真帆-fanerge" />
+            
+              <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+              <p class="site-description motion-element" itemprop="description">前端偏前工程师</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">187</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">57</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/fanerge" target="_blank" title="GitHub" rel="external nofollow"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:fanege@qq.com" target="_blank" title="E-Mail" rel="external nofollow"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金" rel="external nofollow"><i class="fa fa-fw fa-juejin"></i>掘金</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.zhihu.com/people/fanerge" target="_blank" title="知乎" rel="external nofollow"><i class="fa fa-fw fa-zhihu"></i>知乎</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://segmentfault.com/u/fanerge/articles" target="_blank" title="Segmentfault" rel="external nofollow"><i class="fa fa-fw fa-segmentfault"></i>Segmentfault</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#简单完成业务"><span class="nav-number">2.</span> <span class="nav-text">简单完成业务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#防抖优化版本"><span class="nav-number">3.</span> <span class="nav-text">防抖优化版本</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#优化中、日、韩文本输入"><span class="nav-number">4.</span> <span class="nav-text">优化中、日、韩文本输入</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#虚拟滚动列表优化数据量大的情形"><span class="nav-number">5.</span> <span class="nav-text">虚拟滚动列表优化数据量大的情形</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#优化异步请求时序问题"><span class="nav-number">6.</span> <span class="nav-text">优化异步请求时序问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#另一种方案优化异步请求时序问题"><span class="nav-number">7.</span> <span class="nav-text">另一种方案优化异步请求时序问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结尾"><span class="nav-number">8.</span> <span class="nav-text">结尾</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-pied-piper-alt"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a></div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+	  <span>Unique Visitor:</span>
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+	  <span>Page View:</span>
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.6"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.6"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.6"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.6"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>

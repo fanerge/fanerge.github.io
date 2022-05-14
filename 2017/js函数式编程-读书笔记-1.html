@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.6" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=6.0.6" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.0.6',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+  
+
+
+
+
+  <meta name="description" content="最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸函数式编程。如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。 一等函数与Applicative编程函数式一等公民函数式编程语言应该是促进创造和使用函数的。 函数式一等公民：函数可以作为数组的成员、对象的方法、存储为变量等等。 12// 例如存储为数组的成员var fortytwos = [42, function () &amp;#123;">
+<meta name="keywords" content="函数式编程,读书笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js函数式编程-一等函数与Applicative编程">
+<meta property="og:url" content="https://fanerge.github.io/2017/js函数式编程-读书笔记-1.html">
+<meta property="og:site_name" content="fanerge&#39;s Blogs">
+<meta property="og:description" content="最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸函数式编程。如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。 一等函数与Applicative编程函数式一等公民函数式编程语言应该是促进创造和使用函数的。 函数式一等公民：函数可以作为数组的成员、对象的方法、存储为变量等等。 12// 例如存储为数组的成员var fortytwos = [42, function () &amp;#123;">
+<meta property="og:updated_time" content="2022-05-14T02:23:46.495Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="js函数式编程-一等函数与Applicative编程">
+<meta name="twitter:description" content="最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸函数式编程。如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。 一等函数与Applicative编程函数式一等公民函数式编程语言应该是促进创造和使用函数的。 函数式一等公民：函数可以作为数组的成员、对象的方法、存储为变量等等。 12// 例如存储为数组的成员var fortytwos = [42, function () &amp;#123;">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="fanerge's Blogs" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="https://fanerge.github.io/2017/js函数式编程-读书笔记-1.html"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>js函数式编程-一等函数与Applicative编程 | fanerge's Blogs</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+	<a href="https://github.com/fanerge"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 9999;" src="http://pau044s3z.bkt.clouddn.com/forkgithub.png" alt="Fork me on GitHub"></a>
+	</div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">fanerge's Blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于WEB开发的技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-categories">
+    <a href="/categories" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">29</span>
+      </a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-archives">
+    <a href="/archives" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">187</span>
+      </a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-about">
+    <a href="/about" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+</li>
+
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+    
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+    
+
+  
+
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/js函数式编程-读书笔记-1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars3.githubusercontent.com/u/17136707?s=400&u=d7250b0655c87b8e8e1cdaf826754fe5e6f68e80&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="fanerge's Blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">js函数式编程-一等函数与Applicative编程</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-27T21:02:47+08:00">2017-07-27</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/函数式编程/" itemprop="url" rel="index"><span itemprop="name">函数式编程</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views: 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+		
+	  
+      
+
+      
+        <p>最近，工作不是很忙，赶紧为自己充电。准备很长一段事件撸<strong>函数式编程</strong>。<br><em>如有不正确的地方，请大家提出来，我会更正，共同进步，谢谢。</em></p>
+<h3 id="一等函数与Applicative编程"><a href="#一等函数与Applicative编程" class="headerlink" title="一等函数与Applicative编程"></a>一等函数与Applicative编程</h3><h4 id="函数式一等公民"><a href="#函数式一等公民" class="headerlink" title="函数式一等公民"></a>函数式一等公民</h4><pre><code>函数式编程语言应该是促进创造和使用函数的。
+函数式一等公民：函数可以作为数组的成员、对象的方法、存储为变量等等。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// 例如存储为数组的成员</div><div class="line">var fortytwos = [42, function () &#123; return 42 &#125;]</div></pre></td></tr></table></figure>
+
+高阶函数的定义：以函数作为参数或者返回函数。
+多种javascript编程方式
+    命令式编程 -- 通过详细描述行为的编程方式。
+    基于原型的面向对象编程 -- 基于原型对象及其实例的编程方式。
+    元编程 -- 对JavaScript执行模型数据进行编写和操作的编程方式。    
+</code></pre><h3 id="Applicative编程"><a href="#Applicative编程" class="headerlink" title="Applicative编程"></a>Applicative编程</h3><pre><code>定义：函数A作为参数提供给函数B。    
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div></pre></td><td class="code"><pre><div class="line">var nums = [1, 2, 3, 4, 5];</div><div class="line"></div><div class="line">*map* 遍历集合并对其每一个值调用一个函数，返回结果的集合。</div><div class="line">function doubleAll(array) &#123;</div><div class="line">	return _.map(array, function (n) &#123;</div><div class="line">		return n*2;	</div><div class="line">	&#125;);</div><div class="line">&#125;</div><div class="line">console.log(doubleAll(nums)) // [2, 4, 6, 8, 10]</div><div class="line"></div><div class="line">*reduce* 利用函数将值的集合合并成一个值，该函数接收一个累积值和本次处理的值</div><div class="line">function average (array) &#123;</div><div class="line">	let sum = _.reduce(array, function (a, b)&#123;</div><div class="line">		return a + b;</div><div class="line">	&#125;)</div><div class="line">	return sum / array.length;</div><div class="line">&#125;</div><div class="line">console.log(average(nums)) // 3</div><div class="line"></div><div class="line">*filter* 对集合每一个值调用函数，若返回为true并添加到新集合中去，并返回新集合</div><div class="line">function onlyEven(array) &#123;</div><div class="line">	return _.filter(array, function (n)&#123;</div><div class="line">		return n%2 === 0	</div><div class="line">	&#125;)</div><div class="line">&#125;</div><div class="line">console.log(onlyEven(nums))</div><div class="line"></div><div class="line">集合中心编程</div><div class="line">var test = _.map(&#123;a: 1, b: 2&#125;, function (v, k) &#123;</div><div class="line">	return [k, v];</div><div class="line">&#125;)</div><div class="line">console.dir(test) // [[&apos;a&apos;, 1], [&apos;b&apos;, 2]]</div><div class="line"></div><div class="line">Applicative编程的其他实例</div><div class="line"></div><div class="line">*reduceRight*（从右到左）</div><div class="line">var nums = [100, 2, 25];</div><div class="line">function div(x, y) &#123;</div><div class="line">	return x/y;</div><div class="line">&#125;</div><div class="line">var test = _.reduceRight(nums, div);</div><div class="line">console.log(test) // 0.125</div><div class="line"></div><div class="line">*find* 它接收一个集合和一个谓词函数，并返回该谓词为true时的第一个元素。</div><div class="line">// 其中谓词函数为：_.isEqual、_.isEmpty、_.isElement...</div><div class="line">var dd = _.find([&apos;a&apos;, &apos;b&apos;, &apos;3&apos;, 4], _.isNumber);</div><div class="line">console.log(dd) // 4</div><div class="line"></div><div class="line">*reject* 本质为_.filter的逆命题</div><div class="line">var dd = _.reject([&apos;a&apos;, &apos;b&apos;, &apos;3&apos;, 4], _.isNumber);</div><div class="line">console.log(dd) // [&apos;a&apos;, &apos;b&apos;, &apos;3&apos;]</div><div class="line">// 另一种实现</div><div class="line">function complement(pred) &#123;</div><div class="line">	return function () &#123;</div><div class="line">		return !pred.apply(null, _.toArray(arguments));</div><div class="line">	&#125;;</div><div class="line">&#125;</div><div class="line">var d1 = _.filter([&apos;a&apos;, &apos;b&apos;, &apos;3&apos;, 4], complement(_.isNumber))</div><div class="line">console.log(d1) // [&apos;a&apos;, &apos;b&apos;, &apos;3&apos;]</div><div class="line"></div><div class="line">*all* 当对于集合中所有元素都满足谓词时返回true，否则返回false</div><div class="line">var dd = _.all([1, 2, 3, &apos;4&apos;], _.isNumber)</div><div class="line">console.log(dd) // false</div><div class="line"></div><div class="line">*any* 当对于集合中有满足谓词时返回true，否则返回false</div><div class="line">var dd = _.any([1, 2, 3, &apos;4&apos;], _.isNumber)</div><div class="line">console.log(dd) // true</div><div class="line"></div><div class="line">*sortBy* 接收一个集合和函数来对该集合排序</div><div class="line">var people = [&#123;name: &apos;Rick&apos;, age: 30&#125;,&#123;name: &apos;Jaka&apos;, age: 24&#125;];</div><div class="line">var list = _.sortBy(people, function (p) &#123;</div><div class="line">	return p.name</div><div class="line">&#125;)</div><div class="line">console.log(list) // [&#123;name: &apos;Jaka&apos;, age: 24&#125;, &#123;name: &apos;Rick&apos;, age: 30&#125;]</div><div class="line"></div><div class="line">*groupBy* 接收一个集合和一个条件函数，并返回一个对象，k为传入的条件，v为对应的元素</div><div class="line">var albums = [</div><div class="line">	&#123;title: &apos;sabba&apos;, genre: &apos;metal&apos;&#125;,</div><div class="line">	&#123;title: &apos;scientist&apos;, genre: &apos;dub&apos;&#125;,</div><div class="line">	&#123;title: &apos;undertow&apos;, genre: &apos;metal&apos;&#125;,</div><div class="line">]</div><div class="line">var list = _.groupBy(albums, function (a) &#123;</div><div class="line">	return a.genre;</div><div class="line">&#125;)</div><div class="line">console.dir(list)</div><div class="line"></div><div class="line">*countBy* 接收一个集合和一个条件函数，并返回一个对象，k为传入的条件，v为对应的元素的个数</div><div class="line">var albums = [</div><div class="line">	&#123;title: &apos;sabba&apos;, genre: &apos;metal&apos;&#125;,</div><div class="line">	&#123;title: &apos;scientist&apos;, genre: &apos;dub&apos;&#125;,</div><div class="line">	&#123;title: &apos;undertow&apos;, genre: &apos;metal&apos;&#125;,</div><div class="line">]</div><div class="line">var list = _.countBy(albums, function (a) &#123;</div><div class="line">	return a.genre;</div><div class="line">&#125;)</div><div class="line">console.dir(list) // &#123;metal: 2, dub: 1&#125;</div></pre></td></tr></table></figure>
+
+
+定义几个Applicative函数
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">*cat* 合并数组</div><div class="line">function cat() &#123;</div><div class="line">	let head = _.first(arguments);</div><div class="line">	if (existy(head)) &#123;</div><div class="line">		return head.concat.apply(head, _.rest(arguments));</div><div class="line">	&#125; else &#123;</div><div class="line">		return [];</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">cat([1, 2, 3], [4, 5]) // [1, 2, 3, 4, 5]</div><div class="line"></div><div class="line">*construct* 将元素放置在数组前方</div><div class="line">function construct(head, tail) &#123;</div><div class="line">	return cat([head], _.toArray(tail));</div><div class="line">&#125;</div><div class="line">construct(42, [1, 2, 3]) // [42, 1, 2, 3]</div></pre></td></tr></table></figure>
+</code></pre><h3 id="数据思考"><a href="#数据思考" class="headerlink" title="数据思考"></a>数据思考</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div></pre></td><td class="code"><pre><div class="line">*keys* 以数组的形式返回对象的key</div><div class="line">var zombie = &#123;name: &apos;bub&apos;, film: &apos;day&apos;&#125;</div><div class="line">console.log(_.keys(zombie)) // [&apos;name&apos;, &apos;film&apos;]</div><div class="line">*values* 以数组的形式返回对象的value</div><div class="line">console.log(_.keys(zombie)) // [&apos;bub&apos;, &apos;day&apos;]</div><div class="line"></div><div class="line">*pluck* 接收一个对象数组和一个字符串，并返回在给定的键数组中对应对象的值</div><div class="line">var authorList = _.pluck([</div><div class="line">	&#123;title: &apos;chthon&apos;, author: &apos;anthony&apos;&#125;,</div><div class="line">	&#123;title: &apos;grendel&apos;, author: &apos;grendel&apos;&#125;,</div><div class="line">	&#123;title: &apos;after&apos;&#125;</div><div class="line">], &apos;author&apos;);</div><div class="line"></div><div class="line">*pairs* 接收一个对象，并把它变成这个嵌套数组</div><div class="line">var demo = _.pairs(&#123;title: &apos;chthon&apos;, author: &apos;anthony&apos;&#125;)</div><div class="line">console.log(demo) // [[&apos;title&apos;, &apos;chthon&apos;],[&apos;author&apos;, &apos;anthony&apos;]]</div><div class="line"></div><div class="line">*object* 将其重新组合成一个新的对象</div><div class="line">var zombie = &#123;name: &apos;bub&apos;, film: &apos;day&apos;&#125;</div><div class="line">var dd = _.object(_.map(_.pairs(zombie), function (pair) &#123;</div><div class="line">	return [pair[0].toUpperCase(), pair[1]]</div><div class="line">&#125;))</div><div class="line">console.log(dd)	// &#123;NAME: &quot;bub&quot;, FILM: &quot;day&quot;&#125;</div><div class="line"></div><div class="line">*invert* 翻转key和value</div><div class="line">var zombie = &#123;name: &apos;bub&apos;, film: &apos;day&apos;&#125;</div><div class="line">var dd = _.invert(zombie);</div><div class="line">console.log(dd) // &#123;bub: &quot;name&quot;, day: &quot;film&quot;&#125;</div><div class="line"></div><div class="line">*defaults* 用于扩充传入的对象，如为某个属性添加默认值</div><div class="line">var dd = _.pluck(_.map([</div><div class="line">		&#123;title: &apos;chthon&apos;, author: &apos;anthony&apos;&#125;,</div><div class="line">		&#123;title: &apos;grendel&apos;, author: &apos;gardner&apos;&#125;,</div><div class="line">		&#123;title: &apos;after&apos;&#125;,</div><div class="line">	], function (obj) &#123;</div><div class="line">		return _.defaults(obj, &#123;author: &apos;Unknown&apos;&#125;)</div><div class="line">	&#125;),</div><div class="line">&apos;author&apos;);</div><div class="line">console.log(dd)	// [&quot;anthony&quot;, &quot;gardner&quot;, &quot;Unknown&quot;]</div><div class="line"></div><div class="line">*pick* 根据参数筛选对象</div><div class="line">*omit* 根据参数筛选对象</div><div class="line">var person = &#123;</div><div class="line">	name: &apos;romy&apos;,</div><div class="line">	token: &apos;j3900&apos;,</div><div class="line">	password: &apos;3333&apos;</div><div class="line">&#125;;</div><div class="line">var info = _.pick(person, &apos;token&apos;, &apos;password&apos;)</div><div class="line">var other = _.omit(person, &apos;token&apos;, &apos;password&apos;)</div><div class="line">console.log(info) // &#123;token: &quot;j3900&quot;, password: &quot;3333&quot;&#125;</div><div class="line">console.log(other) // &#123;name: &apos;romy&apos;&#125;</div><div class="line"></div><div class="line">*findWhere* 接收一个对象数组，返回第一个与参数给出的条件匹配的对象</div><div class="line">var library = [</div><div class="line">	&#123;title: &apos;sicp&apos;, isbn: &apos;0234&apos;, ed: 1&#125;,</div><div class="line">	&#123;title: &apos;sicp&apos;, isbn: &apos;0235&apos;, ed: 2&#125;,</div><div class="line">	&#123;title: &apos;joy&apos;, isbn: &apos;0236&apos;, ed: 1&#125;,</div><div class="line">];</div><div class="line">var dd = _.findWhere(library, &#123;title: &apos;sicp&apos;, ed: 2&#125;)</div><div class="line">console.log(dd) // &#123;title: &quot;sicp&quot;, isbn: &quot;0235&quot;, ed: 2&#125; 	</div><div class="line"></div><div class="line">*where* 接收一个对象数组，返回所有条件匹配的对象</div><div class="line">var library = [</div><div class="line">	&#123;title: &apos;sicp&apos;, isbn: &apos;0234&apos;, ed: 1&#125;,</div><div class="line">	&#123;title: &apos;sicp&apos;, isbn: &apos;0235&apos;, ed: 2&#125;,</div><div class="line">	&#123;title: &apos;joy&apos;, isbn: &apos;0236&apos;, ed: 1&#125;,</div><div class="line">];</div><div class="line">var dd = _.where(library, &#123;title: &apos;sicp&apos;&#125;)</div><div class="line">console.log(dd) // &#123;&#123;title: &apos;sicp&apos;, isbn: &apos;0234&apos;, ed: 1&#125;, &#123;title: &apos;sicp&apos;, isbn: &apos;0235&apos;, ed: 2&#125;&#125;</div></pre></td></tr></table></figure>
+
+
+表状（Tabel-Like）数据    
+```
+function project(table, keys){
+    return _.map(table, function (obj){
+        return _.pick.apply(null, construct(obj, keys));
+    });
+}
+var editionResults = project(library, [&apos;title&apos;, &apos;isbn&apos;])
+// [
+    {title: &apos;sicp&apos;, isbn: &apos;0234&apos;},
+    {title: &apos;sicp&apos;, isbn: &apos;0235&apos;},
+    {title: &apos;joy&apos;, isbn: &apos;0236&apos;},
+]
+
+*rename* 为对象属性设置别名
+function rename(obj, newNames){
+    return _.reduce(newNames, function(o, nu, old){
+        if (_.has(obj, okd)) {
+            o[nu] = obj[old];
+            return o;
+        } else {
+            return o;
+        }
+    },
+    _.omit.apply(null, construct(obj, _.keys(newNames))));
+}
+var dd = {a: 1, b: 2}
+console.log(rename(dd, {&apos;a&apos;: &apos;A&apos;})) // {b: 2, A: 1}
+
+*as* 类似于SQL语句 SELECT ed as edition FROM library
+function as(table, newNames){
+    return _.map(table, function(obj){
+        return rename(obj, newNames);
+    });
+}
+var library = [
+        {title: &apos;sicp&apos;, isbn: &apos;0234&apos;, ed: 1},
+        {title: &apos;sicp&apos;, isbn: &apos;0235&apos;, ed: 2},
+        {title: &apos;joy&apos;, isbn: &apos;0236&apos;, ed: 1},
+    ];
+var dd = as(library, {ed: &apos;edition&apos;})
+console.log(dd)
+// [
+        {title: &apos;sicp&apos;, isbn: &apos;0234&apos;, edition: 1},
+        {title: &apos;sicp&apos;, isbn: &apos;0235&apos;, edition: 2},
+        {title: &apos;joy&apos;, isbn: &apos;0236&apos;, edition: 1},
+    ]
+
+*where* 类似于SQL的where语句
+//接收一个函数，作为对表中的每个对象的谓词。每当谓词返回false是，该对象不会出现在新表中
+function restrict(table, pred){
+    return _.reduce(table, function(newTable, obj){
+        if (truthy(pred(obj))) {
+            return newTable;
+        } else {
+            return _.without(newTable, obj)
+        }
+    }, table)
+}
+
+var dd = restrict(library, function (book){
+    return book.ed &gt; 1;
+})
+console.log(dd) // [{title: &apos;sicp&apos;, isbn: &apos;0235&apos;, ed: 2}]
+```    
+</code></pre><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><pre><code>1. 一等函数    
+    可以存储在变量中
+    可以存储在数组中的插槽中
+    可以存储在对象的字段中
+    ...
+2. applicative编程
+    _.map
+    _.reduce
+    _.filter
+</code></pre><blockquote>
+<p>   源代码仓库<br>    <a href="https://github.com/fanerge/Functional-reading-notes" target="_blank" rel="external">函数式编程-读书笔记</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+	<div>
+		
+			<div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读，如果本文对你有帮助就记得<a href="https://github.com/fanerge/fanerge.github.io" title="谢谢亲的star">给个star</a>-------------</div>
+		
+	</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Donate comment here</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author: </strong>余真帆-fanerge</li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://fanerge.github.io/2017/js函数式编程-读书笔记-1.html" title="js函数式编程-一等函数与Applicative编程">https://fanerge.github.io/2017/js函数式编程-读书笔记-1.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/函数式编程/" rel="tag"><i class="far fa-bell"></i> 函数式编程</a>
+          
+            <a href="/tags/读书笔记/" rel="tag"><i class="far fa-bell"></i> 读书笔记</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/PWA-1.html" rel="next" title="PWA-1">
+                <i class="fa fa-chevron-left"></i> PWA-1
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/js函数式编程-读书笔记-2.html" rel="prev" title="js函数式编程-变量的作用域和闭包">
+                js函数式编程-变量的作用域和闭包 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=2156704" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTk4Mi8xMjUxOA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars3.githubusercontent.com/u/17136707?s=400&u=d7250b0655c87b8e8e1cdaf826754fe5e6f68e80&v=4"
+                alt="余真帆-fanerge" />
+            
+              <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+              <p class="site-description motion-element" itemprop="description">前端偏前工程师</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">187</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">57</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/fanerge" target="_blank" title="GitHub" rel="external nofollow"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:fanege@qq.com" target="_blank" title="E-Mail" rel="external nofollow"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金" rel="external nofollow"><i class="fa fa-fw fa-juejin"></i>掘金</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.zhihu.com/people/fanerge" target="_blank" title="知乎" rel="external nofollow"><i class="fa fa-fw fa-zhihu"></i>知乎</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://segmentfault.com/u/fanerge/articles" target="_blank" title="Segmentfault" rel="external nofollow"><i class="fa fa-fw fa-segmentfault"></i>Segmentfault</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一等函数与Applicative编程"><span class="nav-number">1.</span> <span class="nav-text">一等函数与Applicative编程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#函数式一等公民"><span class="nav-number">1.1.</span> <span class="nav-text">函数式一等公民</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Applicative编程"><span class="nav-number">2.</span> <span class="nav-text">Applicative编程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据思考"><span class="nav-number">3.</span> <span class="nav-text">数据思考</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-pied-piper-alt"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a></div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+	  <span>Unique Visitor:</span>
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+	  <span>Page View:</span>
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.6"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.6"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.6"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.6"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>

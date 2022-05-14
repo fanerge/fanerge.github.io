@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.6" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=6.0.6" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.0.6',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+  
+
+
+
+
+  <meta name="description" content="前言在前端面试有一个非常重要的环节，也是面试者最担心的一个环节。对“手撕代码”的考察需要面试者平时总结和积累（临时抱佛脚是不好使的），在这里笔者就自己如何攻破“手撕代码”环节总结了一些经验，希望能帮助你挑战高薪，迎娶白富美😄😄😄。  使用IDE时尽量避免直接使用提示API，亲自输入（孰能生巧，当然感觉没问题的API就不用浪费时间了） 遇到不熟悉的API，一定要查文档研究清楚（参数个数和具体意">
+<meta name="keywords" content="前端面试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端面试-手撕代码篇">
+<meta property="og:url" content="https://fanerge.github.io/2019/前端面试-手撕代码篇.html">
+<meta property="og:site_name" content="fanerge&#39;s Blogs">
+<meta property="og:description" content="前言在前端面试有一个非常重要的环节，也是面试者最担心的一个环节。对“手撕代码”的考察需要面试者平时总结和积累（临时抱佛脚是不好使的），在这里笔者就自己如何攻破“手撕代码”环节总结了一些经验，希望能帮助你挑战高薪，迎娶白富美😄😄😄。  使用IDE时尽量避免直接使用提示API，亲自输入（孰能生巧，当然感觉没问题的API就不用浪费时间了） 遇到不熟悉的API，一定要查文档研究清楚（参数个数和具体意">
+<meta property="og:updated_time" content="2022-05-14T02:23:46.529Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前端面试-手撕代码篇">
+<meta name="twitter:description" content="前言在前端面试有一个非常重要的环节，也是面试者最担心的一个环节。对“手撕代码”的考察需要面试者平时总结和积累（临时抱佛脚是不好使的），在这里笔者就自己如何攻破“手撕代码”环节总结了一些经验，希望能帮助你挑战高薪，迎娶白富美😄😄😄。  使用IDE时尽量避免直接使用提示API，亲自输入（孰能生巧，当然感觉没问题的API就不用浪费时间了） 遇到不熟悉的API，一定要查文档研究清楚（参数个数和具体意">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="fanerge's Blogs" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="https://fanerge.github.io/2019/前端面试-手撕代码篇.html"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>前端面试-手撕代码篇 | fanerge's Blogs</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+	<a href="https://github.com/fanerge"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 9999;" src="http://pau044s3z.bkt.clouddn.com/forkgithub.png" alt="Fork me on GitHub"></a>
+	</div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">fanerge's Blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于WEB开发的技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-categories">
+    <a href="/categories" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">29</span>
+      </a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-archives">
+    <a href="/archives" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">187</span>
+      </a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-about">
+    <a href="/about" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+</li>
+
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+    
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+    
+
+  
+
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2019/前端面试-手撕代码篇.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars3.githubusercontent.com/u/17136707?s=400&u=d7250b0655c87b8e8e1cdaf826754fe5e6f68e80&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="fanerge's Blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">前端面试-手撕代码篇</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-12-04T10:07:39+08:00">2019-12-04</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/前端面试/" itemprop="url" rel="index"><span itemprop="name">前端面试</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views: 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+		
+	  
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>在前端面试有一个非常重要的环节，也是面试者最担心的一个环节。对“手撕代码”的考察需要面试者平时总结和积累（临时抱佛脚是不好使的），在这里笔者就自己如何攻破“手撕代码”环节总结了一些经验，希望能帮助你挑战高薪，迎娶白富美😄😄😄。</p>
+<ol>
+<li>使用IDE时尽量避免直接使用提示API，亲自输入（孰能生巧，当然感觉没问题的API就不用浪费时间了）</li>
+<li>遇到不熟悉的API，一定要查文档研究清楚（参数个数和具体意义以及返回值）</li>
+<li>如在模拟某个原生API时，先写出原生API并分析出形参和返回值</li>
+<li>感觉功能完成时，需要在考虑一下边界条件（参数非比填情况、undefined、null）</li>
+<li>平常有空时多刷刷一二线大厂的面试题（扩充自己的知识广度）</li>
+<li>多关照一些前端动态（比如说curry、compose你没听过，这就有点尴尬）</li>
+</ol>
+<h1 id="常见的“手撕代码”，都是高频题哦"><a href="#常见的“手撕代码”，都是高频题哦" class="headerlink" title="常见的“手撕代码”，都是高频题哦"></a>常见的“手撕代码”，都是高频题哦</h1><h2 id="curry（柯里化）"><a href="#curry（柯里化）" class="headerlink" title="curry（柯里化）"></a>curry（柯里化）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">function curry(fn: any) &#123;</div><div class="line">  return function judgeCurry(...args: any) &#123;</div><div class="line">      return fn.length &gt; args.length ? </div><div class="line">          (...args1: any) =&gt; judgeCurry(...args,...args1):</div><div class="line">          fn(...args);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="compose（函数组合）"><a href="#compose（函数组合）" class="headerlink" title="compose（函数组合）"></a>compose（函数组合）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">function compose(...args: any[]) &#123;</div><div class="line">  return (subArgs: any) =&gt; &#123;</div><div class="line">    // for(let i = args.length - 1; i &gt;= 0; i--) &#123;</div><div class="line">    //   res = args[i](res);</div><div class="line">    // &#125;</div><div class="line">    return args.reverse().reduce((acc, func,index) =&gt; &#123;</div><div class="line">      return func(acc);</div><div class="line">    &#125;, subArgs);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="pipe（函数管道）"><a href="#pipe（函数管道）" class="headerlink" title="pipe（函数管道）"></a>pipe（函数管道）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">export function pipe(...args: any[]) &#123;</div><div class="line">  return (subArgs: any) =&gt; &#123;</div><div class="line">    // for(let i = args.length - 1; i &gt;= 0; i--) &#123;</div><div class="line">    //   res = args[i](res);</div><div class="line">    // &#125;</div><div class="line">    return args.reduce((acc, func,index) =&gt; &#123;</div><div class="line">      return func(acc);</div><div class="line">    &#125;, subArgs);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="throttle（函数节流）"><a href="#throttle（函数节流）" class="headerlink" title="throttle（函数节流）"></a>throttle（函数节流）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">function throttle(fn: any, wait: number)&#123;</div><div class="line">  let last: any;</div><div class="line">  return function() &#123;</div><div class="line">    let now: any = Date.now();</div><div class="line">    // 初次执行</div><div class="line">    if (!last) &#123;</div><div class="line">      fn.apply(this, arguments);</div><div class="line">      last = now;</div><div class="line">      return;</div><div class="line">    &#125;</div><div class="line">    // 以后触发，需要判断是否到延迟</div><div class="line">    if(now - last &gt;= wait) &#123;</div><div class="line">      fn.apply(this, arguments);</div><div class="line">      last = now;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="debounce（函数防抖）"><a href="#debounce（函数防抖）" class="headerlink" title="debounce（函数防抖）"></a>debounce（函数防抖）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">function debounce(func: any, delay: number) &#123;              </div><div class="line">    // 初次触发定时器为null，后面产生一份定时器并记下定时器id</div><div class="line">    let timer: any = null; </div><div class="line">    // 闭包使定时器id逃逸   </div><div class="line">    return function() &#123;                             </div><div class="line">        let args = arguments;  </div><div class="line">        // 如果已有定时器id，则需要清除，重新开始延迟执行           </div><div class="line">        if (timer) &#123;</div><div class="line">            clearTimeout(timer);</div><div class="line">            timer = null;                                   </div><div class="line">        &#125;</div><div class="line">        </div><div class="line">        timer = setTimeout( () =&gt; &#123; </div><div class="line">            func.apply(this, args); </div><div class="line">            // 销毁定时器id，以便下次节流函数触发                       </div><div class="line">            timer = null;                    </div><div class="line">        &#125;, delay); </div><div class="line">    &#125;        </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="formatMoney（千分位）"><a href="#formatMoney（千分位）" class="headerlink" title="formatMoney（千分位）"></a>formatMoney（千分位）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">function fmoney(num: number)&#123;</div><div class="line">    /* 正则实现 */</div><div class="line">    // 参考：https://www.cnblogs.com/lvmylife/p/8287247.html</div><div class="line">    let [integer, decimal] = String(num).split(&apos;.&apos;);</div><div class="line">    let regExp = /\d&#123;1,3&#125;(?=(\d&#123;3&#125;)+$)/g;</div><div class="line">    integer = integer.replace(regExp, &apos;$&amp;,&apos;);</div><div class="line">    return `$&#123;integer&#125;$&#123;decimal === undefined ? &apos;&apos;: &apos;.&apos;+decimal&#125;`;</div><div class="line">    // 正则解释</div><div class="line">    // 正则表达式 \d&#123;1,3&#125;(?=(\d&#123;3&#125;)+$)  表示前面有1~3个数字，后面的至少由一组3个数字结尾</div><div class="line">    // 先行肯定断言(?=)会作为匹配校验，但不会出现在匹配结果字符串里面</div><div class="line">    // ?=表示正向引用，可以作为匹配的条件，但匹配到的内容不获取，并且作为下一次查询的开始</div><div class="line">    // $&amp; 表示与正则表达式相匹配的内容，具体的可查看 w3school的replace()方法</div><div class="line"></div><div class="line">    /* Number.prototype.toLocaleString()实现 */</div><div class="line">    // Number.prototype.toLocaleString()</div><div class="line">    // return num.toLocaleString(&apos;en&apos;);</div><div class="line"></div><div class="line">    /* Intl.NumberFormat().format(number)实现 */</div><div class="line">    // Intl.NumberFormat().format(number)</div><div class="line">    // return Intl.NumberFormat(&apos;en&apos;).format(num);</div><div class="line"></div><div class="line">    // reduce 方案</div><div class="line">    // let arr = String(num).split(&apos;.&apos;);</div><div class="line">    // let char = arr[0].split(&apos;&apos;).reverse();   </div><div class="line">    // let IntStr = char.reduce((acc, value, index) =&gt; &#123;</div><div class="line">    //     return `$&#123;index % 3 === 0 ? String(value)+&apos;,&apos; : String(value)&#125;$&#123;acc&#125;`;</div><div class="line">    // &#125;, &apos;&apos;).slice(0, -1);</div><div class="line">    // return `$&#123;IntStr&#125;$&#123;arr[1]? &apos;.&apos;+arr[1] : &apos;&apos; &#125;`;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="deepClone（深拷贝）"><a href="#deepClone（深拷贝）" class="headerlink" title="deepClone（深拷贝）"></a>deepClone（深拷贝）</h2><p>说明：通过new WeakMap()来避免循环引用（拷贝引用类型时并保存其地址，后面遇到引用类型先检查是否已经保存了）<br><br>通过Reflect.ownKeys(obj)遍历出obj自身的所有可枚举和不可枚举的属性以及symbol属性<br><br>拷贝对应属性的属性描述符<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line">function checkType(obj: any): string &#123;</div><div class="line"></div><div class="line">  const type = Object.prototype.toString.call(obj);</div><div class="line">  return type.slice(8, -1);</div><div class="line">&#125;</div><div class="line"></div><div class="line">// 深拷贝（hash = new WeakMap()考虑循环引用的问题）</div><div class="line">export function deepClone(obj: any, hash = new WeakMap()) : any&#123;</div><div class="line">  if(checkType(obj) === &apos;RegExp&apos;) &#123;</div><div class="line">    // regExp.source 正则对象的源模式文本;</div><div class="line">    // regExp.flags 正则表达式对象的标志字符串;</div><div class="line">    // regExp.lastIndex 下次匹配开始的字符串索引位置</div><div class="line">    let temp =  new RegExp(obj.source, obj.flags);</div><div class="line">    temp.lastIndex = obj.lastIndex;</div><div class="line">    return temp;</div><div class="line">  &#125;</div><div class="line">  if(checkType(obj) === &apos;Date&apos;) &#123;</div><div class="line">      return new Date(obj);</div><div class="line">  &#125;</div><div class="line">  // 非复杂类型(null、undefined、string、number、symbol、boolean、function)</div><div class="line">  if(obj === null || typeof obj !== &apos;object&apos;) &#123;</div><div class="line">      return obj;</div><div class="line">  &#125;</div><div class="line">  // 还可以扩展其他类型。。。</div><div class="line">  // 与后面hash.set()防止循环引用</div><div class="line">  if(hash.has(obj)) &#123;</div><div class="line">      return hash.get(obj);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  let newObj = new obj.constructor();</div><div class="line">  hash.set(obj, newObj);</div><div class="line">  // Object.keys(obj)类型于 for in 和 obj.hasOwnProperty</div><div class="line">  // 是否应该拷贝自身属性（可枚举的和不可枚举的以及symbol）</div><div class="line">  Reflect.ownKeys(obj).forEach(function(key) &#123;</div><div class="line">      if(typeof obj[key] === &apos;object&apos; &amp;&amp; obj[key] !== null) &#123;</div><div class="line">          newObj[key] = deepClone(obj[key], hash);</div><div class="line">      &#125;else&#123;</div><div class="line">          // 直接赋值</div><div class="line">          // newObj[key] = obj[key];</div><div class="line">          // 是否应该保留属性描述符</div><div class="line">          Object.defineProperty(newObj, key, Object.getOwnPropertyDescriptor(obj, key));</div><div class="line">      &#125;</div><div class="line">  &#125;);</div><div class="line"></div><div class="line">  return newObj;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="模拟instanceof"><a href="#模拟instanceof" class="headerlink" title="模拟instanceof"></a>模拟instanceof</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">function instance_of(L: Object, R: any)&#123;</div><div class="line">  let protoChain = Object.getPrototypeOf(L);</div><div class="line">  const Lprototype = R.prototype;</div><div class="line">  // 最坏情况递归查到Object.prototype === null</div><div class="line">  while(protoChain) &#123;</div><div class="line">      // 两个对象指向同一个内存地址，则为同一个对象</div><div class="line">      if(protoChain === Lprototype) &#123;</div><div class="line">        return true;</div><div class="line">      &#125;</div><div class="line">      protoChain = Object.getPrototypeOf(protoChain);</div><div class="line">  &#125;</div><div class="line">  // 找到终点还没找到，那就没有了呗</div><div class="line">  return false;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="实现call方法"><a href="#实现call方法" class="headerlink" title="实现call方法"></a>实现call方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">Function.prototype.myCall = function myCall() &#123;</div><div class="line">  let [thisArg, ...args] = Array.from(arguments);</div><div class="line">  if (!thisArg) &#123;</div><div class="line">      //context 为 null 或者是 undefined</div><div class="line">      thisArg = typeof window === &apos;undefined&apos; ? global : window;</div><div class="line">  &#125;</div><div class="line">  // this 的指向的是当前函数 func (func.call)</div><div class="line">  // 为thisArg对象添加func方法，func方法又指向myCall，所以在func中this指向thisArg</div><div class="line">  thisArg.func = this;</div><div class="line">  // 执行函数</div><div class="line">  let result = thisArg.func(...args);</div><div class="line">  // thisArg 上并没有 func 属性，因此需要移除</div><div class="line">  delete thisArg.func; </div><div class="line">  return result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="实现apply方法"><a href="#实现apply方法" class="headerlink" title="实现apply方法"></a>实现apply方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">Function.prototype.myApply = function myApply() &#123;</div><div class="line">  // 第一个参数为this对象，第二个参数为数组（与myCall唯一的区别就在第二个参数是数组）</div><div class="line">  let [thisArg, args] = Array.from(arguments);</div><div class="line">  if (!thisArg) &#123;</div><div class="line">      //context 为 null 或者是 undefined</div><div class="line">      thisArg = typeof window === &apos;undefined&apos; ? global : window;</div><div class="line">  &#125;</div><div class="line">  // this 的指向的是当前函数 func (func.call)</div><div class="line">  thisArg.func = this;</div><div class="line">  // 执行函数</div><div class="line">  let result = thisArg.func(...args);</div><div class="line">  // thisArg 上并没有 func 属性，因此需要移除</div><div class="line">  delete thisArg.func; </div><div class="line">  return result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="实现bind方法"><a href="#实现bind方法" class="headerlink" title="实现bind方法"></a>实现bind方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">Function.prototype.myBind = function myBind() &#123;</div><div class="line">  let [thisArg, ...args] = [...arguments];</div><div class="line">  if (!thisArg) &#123;</div><div class="line">      //context 为 null 或者是 undefined</div><div class="line">      thisArg = typeof window === &apos;undefined&apos; ? global : window;</div><div class="line">  &#125;</div><div class="line">  let that = this;</div><div class="line"></div><div class="line">  return function() &#123;</div><div class="line">      // 防止第二次调用 func 是，该func已经被delete了，需要重新赋值 </div><div class="line">      if(!thisArg.func) &#123;</div><div class="line">        thisArg.func = that;</div><div class="line">      &#125;</div><div class="line">      let result = thisArg.func(...args);</div><div class="line">      // thisArg原本没有func方法</div><div class="line">      delete thisArg.func;</div><div class="line">      return result;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="模拟Promise-all（多个Promise并行执行）"><a href="#模拟Promise-all（多个Promise并行执行）" class="headerlink" title="模拟Promise.all（多个Promise并行执行）"></a>模拟Promise.all（多个Promise并行执行）</h2><p>目前还存在参数适配的问题<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">var p1 = function()&#123;</div><div class="line">  return new Promise((resolve, reject) =&gt; &#123;setTimeout(function()&#123;resolve(&apos;12&apos;)&#125;, 1000)&#125;)</div><div class="line">&#125;;</div><div class="line">var p2 = function()&#123;</div><div class="line">  return new Promise((resolve, reject) =&gt; &#123;setTimeout(function()&#123;resolve(2)&#125;, 2000)&#125;)</div><div class="line">&#125;;</div><div class="line">var p3 = function()&#123;</div><div class="line">  return new Promise((resolve, reject) =&gt; &#123;setTimeout(function()&#123;resolve(3)&#125;, 1000)&#125;)</div><div class="line">&#125;;</div><div class="line">function promiseAll(tasks) &#123;</div><div class="line">  let ary = new Array(tasks.length).fill(1).map(item =&gt; &#123;return &#123;val: undefined, success: false&#125;&#125;);</div><div class="line">  return new Promise((resolve, reject) =&gt; &#123;</div><div class="line">    for(let i = 0; i &lt; tasks.length; i++) &#123;</div><div class="line">      tasks[i]().then(res =&gt; &#123;</div><div class="line">        ary[i].val = res;</div><div class="line">        ary[i].success = true;</div><div class="line">        if(ary.every(item =&gt; item.success === true))&#123;</div><div class="line">          resolve(ary.map(item =&gt; item.val))</div><div class="line">        &#125;</div><div class="line">      &#125;).catch(err =&gt; &#123;</div><div class="line">        reject(err);</div><div class="line">      &#125;);</div><div class="line">    &#125;</div><div class="line">  &#125;);</div><div class="line">&#125;</div><div class="line">// test</div><div class="line">promiseAll([p1, p2, p3]).then(res =&gt; console.log(res)).catch(err =&gt; &#123;</div><div class="line">  console.log(err);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<h2 id="多个Promise串行执行-两种方式"><a href="#多个Promise串行执行-两种方式" class="headerlink" title="多个Promise串行执行(两种方式)"></a>多个Promise串行执行(两种方式)</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">function parallelPromises1(tasks)&#123;</div><div class="line">  var result = [];</div><div class="line">  return tasks.reduce((accumulator,item,index)=&gt;&#123;</div><div class="line">    return accumulator.then(res=&gt;&#123;</div><div class="line">        item = typeof item === &apos;function&apos; ? item() : item;</div><div class="line">        return item.then(res=&gt;&#123;</div><div class="line">          // debugger</div><div class="line">              result[index] = res</div><div class="line">              return index == tasks.length - 1 ? result : item</div><div class="line">        &#125;)</div><div class="line">    &#125;)</div><div class="line">  &#125;,Promise.resolve())</div><div class="line">&#125;</div><div class="line"></div><div class="line">async function parallelPromises2(tasks) &#123;</div><div class="line">  let ary = [];</div><div class="line">  for (let task of tasks) &#123;</div><div class="line">    let temp = await task();</div><div class="line">    ary.push(temp);</div><div class="line">  &#125;</div><div class="line">  return ary;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="写在后面"><a href="#写在后面" class="headerlink" title="写在后面"></a>写在后面</h1><p>上面代码完全是笔者手敲，难免有错误，还望斧正。这种题目还有很多（实现简易版的EventEmitter、简易版模版引擎等），笔者会持续更新。如果对你有帮助，俺希望送上你的<a href="https://github.com/fanerge/WEB-repo" target="_blank" rel="external">github小星星</a>，在此感谢。<br><br>本文同步发布于<a href="https://fanerge.github.io/2019/%E5%89%8D%E7%AB%AF%E9%9D%A2%E8%AF%95-%E6%89%8B%E6%92%95%E4%BB%A3%E7%A0%81%E7%AF%87.html">个人博客</a><a href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" rel="external">掘金</a><a href="https://zhuanlan.zhihu.com/p/95165262" target="_blank" rel="external">知乎专栏</a><br></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+	<div>
+		
+			<div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读，如果本文对你有帮助就记得<a href="https://github.com/fanerge/fanerge.github.io" title="谢谢亲的star">给个star</a>-------------</div>
+		
+	</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Donate comment here</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author: </strong>余真帆-fanerge</li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://fanerge.github.io/2019/前端面试-手撕代码篇.html" title="前端面试-手撕代码篇">https://fanerge.github.io/2019/前端面试-手撕代码篇.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/前端面试/" rel="tag"><i class="far fa-bell"></i> 前端面试</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/linux备忘录.html" rel="next" title="linux备忘录">
+                <i class="fa fa-chevron-left"></i> linux备忘录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/一道css面试题.html" rel="prev" title="一道CSS面试题">
+                一道CSS面试题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=2156704" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTk4Mi8xMjUxOA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars3.githubusercontent.com/u/17136707?s=400&u=d7250b0655c87b8e8e1cdaf826754fe5e6f68e80&v=4"
+                alt="余真帆-fanerge" />
+            
+              <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+              <p class="site-description motion-element" itemprop="description">前端偏前工程师</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">187</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">57</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/fanerge" target="_blank" title="GitHub" rel="external nofollow"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:fanege@qq.com" target="_blank" title="E-Mail" rel="external nofollow"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金" rel="external nofollow"><i class="fa fa-fw fa-juejin"></i>掘金</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.zhihu.com/people/fanerge" target="_blank" title="知乎" rel="external nofollow"><i class="fa fa-fw fa-zhihu"></i>知乎</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://segmentfault.com/u/fanerge/articles" target="_blank" title="Segmentfault" rel="external nofollow"><i class="fa fa-fw fa-segmentfault"></i>Segmentfault</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常见的“手撕代码”，都是高频题哦"><span class="nav-number">2.</span> <span class="nav-text">常见的“手撕代码”，都是高频题哦</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#curry（柯里化）"><span class="nav-number">2.1.</span> <span class="nav-text">curry（柯里化）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#compose（函数组合）"><span class="nav-number">2.2.</span> <span class="nav-text">compose（函数组合）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pipe（函数管道）"><span class="nav-number">2.3.</span> <span class="nav-text">pipe（函数管道）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#throttle（函数节流）"><span class="nav-number">2.4.</span> <span class="nav-text">throttle（函数节流）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#debounce（函数防抖）"><span class="nav-number">2.5.</span> <span class="nav-text">debounce（函数防抖）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#formatMoney（千分位）"><span class="nav-number">2.6.</span> <span class="nav-text">formatMoney（千分位）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#deepClone（深拷贝）"><span class="nav-number">2.7.</span> <span class="nav-text">deepClone（深拷贝）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模拟instanceof"><span class="nav-number">2.8.</span> <span class="nav-text">模拟instanceof</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现call方法"><span class="nav-number">2.9.</span> <span class="nav-text">实现call方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现apply方法"><span class="nav-number">2.10.</span> <span class="nav-text">实现apply方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现bind方法"><span class="nav-number">2.11.</span> <span class="nav-text">实现bind方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模拟Promise-all（多个Promise并行执行）"><span class="nav-number">2.12.</span> <span class="nav-text">模拟Promise.all（多个Promise并行执行）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多个Promise串行执行-两种方式"><span class="nav-number">2.13.</span> <span class="nav-text">多个Promise串行执行(两种方式)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#写在后面"><span class="nav-number">3.</span> <span class="nav-text">写在后面</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-pied-piper-alt"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a></div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+	  <span>Unique Visitor:</span>
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+	  <span>Page View:</span>
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.6"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.6"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.6"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.6"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>

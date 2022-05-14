@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.6" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=6.0.6" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.0.6',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+  
+
+
+
+
+  <meta name="description" content="写在前面，本文将同步发布于Blog、掘金、segmentfault、知乎等处，如果本文对你有帮助，记得为我得到我的个人技术博客项目给个star哦。 为何写这篇文章？你可能做Web开发已经有一段时间，你是否有想过下列问题呢？为什么div元素甚至是所有的html元素都可以使用addEventListener来添加事件呢？为什么每个DOM节点都有parentNode、firstChild、nodeTyp">
+<meta name="keywords" content="html5">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何形成一个完整的HTML对象">
+<meta property="og:url" content="https://fanerge.github.io/2018/如何形成一个完整的HTML对象.html">
+<meta property="og:site_name" content="fanerge&#39;s Blogs">
+<meta property="og:description" content="写在前面，本文将同步发布于Blog、掘金、segmentfault、知乎等处，如果本文对你有帮助，记得为我得到我的个人技术博客项目给个star哦。 为何写这篇文章？你可能做Web开发已经有一段时间，你是否有想过下列问题呢？为什么div元素甚至是所有的html元素都可以使用addEventListener来添加事件呢？为什么每个DOM节点都有parentNode、firstChild、nodeTyp">
+<meta property="og:image" content="http://oxpnrlb4j.bkt.clouddn.com/html%E5%B1%9E%E6%80%A7.png">
+<meta property="og:image" content="http://oxpnrlb4j.bkt.clouddn.com/html%E5%85%83%E7%B4%A0%E7%94%B1%E6%9D%A5%281%29.svg">
+<meta property="og:updated_time" content="2022-05-14T02:23:46.527Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何形成一个完整的HTML对象">
+<meta name="twitter:description" content="写在前面，本文将同步发布于Blog、掘金、segmentfault、知乎等处，如果本文对你有帮助，记得为我得到我的个人技术博客项目给个star哦。 为何写这篇文章？你可能做Web开发已经有一段时间，你是否有想过下列问题呢？为什么div元素甚至是所有的html元素都可以使用addEventListener来添加事件呢？为什么每个DOM节点都有parentNode、firstChild、nodeTyp">
+<meta name="twitter:image" content="http://oxpnrlb4j.bkt.clouddn.com/html%E5%B1%9E%E6%80%A7.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="fanerge's Blogs" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="https://fanerge.github.io/2018/如何形成一个完整的HTML对象.html"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>如何形成一个完整的HTML对象 | fanerge's Blogs</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+	<a href="https://github.com/fanerge"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 9999;" src="http://pau044s3z.bkt.clouddn.com/forkgithub.png" alt="Fork me on GitHub"></a>
+	</div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">fanerge's Blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于WEB开发的技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-categories">
+    <a href="/categories" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">29</span>
+      </a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-archives">
+    <a href="/archives" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">187</span>
+      </a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-about">
+    <a href="/about" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+</li>
+
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+    
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+    
+
+  
+
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2018/如何形成一个完整的HTML对象.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars3.githubusercontent.com/u/17136707?s=400&u=d7250b0655c87b8e8e1cdaf826754fe5e6f68e80&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="fanerge's Blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">如何形成一个完整的HTML对象</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-28T19:22:25+08:00">2018-07-28</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/html5/" itemprop="url" rel="index"><span itemprop="name">html5</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views: 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+		
+	  
+      
+
+      
+        <p>写在前面，本文将同步发布于Blog、掘金、segmentfault、知乎等处，如果本文对你有帮助，记得为我得到我的<a href="https://github.com/fanerge/fanerge.github.io" target="_blank" rel="external">个人技术博客项目</a>给个star哦。</p>
+<h1 id="为何写这篇文章？"><a href="#为何写这篇文章？" class="headerlink" title="为何写这篇文章？"></a>为何写这篇文章？</h1><p>你可能做Web开发已经有一段时间，你是否有想过下列问题呢？<br>为什么div元素甚至是所有的html元素都可以使用addEventListener来添加事件呢？<br>为什么每个DOM节点都有parentNode、firstChild、nodeType等属性呢？<br>为什么每个DOM元素都有className、classList、innerHTML等属性呢？<br>为什么有些DOM元素有accessKey、contentEditable、isContentEditable等属性呢？<br>为什么每个DOM元素都有onclick、ondblclick、ondrag等属性？<br>本文就是来解答这些简单而又不“简单”的问题。</p>
+<h1 id="Object"><a href="#Object" class="headerlink" title="Object"></a>Object</h1><p>你可以在浏览器中选择一个节点，然后在控制台中输入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$0.hasOwnProperty </div><div class="line">// ƒ hasOwnProperty() &#123; [native code] &#125;</div></pre></td></tr></table></figure></p>
+<p>PS：$0表示当前选择的DOM元素。<br>为什么我的一个元素会有对象的方法，追究其原因在设计HTML时，通过从各个接口继承不同的属性和方法。<br>例如span元素继承关系：span -&gt; HTMLSpanElement -&gt; HTMLElement -&gt; Element -&gt; Node -&gt; EventTarget-&gt; Object<br><img src="http://oxpnrlb4j.bkt.clouddn.com/html%E5%B1%9E%E6%80%A7.png" alt="property"><br>[2018-08-16]</p>
+<h1 id="EventTarget"><a href="#EventTarget" class="headerlink" title="EventTarget"></a>EventTarget</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>EventTarget 是一个由可以接收事件的对象实现的接口，并且可以为它们创建侦听器。</p>
+<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>Element，document 和 window 是最常见的事件目标，但是其他对象也可以是事件目标，比如XMLHttpRequest，AudioNode，AudioContext 等等。<br>许多事件目标（包括元素，文档和 window）还支持通过 onXXX（如onclick） 属性和属性设置事件处理程序。</p>
+<h2 id="该接口的方法"><a href="#该接口的方法" class="headerlink" title="该接口的方法"></a>该接口的方法</h2><h3 id="EventTarget-addEventListener"><a href="#EventTarget-addEventListener" class="headerlink" title="EventTarget.addEventListener()"></a>EventTarget.addEventListener()</h3><p>在EventTarget上注册特定事件类型的事件处理程序。</p>
+<h3 id="EventTarget-removeEventListener"><a href="#EventTarget-removeEventListener" class="headerlink" title="EventTarget.removeEventListener()"></a>EventTarget.removeEventListener()</h3><p>EventTarget中删除事件侦听器。</p>
+<h3 id="EventTarget-dispatchEvent"><a href="#EventTarget-dispatchEvent" class="headerlink" title="EventTarget.dispatchEvent()"></a>EventTarget.dispatchEvent()</h3><p>将事件分派到此EventTarget。</p>
+<h2 id="我们自己实现EventTarget"><a href="#我们自己实现EventTarget" class="headerlink" title="我们自己实现EventTarget"></a>我们自己实现EventTarget</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">var EventTarget = function() &#123;</div><div class="line">  this.listeners = &#123;&#125;;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">EventTarget.prototype.listeners = null;</div><div class="line">EventTarget.prototype.addEventListener = function(type, callback) &#123;</div><div class="line">  if (!(type in this.listeners)) &#123;</div><div class="line">    this.listeners[type] = [];</div><div class="line">  &#125;</div><div class="line">  this.listeners[type].push(callback);</div><div class="line">&#125;;</div><div class="line"></div><div class="line">EventTarget.prototype.removeEventListener = function(type, callback) &#123;</div><div class="line">  if (!(type in this.listeners)) &#123;</div><div class="line">    return;</div><div class="line">  &#125;</div><div class="line">  var stack = this.listeners[type];</div><div class="line">  for (var i = 0, l = stack.length; i &lt; l; i++) &#123;</div><div class="line">    if (stack[i] === callback)&#123;</div><div class="line">      stack.splice(i, 1);</div><div class="line">      return;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">EventTarget.prototype.dispatchEvent = function(event) &#123;</div><div class="line">  if (!(event.type in this.listeners)) &#123;</div><div class="line">    return true;</div><div class="line">  &#125;</div><div class="line">  var stack = this.listeners[event.type].slice();</div><div class="line"></div><div class="line">  for (var i = 0, l = stack.length; i &lt; l; i++) &#123;</div><div class="line">    stack[i].call(this, event);</div><div class="line">  &#125;</div><div class="line">  return !event.defaultPrevented;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h1 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h1><h2 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h2><p>Node是一个接口，许多DOM类型从这个接口继承，并允许类似地处理（或测试）这些各种类型。Node是一个接口，许多DOM类型从这个接口继承，并允许类似地处理（或测试）这些各种类型。</p>
+<h2 id="有那些接口重Node继承其方法和属性？"><a href="#有那些接口重Node继承其方法和属性？" class="headerlink" title="有那些接口重Node继承其方法和属性？"></a>有那些接口重Node继承其方法和属性？</h2><p>Document, Element, CharacterData (which Text, Comment, and CDATASection inherit), ProcessingInstruction, DocumentFragment, DocumentType, Notation, Entity, EntityReference<br>PS：在方法和属性不相关的特定情况下，这些接口可能返回null。它们可能会抛出异常 - 例如，当将子节点添加到不允许子节点存在的节点时。</p>
+<h2 id="接口相关的属性和方法"><a href="#接口相关的属性和方法" class="headerlink" title="接口相关的属性和方法"></a>接口相关的属性和方法</h2><h3 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h3><h4 id="Node-baseURI"><a href="#Node-baseURI" class="headerlink" title="Node.baseURI"></a>Node.baseURI</h4><p>返回一个表示base URL的DOMString。不同语言中的base URL的概念都不一样。 在HTML中，base URL表示协议和域名，以及一直到最后一个’/‘之前的文件目录。</p>
+<h4 id="Node-childNodes"><a href="#Node-childNodes" class="headerlink" title="Node.childNodes"></a>Node.childNodes</h4><p>返回一个包含了该节点所有子节点的实时的NodeList。NodeList 是“实时的”意思是，如果该节点的子节点发生了变化，NodeList对象就会自动更新。 </p>
+<h4 id="Node-firstChild"><a href="#Node-firstChild" class="headerlink" title="Node.firstChild"></a>Node.firstChild</h4><p>返回该节点的第一个子节点，如果该节点没有子节点则返回null。</p>
+<h4 id="Node-lastChild"><a href="#Node-lastChild" class="headerlink" title="Node.lastChild"></a>Node.lastChild</h4><p>返回该节点的最后一个子节点，如果该节点没有子节点则返回null。<br>此处省略若干Node接口属性，<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Node#属性" target="_blank" rel="external">更多属性查看这里</a>。</p>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>——————–重点分割线——————-<br>重点：从其父类EventTarget继承了addEventListener、removeEventListener、dispatchEvent等方法。</p>
+<h4 id="Node-appendChild"><a href="#Node-appendChild" class="headerlink" title="Node.appendChild()"></a>Node.appendChild()</h4><p>将一个节点添加到指定父节点的子节点列表末尾。</p>
+<h4 id="Node-contains"><a href="#Node-contains" class="headerlink" title="Node.contains()"></a>Node.contains()</h4><p>返回的是一个布尔值，来表示传入的节点是否为该节点的后代节点。</p>
+<h4 id="Node-cloneNode"><a href="#Node-cloneNode" class="headerlink" title="Node.cloneNode()"></a>Node.cloneNode()</h4><p>返回调用该方法的节点的一个副本。<br>此处省略若干Node接口方法，<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Node#方法" target="_blank" rel="external">更多方法查看这里</a>。</p>
+<h1 id="Element"><a href="#Element" class="headerlink" title="Element"></a>Element</h1><h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>Element是非常通用的基类，所有 Document对象下的对象都继承它。这个接口描述了所有相同种类的元素所普遍具有的方法和属性。 这些继承自Element并且增加了一些额外功能的接口描述了具体的行为。<br>PS：HTMLElement 接口是所有HTML元素的基础接口， 而 SVGElement 接口是所有SVG元素的基本接口。<br>在web以外的语言，像 XUL 可以通过 XULElement 的API，也能实现它。</p>
+<h2 id="属性-1"><a href="#属性-1" class="headerlink" title="属性"></a>属性</h2><p>所有属性继承至它的祖先接口 Node, 和它所扩展的接口 EventTarget, 并且从以下部分继承了属性ParentNode, ChildNode, NonDocumentTypeChildNode, 和Animatable.</p>
+<h3 id="Element-assignedSlot"><a href="#Element-assignedSlot" class="headerlink" title="Element.assignedSlot"></a>Element.assignedSlot</h3><p>返回元素对应的 HTMLSlotElement 接口</p>
+<h3 id="Element-attributes"><a href="#Element-attributes" class="headerlink" title="Element.attributes"></a>Element.attributes</h3><p>返回一个与该元素相关的所有属性集合NamedNodeMap </p>
+<h3 id="Element-classList"><a href="#Element-classList" class="headerlink" title="Element.classList"></a>Element.classList</h3><p>返回该元素包含的class属性是一个DOMTokenList.</p>
+<h3 id="Element-className"><a href="#Element-className" class="headerlink" title="Element.className"></a>Element.className</h3><p>它是一个 DOMString 表示这个元素的class.<br>此处省略若干Element接口属性，<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Element#Properties" target="_blank" rel="external">更多方法查看这里</a>。</p>
+<h2 id="方法-1"><a href="#方法-1" class="headerlink" title="方法"></a>方法</h2><p>——————–重点分割线——————-<br>从它的父类（Node）和它父类的父类（EventTarget）继承方法，并实现parentNode、ChildNode、NonDocumentTypeChildNode、Animatable。<br>此处省略若干Element接口方法，<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Element#Properties" target="_blank" rel="external">更多方法查看这里</a>。</p>
+<h3 id="Element-closest"><a href="#Element-closest" class="headerlink" title="Element.closest()"></a>Element.closest()</h3><p>方法用来获取匹配特定选择器且离当前元素最近的祖先元素（也可以是当前元素本身）。如果匹配不到，则返回 null。</p>
+<h3 id="Element-getAttribute"><a href="#Element-getAttribute" class="headerlink" title="Element.getAttribute()"></a>Element.getAttribute()</h3><p>返回元素上一个指定的属性值。如果指定的属性不存在，则返回  null 或 “” （空字符串）。</p>
+<h3 id="Element-getElementsByClassName"><a href="#Element-getElementsByClassName" class="headerlink" title="Element.getElementsByClassName()"></a>Element.getElementsByClassName()</h3><p>参数中给出类的列表，返回一个动态的 HTMLCollection ，这里面包含了所有持有这些类的后代元素。<br>此处省略若干Element接口方法，<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Element#Methods" target="_blank" rel="external">更多方法查看这里</a>。</p>
+<h1 id="HTMLElement"><a href="#HTMLElement" class="headerlink" title="HTMLElement"></a>HTMLElement</h1><h2 id="作用-1"><a href="#作用-1" class="headerlink" title="作用"></a>作用</h2><p>HTMLElement 接口表示所有的 HTML 元素。一些HTML元素直接实现了HTMLElement接口，其它的间接实现HTMLElement接口。</p>
+<h2 id="属性-2"><a href="#属性-2" class="headerlink" title="属性"></a>属性</h2><p>——————–重点分割线——————-<br>继承自父接口Element和 GlobalEventHandlers的属性。<br>HTMLElement.accessKey    DOMString    获取/设置元素访问的快捷键<br>HTMLElement.accessKeyLabel    DOMString    返回一个包含元素访问的快捷键的字符串（只读）<br>HTMLElement.contentEditable    DOMString    获取/设置元素的可编辑状态<br>HTMLElement.isContentEditable Boolean    表明元素的内容是否可编辑（只读）<br>此处省略若干HTMLElement接口属性，<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement#属性" target="_blank" rel="external">更多方法查看这里</a>。</p>
+<h2 id="Event-handlers"><a href="#Event-handlers" class="headerlink" title="Event handlers"></a>Event handlers</h2><p>HTMLElement.onTouchStart<br>HTMLElement.onTouchEnd<br>HTMLElement.onTouchMove<br>HTMLElement.onTouchEnter<br>HTMLElement.onTouchLeave<br>HTMLElement.onTouchCancel </p>
+<h2 id="方法-2"><a href="#方法-2" class="headerlink" title="方法"></a>方法</h2><p>HTMLElement.blur()    void    元素失去焦点<br>HTMLElement.click()    void    触发元素的点击事件<br>HTMLElement.focus()    void    元素获得焦点<br>HTMLElement.forceSpellCheck()     void     </p>
+<h1 id="GlobalEventHandlers"><a href="#GlobalEventHandlers" class="headerlink" title="GlobalEventHandlers"></a>GlobalEventHandlers</h1><h2 id="定义-2"><a href="#定义-2" class="headerlink" title="定义"></a>定义</h2><p>GlobalEventHandlers接口描述了事件处理程序像HTMLElement常见的几个接口,文件,窗口,或WorkerGlobalScope Web Workers。这些接口可以实现更多的事件处理程序。</p>
+<h2 id="属性-3"><a href="#属性-3" class="headerlink" title="属性"></a>属性</h2><h3 id="GlobalEventHandlers-onabort"><a href="#GlobalEventHandlers-onabort" class="headerlink" title="GlobalEventHandlers.onabort"></a>GlobalEventHandlers.onabort</h3><p>中断事件。</p>
+<h3 id="GlobalEventHandlers-onblur"><a href="#GlobalEventHandlers-onblur" class="headerlink" title="GlobalEventHandlers.onblur"></a>GlobalEventHandlers.onblur</h3><p>失去焦点事件。</p>
+<h3 id="GlobalEventHandlers-onfocus"><a href="#GlobalEventHandlers-onfocus" class="headerlink" title="GlobalEventHandlers.onfocus"></a>GlobalEventHandlers.onfocus</h3><p>获取焦点事件。<br>此处省略若干GlobalEventHandlers接口属性，<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/GlobalEventHandlers#Properties" target="_blank" rel="external">更多方法查看这里</a>。</p>
+<h1 id="元素接口"><a href="#元素接口" class="headerlink" title="元素接口"></a>元素接口</h1><p>该接口用于创建对应的元素。<br>如：<br>HTMLDivElement 接口提供了一些特殊属性（它也继承了通常的 HTMLElement 接口）来操作div元素。<br>HTMLFormElement接口可以创建或者修改<form>对象;它继承了HTMLElement接口的方法和属性。<br>HTMLAnchorElement 接口表示超链接元素，并提供一些特别的属性和方法（除了那些继承自普通 HTMLElement对象接口的之外）以用于操作这些元素的布局和显示。<br>……</form></p>
+<h1 id="回答前面问题"><a href="#回答前面问题" class="headerlink" title="回答前面问题"></a>回答前面问题</h1><p>通过上面的知识，我们了解到：<br>HTMLDivElement（其他元素接口） 继承 HTMLElement 和 GlobalEventHandlers 接口。<br>HTMLElement 继承 Element 接口。<br>Element 继承 Node 接口。<br>Node 继承 EventTarget 接口。<br><img src="http://oxpnrlb4j.bkt.clouddn.com/html%E5%85%83%E7%B4%A0%E7%94%B1%E6%9D%A5%281%29.svg" alt="html由来"><br>为什么div元素甚至是所有的html元素都可以使用addEventListener来添加事件呢？<br>回答：从 EventTarget 接口中继承而来。<br>为什么每个DOM节点都有parentNode、firstChild、nodeType等属性呢？<br>回答：从 Node 接口中继承而来。<br>为什么每个DOM元素都有className、classList、innerHTML等属性呢？<br>回答：从 Element 接口中继承而来。<br>为什么有些DOM元素有accessKey、contentEditable、isContentEditable等属性呢？<br>回答：从 HTMLElement 接口中继承而来。<br>为什么每个DOM元素都有onclick、ondblclick、ondrag等属性？<br>回答：从 GlobalEventHandlers 接口中继承而来。<br>——————–重点分割线——————-</p>
+<h2 id="只有通过上面的继承关系，我们得到的-DOM-元素才是一个完整的-HTML-对象，我们才能为它设置-获取属性、绑定事件、添加样式类等操作。"><a href="#只有通过上面的继承关系，我们得到的-DOM-元素才是一个完整的-HTML-对象，我们才能为它设置-获取属性、绑定事件、添加样式类等操作。" class="headerlink" title="只有通过上面的继承关系，我们得到的 DOM 元素才是一个完整的 HTML 对象，我们才能为它设置/获取属性、绑定事件、添加样式类等操作。"></a>只有通过上面的继承关系，我们得到的 DOM 元素才是一个完整的 HTML 对象，我们才能为它设置/获取属性、绑定事件、添加样式类等操作。</h2><p>参考文档：</p>
+<blockquote>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget" target="_blank" rel="external">EventTarget</a><br><a href="https://developer.mozilla.org/en-US/docs/Web/API/Node" target="_blank" rel="external">Node</a><br><a href="https://developer.mozilla.org/en-US/docs/Glossary/Element" target="_blank" rel="external">Element</a><br><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement" target="_blank" rel="external">HTMLElement</a><br><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/GlobalEventHandlers" target="_blank" rel="external">GlobalEventHandlers</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+	<div>
+		
+			<div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读，如果本文对你有帮助就记得<a href="https://github.com/fanerge/fanerge.github.io" title="谢谢亲的star">给个star</a>-------------</div>
+		
+	</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Donate comment here</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author: </strong>余真帆-fanerge</li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://fanerge.github.io/2018/如何形成一个完整的HTML对象.html" title="如何形成一个完整的HTML对象">https://fanerge.github.io/2018/如何形成一个完整的HTML对象.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/html5/" rel="tag"><i class="far fa-bell"></i> html5</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/自己踩过的坑.html" rel="next" title="自己踩过的坑">
+                <i class="fa fa-chevron-left"></i> 自己踩过的坑
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/Web实验性知识.html" rel="prev" title="Web实验性知识">
+                Web实验性知识 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=2156704" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTk4Mi8xMjUxOA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars3.githubusercontent.com/u/17136707?s=400&u=d7250b0655c87b8e8e1cdaf826754fe5e6f68e80&v=4"
+                alt="余真帆-fanerge" />
+            
+              <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+              <p class="site-description motion-element" itemprop="description">前端偏前工程师</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">187</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">57</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/fanerge" target="_blank" title="GitHub" rel="external nofollow"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:fanege@qq.com" target="_blank" title="E-Mail" rel="external nofollow"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金" rel="external nofollow"><i class="fa fa-fw fa-juejin"></i>掘金</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.zhihu.com/people/fanerge" target="_blank" title="知乎" rel="external nofollow"><i class="fa fa-fw fa-zhihu"></i>知乎</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://segmentfault.com/u/fanerge/articles" target="_blank" title="Segmentfault" rel="external nofollow"><i class="fa fa-fw fa-segmentfault"></i>Segmentfault</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#为何写这篇文章？"><span class="nav-number">1.</span> <span class="nav-text">为何写这篇文章？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Object"><span class="nav-number">2.</span> <span class="nav-text">Object</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#EventTarget"><span class="nav-number">3.</span> <span class="nav-text">EventTarget</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">3.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#作用"><span class="nav-number">3.2.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#该接口的方法"><span class="nav-number">3.3.</span> <span class="nav-text">该接口的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#EventTarget-addEventListener"><span class="nav-number">3.3.1.</span> <span class="nav-text">EventTarget.addEventListener()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EventTarget-removeEventListener"><span class="nav-number">3.3.2.</span> <span class="nav-text">EventTarget.removeEventListener()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EventTarget-dispatchEvent"><span class="nav-number">3.3.3.</span> <span class="nav-text">EventTarget.dispatchEvent()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#我们自己实现EventTarget"><span class="nav-number">3.4.</span> <span class="nav-text">我们自己实现EventTarget</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Node"><span class="nav-number">4.</span> <span class="nav-text">Node</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义-1"><span class="nav-number">4.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#有那些接口重Node继承其方法和属性？"><span class="nav-number">4.2.</span> <span class="nav-text">有那些接口重Node继承其方法和属性？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口相关的属性和方法"><span class="nav-number">4.3.</span> <span class="nav-text">接口相关的属性和方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#属性"><span class="nav-number">4.3.1.</span> <span class="nav-text">属性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-baseURI"><span class="nav-number">4.3.1.1.</span> <span class="nav-text">Node.baseURI</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-childNodes"><span class="nav-number">4.3.1.2.</span> <span class="nav-text">Node.childNodes</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-firstChild"><span class="nav-number">4.3.1.3.</span> <span class="nav-text">Node.firstChild</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-lastChild"><span class="nav-number">4.3.1.4.</span> <span class="nav-text">Node.lastChild</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法"><span class="nav-number">4.3.2.</span> <span class="nav-text">方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-appendChild"><span class="nav-number">4.3.2.1.</span> <span class="nav-text">Node.appendChild()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-contains"><span class="nav-number">4.3.2.2.</span> <span class="nav-text">Node.contains()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node-cloneNode"><span class="nav-number">4.3.2.3.</span> <span class="nav-text">Node.cloneNode()</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Element"><span class="nav-number">5.</span> <span class="nav-text">Element</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#说明"><span class="nav-number">5.1.</span> <span class="nav-text">说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#属性-1"><span class="nav-number">5.2.</span> <span class="nav-text">属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Element-assignedSlot"><span class="nav-number">5.2.1.</span> <span class="nav-text">Element.assignedSlot</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Element-attributes"><span class="nav-number">5.2.2.</span> <span class="nav-text">Element.attributes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Element-classList"><span class="nav-number">5.2.3.</span> <span class="nav-text">Element.classList</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Element-className"><span class="nav-number">5.2.4.</span> <span class="nav-text">Element.className</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法-1"><span class="nav-number">5.3.</span> <span class="nav-text">方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Element-closest"><span class="nav-number">5.3.1.</span> <span class="nav-text">Element.closest()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Element-getAttribute"><span class="nav-number">5.3.2.</span> <span class="nav-text">Element.getAttribute()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Element-getElementsByClassName"><span class="nav-number">5.3.3.</span> <span class="nav-text">Element.getElementsByClassName()</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HTMLElement"><span class="nav-number">6.</span> <span class="nav-text">HTMLElement</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#作用-1"><span class="nav-number">6.1.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#属性-2"><span class="nav-number">6.2.</span> <span class="nav-text">属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Event-handlers"><span class="nav-number">6.3.</span> <span class="nav-text">Event handlers</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法-2"><span class="nav-number">6.4.</span> <span class="nav-text">方法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GlobalEventHandlers"><span class="nav-number">7.</span> <span class="nav-text">GlobalEventHandlers</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义-2"><span class="nav-number">7.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#属性-3"><span class="nav-number">7.2.</span> <span class="nav-text">属性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GlobalEventHandlers-onabort"><span class="nav-number">7.2.1.</span> <span class="nav-text">GlobalEventHandlers.onabort</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GlobalEventHandlers-onblur"><span class="nav-number">7.2.2.</span> <span class="nav-text">GlobalEventHandlers.onblur</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GlobalEventHandlers-onfocus"><span class="nav-number">7.2.3.</span> <span class="nav-text">GlobalEventHandlers.onfocus</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#元素接口"><span class="nav-number">8.</span> <span class="nav-text">元素接口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#回答前面问题"><span class="nav-number">9.</span> <span class="nav-text">回答前面问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#只有通过上面的继承关系，我们得到的-DOM-元素才是一个完整的-HTML-对象，我们才能为它设置-获取属性、绑定事件、添加样式类等操作。"><span class="nav-number">9.1.</span> <span class="nav-text">只有通过上面的继承关系，我们得到的 DOM 元素才是一个完整的 HTML 对象，我们才能为它设置/获取属性、绑定事件、添加样式类等操作。</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-pied-piper-alt"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a></div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+	  <span>Unique Visitor:</span>
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+	  <span>Page View:</span>
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.6"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.6"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.6"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.6"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>

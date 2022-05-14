@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.6" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=6.0.6" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.0.6',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+  
+
+
+
+
+  <meta name="description" content="fs模块-文件系统以下方法均有同步和异步版本 说明：文件 I/O 是对标准 POSIX 函数的简单封装。 通过 require(&amp;apos;fs&amp;apos;) 使用该模块。 所有的方法都有异步和同步的形式。 异步方法的最后一个参数都是一个回调函数。 传给回调函数的参数取决于具体方法，但回调函数的第一个参数都会保留给异常。 如果操作成功完成，则第一个参数会是 null 或 undefined。 步方">
+<meta name="keywords" content="js,服务端,web开发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="fs模块-文件">
+<meta property="og:url" content="https://fanerge.github.io/2017/nodejs自带模块学习-fs.html">
+<meta property="og:site_name" content="fanerge&#39;s Blogs">
+<meta property="og:description" content="fs模块-文件系统以下方法均有同步和异步版本 说明：文件 I/O 是对标准 POSIX 函数的简单封装。 通过 require(&amp;apos;fs&amp;apos;) 使用该模块。 所有的方法都有异步和同步的形式。 异步方法的最后一个参数都是一个回调函数。 传给回调函数的参数取决于具体方法，但回调函数的第一个参数都会保留给异常。 如果操作成功完成，则第一个参数会是 null 或 undefined。 步方">
+<meta property="og:updated_time" content="2022-05-14T02:23:46.506Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="fs模块-文件">
+<meta name="twitter:description" content="fs模块-文件系统以下方法均有同步和异步版本 说明：文件 I/O 是对标准 POSIX 函数的简单封装。 通过 require(&amp;apos;fs&amp;apos;) 使用该模块。 所有的方法都有异步和同步的形式。 异步方法的最后一个参数都是一个回调函数。 传给回调函数的参数取决于具体方法，但回调函数的第一个参数都会保留给异常。 如果操作成功完成，则第一个参数会是 null 或 undefined。 步方">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="fanerge's Blogs" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="https://fanerge.github.io/2017/nodejs自带模块学习-fs.html"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>fs模块-文件 | fanerge's Blogs</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+	<a href="https://github.com/fanerge"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 9999;" src="http://pau044s3z.bkt.clouddn.com/forkgithub.png" alt="Fork me on GitHub"></a>
+	</div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">fanerge's Blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于WEB开发的技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-categories">
+    <a href="/categories" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">29</span>
+      </a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-archives">
+    <a href="/archives" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">187</span>
+      </a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-about">
+    <a href="/about" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+</li>
+
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+    
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+    
+
+  
+
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2017/nodejs自带模块学习-fs.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars3.githubusercontent.com/u/17136707?s=400&u=d7250b0655c87b8e8e1cdaf826754fe5e6f68e80&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="fanerge's Blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">fs模块-文件</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-16T10:18:38+08:00">2017-09-16</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/NodeJS/" itemprop="url" rel="index"><span itemprop="name">NodeJS</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views: 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+		
+	  
+      
+
+      
+        <h3 id="fs模块-文件系统"><a href="#fs模块-文件系统" class="headerlink" title="fs模块-文件系统"></a>fs模块-文件系统</h3><pre><code>以下方法均有同步和异步版本
+说明：文件 I/O 是对标准 POSIX 函数的简单封装。 通过 require(&apos;fs&apos;) 使用该模块。 所有的方法都有异步和同步的形式。
+异步方法的最后一个参数都是一个回调函数。 传给回调函数的参数取决于具体方法，但回调函数的第一个参数都会保留给异常。 如果操作成功完成，则第一个参数会是 null 或 undefined。
+步方法时，任何异常都会被立即抛出。 可以使用 try/catch 来处理异常，或让异常向上冒泡。
+</code></pre><h3 id="异步的删除文件"><a href="#异步的删除文件" class="headerlink" title="异步的删除文件"></a>异步的删除文件</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">fs.unlink(&apos;tmp/hello&apos;, function (err) &#123;</div><div class="line">	if (err) throw err;</div><div class="line">	console.log(&apos;删除成功&apos;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</code></pre><h3 id="同步的删除文件"><a href="#同步的删除文件" class="headerlink" title="同步的删除文件"></a>同步的删除文件</h3><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">try &#123;</div><div class="line">	fs.unlinkSync(&apos;tmp/hello&apos;);</div><div class="line">&#125;catch (e) &#123;</div><div class="line">	console.error(e);</div><div class="line">&#125;</div><div class="line">console.log(&apos;删除成功&apos;);</div></pre></td></tr></table></figure>
+</code></pre><h3 id="fs-contants"><a href="#fs-contants" class="headerlink" title="fs.contants"></a>fs.contants</h3><pre><code>作用：返回一个包含常用文件系统操作的常量的对象。FRWX（可见、读、写、执行）
+</code></pre><h3 id="fs-FSWatcher-类"><a href="#fs-FSWatcher-类" class="headerlink" title="fs.FSWatcher 类"></a>fs.FSWatcher 类</h3><pre><code>作用：从 fs.watch() 返回的对象是该类型。
+方法：change、error、close分别代表监视目录或文件的改变和出错和关闭监视。
+    fs.watch(&apos;./tmp&apos;, (eventType, filename) =&gt; {
+        if (filename) { console.log(filename); }
+    });
+</code></pre><h3 id="fs-ReadStream-类"><a href="#fs-ReadStream-类" class="headerlink" title="fs.ReadStream 类"></a>fs.ReadStream 类</h3><pre><code>作用：ReadStream 是一个可读流。
+属性：
+    readStream.bytesRead - 已读取的字节数。
+    readStream.path - 流正在读取的文件的路径，指定在 fs.createReadStream() 的第一个参数
+方法：open、close分别对应ReadStream文件fs.open()被打开和fs.close()被关闭时触发。
+</code></pre><h3 id="fs-Stats-类"><a href="#fs-Stats-类" class="headerlink" title="fs.Stats 类"></a>fs.Stats 类</h3><pre><code>从 fs.stat()、fs.lstat() 和 fs.fstat() 及其同步版本返回的对象都是该类型。
+stats.isFile()
+stats.isDirectory()
+stats.isBlockDevice()
+stats.isCharacterDevice()
+stats.isSymbolicLink() (仅对 fs.lstat() 有效)
+stats.isFIFO()
+stats.isSocket()
+</code></pre><h3 id="Stat-时间值"><a href="#Stat-时间值" class="headerlink" title="Stat 时间值"></a>Stat 时间值</h3><pre><code>atime &quot;访问时间&quot; - 文件数据最近被访问的时间。
+mtime &quot;修改时间&quot; - 文件数据最近被修改的时间。
+ctime &quot;变化时间&quot; - 文件状态最近更改的时间。
+birthtime &quot;创建时间&quot; - 文件创建的时间。 
+</code></pre><h3 id="fs-WriteStream类"><a href="#fs-WriteStream类" class="headerlink" title="fs.WriteStream类"></a>fs.WriteStream类</h3><pre><code>作用：WriteStream 一个可写流。
+属性：
+    writeStream.bytesWritten - 已写入的字节数。 不包括仍在排队等待写入的数据。
+    writeStream.path - 流正在写入的文件的路径，指定在 fs.createWriteStream() 的第一个参数。
+方法：
+    open() - 当 WriteStream 文件被打开时触发。
+    close() - 当 WriteStream 底层的文件描述符已被使用 fs.close() 方法关闭时触发。
+</code></pre><h3 id="fs-access-path-mode-callback"><a href="#fs-access-path-mode-callback" class="headerlink" title="fs.access(path[, mode], callback);"></a>fs.access(path[, mode], callback);</h3><pre><code>作用：判断用户是否有权限操作给定的目录或者是文件。
+    如果要检查一个文件是否存在且不操作它。
+mode参数的可选项：
+    fs.constants.F_OK - path 文件对调用进程可见（默认）。
+    fs.constants.R_OK - path 文件可被调用进程读取。
+    fs.constants.W_OK - path 文件可被调用进程写入。
+    fs.constants.X_OK - path 文件可被调用进程执行。
+</code></pre><h3 id="fs-accessSync-path-mode"><a href="#fs-accessSync-path-mode" class="headerlink" title="fs.accessSync(path[, mode]);"></a>fs.accessSync(path[, mode]);</h3><pre><code>fs.access() 的同步版本。
+</code></pre><h3 id="fs-appendFile-file-data-options-callback"><a href="#fs-appendFile-file-data-options-callback" class="headerlink" title="fs.appendFile(file, data[, options], callback);"></a>fs.appendFile(file, data[, options], callback);</h3><pre><code>作用：异步地追加数据到一个文件，如果文件不存在则创建文件。
+fs.appendFile(&apos;filename.txt&apos;, &apos;data to append&apos; , (err) =&gt; {
+    if (err) throw err;
+    console.log(&apos;添加成功&apos;);
+});
+</code></pre><h3 id="fs-chmod-path-mode-callback"><a href="#fs-chmod-path-mode-callback" class="headerlink" title="fs.chmod(path, mode, callback);"></a>fs.chmod(path, mode, callback);</h3><pre><code>作用： 更改文件属性（存取模式）(mode)。
+</code></pre><h3 id="fs-chown-path-uid-gid-callback"><a href="#fs-chown-path-uid-gid-callback" class="headerlink" title="fs.chown(path, uid, gid, callback);"></a>fs.chown(path, uid, gid, callback);</h3><pre><code>作用：修改文件目录属主。用户ID，群体身份（共享资源系统使用者的身份）
+</code></pre><h3 id="fs-close-fd-callback"><a href="#fs-close-fd-callback" class="headerlink" title="fs.close(fd, callback);"></a>fs.close(fd, callback);</h3><pre><code>作用：关闭已打开的文件。
+</code></pre><h3 id="fs-createReadStream-path-options"><a href="#fs-createReadStream-path-options" class="headerlink" title="fs.createReadStream(path[, options]);"></a>fs.createReadStream(path[, options]);</h3><pre><code>作用：返回一个新建的ReadStream对象。
+</code></pre><h3 id="fs-createWriteStream-path-options"><a href="#fs-createWriteStream-path-options" class="headerlink" title="fs.createWriteStream(path[, options]);"></a>fs.createWriteStream(path[, options]);</h3><pre><code>作用：返回一个新建的WriteStream对象。
+</code></pre><h3 id="fs-existsSync-path"><a href="#fs-existsSync-path" class="headerlink" title="fs.existsSync(path);"></a>fs.existsSync(path);</h3><pre><code>作用： 判断文件是否存在的同步版，异步已经废弃了。
+</code></pre><h3 id="fs-fchmod-fd-mode-callback"><a href="#fs-fchmod-fd-mode-callback" class="headerlink" title="fs.fchmod(fd, mode, callback);"></a>fs.fchmod(fd, mode, callback);</h3><pre><code>作用：更改文件权限（文件描述符）。
+</code></pre><h3 id="fs-fchown-fd-uid-gid-callback"><a href="#fs-fchown-fd-uid-gid-callback" class="headerlink" title="fs.fchown(fd, uid, gid, callback);"></a>fs.fchown(fd, uid, gid, callback);</h3><pre><code>作用：更改文件所有权(文件描述符)。
+</code></pre><h3 id="fs-fdatasync-fd-callback"><a href="#fs-fdatasync-fd-callback" class="headerlink" title="fs.fdatasync(fd, callback);"></a>fs.fdatasync(fd, callback);</h3><pre><code>作用：刷新数据到磁盘。
+</code></pre><h3 id="fs-fstat-fd-callback"><a href="#fs-fstat-fd-callback" class="headerlink" title="fs.fstat(fd, callback);"></a>fs.fstat(fd, callback);</h3><pre><code>作用：返回文件的详细信息。
+</code></pre><h3 id="fs-fsync-fd-callback"><a href="#fs-fsync-fd-callback" class="headerlink" title="fs.fsync(fd, callback);"></a>fs.fsync(fd, callback);</h3><pre><code>作用：同步缓存数据到磁盘。
+</code></pre><h3 id="fs-ftruncate-fd-len-callback"><a href="#fs-ftruncate-fd-len-callback" class="headerlink" title="fs.ftruncate(fd, len, callback);"></a>fs.ftruncate(fd, len, callback);</h3><pre><code>作用：截取文件内容。
+</code></pre><h3 id="fs-futimes-fd-atime-mtime-callback"><a href="#fs-futimes-fd-atime-mtime-callback" class="headerlink" title="fs.futimes(fd, atime, mtime, callback);"></a>fs.futimes(fd, atime, mtime, callback);</h3><pre><code>作用：更改一个文件所提供的文件描述符引用的文件的时间戳。
+</code></pre><h3 id="fs-lchmod-path-mode-callback"><a href="#fs-lchmod-path-mode-callback" class="headerlink" title="fs.lchmod(path, mode, callback);"></a>fs.lchmod(path, mode, callback);</h3><pre><code>作用：更改文件权限(不解析符号链接)。
+</code></pre><h3 id="fs-lchown-path-uid-gid-callback"><a href="#fs-lchown-path-uid-gid-callback" class="headerlink" title="fs.lchown(path, uid, gid, callback)"></a>fs.lchown(path, uid, gid, callback)</h3><pre><code>作用：更改文件所有权（不解析符号链接）。
+</code></pre><h3 id="fs-link-existingPath-newPath-callback"><a href="#fs-link-existingPath-newPath-callback" class="headerlink" title="fs.link(existingPath, newPath, callback);"></a>fs.link(existingPath, newPath, callback);</h3><pre><code>作用：创建硬链接(只能在本券中)。
+</code></pre><h3 id="fs-lstat-path-callback"><a href="#fs-lstat-path-callback" class="headerlink" title="fs.lstat(path, callback);"></a>fs.lstat(path, callback);</h3><pre><code>作用：获取文件信息(不解析符号链接)。
+</code></pre><h3 id="fs-mkdir-path-mode-callback"><a href="#fs-mkdir-path-mode-callback" class="headerlink" title="fs.mkdir(path[, mode], callback);"></a>fs.mkdir(path[, mode], callback);</h3><pre><code>作用：创建文件目录，如果目录已存在，将抛出异常。
+</code></pre><h3 id="fs-mkdtemp-prefix-options-callback"><a href="#fs-mkdtemp-prefix-options-callback" class="headerlink" title="fs.mkdtemp(prefix[, options], callback);"></a>fs.mkdtemp(prefix[, options], callback);</h3><pre><code>作用：创建临时目录。
+</code></pre><h3 id="fs-open-path-flags-mode-callback"><a href="#fs-open-path-flags-mode-callback" class="headerlink" title="fs.open(path, flags[, mode], callback);"></a>fs.open(path, flags[, mode], callback);</h3><pre><code>作用：打开文件。
+</code></pre><h3 id="fs-read-fd-buffer-offset-length-position-callback"><a href="#fs-read-fd-buffer-offset-length-position-callback" class="headerlink" title="fs.read(fd, buffer, offset, length, position, callback);"></a>fs.read(fd, buffer, offset, length, position, callback);</h3><pre><code>作用：读取文件内容。
+</code></pre><h3 id="fs-readdir-path-options-callback"><a href="#fs-readdir-path-options-callback" class="headerlink" title="fs.readdir(path[, options], callback);"></a>fs.readdir(path[, options], callback);</h3><pre><code>作用：读取文件目录。
+</code></pre><h3 id="fs-readFile-path-options-callback"><a href="#fs-readFile-path-options-callback" class="headerlink" title="fs.readFile(path[, options], callback);"></a>fs.readFile(path[, options], callback);</h3><pre><code>作用：读取文件。
+</code></pre><h3 id="fs-readlink-path-options-callback"><a href="#fs-readlink-path-options-callback" class="headerlink" title="fs.readlink(path[, options], callback);"></a>fs.readlink(path[, options], callback);</h3><pre><code>作用：读取软连接信息。
+</code></pre><h3 id="fs-readSync-fd-buffer-offset-length-position"><a href="#fs-readSync-fd-buffer-offset-length-position" class="headerlink" title="fs.readSync(fd, buffer, offset, length, position);"></a>fs.readSync(fd, buffer, offset, length, position);</h3><pre><code>作用：读取文件内容，返回字节数。
+</code></pre><h3 id="fs-realpath-path-options-callback"><a href="#fs-realpath-path-options-callback" class="headerlink" title="fs.realpath(path[, options], callback);"></a>fs.realpath(path[, options], callback);</h3><pre><code>作用：获取真实路径。
+</code></pre><h3 id="fs-rename-oldPath-newPath-callback"><a href="#fs-rename-oldPath-newPath-callback" class="headerlink" title="fs.rename(oldPath, newPath, callback);"></a>fs.rename(oldPath, newPath, callback);</h3><pre><code>作用：重命名路径。
+</code></pre><h3 id="fs-rmdir-path-callback"><a href="#fs-rmdir-path-callback" class="headerlink" title="fs.rmdir(path, callback);"></a>fs.rmdir(path, callback);</h3><pre><code>作用：删除文件目录。
+</code></pre><h3 id="fs-stat-path-callback"><a href="#fs-stat-path-callback" class="headerlink" title="fs.stat(path, callback);"></a>fs.stat(path, callback);</h3><pre><code>作用：获取文件信息。
+</code></pre><h3 id="fs-symlink-target-path-type-callback"><a href="#fs-symlink-target-path-type-callback" class="headerlink" title="fs.symlink(target, path[, type], callback);"></a>fs.symlink(target, path[, type], callback);</h3><pre><code>作用：创建符号链接。
+</code></pre><h3 id="fs-truncate-path-len-callback"><a href="#fs-truncate-path-len-callback" class="headerlink" title="fs.truncate(path[, len], callback);"></a>fs.truncate(path[, len], callback);</h3><pre><code>作用：文件内容截取操作。
+</code></pre><h3 id="fs-unlink-path-callback"><a href="#fs-unlink-path-callback" class="headerlink" title="fs.unlink(path, callback);"></a>fs.unlink(path, callback);</h3><pre><code>作用：删除文件操作。
+</code></pre><h3 id="fs-unwatchFile-filename-listener"><a href="#fs-unwatchFile-filename-listener" class="headerlink" title="fs.unwatchFile(filename[, listener]);"></a>fs.unwatchFile(filename[, listener]);</h3><pre><code>作用：解除文件监听。
+</code></pre><h3 id="fs-utimes-path-atime-mtime-callback"><a href="#fs-utimes-path-atime-mtime-callback" class="headerlink" title="fs.utimes(path, atime, mtime, callback);"></a>fs.utimes(path, atime, mtime, callback);</h3><pre><code>作用：修改文件时间戳。
+</code></pre><h3 id="fs-watch-filename-options-listener"><a href="#fs-watch-filename-options-listener" class="headerlink" title="fs.watch(filename[, options][, listener]);"></a>fs.watch(filename[, options][, listener]);</h3><pre><code>作用：监控文件。
+</code></pre><h3 id="fs-watchFile-filename-options-listener"><a href="#fs-watchFile-filename-options-listener" class="headerlink" title="fs.watchFile(filename[, options], listener);"></a>fs.watchFile(filename[, options], listener);</h3><pre><code>作用：监控文件。
+</code></pre><h3 id="fs-write-fd-buffer-offset-length-position-callback"><a href="#fs-write-fd-buffer-offset-length-position-callback" class="headerlink" title="fs.write(fd, buffer[, offset[, length[, position]]], callback);"></a>fs.write(fd, buffer[, offset[, length[, position]]], callback);</h3><pre><code>作用：向文件写数据。
+</code></pre><h3 id="fs-writeFile-file-data-options-callback"><a href="#fs-writeFile-file-data-options-callback" class="headerlink" title="fs.writeFile(file, data[, options], callback);"></a>fs.writeFile(file, data[, options], callback);</h3><pre><code>作用：向文件写数据。        
+</code></pre><blockquote>
+<p>   参考文档：<br>    <a href="http://nodejs.cn/api/fs.html" target="_blank" rel="external">fs参考-api</a><br>    <a href="http://blog.csdn.net/zza000000/article/details/54341943" target="_blank" rel="external">fs模块</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+	<div>
+		
+			<div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读，如果本文对你有帮助就记得<a href="https://github.com/fanerge/fanerge.github.io" title="谢谢亲的star">给个star</a>-------------</div>
+		
+	</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Donate comment here</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author: </strong>余真帆-fanerge</li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://fanerge.github.io/2017/nodejs自带模块学习-fs.html" title="fs模块-文件">https://fanerge.github.io/2017/nodejs自带模块学习-fs.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/js/" rel="tag"><i class="far fa-bell"></i> js</a>
+          
+            <a href="/tags/服务端/" rel="tag"><i class="far fa-bell"></i> 服务端</a>
+          
+            <a href="/tags/web开发/" rel="tag"><i class="far fa-bell"></i> web开发</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/nodejs自带模块学习-util.html" rel="next" title="util模块-工具">
+                <i class="fa fa-chevron-left"></i> util模块-工具
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/nodejs自带模块-全局变量.html" rel="prev" title="全局变量-global">
+                全局变量-global <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=2156704" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTk4Mi8xMjUxOA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars3.githubusercontent.com/u/17136707?s=400&u=d7250b0655c87b8e8e1cdaf826754fe5e6f68e80&v=4"
+                alt="余真帆-fanerge" />
+            
+              <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+              <p class="site-description motion-element" itemprop="description">前端偏前工程师</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">187</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">57</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/fanerge" target="_blank" title="GitHub" rel="external nofollow"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:fanege@qq.com" target="_blank" title="E-Mail" rel="external nofollow"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金" rel="external nofollow"><i class="fa fa-fw fa-juejin"></i>掘金</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.zhihu.com/people/fanerge" target="_blank" title="知乎" rel="external nofollow"><i class="fa fa-fw fa-zhihu"></i>知乎</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://segmentfault.com/u/fanerge/articles" target="_blank" title="Segmentfault" rel="external nofollow"><i class="fa fa-fw fa-segmentfault"></i>Segmentfault</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#fs模块-文件系统"><span class="nav-number">1.</span> <span class="nav-text">fs模块-文件系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异步的删除文件"><span class="nav-number">2.</span> <span class="nav-text">异步的删除文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同步的删除文件"><span class="nav-number">3.</span> <span class="nav-text">同步的删除文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-contants"><span class="nav-number">4.</span> <span class="nav-text">fs.contants</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-FSWatcher-类"><span class="nav-number">5.</span> <span class="nav-text">fs.FSWatcher 类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-ReadStream-类"><span class="nav-number">6.</span> <span class="nav-text">fs.ReadStream 类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-Stats-类"><span class="nav-number">7.</span> <span class="nav-text">fs.Stats 类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Stat-时间值"><span class="nav-number">8.</span> <span class="nav-text">Stat 时间值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-WriteStream类"><span class="nav-number">9.</span> <span class="nav-text">fs.WriteStream类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-access-path-mode-callback"><span class="nav-number">10.</span> <span class="nav-text">fs.access(path[, mode], callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-accessSync-path-mode"><span class="nav-number">11.</span> <span class="nav-text">fs.accessSync(path[, mode]);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-appendFile-file-data-options-callback"><span class="nav-number">12.</span> <span class="nav-text">fs.appendFile(file, data[, options], callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-chmod-path-mode-callback"><span class="nav-number">13.</span> <span class="nav-text">fs.chmod(path, mode, callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-chown-path-uid-gid-callback"><span class="nav-number">14.</span> <span class="nav-text">fs.chown(path, uid, gid, callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-close-fd-callback"><span class="nav-number">15.</span> <span class="nav-text">fs.close(fd, callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-createReadStream-path-options"><span class="nav-number">16.</span> <span class="nav-text">fs.createReadStream(path[, options]);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-createWriteStream-path-options"><span class="nav-number">17.</span> <span class="nav-text">fs.createWriteStream(path[, options]);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-existsSync-path"><span class="nav-number">18.</span> <span class="nav-text">fs.existsSync(path);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-fchmod-fd-mode-callback"><span class="nav-number">19.</span> <span class="nav-text">fs.fchmod(fd, mode, callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-fchown-fd-uid-gid-callback"><span class="nav-number">20.</span> <span class="nav-text">fs.fchown(fd, uid, gid, callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-fdatasync-fd-callback"><span class="nav-number">21.</span> <span class="nav-text">fs.fdatasync(fd, callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-fstat-fd-callback"><span class="nav-number">22.</span> <span class="nav-text">fs.fstat(fd, callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-fsync-fd-callback"><span class="nav-number">23.</span> <span class="nav-text">fs.fsync(fd, callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-ftruncate-fd-len-callback"><span class="nav-number">24.</span> <span class="nav-text">fs.ftruncate(fd, len, callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-futimes-fd-atime-mtime-callback"><span class="nav-number">25.</span> <span class="nav-text">fs.futimes(fd, atime, mtime, callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-lchmod-path-mode-callback"><span class="nav-number">26.</span> <span class="nav-text">fs.lchmod(path, mode, callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-lchown-path-uid-gid-callback"><span class="nav-number">27.</span> <span class="nav-text">fs.lchown(path, uid, gid, callback)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-link-existingPath-newPath-callback"><span class="nav-number">28.</span> <span class="nav-text">fs.link(existingPath, newPath, callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-lstat-path-callback"><span class="nav-number">29.</span> <span class="nav-text">fs.lstat(path, callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-mkdir-path-mode-callback"><span class="nav-number">30.</span> <span class="nav-text">fs.mkdir(path[, mode], callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-mkdtemp-prefix-options-callback"><span class="nav-number">31.</span> <span class="nav-text">fs.mkdtemp(prefix[, options], callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-open-path-flags-mode-callback"><span class="nav-number">32.</span> <span class="nav-text">fs.open(path, flags[, mode], callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-read-fd-buffer-offset-length-position-callback"><span class="nav-number">33.</span> <span class="nav-text">fs.read(fd, buffer, offset, length, position, callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-readdir-path-options-callback"><span class="nav-number">34.</span> <span class="nav-text">fs.readdir(path[, options], callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-readFile-path-options-callback"><span class="nav-number">35.</span> <span class="nav-text">fs.readFile(path[, options], callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-readlink-path-options-callback"><span class="nav-number">36.</span> <span class="nav-text">fs.readlink(path[, options], callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-readSync-fd-buffer-offset-length-position"><span class="nav-number">37.</span> <span class="nav-text">fs.readSync(fd, buffer, offset, length, position);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-realpath-path-options-callback"><span class="nav-number">38.</span> <span class="nav-text">fs.realpath(path[, options], callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-rename-oldPath-newPath-callback"><span class="nav-number">39.</span> <span class="nav-text">fs.rename(oldPath, newPath, callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-rmdir-path-callback"><span class="nav-number">40.</span> <span class="nav-text">fs.rmdir(path, callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-stat-path-callback"><span class="nav-number">41.</span> <span class="nav-text">fs.stat(path, callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-symlink-target-path-type-callback"><span class="nav-number">42.</span> <span class="nav-text">fs.symlink(target, path[, type], callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-truncate-path-len-callback"><span class="nav-number">43.</span> <span class="nav-text">fs.truncate(path[, len], callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-unlink-path-callback"><span class="nav-number">44.</span> <span class="nav-text">fs.unlink(path, callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-unwatchFile-filename-listener"><span class="nav-number">45.</span> <span class="nav-text">fs.unwatchFile(filename[, listener]);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-utimes-path-atime-mtime-callback"><span class="nav-number">46.</span> <span class="nav-text">fs.utimes(path, atime, mtime, callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-watch-filename-options-listener"><span class="nav-number">47.</span> <span class="nav-text">fs.watch(filename[, options][, listener]);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-watchFile-filename-options-listener"><span class="nav-number">48.</span> <span class="nav-text">fs.watchFile(filename[, options], listener);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-write-fd-buffer-offset-length-position-callback"><span class="nav-number">49.</span> <span class="nav-text">fs.write(fd, buffer[, offset[, length[, position]]], callback);</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fs-writeFile-file-data-options-callback"><span class="nav-number">50.</span> <span class="nav-text">fs.writeFile(file, data[, options], callback);</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-pied-piper-alt"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a></div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+	  <span>Unique Visitor:</span>
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+	  <span>Page View:</span>
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.6"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.6"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.6"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.6"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>

@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.6" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=6.0.6">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=6.0.6" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.0.6',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+<script>
+    (function(){
+        if(''){
+            if (prompt('请输入文章密码') !== ''){
+                alert('密码错误！');
+                history.back();
+            }
+        }
+    })();
+</script>
+
+  
+
+
+
+
+  <meta name="description" content="基础svg的使用 img的src background-image: url() object: data embed: src foreignObjectforeignObject元素允许包含外来的XML命名空间，其图形内容是别的用户代理绘制的。样式的写法（优先级逐渐降低）1.内联style&amp;lt;g style=&amp;quot;fill: red;&amp;quot;&amp;gt;&amp;lt;/g&amp;gt;2.cla">
+<meta name="keywords" content="svg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="html5-svg开发手册">
+<meta property="og:url" content="https://fanerge.github.io/2018/html5-svg开发手册.html">
+<meta property="og:site_name" content="fanerge&#39;s Blogs">
+<meta property="og:description" content="基础svg的使用 img的src background-image: url() object: data embed: src foreignObjectforeignObject元素允许包含外来的XML命名空间，其图形内容是别的用户代理绘制的。样式的写法（优先级逐渐降低）1.内联style&amp;lt;g style=&amp;quot;fill: red;&amp;quot;&amp;gt;&amp;lt;/g&amp;gt;2.cla">
+<meta property="og:updated_time" content="2022-05-14T02:23:46.523Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="html5-svg开发手册">
+<meta name="twitter:description" content="基础svg的使用 img的src background-image: url() object: data embed: src foreignObjectforeignObject元素允许包含外来的XML命名空间，其图形内容是别的用户代理绘制的。样式的写法（优先级逐渐降低）1.内联style&amp;lt;g style=&amp;quot;fill: red;&amp;quot;&amp;gt;&amp;lt;/g&amp;gt;2.cla">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="fanerge's Blogs" type="application/atom+xml" />
+
+
+
+
+  <link rel="canonical" href="https://fanerge.github.io/2018/html5-svg开发手册.html"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>html5-svg开发手册 | fanerge's Blogs</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband">
+	<a href="https://github.com/fanerge"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 9999;" src="http://pau044s3z.bkt.clouddn.com/forkgithub.png" alt="Fork me on GitHub"></a>
+	</div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> 
+
+<div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">fanerge's Blogs</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">一个专注于WEB开发的技术的个人博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+          
+  <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-categories">
+    <a href="/categories" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br />Categories<span class="badge">29</span>
+      </a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-archives">
+    <a href="/archives" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />Archives<span class="badge">187</span>
+      </a>
+</li>
+
+      
+        
+        
+          
+  <li class="menu-item menu-item-about">
+    <a href="/about" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br />About</a>
+</li>
+
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+    
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+    
+
+  
+
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+  
+
+
+
+ </div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://fanerge.github.io/2018/html5-svg开发手册.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="余真帆-fanerge">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars3.githubusercontent.com/u/17136707?s=400&u=d7250b0655c87b8e8e1cdaf826754fe5e6f68e80&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="fanerge's Blogs">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">html5-svg开发手册</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-30T20:28:14+08:00">2018-01-30</time>
+            
+
+            
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/html5/" itemprop="url" rel="index"><span itemprop="name">html5</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon"
+            >
+            <i class="fa fa-eye"></i>
+             Views: 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+		
+	  
+      
+
+      
+        <h1 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h1><h2 id="svg的使用"><a href="#svg的使用" class="headerlink" title="svg的使用"></a>svg的使用</h2><ol>
+<li>img的src</li>
+<li>background-image: url()</li>
+<li>object: data</li>
+<li>embed: src</li>
+<li>foreignObject<br>foreignObject元素允许包含外来的XML命名空间，其图形内容是别的用户代理绘制的。<h2 id="样式的写法（优先级逐渐降低）"><a href="#样式的写法（优先级逐渐降低）" class="headerlink" title="样式的写法（优先级逐渐降低）"></a>样式的写法（优先级逐渐降低）</h2>1.内联style<br><code>&lt;g style=&quot;fill: red;&quot;&gt;&lt;/g&gt;</code><br>2.class<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;g class=&quot;font&quot;&gt;&lt;/g&gt;</div><div class="line">&lt;style type=&quot;text/css&quot;&gt;&lt;![CDATA[</div><div class="line">.font &#123;</div><div class="line">	fill: red;</div><div class="line">&#125;</div><div class="line">]]&gt;&lt;/style&gt;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>3.外链样式表<br><code>&lt;?xml-stylesheet href=&quot;style.css&quot; type=&quot;text\css&quot; ?&gt;</code><br>4.样式属性<br><code>&lt;g fill=&quot;red&quot;&gt;&lt;/g&gt;</code></p>
+<h2 id="other"><a href="#other" class="headerlink" title="other"></a>other</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;![CDATA[解析器忽略的内容]]&gt;</div><div class="line">作用：xml解析器忽略解析，将表示为纯文本。</div></pre></td></tr></table></figure>
+<p>默认用户坐标（视口svg的width和height）<br>指定用户坐标（viewBox属性）<br>保持宽高比（SVG的宽高和viewBox的宽高比是不一样），使用preserveAspectRatio属性<br>preserveAspectRatio=”xMidYMid meet”<br>第1个值表示，viewBox如何与SVG viewport对齐；第2个值表示，如何维持高宽比（如果有）。</p>
+<h1 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h1><h2 id="全局属性"><a href="#全局属性" class="headerlink" title="全局属性"></a>全局属性</h2><p>class、style</p>
+<h2 id="样式属性"><a href="#样式属性" class="headerlink" title="样式属性"></a>样式属性</h2><p>color、display、opacity、overflow<br>fill、fill-opacity、fill-rule<br>stroke、stroke-dasharray、stroke-dashoffset、stroke-linecap、stroke-linejoin、stroke-miterlimit、stroke-opacity、stroke-width</p>
+<h2 id="动画事件属性"><a href="#动画事件属性" class="headerlink" title="动画事件属性"></a>动画事件属性</h2><p>onbegin, onend, onload, onrepeat</p>
+<h2 id="动画属性目标属性"><a href="#动画属性目标属性" class="headerlink" title="动画属性目标属性"></a>动画属性目标属性</h2><p>attributeType, attributeName</p>
+<h2 id="动画定时属性"><a href="#动画定时属性" class="headerlink" title="动画定时属性"></a>动画定时属性</h2><p>begin, dur, end, min, max, restart, repeatCount, repeatDur, fill</p>
+<h2 id="动画值属性"><a href="#动画值属性" class="headerlink" title="动画值属性"></a>动画值属性</h2><p>calcMode, values, keyTimes, keySplines, from, to, by, autoReverse, accelerate, decelerate</p>
+<h2 id="动画累加属性"><a href="#动画累加属性" class="headerlink" title="动画累加属性"></a>动画累加属性</h2><p>additive, accumulate</p>
+<h2 id="条件处理属性"><a href="#条件处理属性" class="headerlink" title="条件处理属性"></a>条件处理属性</h2><p>requiredExtensions, requiredFeatures, systemLanguage.</p>
+<h2 id="核心属性"><a href="#核心属性" class="headerlink" title="核心属性"></a>核心属性</h2><p>id, xml:base, xml:lang, xml:space</p>
+<h2 id="文档事件属性"><a href="#文档事件属性" class="headerlink" title="文档事件属性"></a>文档事件属性</h2><p>onabort, onerror, onresize, onscroll, onunload, onzoom</p>
+<h2 id="过滤器原始属性"><a href="#过滤器原始属性" class="headerlink" title="过滤器原始属性"></a>过滤器原始属性</h2><p>height, result, width, x, y</p>
+<h2 id="图形事件属性"><a href="#图形事件属性" class="headerlink" title="图形事件属性"></a>图形事件属性</h2><p>onactivate, onclick, onfocusin, onfocusout, onload, onmousedown, onmousemove, onmouseout, onmouseover, onmouseup</p>
+<h1 id="svg-元素"><a href="#svg-元素" class="headerlink" title="svg 元素"></a>svg 元素</h1><h2 id="基本形状元素"><a href="#基本形状元素" class="headerlink" title="基本形状元素"></a>基本形状元素</h2><h3 id="line"><a href="#line" class="headerlink" title="line"></a>line</h3><p>line元素是一个SVG基本形状，用来创建一条连接两个点的线。<br>属性：x1、y1、x2、y2<br><code>&lt;line x1=&quot;0&quot; y1=&quot;0&quot; x2=&quot;5&quot; y2=&quot;5&quot;&gt;&lt;/line&gt;</code></p>
+<h3 id="rect"><a href="#rect" class="headerlink" title="rect"></a>rect</h3><p>用来创建矩形，基于一个角位置以及它的宽和高。它还可以用来创建圆角矩形。<br>属性：x、y、width、height、rx、ry<br><code>&lt;rect x=&quot;0&quot; y=&quot;0&quot; width=&quot;10&quot; height=&quot;10&quot; rx=&quot;3&quot; ry=&quot;3&quot;&gt;&lt;/rect&gt;</code></p>
+<h3 id="circle"><a href="#circle" class="headerlink" title="circle"></a>circle</h3><p>用来创建圆,基于一个圆心和一个半径。<br>属性：cx、cy、r<br><code>&lt;circle cx=&quot;10&quot; cy=&quot;10&quot; r=&quot;5&quot;&gt;&lt;/circle&gt;</code></p>
+<h3 id="ellipse"><a href="#ellipse" class="headerlink" title="ellipse"></a>ellipse</h3><p>用来创建一个椭圆，基于一个中心坐标以及它们的x半径和y半径。<br>利用transform属性椭圆的倾斜。<br>属性：cx、cy、rx、ry<br><code>&lt;ellipse cx=&quot;60&quot; cy=&quot;60&quot; rx=&quot;50&quot; ry=&quot;25&quot;/&gt;</code></p>
+<h3 id="polygon"><a href="#polygon" class="headerlink" title="polygon"></a>polygon</h3><p>polygon元素定义了一个由一组点左边的构成的闭合多边形形状。<br>属性：points<br><code>&lt;polygon points=&quot;100,40 100,80 60,100 20,80 20,40&quot;/&gt;</code></p>
+<h3 id="polyline"><a href="#polyline" class="headerlink" title="polyline"></a>polyline</h3><p>用来创建一系列直线连接多个点。典型的一个polyline是用来创建一个开放的形状，最后一点不与第一点相连。<br>属性：points<br><code>&lt;polyline fill=&quot;none&quot; stroke=&quot;black&quot; points=&quot;20,100 40,60 70,80 100,20&quot;/&gt;</code></p>
+<h3 id="path"><a href="#path" class="headerlink" title="path"></a>path</h3><p>path元素是用来定义形状的通用元素。所有的基本形状都可以用path元素来创建。<br>属性：d（data）、pathLength<br>PS：d属性有下列值（大写字母为绝对坐标，小写字母为相对坐标）<br>M（m）-x，y-移动到给定坐标。<br>L（l）-x，y-绘制一条到给定坐标的线，可以提供多组坐标来绘制折线。<br>H（h）-x-绘制一条到给定x坐标的水平线。<br>V（v）-y-绘制一条到指定y坐标的竖线。<br>A（a）-rx ry x-axis-rotation large-arc-flag sweep-flag x y。<br>Q（q）-x1，y1，x，y-绘制一条从当前点到（x，y），控制点为（x1，y1）的二次贝塞尔曲线。<br>T（t）-x，y-绘制一条从当前点到（x，y）的二次贝塞尔曲线，控制点是前一个Q命令的控制点的中心对称点。如果没有前一条曲线，当前点会被用作控制点。<br>C（c）-x1，y1，x2，y2，x，y-绘制一条从当前点到（x，y）的三次贝塞尔曲线，x1和x2分别为开始和终点控制点。<br>S（s）-x2，y2，x，y-绘制一条从当前点到（x，y）的三次贝塞尔曲线，使用x2作为终点控制点，开始控制点为前一个C命令的终点控制点的中心对称点。<br><code>&lt;path d=&quot;M 100 100 L 300 100 L 200 300 z&quot; /&gt;</code><br>PS：x-axis-rotation为x轴旋转角度，large-arc-flag为角度大小，sweep-flag（弧线方向）<br>large-arc-flag决定弧线是大于还是小于180度，0表示小角度弧，1表示大角度弧。<br>sweep-flag表示弧线的方向，0表示从起点到终点沿逆时针画弧，1表示从起点到终点沿顺时针画弧。</p>
+<h2 id="功能元素"><a href="#功能元素" class="headerlink" title="功能元素"></a>功能元素</h2><h3 id="title（提升可访问性）"><a href="#title（提升可访问性）" class="headerlink" title="title（提升可访问性）"></a>title（提升可访问性）</h3><p>SVG绘图中的每个窗口元素或图形元素都可以提供一个title描述性字符串，该描述只能是纯文本。<br>title元素必须是它的父元素的第一个子元素。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;g&gt;</div><div class="line">   &lt;title&gt;SVG Title Demo example&lt;/title&gt;</div><div class="line">   &lt;rect x=&quot;10&quot; y=&quot;10&quot; width=&quot;200&quot; height=&quot;50&quot; style=&quot;fill:none; stroke:blue; stroke-width:1px&quot;/&gt;</div><div class="line">	&lt;desc&gt;提升可访问性&lt;/desc&gt;</div><div class="line">&lt;/g&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="desc（提升可访问性）"><a href="#desc（提升可访问性）" class="headerlink" title="desc（提升可访问性）"></a>desc（提升可访问性）</h3><p>SVG绘画中的每个容器元素或图形元素都可以提供一个desc描述性字符串，这些描述只是纯文本的。</p>
+<h3 id="defs"><a href="#defs" class="headerlink" title="defs"></a>defs</h3><p>SVG 允许我们定义以后需要重复使用的图形元素， 建议把所有需要再次使用的引用元素定义在defs元素里面。<br>需要使用\<use\>元素来呈现defs定义的元素。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;defs&gt;</div><div class="line">	&lt;linearGradient id=&quot;Gradient01&quot;&gt;</div><div class="line">		&lt;stop offset=&quot;20%&quot; stop-color=&quot;#39F&quot; /&gt;</div><div class="line">		&lt;stop offset=&quot;90%&quot; stop-color=&quot;#F3F&quot; /&gt;</div><div class="line">	&lt;/linearGradient&gt;</div><div class="line">&lt;/defs&gt;</div><div class="line">&lt;rect x=&quot;10&quot; y=&quot;10&quot; width=&quot;60&quot; height=&quot;10&quot; fill=&quot;url(#Gradient01)&quot;  /&gt;</div><div class="line">PS：radialGradient、linearGradient、pattern等元素必须要放在defs元素中</div></pre></td></tr></table></figure></use\></p>
+<h3 id="use"><a href="#use" class="headerlink" title="use"></a>use</h3><p>use元素在SVG文档内取得目标节点，并在别的地方复制它们。<br>属性：x、y、width、height、href<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;defs&gt;</div><div class="line">    &lt;g id=&quot;Port&quot;&gt;</div><div class="line">      &lt;circle style=&quot;fill: inherit;&quot; r=&quot;10&quot;/&gt;</div><div class="line">    &lt;/g&gt;</div><div class="line">&lt;/defs&gt;</div><div class="line">&lt;use x=&quot;50&quot; y=&quot;10&quot; href=&quot;#Port&quot; /&gt;</div><div class="line">&lt;use x=&quot;50&quot; y=&quot;30&quot; href=&quot;#Port&quot; class=&quot;classA&quot;/&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="a"><a href="#a" class="headerlink" title="a"></a>a</h3><p>使用 SVG 的锚元素\<a\>定义一个超链接。<br>属性：href、target<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;a href=&quot;www.alipay.com&quot; target=&quot;_blank&quot;&gt;</div><div class="line">    &lt;rect height=&quot;30&quot; width=&quot;120&quot; y=&quot;0&quot; x=&quot;0&quot; rx=&quot;15&quot;/&gt;</div><div class="line">    &lt;text fill=&quot;white&quot; text-anchor=&quot;middle&quot; y=&quot;21&quot; x=&quot;60&quot;&gt;SVG on MDN&lt;/text&gt;</div><div class="line">&lt;/a&gt;</div></pre></td></tr></table></figure></a\></p>
+<h3 id="clipPath"><a href="#clipPath" class="headerlink" title="clipPath"></a>clipPath</h3><p>clipPath用于指定可绘制区域（超出了剪切路径所指定的区域，将不会被绘制。）。<br>属性：clipPathUnits=”userSpaceOnUse’或’objectBoundingBox”。第二个值childern一个对象的边框，会使用掩码的一小部分单位（默认：”userSpaceOnUse”）”<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;defs&gt;</div><div class="line">    &lt;clipPath id=&quot;myClip&quot;&gt;</div><div class="line">      &lt;circle cx=&quot;30&quot; cy=&quot;30&quot; r=&quot;20&quot;/&gt;</div><div class="line">    &lt;/clipPath&gt;</div><div class="line">&lt;/defs&gt;</div><div class="line">&lt;rect x=&quot;10&quot; y=&quot;10&quot; width=&quot;100&quot; height=&quot;100&quot; clip-path=&quot;url(#myClip)&quot;/&gt;</div></pre></td></tr></table></figure></p>
+<p>PS：其他元素通过clip-path=”引用剪贴路径和引用剪贴路径交叉”</p>
+<h3 id="color-profile"><a href="#color-profile" class="headerlink" title="color-profile"></a>color-profile</h3><p>该元素允许描述用于图像的颜色配置文件。<br>属性：local、name、rendering-intent、href</p>
+<h3 id="foreignObject"><a href="#foreignObject" class="headerlink" title="foreignObject"></a>foreignObject</h3><p>foreignObject元素允许包含外来的XML命名空间，其图形内容是别的用户代理绘制的。这个被包含的外来图形内容服从SVG变形和合成。<br>foreignObject元素通常与 switch 元素和requiredExtensions属性联用，来做兼容。</p>
+<h3 id="image"><a href="#image" class="headerlink" title="image"></a>image</h3><p>SVG文档中的SVG元素包含图像信息。它表现为图像文件或者其他SVG文件。<br>属性：x、y、width、height、href、preserveAspectRatio（控制图像比例）</p>
+<h3 id="linearGradient"><a href="#linearGradient" class="headerlink" title="linearGradient"></a>linearGradient</h3><p>linearGradient元素用来定义线性渐变，用于图形元素的填充或描边。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;defs&gt;</div><div class="line">    &lt;linearGradient id=&quot;MyGradient&quot;&gt;</div><div class="line">        &lt;stop offset=&quot;5%&quot;  stop-color=&quot;green&quot;/&gt;</div><div class="line">        &lt;stop offset=&quot;95%&quot; stop-color=&quot;gold&quot;/&gt;</div><div class="line">    &lt;/linearGradient&gt;</div><div class="line">&lt;/defs&gt;</div><div class="line">&lt;rect fill=&quot;url(#MyGradient)&quot; x=&quot;10&quot; y=&quot;10&quot; width=&quot;100&quot; height=&quot;100&quot;/&gt;</div></pre></td></tr></table></figure></p>
+<p>属性：gradientUnits、gradientTransform、x1、y1、x2、y2、spreadMethod、href</p>
+<h3 id="radialGradient"><a href="#radialGradient" class="headerlink" title="radialGradient"></a>radialGradient</h3><p>radialGradient用来定义径向，用于图形元素的填充或描边。<br>属性：gradientUnits、gradientTransform、cx、cy、r、fx、fy、spreadMethod、href<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;defs&gt;</div><div class="line">    &lt;radialGradient id=&quot;exampleGradient&quot;&gt;</div><div class="line">      &lt;stop offset=&quot;10%&quot; stop-color=&quot;gold&quot;/&gt;</div><div class="line">      &lt;stop offset=&quot;95%&quot; stop-color=&quot;green&quot;/&gt;</div><div class="line">    &lt;/radialGradient&gt;</div><div class="line">&lt;/defs&gt;</div><div class="line">&lt;circle fill=&quot;url(#exampleGradient)&quot; cx=&quot;60&quot; cy=&quot;60&quot; r=&quot;50&quot;/&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="stop"><a href="#stop" class="headerlink" title="stop"></a>stop</h3><p>一个渐变上的颜色坡度，是用stop元素定义的。<br>stop元素可以是linearGradient、radialGradient的子元素。</p>
+<h3 id="marker"><a href="#marker" class="headerlink" title="marker"></a>marker</h3><p>marker元素定义了在特定的path、line、polyline、polygon上绘制的箭头或者多边标记图形。<br>属性：marker-end、marker-mid、marker-start、markerUnits、refx、refy、markerWidth、markerHeight、orient<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;defs&gt;</div><div class="line">    &lt;marker id=&quot;Triangle&quot; viewBox=&quot;0 0 10 10&quot; refX=&quot;1&quot; refY=&quot;5&quot; markerWidth=&quot;6&quot; markerHeight=&quot;6&quot; orient=&quot;auto&quot;&gt;</div><div class="line">      &lt;path d=&quot;M 0 0 L 10 5 L 0 10 z&quot; /&gt;</div><div class="line">    &lt;/marker&gt;</div><div class="line">&lt;/defs&gt;</div><div class="line">&lt;polyline points=&quot;10,90 50,80 90,20&quot; fill=&quot;none&quot; stroke=&quot;black&quot; stroke-width=&quot;2&quot; marker-end=&quot;url(#Triangle)&quot; /&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="mask"><a href="#mask" class="headerlink" title="mask"></a>mask</h3><p>在SVG中，你可以指一个透明的遮罩层和当前对象合成，形成背景。属性mask用来引用一个遮罩元素。<br>属性：maskUnits、maskContentUnits、x、y、width、height</p>
+<h3 id="metadata"><a href="#metadata" class="headerlink" title="metadata"></a>metadata</h3><p>metadata是数据的结构化数据。</p>
+<h3 id="pattern"><a href="#pattern" class="headerlink" title="pattern"></a>pattern</h3><p>使用预定义的图形对一个对象进行填充或描边，就要用到pattern元素，在下轴或y轴上重复。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;defs&gt;</div><div class="line">    &lt;pattern id=&quot;Triangle&quot; width=&quot;10&quot; height=&quot;10&quot; patternUnits=&quot;userSpaceOnUse&quot;&gt;</div><div class="line">		&lt;polygon points=&quot;5,0 10,10 0,10&quot;/&gt;</div><div class="line">	&lt;/pattern&gt;</div><div class="line">&lt;/defs&gt;</div><div class="line">&lt;circle cx=&quot;60&quot; cy=&quot;60&quot; r=&quot;50&quot; fill=&quot;url(#Triangle)&quot;/&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="text"><a href="#text" class="headerlink" title="text"></a>text</h3><p>text元素定义了一个由文字组成的图形。注意：我们可以将渐变、图案、剪切路径、遮罩或者滤镜应用到text上。<br>属性：x、y、dx、dy、text-anchor、rotate、textLength、lengthAdjust<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;text x=&quot;0&quot; y=&quot;20&quot; transform=&quot;rotate(30 20,40)&quot;&gt;</div><div class="line">    SVG Text Rotation example</div><div class="line">&lt;/text&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="textPath"><a href="#textPath" class="headerlink" title="textPath"></a>textPath</h3><p>textPath使用path来展示文字。<br>属性：startOffset、method、spacing、href<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;path id=&quot;MyPath&quot; fill=&quot;none&quot; stroke=&quot;red&quot; d=&quot;M10,90 Q90,90 90,45 Q90,10 50,10 Q10,10 10,40 Q10,70 45,70 Q70,70 75,50&quot; /&gt;</div><div class="line">&lt;text&gt;</div><div class="line">	&lt;textPath href=&quot;#MyPath&quot;&gt;</div><div class="line">	  The quick brown fox jumps over the lazy dog.</div><div class="line">	&lt;/textPath&gt;</div><div class="line">&lt;/text&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="tspan"><a href="#tspan" class="headerlink" title="tspan"></a>tspan</h3><p>在text元素中，利用内含的tspan元素，可以调整文本和字体的属性以及当前文本的位置、绝对或相对坐标值。<br>属性：x、y、dx、dy、rotate、textLength、lengthAdjust<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;text x=&quot;15&quot; y=&quot;30&quot;&gt;</div><div class="line">    You are </div><div class="line">    &lt;tspan&gt;not&lt;/tspan&gt; </div><div class="line">    a banana</div><div class="line">&lt;/text&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="view"><a href="#view" class="headerlink" title="view"></a>view</h3><p>view元素是查看图片的一个限定方法，就像一个缩放级别或者一个详细视图。<br>属性：viewBox、preserveAspectRatio、zoomAndPan、viewTarget</p>
+<h2 id="不显示元素"><a href="#不显示元素" class="headerlink" title="不显示元素"></a>不显示元素</h2><h3 id="g"><a href="#g" class="headerlink" title="g"></a>g</h3><p>元素g是用来组合对象的容器，对与transform、属性会作用与子元素。<br>通过\<use\>    元素来实现组合对象的复制。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;g stroke=&quot;green&quot; fill=&quot;white&quot; stroke-width=&quot;5&quot;&gt;</div><div class="line">    &lt;circle cx=&quot;25&quot; cy=&quot;25&quot; r=&quot;15&quot; /&gt;</div><div class="line">    &lt;circle cx=&quot;40&quot; cy=&quot;25&quot; r=&quot;15&quot; /&gt;</div><div class="line">&lt;/g&gt;</div></pre></td></tr></table></figure></use\></p>
+<h3 id="script"><a href="#script" class="headerlink" title="script"></a>script</h3><p>一个SVG脚本元素等同于HTML中的script元素。</p>
+<h3 id="set"><a href="#set" class="headerlink" title="set"></a>set</h3><p>set元素可以用来设定一个属性值，并为该值赋予一个持续时间。</p>
+<h3 id="style"><a href="#style" class="headerlink" title="style"></a>style</h3><p>style元素元素样式表直接在SVG内容中间嵌入。</p>
+<h3 id="svg"><a href="#svg" class="headerlink" title="svg"></a>svg</h3><p>如果svg不是根元素，svg 元素可以用于在当前文档内嵌套一个独立的svg片段 。<br>这个独立片段拥有独立的视口和坐标系统。<br>属性：version、baseProfile、x、y、width、height、preserveAspectRatio、contentScriptType、contentStyleType、viewBox</p>
+<h3 id="switch"><a href="#switch" class="headerlink" title="switch"></a>switch</h3><p>switch元素对它的直接子元素上的属性requiredFeatures、属性requiredExtensions 和 属性systemLanguage按照顺序进行评估，然后处理和呈现第一个评估为true的子元素。<br>属性：allowReorder<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;switch&gt;</div><div class="line">	&lt;text systemLanguage=&quot;ar&quot;&gt;مرحبا&lt;/text&gt;</div><div class="line">	&lt;text systemLanguage=&quot;ja&quot;&gt;こんにちは&lt;/text&gt;</div><div class="line">	&lt;text&gt;☺&lt;/text&gt;</div><div class="line">   &lt;/switch&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="symbol"><a href="#symbol" class="headerlink" title="symbol"></a>symbol</h3><p>symbol元素用来定义一个图形模板对象，它可以用一个use元素实例化。<br>symbol元素对图形的作用是在同一文档中多次使用，添加结构和语义。<br>属性：preserveAspectRatio、viewBox<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;symbol id=&quot;sym01&quot; viewBox=&quot;0 0 150 110&quot;&gt;</div><div class="line">	&lt;circle cx=&quot;50&quot; cy=&quot;50&quot; r=&quot;40&quot; stroke-width=&quot;8&quot; stroke=&quot;red&quot; fill=&quot;red&quot;/&gt;</div><div class="line">	&lt;circle cx=&quot;90&quot; cy=&quot;60&quot; r=&quot;40&quot; stroke-width=&quot;8&quot; stroke=&quot;green&quot; fill=&quot;white&quot;/&gt;</div><div class="line">&lt;/symbol&gt;</div><div class="line">&lt;!-- actual drawing by &quot;use&quot; element --&gt;</div><div class="line">&lt;use href=&quot;#sym01&quot; x=&quot;0&quot; y=&quot;0&quot; width=&quot;100&quot; height=&quot;50&quot;/&gt;</div><div class="line">&lt;use href=&quot;#sym01&quot; x=&quot;0&quot; y=&quot;50&quot; width=&quot;75&quot; height=&quot;38&quot;/&gt;</div></pre></td></tr></table></figure></p>
+<h2 id="动画元素"><a href="#动画元素" class="headerlink" title="动画元素"></a>动画元素</h2><h3 id="animate"><a href="#animate" class="headerlink" title="animate"></a>animate</h3><p>动画元素放在形状元素的内部，用来定义一个元素的某个属性根据时间点如何改变。<br>属性：attributeName、attributeType（CSS/XML）、from、to、dur、repeatCount<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;rect x=&quot;10&quot; y=&quot;10&quot; width=&quot;100&quot; height=&quot;100&quot;&gt;</div><div class="line">    &lt;animate attributeType=&quot;XML&quot; attributeName=&quot;x&quot; from=&quot;-100&quot; to=&quot;120&quot; dur=&quot;10s&quot; repeatCount=&quot;indefinite&quot;/&gt;</div><div class="line">&lt;/rect&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="animateMotion"><a href="#animateMotion" class="headerlink" title="animateMotion"></a>animateMotion</h3><p>animateMotion元素导致引用的元素沿着运动路径移动。<br>属性：calcMode、path、keyPoints、rotate、origin<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;path d=&quot;M10,110 A120,120 -45 0,1 110 10 A120,120 -45 0,1 10,110&quot; stroke=&quot;lightgrey&quot; stroke-width=&quot;2&quot;  fill=&quot;none&quot; id=&quot;theMotionPath&quot;/&gt;</div><div class="line">&lt;circle cx=&quot;&quot; cy=&quot;&quot; r=&quot;5&quot; fill=&quot;red&quot;&gt;</div><div class="line">    &lt;animateMotion dur=&quot;6s&quot; repeatCount=&quot;indefinite&quot;&gt;</div><div class="line">		&lt;mpath xlink:href=&quot;#theMotionPath&quot;/&gt;</div><div class="line">    &lt;/animateMotion&gt;</div><div class="line">&lt;/circle&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="mpath"><a href="#mpath" class="headerlink" title="mpath"></a>mpath</h3><p>animateMotion元素的 mpath 子元素使 animateMotion 元素能够引用一个外部的 path 元素作为运动路径的定义。<br>属性：href</p>
+<h3 id="animateTransform"><a href="#animateTransform" class="headerlink" title="animateTransform"></a>animateTransform</h3><p>animateTransform元素变动了目标元素上的一个变形属性，从而允许动画控制转换、缩放、旋转或斜切。<br>属性：by、from、to、type<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;polygon points=&quot;60,30 90,90 30,90&quot;&gt;</div><div class="line">    &lt;animateTransform attributeName=&quot;transform&quot;</div><div class="line">		attributeType=&quot;XML&quot;</div><div class="line">		type=&quot;rotate&quot;</div><div class="line">		from=&quot;0 60 70&quot;</div><div class="line">		to=&quot;360 60 70&quot;</div><div class="line">		dur=&quot;10s&quot;</div><div class="line">		repeatCount=&quot;indefinite&quot;/&gt;</div><div class="line">&lt;/polygon&gt;</div></pre></td></tr></table></figure></p>
+<h2 id="滤镜元素"><a href="#滤镜元素" class="headerlink" title="滤镜元素"></a>滤镜元素</h2><h3 id="通用属性"><a href="#通用属性" class="headerlink" title="通用属性"></a>通用属性</h3><p>x、y、width、height属性置顶应用滤镜的画布的尺寸。<br>filterUnits指定用来定义滤镜范围的单位。<br>primitiveUnits为滤镜基元中的各种长度值指定坐标系统。</p>
+<h3 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h3><p>filter元素作用是作为原子滤镜操作的容器。它不能直接呈现。可以利用目标SVG元素上的filter属性引用一个滤镜。<br>属性：x、y、width、height、filterRes、filterUnits、primitiveUnits、href<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;filter id=&quot;blurMe&quot;&gt;</div><div class="line">	&lt;feGaussianBlur in=&quot;SourceGraphic&quot; stdDeviation=&quot;5&quot;/&gt;</div><div class="line">&lt;/filter&gt;</div><div class="line">&lt;circle cx=&quot;60&quot;  cy=&quot;60&quot; r=&quot;50&quot; fill=&quot;green&quot; /&gt;</div><div class="line">&lt;circle cx=&quot;170&quot; cy=&quot;60&quot; r=&quot;50&quot; fill=&quot;green&quot; filter=&quot;url(#blurMe)&quot; /&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="feBlend"><a href="#feBlend" class="headerlink" title="feBlend"></a>feBlend</h3><p>feBlend滤镜把两个对象组合在一起，使它们受特定的混合模式控制。这类似于图像编辑软件中混合两个图层。该模式由属性mode定义。<br>属性：in、in2、mode<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;defs&gt;</div><div class="line">    &lt;filter id=&quot;spotlight&quot;&gt;</div><div class="line">		&lt;feFlood result=&quot;floodFill&quot; x=&quot;0&quot; y=&quot;0&quot; width=&quot;100%&quot; height=&quot;100%&quot; flood-color=&quot;green&quot; flood-opacity=&quot;1&quot;/&gt;</div><div class="line">		&lt;feBlend in=&quot;SourceGraphic&quot; in2=&quot;floodFill&quot; mode=&quot;multiply&quot;/&gt;</div><div class="line">    &lt;/filter&gt;</div><div class="line">&lt;/defs&gt;</div><div class="line">&lt;image xlink:href=&quot;/files/6457/mdn_logo_only_color.png&quot; x=&quot;10%&quot; y=&quot;10%&quot; width=&quot;80%&quot; height=&quot;80%&quot; style=&quot;filter:url(#spotlight);&quot;/&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="feColorMatrix（颜色转换滤镜）"><a href="#feColorMatrix（颜色转换滤镜）" class="headerlink" title="feColorMatrix（颜色转换滤镜）"></a>feColorMatrix（颜色转换滤镜）</h3><p>该滤镜基于转换矩阵对颜色进行变换。每一像素的颜色值(一个表示为[R,G,B,A] 的矢量)都经过矩阵乘法计算出的新颜色。<br>属性：in、type、values</p>
+<h3 id="feComponentTransfer"><a href="#feComponentTransfer" class="headerlink" title="feComponentTransfer"></a>feComponentTransfer</h3><p>SVG滤镜基元对每个像素执行颜色分量的数据重映射.它允许进行像亮度调整,对比度调整,色彩平衡或阈值的操作。<br>属性：in</p>
+<h3 id="feFuncR"><a href="#feFuncR" class="headerlink" title="feFuncR"></a>feFuncR</h3><p>该滤镜为它的父<fecomponenttransfer>元素的输入图形的红色成分定义了变换函数。<br>属性：type、tableValues、slope、intercept、amplitude、exponent、offset</fecomponenttransfer></p>
+<h3 id="feFuncG"><a href="#feFuncG" class="headerlink" title="feFuncG"></a>feFuncG</h3><p>该滤镜为它的父feComponentTransfer元素的输入图形的绿色成分定义了变换函数。</p>
+<h3 id="feFuncB"><a href="#feFuncB" class="headerlink" title="feFuncB"></a>feFuncB</h3><p>该滤镜为它的父feComponentTransfer元素的输入图形的蓝色成分定义了变换函数。</p>
+<h3 id="feFuncA"><a href="#feFuncA" class="headerlink" title="feFuncA"></a>feFuncA</h3><p>该滤镜为它的父feComponentTransfer元素的输入图形的alpha成分定义了变换函数。</p>
+<h3 id="feComposite（合成滤镜）"><a href="#feComposite（合成滤镜）" class="headerlink" title="feComposite（合成滤镜）"></a>feComposite（合成滤镜）</h3><p>该滤镜执行两个输入图像的智能像素组合，在图像空间中使用以下Porter-Duff合成操作之一：over、in、atop、xor<br>属性：in、in2、operator、k1、k2、k3、k4</p>
+<h3 id="feConvolveMatrix"><a href="#feConvolveMatrix" class="headerlink" title="feConvolveMatrix"></a>feConvolveMatrix</h3><p>feConvolveMatrix元素应用了一个矩阵卷积滤镜效果。一个卷积在输入图像中把像素与邻近像素组合起来制作出结果图像。<br>属性：in、order、kernelMatrix、divisor、bias、targetX、targetY、edgeMode、kernelUnitLength、preserveAlpha</p>
+<h3 id="feDiffuseLighting（散开照明滤镜）"><a href="#feDiffuseLighting（散开照明滤镜）" class="headerlink" title="feDiffuseLighting（散开照明滤镜）"></a>feDiffuseLighting（散开照明滤镜）</h3><p>滤镜光照一个图像，使用alpha通道作为隆起映射。<br>属性：in、surfaceScale、diffuseConstant、kernelUnitLength</p>
+<h3 id="feDisplacementMap"><a href="#feDisplacementMap" class="headerlink" title="feDisplacementMap"></a>feDisplacementMap</h3><p>映射置换滤镜，该滤镜用来自图像中从in2到空间的像素值置换图像从in到空间的像素值。<br>属性：in、in2、scale、xChannelSelector、yChannelSelector</p>
+<h3 id="feDistantLight（平行光滤镜）"><a href="#feDistantLight（平行光滤镜）" class="headerlink" title="feDistantLight（平行光滤镜）"></a>feDistantLight（平行光滤镜）</h3><p>该滤镜定义了一个距离光源，可以用在灯光滤镜feDiffuseLighting元素或feSpecularLighting元素的内部。<br>属性：azimuth、elevation</p>
+<h3 id="feFlood"><a href="#feFlood" class="headerlink" title="feFlood"></a>feFlood</h3><p>该滤镜用flood-color元素定义的颜色和flood-opacity元素定义的不透明度填充了滤镜子区域。<br>属性：flood-color、flood-opacity</p>
+<h3 id="feGaussianBlur（高斯模糊滤镜）"><a href="#feGaussianBlur（高斯模糊滤镜）" class="headerlink" title="feGaussianBlur（高斯模糊滤镜）"></a>feGaussianBlur（高斯模糊滤镜）</h3><p>该滤镜对输入图像进行高斯模糊，属性stdDeviation中指定的数量定义了钟形。<br>属性：in、stdDeviation<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;filter id=&quot;blurMe&quot;&gt;</div><div class="line">    &lt;feGaussianBlur in=&quot;SourceGraphic&quot; stdDeviation=&quot;5&quot; /&gt;</div><div class="line">&lt;/filter&gt;</div><div class="line">&lt;circle cx=&quot;170&quot; cy=&quot;60&quot; r=&quot;50&quot; fill=&quot;green&quot; filter=&quot;url(#blurMe)&quot; /&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="feImage（图片滤镜）"><a href="#feImage（图片滤镜）" class="headerlink" title="feImage（图片滤镜）"></a>feImage（图片滤镜）</h3><p>feImage滤镜从外部来源取得图像数据，并提供像素数据作为输出（意味着如果外部来源是一个SVG图像，这个图像将被栅格化。）<br>属性：preserveAspectRatio、href</p>
+<h3 id="feMerge（合并滤镜）"><a href="#feMerge（合并滤镜）" class="headerlink" title="feMerge（合并滤镜）"></a>feMerge（合并滤镜）</h3><p>feMerge滤镜允许同时应用滤镜效果而不是按顺序应用滤镜效果。利用result存储别的滤镜的输出可以实现这一点，然后在一个feMergeNode子元素中访问它。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;filter id=&quot;feOffset&quot; x=&quot;-40&quot; y=&quot;-20&quot; width=&quot;100&quot; height=&quot;200&quot;&gt;</div><div class="line">    &lt;feMerge&gt;</div><div class="line">		&lt;feMergeNode in=&quot;blur2&quot; /&gt;</div><div class="line">		&lt;feMergeNode in=&quot;SourceGraphic&quot; /&gt;</div><div class="line">    &lt;/feMerge&gt;</div><div class="line">&lt;/filter&gt;</div><div class="line">&lt;rect x=&quot;40&quot; y=&quot;40&quot; width=&quot;100&quot; height=&quot;100&quot; style=&quot;stroke: #000000; fill: green; filter: url(#feOffset);&quot; /&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="feMergeNode"><a href="#feMergeNode" class="headerlink" title="feMergeNode"></a>feMergeNode</h3><p>feMergeNode元素拿另一个滤镜的结果，让它的父feMerge元素处理。<br>属性：in</p>
+<h3 id="feMorphology（扩张滤镜）"><a href="#feMorphology（扩张滤镜）" class="headerlink" title="feMorphology（扩张滤镜）"></a>feMorphology（扩张滤镜）</h3><p>该滤镜用来侵蚀或扩张输入的图像。它在增肥或瘦身效果方面特别有用。<br>属性：in、operator、radius</p>
+<h3 id="feOffset（位移滤镜）"><a href="#feOffset（位移滤镜）" class="headerlink" title="feOffset（位移滤镜）"></a>feOffset（位移滤镜）</h3><p>该输入图像作为一个整体，在属性dx和属性dy的值指定了它的偏移量。<br>属性：in、dx、dy<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;filter id=&quot;offset&quot; width=&quot;180&quot; height=&quot;180&quot;&gt;</div><div class="line">    &lt;feOffset in=&quot;SourceGraphic&quot; dx=&quot;60&quot; dy=&quot;60&quot; /&gt;</div><div class="line">&lt;/filter&gt;</div><div class="line">&lt;rect x=&quot;0&quot; y=&quot;0&quot; width=&quot;100&quot; height=&quot;100&quot; stroke=&quot;black&quot; fill=&quot;green&quot; filter=&quot;url(#offset)&quot;/&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="fePointLight（点光源滤镜）"><a href="#fePointLight（点光源滤镜）" class="headerlink" title="fePointLight（点光源滤镜）"></a>fePointLight（点光源滤镜）</h3><p>SVG创建一个点光源效果。<br>属性：x、y、z</p>
+<h3 id="feSpecularLighting（镜子照明滤镜）"><a href="#feSpecularLighting（镜子照明滤镜）" class="headerlink" title="feSpecularLighting（镜子照明滤镜）"></a>feSpecularLighting（镜子照明滤镜）</h3><p>该滤镜照亮一个源图形，使用alpha通道作为隆起映射。<br>属性：in、surfaceScale、specularConstant、specularExponent、kernelUnitLength</p>
+<h3 id="feSpotLight（斑点照明滤镜）"><a href="#feSpotLight（斑点照明滤镜）" class="headerlink" title="feSpotLight（斑点照明滤镜）"></a>feSpotLight（斑点照明滤镜）</h3><p>feSpotLight元素是一种光源元素，用于SVG文件。<br>属性：x、y、z、pointsAtX、pointsAtY、pointsAtZ、specularExponent、limitingConeAngle</p>
+<h3 id="feTile（平铺滤镜）"><a href="#feTile（平铺滤镜）" class="headerlink" title="feTile（平铺滤镜）"></a>feTile（平铺滤镜）</h3><p>输入图像是平铺的，结果用来填充目标。它的效果近似于一个pattern图案对象。<br>属性：in</p>
+<h3 id="feTurbulence"><a href="#feTurbulence" class="headerlink" title="feTurbulence"></a>feTurbulence</h3><p>该滤镜利用Perlin噪声函数创建了一个图像。它实现了人造纹理比如说云纹、大理石纹的合成。<br>属性：baseFrequency、numOctaves、seed、stitchTiles、type</p>
+<blockquote>
+<p>   参考文档：<br><a href="https://developer.mozilla.org/zh-CN/docs/Web/SVG" target="_blank" rel="external">MDN-SVG系列资料</a><br><a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute#Transfer_function_attributes" target="_blank" rel="external">svg-属性参考</a><br><a href="https://github.com/xitu/gold-miner/blob/master/TODO1/an-in-depth-svg-tutorial.md" target="_blank" rel="external">掘金翻译-深入浅出 SVG</a></p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+	<div>
+		
+			<div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读，如果本文对你有帮助就记得<a href="https://github.com/fanerge/fanerge.github.io" title="谢谢亲的star">给个star</a>-------------</div>
+		
+	</div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Donate comment here</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/weixinpay.jpg" alt="余真帆-fanerge WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="余真帆-fanerge Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author: </strong>余真帆-fanerge</li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="https://fanerge.github.io/2018/html5-svg开发手册.html" title="html5-svg开发手册">https://fanerge.github.io/2018/html5-svg开发手册.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/svg/" rel="tag"><i class="far fa-bell"></i> svg</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/html5-webWorker.html" rel="next" title="Web Worker">
+                <i class="fa fa-chevron-left"></i> Web Worker
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/html5-IndexDB.html" rel="prev" title="IndexDB探索之路">
+                IndexDB探索之路 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=2156704" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNTk4Mi8xMjUxOA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars3.githubusercontent.com/u/17136707?s=400&u=d7250b0655c87b8e8e1cdaf826754fe5e6f68e80&v=4"
+                alt="余真帆-fanerge" />
+            
+              <p class="site-author-name" itemprop="name">余真帆-fanerge</p>
+              <p class="site-description motion-element" itemprop="description">前端偏前工程师</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">187</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">29</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">57</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/fanerge" target="_blank" title="GitHub" rel="external nofollow"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:fanege@qq.com" target="_blank" title="E-Mail" rel="external nofollow"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://juejin.im/user/57cede6d5bbb50005b97536a" target="_blank" title="掘金" rel="external nofollow"><i class="fa fa-fw fa-juejin"></i>掘金</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.zhihu.com/people/fanerge" target="_blank" title="知乎" rel="external nofollow"><i class="fa fa-fw fa-zhihu"></i>知乎</a>
+                  
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://segmentfault.com/u/fanerge/articles" target="_blank" title="Segmentfault" rel="external nofollow"><i class="fa fa-fw fa-segmentfault"></i>Segmentfault</a>
+                  
+                </span>
+              
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基础"><span class="nav-number">1.</span> <span class="nav-text">基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#svg的使用"><span class="nav-number">1.1.</span> <span class="nav-text">svg的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#样式的写法（优先级逐渐降低）"><span class="nav-number">1.2.</span> <span class="nav-text">样式的写法（优先级逐渐降低）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#other"><span class="nav-number">1.3.</span> <span class="nav-text">other</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#属性"><span class="nav-number">2.</span> <span class="nav-text">属性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#全局属性"><span class="nav-number">2.1.</span> <span class="nav-text">全局属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#样式属性"><span class="nav-number">2.2.</span> <span class="nav-text">样式属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动画事件属性"><span class="nav-number">2.3.</span> <span class="nav-text">动画事件属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动画属性目标属性"><span class="nav-number">2.4.</span> <span class="nav-text">动画属性目标属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动画定时属性"><span class="nav-number">2.5.</span> <span class="nav-text">动画定时属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动画值属性"><span class="nav-number">2.6.</span> <span class="nav-text">动画值属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动画累加属性"><span class="nav-number">2.7.</span> <span class="nav-text">动画累加属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#条件处理属性"><span class="nav-number">2.8.</span> <span class="nav-text">条件处理属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#核心属性"><span class="nav-number">2.9.</span> <span class="nav-text">核心属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文档事件属性"><span class="nav-number">2.10.</span> <span class="nav-text">文档事件属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#过滤器原始属性"><span class="nav-number">2.11.</span> <span class="nav-text">过滤器原始属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#图形事件属性"><span class="nav-number">2.12.</span> <span class="nav-text">图形事件属性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#svg-元素"><span class="nav-number">3.</span> <span class="nav-text">svg 元素</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本形状元素"><span class="nav-number">3.1.</span> <span class="nav-text">基本形状元素</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#line"><span class="nav-number">3.1.1.</span> <span class="nav-text">line</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rect"><span class="nav-number">3.1.2.</span> <span class="nav-text">rect</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#circle"><span class="nav-number">3.1.3.</span> <span class="nav-text">circle</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ellipse"><span class="nav-number">3.1.4.</span> <span class="nav-text">ellipse</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#polygon"><span class="nav-number">3.1.5.</span> <span class="nav-text">polygon</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#polyline"><span class="nav-number">3.1.6.</span> <span class="nav-text">polyline</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#path"><span class="nav-number">3.1.7.</span> <span class="nav-text">path</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#功能元素"><span class="nav-number">3.2.</span> <span class="nav-text">功能元素</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#title（提升可访问性）"><span class="nav-number">3.2.1.</span> <span class="nav-text">title（提升可访问性）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#desc（提升可访问性）"><span class="nav-number">3.2.2.</span> <span class="nav-text">desc（提升可访问性）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#defs"><span class="nav-number">3.2.3.</span> <span class="nav-text">defs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#use"><span class="nav-number">3.2.4.</span> <span class="nav-text">use</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#a"><span class="nav-number">3.2.5.</span> <span class="nav-text">a</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#clipPath"><span class="nav-number">3.2.6.</span> <span class="nav-text">clipPath</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#color-profile"><span class="nav-number">3.2.7.</span> <span class="nav-text">color-profile</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#foreignObject"><span class="nav-number">3.2.8.</span> <span class="nav-text">foreignObject</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#image"><span class="nav-number">3.2.9.</span> <span class="nav-text">image</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linearGradient"><span class="nav-number">3.2.10.</span> <span class="nav-text">linearGradient</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#radialGradient"><span class="nav-number">3.2.11.</span> <span class="nav-text">radialGradient</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#stop"><span class="nav-number">3.2.12.</span> <span class="nav-text">stop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#marker"><span class="nav-number">3.2.13.</span> <span class="nav-text">marker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mask"><span class="nav-number">3.2.14.</span> <span class="nav-text">mask</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#metadata"><span class="nav-number">3.2.15.</span> <span class="nav-text">metadata</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pattern"><span class="nav-number">3.2.16.</span> <span class="nav-text">pattern</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#text"><span class="nav-number">3.2.17.</span> <span class="nav-text">text</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#textPath"><span class="nav-number">3.2.18.</span> <span class="nav-text">textPath</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tspan"><span class="nav-number">3.2.19.</span> <span class="nav-text">tspan</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#view"><span class="nav-number">3.2.20.</span> <span class="nav-text">view</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不显示元素"><span class="nav-number">3.3.</span> <span class="nav-text">不显示元素</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#g"><span class="nav-number">3.3.1.</span> <span class="nav-text">g</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#script"><span class="nav-number">3.3.2.</span> <span class="nav-text">script</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#set"><span class="nav-number">3.3.3.</span> <span class="nav-text">set</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#style"><span class="nav-number">3.3.4.</span> <span class="nav-text">style</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#svg"><span class="nav-number">3.3.5.</span> <span class="nav-text">svg</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#switch"><span class="nav-number">3.3.6.</span> <span class="nav-text">switch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#symbol"><span class="nav-number">3.3.7.</span> <span class="nav-text">symbol</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动画元素"><span class="nav-number">3.4.</span> <span class="nav-text">动画元素</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#animate"><span class="nav-number">3.4.1.</span> <span class="nav-text">animate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#animateMotion"><span class="nav-number">3.4.2.</span> <span class="nav-text">animateMotion</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mpath"><span class="nav-number">3.4.3.</span> <span class="nav-text">mpath</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#animateTransform"><span class="nav-number">3.4.4.</span> <span class="nav-text">animateTransform</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#滤镜元素"><span class="nav-number">3.5.</span> <span class="nav-text">滤镜元素</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通用属性"><span class="nav-number">3.5.1.</span> <span class="nav-text">通用属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#filter"><span class="nav-number">3.5.2.</span> <span class="nav-text">filter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feBlend"><span class="nav-number">3.5.3.</span> <span class="nav-text">feBlend</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feColorMatrix（颜色转换滤镜）"><span class="nav-number">3.5.4.</span> <span class="nav-text">feColorMatrix（颜色转换滤镜）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feComponentTransfer"><span class="nav-number">3.5.5.</span> <span class="nav-text">feComponentTransfer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feFuncR"><span class="nav-number">3.5.6.</span> <span class="nav-text">feFuncR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feFuncG"><span class="nav-number">3.5.7.</span> <span class="nav-text">feFuncG</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feFuncB"><span class="nav-number">3.5.8.</span> <span class="nav-text">feFuncB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feFuncA"><span class="nav-number">3.5.9.</span> <span class="nav-text">feFuncA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feComposite（合成滤镜）"><span class="nav-number">3.5.10.</span> <span class="nav-text">feComposite（合成滤镜）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feConvolveMatrix"><span class="nav-number">3.5.11.</span> <span class="nav-text">feConvolveMatrix</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feDiffuseLighting（散开照明滤镜）"><span class="nav-number">3.5.12.</span> <span class="nav-text">feDiffuseLighting（散开照明滤镜）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feDisplacementMap"><span class="nav-number">3.5.13.</span> <span class="nav-text">feDisplacementMap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feDistantLight（平行光滤镜）"><span class="nav-number">3.5.14.</span> <span class="nav-text">feDistantLight（平行光滤镜）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feFlood"><span class="nav-number">3.5.15.</span> <span class="nav-text">feFlood</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feGaussianBlur（高斯模糊滤镜）"><span class="nav-number">3.5.16.</span> <span class="nav-text">feGaussianBlur（高斯模糊滤镜）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feImage（图片滤镜）"><span class="nav-number">3.5.17.</span> <span class="nav-text">feImage（图片滤镜）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feMerge（合并滤镜）"><span class="nav-number">3.5.18.</span> <span class="nav-text">feMerge（合并滤镜）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feMergeNode"><span class="nav-number">3.5.19.</span> <span class="nav-text">feMergeNode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feMorphology（扩张滤镜）"><span class="nav-number">3.5.20.</span> <span class="nav-text">feMorphology（扩张滤镜）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feOffset（位移滤镜）"><span class="nav-number">3.5.21.</span> <span class="nav-text">feOffset（位移滤镜）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fePointLight（点光源滤镜）"><span class="nav-number">3.5.22.</span> <span class="nav-text">fePointLight（点光源滤镜）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feSpecularLighting（镜子照明滤镜）"><span class="nav-number">3.5.23.</span> <span class="nav-text">feSpecularLighting（镜子照明滤镜）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feSpotLight（斑点照明滤镜）"><span class="nav-number">3.5.24.</span> <span class="nav-text">feSpotLight（斑点照明滤镜）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feTile（平铺滤镜）"><span class="nav-number">3.5.25.</span> <span class="nav-text">feTile（平铺滤镜）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#feTurbulence"><span class="nav-number">3.5.26.</span> <span class="nav-text">feTurbulence</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-pied-piper-alt"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">余真帆-fanerge</span>
+
+  
+
+  
+</div>
+
+
+  
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" rel="external nofollow" href="https://hexo.io">Hexo</a></div>
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv" title="Total Visitors">
+	  <span>Unique Visitor:</span>
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="site-pv" title="Total Views">
+	  <span>Page View:</span>
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.6"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.6"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.6"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.6"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.6"></script>
+
+
+
+  
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  <!-- 页面点击小红心 -->
+  <script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
